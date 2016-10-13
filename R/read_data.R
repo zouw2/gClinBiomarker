@@ -2,13 +2,19 @@
 #'
 #' Read two files. First file contains data.
 #' Second file provides specs for data.
+#'
+#' @author Alexey Pronin
+#'
 #' @param input A file with data.
 #' @param input.specs A file with specs for \code{input}.
+#'
 #' @return Two data frames: df and df.specs
+#'
 #' @examples
 #' \dontrun{
 #' ReadData("input.csv", "input_specs.csv")
 #' }
+#'
 #' @export
 
 ReadData <- function(input, input.specs) {
