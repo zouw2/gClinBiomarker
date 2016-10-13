@@ -22,8 +22,7 @@ ReadData <- function(input, input.specs) {
 
     # Check data types in specs are allowed.
     types.allowed <- c("character", "numeric", "categorical", "time", "event")
-    types.dif <- length(setdiff(types.allowed, df.specs$Type))
-    if (types.dif != 0) {
+    if (!(all(df.specs$Type %in% types.allowed))) {
         stop(paste("Allowed data types are:",
                    "character, numeric, categorical, time, and event.",
                    "Please check the types in the specs file!"))
@@ -48,14 +47,14 @@ ReadData <- function(input, input.specs) {
     }
 
     # Check for dubplicate columns in the input file.
-    dub.input <- length(setdiff(colnames(df), unique(colnames(df))))
+    dub.input <- abs(length(colnames(df)) - length(unique(colnames(df))))
     if (dub.input != 0) {
-        stop("There are dublicate columns in the input file!")
+        stop("There are dublicate name columns in the input file!")
     }
 
     # Check for dubplicate columns in the specs file.
-    dub.input <- length(setdiff(df.specs$Variable, unique(df.specs$Variable)))
-    if (dub.input != 0) {
+    dub.input.specs <- abs(length(df.specs$Variable) - length(unique(df.specs$Variable)))
+    if (dub.input.specs != 0) {
         stop("There are dublicate rows in the specs file!")
     }
 
