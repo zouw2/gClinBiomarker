@@ -22,5 +22,9 @@ Second file provides specs for data.
 \dontrun{
 ReadData("input.csv", "input_specs.csv")
 }
+
+}
+\author{
+Alexey Pronin
 }
 
