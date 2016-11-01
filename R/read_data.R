@@ -1,15 +1,17 @@
 #' Read data
 #'
-#' Read two files. First file contains data.
+#' Read two files and perform concordance check. First file contains data.
 #' Second file provides specs for data.
 #'
 #' @author Alexey Pronin
 #'
-#' @param input A file with data.
-#' @param input.specs A file with specs for \code{input}.
+#' @param input A csv file with data.
+#' @param input.specs A csv file with specs for \code{input}.
 #'
-#' @return Two data frames: df and df.specs
-#'
+#' @return Two data frames in a list: df and df.specs
+#' @note The ReadData() function reads in the data file and spec file from csv files. The function also perform
+#' concordance check between the data and its spec. Data column names and spec entry names should match.
+#' No duplicate names are allowed.
 #' @examples
 #' \dontrun{
 #' ReadData("input.csv", "input_specs.csv")
@@ -52,16 +54,16 @@ ReadData <- function(input, input.specs) {
         stop("The column names between input and input.specs files do not match.")
     }
 
-    # Check for dubplicate columns in the input file.
+    # Check for duplicate columns in the input file.
     dub.input <- abs(length(colnames(df)) - length(unique(colnames(df))))
     if (dub.input != 0) {
-        stop("There are dublicate name columns in the input file!")
+        stop("There are duplicate name columns in the input file!")
     }
 
-    # Check for dubplicate columns in the specs file.
+    # Check for duplicate columns in the specs file.
     dub.input.specs <- abs(length(df.specs$Variable) - length(unique(df.specs$Variable)))
     if (dub.input.specs != 0) {
-        stop("There are dublicate rows in the specs file!")
+        stop("There are duplicate rows in the specs file!")
     }
 
     # Convert input data types defined by the specs file.
