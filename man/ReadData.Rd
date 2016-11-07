@@ -7,16 +7,21 @@
 ReadData(input, input.specs)
 }
 \arguments{
-\item{input}{A file with data.}
+\item{input}{A csv file with data.}
 
-\item{input.specs}{A file with specs for \code{input}.}
+\item{input.specs}{A csv file with specs for \code{input}.}
 }
 \value{
-Two data frames: df and df.specs
+Two data frames in a list: df and df.specs
 }
 \description{
-Read two files. First file contains data.
+Read two files and perform concordance check. First file contains data.
 Second file provides specs for data.
+}
+\note{
+The ReadData() function reads in the data file and spec file from csv files. The function also perform
+concordance check between the data and its spec. Data column names and spec entry names should match.
+No duplicate names are allowed.
 }
 \examples{
 \dontrun{
