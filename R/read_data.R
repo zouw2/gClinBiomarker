@@ -23,7 +23,7 @@ ReadData <- function(input, input.specs) {
 
     # Check the specs file exists.
     if (file.exists(input.specs)) {
-        df.specs <- read.csv(input.specs, colClasses="character")
+        df.specs <- read.csv(input.specs, stringsAsFactors=FALSE)
     } else {
         stop("The specs file does not exist!")
     }
@@ -38,7 +38,7 @@ ReadData <- function(input, input.specs) {
 
     # Check the input file exists.
     if (file.exists(input)) {
-        df <- read.csv(input, colClasses="character")
+        df <- read.csv(input, stringsAsFactors=FALSE)
     } else {
         stop("The input file does not exist!")
     }
@@ -48,30 +48,42 @@ ReadData <- function(input, input.specs) {
         stop("There is no variable BEP (Biomarker Evaluable Population). It's required!")
     }
 
+    # Check BEP takes 0 or 1 only.
+    if (!(all(df$BEP %in% c(0, 1)))) {
+        stop("The variavle BEP must be 0 or 1!")
+    }
+
     # Check colnames(input) match input.specs$Variable.
     col.dif <- length(setdiff(colnames(df), df.specs$Variable))
     if (col.dif != 0) {
-        stop("The column names between input and input.specs files do not match.")
+        stop("The column names between input and input.specs files do not match!")
     }
 
     # Check for duplicate columns in the input file.
-    dub.input <- abs(length(colnames(df)) - length(unique(colnames(df))))
-    if (dub.input != 0) {
+    dup.input <- abs(length(colnames(df)) - length(unique(colnames(df))))
+    if (dup.input != 0) {
         stop("There are duplicate name columns in the input file!")
     }
 
     # Check for duplicate columns in the specs file.
-    dub.input.specs <- abs(length(df.specs$Variable) - length(unique(df.specs$Variable)))
-    if (dub.input.specs != 0) {
+    dup.input.specs <- abs(length(df.specs$Variable) - length(unique(df.specs$Variable)))
+    if (dup.input.specs != 0) {
         stop("There are duplicate rows in the specs file!")
     }
 
-    # Convert input data types defined by the specs file.
-    for(i in 1:nrow(df.specs)) {
-        if (df.specs$Type[i] %in% c("categorical", "event")) {
+    for (i in 1:nrow(df.specs)) {
+        # Convert categorical to factor.
+        if (df.specs$Type[i] == "categorical") {
             df[, i] <- as.factor(df[, df.specs$Variable[i]])
-        } else if (df.specs$Type[i] %in% c("numeric", "time")) {
-            df[, i] <- as.numeric(df[, df.specs$Variable[i]])
+        }
+
+        # Check the class of numeric variables is numeric.
+        if (df.specs$Type[i] %in% c("numeric", "time", "event")) {
+            if (is.numeric(df[, df.specs$Variable[i]]) == FALSE) {
+                stop("The variable ", df.specs$Variable[i],
+                     " should be numeric",
+                     " but identified as ", class(df.specs$Variable[i]), "!")
+            }
         }
     }
 
@@ -79,3 +91,4 @@ ReadData <- function(input, input.specs) {
 }
 
 #df = ReadData("input.csv", "input.specs.csv")
+
