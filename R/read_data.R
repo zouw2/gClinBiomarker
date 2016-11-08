@@ -81,8 +81,8 @@ ReadData <- function(input, input.specs) {
         if (df.specs$Type[i] %in% c("numeric", "time", "event")) {
             if (is.numeric(df[, df.specs$Variable[i]]) == FALSE) {
                 stop("The variable ", df.specs$Variable[i],
-                     " should be numeric",
-                     " but identified as ", class(df.specs$Variable[i]), "!")
+                     " should be numeric but identified as ",
+                     class(df.specs$Variable[i]), "!")
             }
         }
     }
