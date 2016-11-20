@@ -1,30 +1,30 @@
 #' Read data
 #'
-#' Read two files and perform concordance check. First file contains data.
+#' Read two csv files and perform concordance check. First file contains data.
 #' Second file provides specs for data.
 #'
 #' @author Alexey Pronin
 #'
 #' @param input A csv file with data.
-#' @param input.specs A csv file with specs for \code{input}.
-#' @param BEP Indicates Biomarker Evaluable Population.
+#' @param input.specs A csv file with specs for \code{input}. Default is NULL.
 #'
-#' @return A list with two data frames and biomarker evaluable population: data, data.specs, and BEP.
+#' @return A list with two data frames: data and data.specs.
 #' @note The ReadData() function reads in the data file and spec file from csv files. The function also perform
 #' concordance check between the data and its spec. Data column names and spec entry names should match.
 #' No duplicate names are allowed.
 #' @examples
 #' \dontrun{
-#' ReadData("input.csv", "input_specs.csv", "BEP")
+#' ReadData("input.csv", "input_specs.csv")
+#' ReadData("input.csv")
 #' }
 #'
 #' @export
 
-ReadData <- function(input, input.specs=NULL, BEP=NULL) {
+ReadData <- function(input, input.specs = NULL) {
     
     # Check the input file exists.
     if (file.exists(input)) {
-        input <- read.csv(input, stringsAsFactors=FALSE)
+        input <- utils::read.csv(input, stringsAsFactors = FALSE)
     } else {
         stop("The input file does not exist!")
     }
@@ -34,24 +34,12 @@ ReadData <- function(input, input.specs=NULL, BEP=NULL) {
     if (dup.input != 0) {
         stop("There are duplicate name columns in the input file!")
     }
-    
-    # If BEP is not NULL
-    if (!is.null(BEP)) {
-        # Check for the variable BEP in the input file.
-        if (!(BEP %in% colnames(input))) {
-            stop("There is no variable BEP (Biomarker Evaluable Population). It's required!")
-        }
-        # Check BEP takes 0 or 1 only.
-        if (!(all(input$BEP %in% c(0, 1)))) {
-            stop("The variavle BEP must be 0 or 1!")
-        }
-    }
 
     # If input.specs is not NULL.
     if (!is.null(input.specs)) {
         # Check the spec file exists.
         if (file.exists(input.specs)) {
-        input.specs <- read.csv(input.specs, stringsAsFactors=FALSE)
+        input.specs <- utils::read.csv(input.specs, stringsAsFactors = FALSE)
         } else {
             stop("The specs file does not exist!")
         }
@@ -89,5 +77,5 @@ ReadData <- function(input, input.specs=NULL, BEP=NULL) {
         }
     }
 
-    return(list(data=input, data.specs=input.specs, BEP=BEP))
+    return(list(data = input, data.specs = input.specs))
 }
