@@ -4,20 +4,18 @@
 \alias{ReadData}
 \title{Read data}
 \usage{
-ReadData(input, input.specs = NULL, BEP = NULL)
+ReadData(input, input.specs = NULL)
 }
 \arguments{
 \item{input}{A csv file with data.}
 
-\item{input.specs}{A csv file with specs for \code{input}.}
-
-\item{BEP}{Indicates Biomarker Evaluable Population.}
+\item{input.specs}{A csv file with specs for \code{input}. Default is NULL.}
 }
 \value{
-A list with two data frames and biomarker evaluable population: data, data.specs, and BEP.
+A list with two data frames: data and data.specs.
 }
 \description{
-Read two files and perform concordance check. First file contains data.
+Read two csv files and perform concordance check. First file contains data.
 Second file provides specs for data.
 }
 \note{
@@ -27,7 +25,8 @@ No duplicate names are allowed.
 }
 \examples{
 \dontrun{
-ReadData("input.csv", "input_specs.csv", "BEP")
+ReadData("input.csv", "input_specs.csv")
+ReadData("input.csv")
 }
 
 }
