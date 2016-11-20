@@ -1,4 +1,4 @@
-#' Data
+#' Data example
 #'
 #' Data sample from a study.
 #'
