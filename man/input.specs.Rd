@@ -2,12 +2,12 @@
 % Please edit documentation in R/input_specs.R
 \name{input.specs}
 \alias{input.specs}
-\title{Data specs}
+\title{Data specs example}
 \format{A data frame with 18 rows and 2 variables:
 \describe{
      \item{\code{Variable}}{Variable names.}
      \item{\code{Type}}{Describes how the column types must be specified:\cr\cr
-                 \code{character:} used to label samples(e.g. Sample ID);\cr
+                 \code{character:} used to label samples (e.g. Sample ID);\cr
                  \code{numeric:} continuous numeric quantities (e.g. Weight, Age);\cr
                  \code{categorical:} specifying categories of patients (e.g. Sex, CD8.ihc, Response);\cr
                  \code{time:} specifying time to event (e.g. PFS, OS);\cr
