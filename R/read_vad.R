@@ -18,7 +18,7 @@
 #'
 #' @export
 
-ReadVAD <- function(file, data.write.to = NULL, data.specs.write.to = NULL) {
+ReadVAD <- function(file, write.csv.to = NULL) { ## ars.sas7bdat --> ars_date.csv and ars_specs_date.csv
     
     # Check the input file exists.
     if (file.exists(file)) {
