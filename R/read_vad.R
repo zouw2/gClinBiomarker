@@ -5,20 +5,23 @@
 #' @author Alexey Pronin
 #'
 #' @param file A SAS dataset.
-#' @param data.write.to A csv file where the data will be written to. Default is NULL.
-#' @param data.specs.write.to A csv file where the data specs will be written to. Default is NULL.
+#' @param write.csv.to Defines where both data and data.specs csv files will be written to. 
+#' The csv files will be written in the form name_date.csv and name_specs_date.csv.
+#' Default is NULL.
 #'
 #' @return A list with two data frames: data and data.specs.
-#' @note The ReadVAD() function reads in a VAD and creates data specs.
+#' @note The ReadVAD() function reads in a VAD and creates data specs. 
 #' @examples
 #' \dontrun{
-#' ReadVAD("ars.sas7bdat", data.write.to = "data.csv", data.specs.write.to = "data.specs.csv")
-#' ReadVAD("ars.sas7bdat")
+#' ReadVAD("ars.sas7bdat")  
+#' ReadVAD("ars.sas7bdat", ".")  
+#' ReadVAD("ars.sas7bdat", "Desktop/R")
+#' ReadVAD("Desktop/SAS/ars.sas7bdat", "Desktop/R")
 #' }
 #'
 #' @export
 
-ReadVAD <- function(file, write.csv.to = NULL) { ## ars.sas7bdat --> ars_date.csv and ars_specs_date.csv
+ReadVAD <- function(file, write.csv.to = NULL) {
     
     # Check the input file exists.
     if (file.exists(file)) {
@@ -33,13 +36,14 @@ ReadVAD <- function(file, write.csv.to = NULL) { ## ars.sas7bdat --> ars_date.cs
     Variable <- names(Type)
     data.specs <- data.frame(Variable, Type, Label, row.names= NULL)
     
-    if (!is.null(data.write.to)) {
-        utils::write.csv(data, data.write.to, row.names = FALSE)
+    # Write data and data.specs to csv.
+    if (!is.null(write.csv.to)) {
+        filename <- strsplit(basename(file), "[.]")[[1]][1]
+        data_filepath = paste(write.csv.to, "/", filename, "_", Sys.Date(), ".csv", sep = "")
+        data_specs_filepath = paste(write.csv.to, "/", filename, "_specs_", Sys.Date(), ".csv", sep = "")
+        utils::write.csv(data, data_filepath, row.names = FALSE)
+        utils::write.csv(data.specs, data_specs_filepath, row.names = FALSE)
     }
-    
-    if (!is.null(data.specs.write.to)) {
-        utils::write.csv(data.specs, data.specs.write.to, row.names = FALSE)
-    }
-    
+
     return(list(data = data, data.specs = data.specs))
 }
