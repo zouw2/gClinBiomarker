@@ -2,3 +2,5 @@
 
 export(ReadData)
 export(ReadVAD)
+export(SumSingle)
+export(SummaryVars)
