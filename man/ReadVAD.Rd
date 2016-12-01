@@ -4,14 +4,14 @@
 \alias{ReadVAD}
 \title{Read a VAD}
 \usage{
-ReadVAD(file, data.write.to = NULL, data.specs.write.to = NULL)
+ReadVAD(file, write.csv.to = NULL)
 }
 \arguments{
 \item{file}{A SAS dataset.}
 
-\item{data.write.to}{A csv file where the data will be written to. Default is NULL.}
-
-\item{data.specs.write.to}{A csv file where the data specs will be written to. Default is NULL.}
+\item{write.csv.to}{Defines where both data and data.specs csv files will be written to. 
+The csv files will be written in the form name_date.csv and name_specs_date.csv.
+Default is NULL.}
 }
 \value{
 A list with two data frames: data and data.specs.
@@ -24,8 +24,10 @@ The ReadVAD() function reads in a VAD and creates data specs.
 }
 \examples{
 \dontrun{
-ReadVAD("ars.sas7bdat", data.write.to = "data.csv", data.specs.write.to = "data.specs.csv")
-ReadVAD("ars.sas7bdat")
+ReadVAD("ars.sas7bdat")  
+ReadVAD("ars.sas7bdat", ".")  
+ReadVAD("ars.sas7bdat", "Desktop/R")
+ReadVAD("Desktop/SAS/ars.sas7bdat", "Desktop/R")
 }
 
 }
