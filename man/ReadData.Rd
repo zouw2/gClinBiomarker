@@ -19,9 +19,10 @@ Read two csv files and perform concordance check. First file contains data.
 Second file provides specs for data.
 }
 \note{
-The ReadData() function reads in the data file and spec file from csv files. The function also perform
-concordance check between the data and its spec. Data column names and spec entry names should match.
-No duplicate names are allowed.
+The ReadData() function reads in the data file and spec file from csv files. 
+The function also perform concordance check between the data and its spec. 
+Data column names and spec entry names should match. No duplicate names are allowed.
+If input.specs is NULL, it will be created based on the input data and then returned without checks.
 }
 \examples{
 \dontrun{

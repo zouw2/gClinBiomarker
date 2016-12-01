@@ -9,9 +9,10 @@
 #' @param input.specs A csv file with specs for \code{input}. Default is NULL.
 #'
 #' @return A list with two data frames: data and data.specs.
-#' @note The ReadData() function reads in the data file and spec file from csv files. The function also perform
-#' concordance check between the data and its spec. Data column names and spec entry names should match.
-#' No duplicate names are allowed.
+#' @note The ReadData() function reads in the data file and spec file from csv files. 
+#' The function also perform concordance check between the data and its spec. 
+#' Data column names and spec entry names should match. No duplicate names are allowed.
+#' If input.specs is NULL, it will be created based on the input data and then returned without checks.
 #' @examples
 #' \dontrun{
 #' ReadData("input.csv", "input_specs.csv")
@@ -35,7 +36,7 @@ ReadData <- function(input, input.specs = NULL) {
         stop("There are duplicate name columns in the input file!")
     }
 
-    # If input.specs is not NULL.
+    # If input.specs is not NULL. Do checks.
     if (!is.null(input.specs)) {
         # Check the spec file exists.
         if (file.exists(input.specs)) {
@@ -75,7 +76,11 @@ ReadData <- function(input, input.specs = NULL) {
                 }
             }
         }
+    } else { #If input.specs is NULL, create it.
+        Variable <- names(input)
+        Type <- sapply(input, mode)    
+        input.specs <- data.frame(Variable, Type, row.names= NULL)
     }
-
+  
     return(list(data = input, data.specs = input.specs))
 }
