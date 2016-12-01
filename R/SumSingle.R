@@ -225,7 +225,7 @@ SumSingle <- function (data, var,
     if(var.class=="categorical")
       tt <- fisher.test(table(trt.mat[,c(var,bep[2])]))$p.value
     if(var.class=="ordered.factor"){
-      require(coin)
+      #require(coin)
       tmp.mat <- trt.mat
       tmp.mat[[bep[2]]] <- as.factor(tmp.mat[[bep[2]]])
       tt <- pvalue(cmh_test(as.formula(paste0(var,' ~ ',bep[2])),data=tmp.mat))
