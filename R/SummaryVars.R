@@ -1,6 +1,5 @@
 #' @export
 #' @title Summary multiple covariates, test across treatment and/or population 
-#' @param data
 #' @param var a vector of covariate names - the clinical covariate to test
 #' @param var.name preferred display names of the clinical covariates 
 #' If it is NULL, var will be used.
@@ -10,7 +9,7 @@
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
-#' @inhiretParams SumSingle
+#' @inheritParams SumSingle
 #' @author Ning Leng, Alexey Pronin, Wei Zou, Ron Yu, YuanYuan Xiao, Christina Rabe
 #' @examples
 SummaryVars <- function (data, var, var.name = NULL, 
