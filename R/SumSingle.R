@@ -38,6 +38,8 @@
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
 #' @author Ning Leng, Alexey Pronin, Wei Zou, Ron Yu, YuanYuan Xiao, Christina Rabe
+#' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
+#' @importFrom coin cmh_test pvalue
 #' @examples 
 
 SumSingle <- function (data, var, 
