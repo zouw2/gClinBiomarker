@@ -11,8 +11,6 @@
 #' @param bep.indicator In the subpopulation column, which value is used
 #' to define the subpopulation (e.g. biomarker evaluable population). 
 #' Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.
-#' @param compare.itt whether compare subpopulation vs. ITT, or compare 
-#' subpopulation vs. non-subpopulation. Default is TRUE
 #' @param var.class class of the variable. possible categories are "numeric", "categorical" and
 #' "ordered.factor".  "ordered.factor" can be used to categorical variable with
 #' ordered levels - e.g. IC score 0/1/2/3. If class is ordered.factor ,
