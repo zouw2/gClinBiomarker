@@ -32,6 +32,6 @@ ReadData("input.csv")
 
 }
 \author{
-Alexey Pronin
+Alexey Pronin, Ning Leng
 }
 

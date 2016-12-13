@@ -2,7 +2,10 @@
 #'
 #' Read a VAD and create specs for it. 
 #'
-#' @author Alexey Pronin
+#' @author Alexey Pronin, Ning Leng
+#' 
+#' @importFrom haven read_sas
+#' @importFrom utils write.csv
 #'
 #' @param file A SAS dataset.
 #' @param write.csv.to Defines where both data and data.specs csv files will be written to. 
@@ -10,7 +13,9 @@
 #' Default is NULL.
 #'
 #' @return A list with two data frames: data and data.specs.
+#' 
 #' @note The ReadVAD() function reads in a VAD and creates data specs. 
+#' 
 #' @examples
 #' \dontrun{
 #' ReadVAD("ars.sas7bdat")  
@@ -25,7 +30,7 @@ ReadVAD <- function(file, write.csv.to = NULL) {
     
     # Check the input file exists.
     if (file.exists(file)) {
-        data <- as.data.frame(haven::read_sas(file))
+        data <- as.data.frame(read_sas(file))
     } else {
         stop("The VAD does not exist!")
     }
@@ -41,8 +46,8 @@ ReadVAD <- function(file, write.csv.to = NULL) {
         filename <- strsplit(basename(file), "[.]")[[1]][1]
         data_filepath = paste(write.csv.to, "/", filename, "_", Sys.Date(), ".csv", sep = "")
         data_specs_filepath = paste(write.csv.to, "/", filename, "_specs_", Sys.Date(), ".csv", sep = "")
-        utils::write.csv(data, data_filepath, row.names = FALSE)
-        utils::write.csv(data.specs, data_specs_filepath, row.names = FALSE)
+        write.csv(data, data_filepath, row.names = FALSE)
+        write.csv(data.specs, data_specs_filepath, row.names = FALSE)
     }
 
     return(list(data = data, data.specs = data.specs))

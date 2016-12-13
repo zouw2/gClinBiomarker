@@ -3,7 +3,9 @@
 #' Read two csv files and perform concordance check. First file contains data.
 #' Second file provides specs for data.
 #'
-#' @author Alexey Pronin
+#' @author Alexey Pronin, Ning Leng
+#' 
+#' @importFrom utils read.csv
 #'
 #' @param input A csv file with data.
 #' @param input.specs A csv file with specs for \code{input}. Default is NULL.
@@ -25,7 +27,7 @@ ReadData <- function(input, input.specs = NULL) {
     
     # Check the input file exists.
     if (file.exists(input)) {
-        input <- utils::read.csv(input, stringsAsFactors = FALSE)
+        input <- read.csv(input, stringsAsFactors = FALSE)
     } else {
         stop("The input file does not exist!")
     }
@@ -40,7 +42,7 @@ ReadData <- function(input, input.specs = NULL) {
     if (!is.null(input.specs)) {
         # Check the spec file exists.
         if (file.exists(input.specs)) {
-        input.specs <- utils::read.csv(input.specs, stringsAsFactors = FALSE)
+        input.specs <- read.csv(input.specs, stringsAsFactors = FALSE)
         } else {
             stop("The specs file does not exist!")
         }
