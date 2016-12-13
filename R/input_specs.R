@@ -2,9 +2,13 @@
 #'
 #' Data specs define the type of a variable for each column.
 #'
+#' @author Alexey Pronin, Ning Leng
+#'
 #' @name input.specs
+#' 
 #' @usage data(input.specs)
 #' input.specs
+#' 
 #' @format A data frame with 18 rows and 2 variables:
 #' \describe{
 #'      \item{\code{Variable}}{Variable names.}

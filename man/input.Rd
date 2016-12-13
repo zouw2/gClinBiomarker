@@ -11,4 +11,7 @@ input
 \description{
 Data sample from a study.
 }
+\author{
+Alexey Pronin, Ning Leng
+}
 

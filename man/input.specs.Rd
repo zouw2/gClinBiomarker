@@ -21,4 +21,7 @@ input.specs
 \description{
 Data specs define the type of a variable for each column.
 }
+\author{
+Alexey Pronin, Ning Leng
+}
 
