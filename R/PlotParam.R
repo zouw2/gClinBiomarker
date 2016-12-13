@@ -5,8 +5,6 @@
 #' 
 #' @author Alexey Pronin, Ning Leng
 #' 
-# @keywords internal
-#' 
 #' @importFrom grDevices pdf dev.cur dev.off 
 #' @importFrom graphics par 
 #' 
@@ -41,7 +39,7 @@
 #' plotKMsub(..., par.param = list(mar=c(7,7,7,7)))   
 #'             
 #' }
-# @export
+#' @export
 
 PlotParam <- function(pdf.name, pdf.param, par.param) {
     vec <- c(missing(pdf.name), missing(pdf.param), missing(par.param))
