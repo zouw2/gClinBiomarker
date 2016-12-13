@@ -32,6 +32,6 @@ ReadVAD("Desktop/SAS/ars.sas7bdat", "Desktop/R")
 
 }
 \author{
-Alexey Pronin
+Alexey Pronin, Ning Leng
 }
 
