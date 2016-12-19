@@ -34,6 +34,9 @@
 #' If class is ordered.factor, cmh test will be performed. The test is always performed between BEP vs nonBEP.
 #' P value columns will be included in the output table if it is specified as TRUE.
 #' Testing is not recommendated if either BEP of non-BEP has small sample size.
+#' @summary This function provides summary statistics of a single clinical covariate. Using default parameters,
+#' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+#' within treatment arm
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
@@ -50,7 +53,7 @@ SumSingle <- function (data, var,
 			digits = 2, trt.order = NULL, test.bep=FALSE, 
 				 na.action = "error") 
 {
-  na.action <- match.arg(na.action, c("na.omit", "error"))
+  stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
   if(!all(c(var, trt, bep) %in% colnames(data)))stop("var, trt and bep should have matched column names in the input data!")
   if(!is.null(bep)) if(nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
