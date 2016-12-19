@@ -7,8 +7,10 @@
 #' @param trt.name preferred display name of the treatment variable
 #' If it is NULL, trt will be used.
 #' @param bep name of the column which indicates subpopulation (e.g. biomarker evaluable population)
-#' @param bep.name preferred display name of the subpopulation (e.g. biomarker evaluable population)
+#' @param bep.name preferred display name of the subpopulation (e.g. biomarker evaluable population).
 #' If it is NULL, bep will be used.
+#' @param itt.name preferred display name of ITT
+#' If it is NULL, "ITT" will be used.
 #' @param bep.indicator In the subpopulation column, which value is used
 #' to define the subpopulation (e.g. biomarker evaluable population). 
 #' Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.
@@ -48,7 +50,7 @@
 
 SumSingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
-      bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,
+      bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,itt.name="ITT",
 			var.class, ordered.factor.levels=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.bep=FALSE, 
@@ -135,7 +137,7 @@ SumSingle <- function (data, var,
       if(compare.itt){
         data[,bep] <- ifelse(data[,bep]%in%bep.indicator,1,0)
         data$ITT <- rep(1, nrow(data))
-        bep.name <- c("ITT",bep.name)
+        bep.name <- c(itt.name,bep.name)
         bep <- c("ITT",bep)
       }
       if(!compare.itt){
