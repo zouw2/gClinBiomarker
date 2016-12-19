@@ -40,7 +40,7 @@
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
-#' @author Ning Leng, Alexey Pronin, Wei Zou, Ron Yu, YuanYuan Xiao, Christina Rabe
+#' @author Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
 #' @importFrom coin cmh_test pvalue
 #' @examples 
