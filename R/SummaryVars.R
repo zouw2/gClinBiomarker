@@ -10,7 +10,10 @@
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
 #' @inheritParams SumSingle
-#' @author Ning Leng, Alexey Pronin, Wei Zou, Ron Yu, YuanYuan Xiao, Christina Rabe
+#' @summary This function provides summary statistics of a vector of clinical covariates. Using default parameters,
+#' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+#' within treatment arm
+#' @author Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
 #' @examples
 SummaryVars <- function (data, var, var.name = NULL, 
 			trt = NULL, trt.name = NULL, 
@@ -20,8 +23,9 @@ SummaryVars <- function (data, var, var.name = NULL,
 			digits = 2, trt.order = NULL, test.bep=FALSE, 
 				 na.action = "error") 
 {
-  na.action <- match.arg(na.action, c("na.omit", "error"))
+  stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
+  if(is.null(trt) & is.null(bep))stop("trt and bep are both empty! need to specify at least one of them")
   if(!all(c(var, trt, bep) %in% colnames(data)))stop("var, trt and bep should have matched column names in the input data!")
   if(!is.null(bep)) if(nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",
