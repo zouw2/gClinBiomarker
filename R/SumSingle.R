@@ -2,7 +2,8 @@
 #' @title Summary a single covariate, test across treatment and/or population 
 #' @param data
 #' @param var name of the clinical covariate to test
-#' @param trt name of the treatment column
+#' @param trt name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
+#' if it is NULL, the comparison will be performed using all samples.
 #' @param trt.name preferred display name of the treatment variable
 #' If it is NULL, trt will be used.
 #' @param bep name of the column which indicates subpopulation (e.g. biomarker evaluable population)
