@@ -55,6 +55,7 @@ SumSingle <- function (data, var,
 {
   stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
+  if(is.null(trt) & is.null(bep))stop("trt and bep are both empty! need to specify at least one of them")
   if(!all(c(var, trt, bep) %in% colnames(data)))stop("var, trt and bep should have matched column names in the input data!")
   if(!is.null(bep)) if(nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",
