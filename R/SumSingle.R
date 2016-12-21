@@ -53,7 +53,7 @@ SumSingle <- function (data, var,
   na.action <- match.arg(na.action, c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
   if(!all(c(var, trt, bep) %in% colnames(data)))stop("var, trt and bep should have matched column names in the input data!")
-  if((!is.null(bep)) & nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
+  if(!is.null(bep)) if(nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",
                      "Min","Max" ,"Min-Max","1st Qrtl.","3rd Qrtl.",
                      "IQR" ,"NA's")
