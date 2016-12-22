@@ -24,7 +24,7 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
 		      xlim=NULL, xat=NULL, ylab=paste(tte,"Survival Probability"), xlab="Time", main="",
                       pdf.name = NULL, pdf.param=list(height=5), par.param=list(mar=c(4,4,3,2)),...){
   
-  if(is.null(xlim)){ xlim <- c(0, max(data[,tte], na.rm=T)) + c(0, 0.1*max(data[,tte], na.rm=T)) }
+  if(is.null(xlim)){ xlim <- c(0, max(data[,tte], na.rm=TRUE)) + c(0, 0.1*max(data[,tte], na.rm=TRUE)) }
  
   lev <- NULL 
   if(!is.null(trt)){
@@ -44,7 +44,7 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
     if(is.null(trt))tmp <- data
     
     sf <- survfit(as.formula(paste("Surv(",tte,",",cens,")~1")), data=tmp, conf.type="log")
-    plot(sf, col=col.itt, ylab=ylab, xlab=xlab, xlim=xlim, axes=FALSE, mark.time=F,...)
+    plot(sf, col=col.itt, ylab=ylab, xlab=xlab, xlim=xlim, axes=FALSE, mark.time=FALSE,...)
     axis(2)
     if(!is.null(xat)){axis(1, at=xat, labels=xat)}
     if(is.null(xat)){axis(1)}
@@ -82,10 +82,10 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
     }
     
     
-    lines(sf, mark.time=F, col=col.itt, lwd=3)
+    lines(sf, mark.time=FALSE, col=col.itt, lwd=3)
     
     sfflag <- survfit(as.formula(paste("Surv(",tte,",",cens,")~1")), data=tmp[which(tmp[,bep]!=bep.indicator),], conf.type="log")
-    lines(sfflag, mark.time=F, col=col.bep, lwd=3)
+    lines(sfflag, mark.time=FALSE, col=col.bep, lwd=3)
     
     legend("topright", lty=1, lwd=3, col=c(col.itt, col.bep), legend=c(itt.name,bep.name ))
     
