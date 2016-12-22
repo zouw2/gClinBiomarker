@@ -69,6 +69,6 @@ PlotParam <- function(pdf.name, pdf.param, par.param) {
         if (is.null(par.param)) {
             par.param <- list()
         }
-        do.call(par, par.param)
+        invisible(do.call(par, par.param))
     }
 }
