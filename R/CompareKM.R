@@ -88,5 +88,5 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
     legend("topright", lty=1, lwd=3, col=c(col.itt, col.bep), legend=c(itt.name,bep.name ))
     
   }
-  if(!is.null(pdf.name))PlotParam()
+  PlotParam()
 }
