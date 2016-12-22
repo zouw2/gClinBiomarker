@@ -15,4 +15,6 @@ Imports:
     haven,
     utils,
     stats,
-    coin
+    coin,
+    survival,
+    graphics
