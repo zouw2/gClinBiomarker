@@ -1,5 +1,7 @@
 #' @export
 #' @title Compare KM curve of ITT vs BEP
+#' @importFrom graphics plot axis mtext grid box polygon lines legend
+#' @importFrom survival survfit  
 #' @param tte column name that indicates the time to event variable
 #' @param cens column name that indicates the censoring variable associated to tte
 #' @param col.itt,col.bep,col.ci Color for itt curve, bep curve and confidence interval curve (CI)
