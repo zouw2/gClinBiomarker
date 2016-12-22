@@ -6,9 +6,9 @@
 \usage{
 SummaryVars(data, var, var.name = NULL, trt = NULL, trt.name = NULL,
   bep = NULL, bep.name = NULL, bep.indicator = 1, compare.itt = TRUE,
-  var.class, ordered.factor.levels.list = NULL, cont.show = c("N", "Mean",
-  "Median", "Min-Max", "NA's"), digits = 2, trt.order = NULL,
-  test.bep = FALSE, na.action = "error")
+  itt.name = "ITT", var.class, ordered.factor.levels.list = NULL,
+  cont.show = c("N", "Mean", "Median", "Min-Max", "NA's"), digits = 2,
+  trt.order = NULL, test.bep = FALSE, na.action = "error")
 }
 \arguments{
 \item{var}{a vector of covariate names - the clinical covariate to test}
@@ -16,14 +16,15 @@ SummaryVars(data, var, var.name = NULL, trt = NULL, trt.name = NULL,
 \item{var.name}{preferred display names of the clinical covariates 
 If it is NULL, var will be used.}
 
-\item{trt}{name of the treatment column}
+\item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
+if it is NULL, the comparison will be performed using all samples.}
 
 \item{trt.name}{preferred display name of the treatment variable
 If it is NULL, trt will be used.}
 
 \item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)}
 
-\item{bep.name}{preferred display name of the subpopulation (e.g. biomarker evaluable population)
+\item{bep.name}{preferred display name of the subpopulation (e.g. biomarker evaluable population).
 If it is NULL, bep will be used.}
 
 \item{bep.indicator}{In the subpopulation column, which value is used
@@ -32,6 +33,9 @@ Default is 1. The non-subpopulation enrties is not allowed to be specified as NA
 
 \item{compare.itt}{whether show summary statistics of BEP and ITT. If it is FALSE,
 the output will show summary statistics of BEP and nonBEP. Default is TRUE.}
+
+\item{itt.name}{preferred display name of ITT
+If it is NULL, "ITT" will be used.}
 
 \item{var.class}{class of the variable. possible categories are "numeric", "categorical" and
 "ordered.factor".  "ordered.factor" can be used to categorical variable with
@@ -71,6 +75,6 @@ For more general use, a user can specify trt to get summary statistics for any
 sub-group defination (and leave bep as NULL).
 }
 \author{
-Ning Leng, Alexey Pronin, Wei Zou, Ron Yu, YuanYuan Xiao, Christina Rabe
+Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
 }
 
