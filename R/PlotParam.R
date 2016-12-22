@@ -111,7 +111,7 @@
 #'        lines(sf, mark.time=FALSE, col=col.itt, lwd=3)
 #'        
 #'        sfflag <- survfit(as.formula(paste("Surv(", tte, ",", cens, ")~1")), 
-#'                          data=tmp[which(tmp[, bep]!=bep.indicator), ], 
+#'                          data=tmp[which(tmp[, bep]==bep.indicator), ], 
 #'                          conf.type="log")
 #'        lines(sfflag, mark.time=FALSE, col=col.bep, lwd=3)
 #'        
