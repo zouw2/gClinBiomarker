@@ -17,4 +17,5 @@ Imports:
     stats,
     coin,
     survival,
-    graphics
+    graphics,
+    knitr
