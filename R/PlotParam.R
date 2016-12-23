@@ -119,9 +119,8 @@
 #'        
 #'    }
 #'    
-#'    # Close the pdf graphical device if it was open and 
-#'    # set graphical parameters to the default values.
-#'    PlotParam()
+#'    # Close the pdf graphical device and set graphical parameters to the default values.
+#'    PlotParam(device.off=TRUE)
 #'    
 #'} # end of CompareKM()
 #' 
@@ -141,7 +140,7 @@ PlotParam <- function(pdf.name, pdf.param, par.param) {
     vec <- c(missing(pdf.name), missing(pdf.param), missing(par.param))
     if (all(vec)) {
         # Load old par on exit and shut down the graphical device.
-        if (names(dev.cur()) != "RStudioGD") {
+        if (names(dev.cur()) != "RStudioGD" & length(knitr::all_labels()) == 0) {
             par(old.par)
             invisible(dev.off())
         } else {
