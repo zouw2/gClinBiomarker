@@ -7,6 +7,7 @@
 #' 
 #' @importFrom grDevices pdf dev.cur dev.off 
 #' @importFrom graphics par 
+#' @importFrom knitr all_labels
 #' 
 #' @param pdf.name A name of a pdf file.
 #' @param pdf.param A list of parameters that define pdf graphics device. See \code{\link{pdf}}.
@@ -119,8 +120,9 @@
 #'        
 #'    }
 #'    
-#'    # Close the pdf graphical device and set graphical parameters to the default values.
-#'    PlotParam(device.off=TRUE)
+#'    # Close the pdf graphical device if it was open
+#'    # and set graphical parameters to the default values.
+#'    PlotParam()
 #'    
 #'} # end of CompareKM()
 #' 
