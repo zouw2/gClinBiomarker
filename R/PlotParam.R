@@ -145,7 +145,7 @@ PlotParam <- function(pdf.name, pdf.param, par.param) {
             invisible(dev.off())
         } else {
             # Load old par on exit. Does not shutdown the screen device. 
-            par(old.par)
+            invisible(par(old.par))
         }
     } else { 
         # Create/Modify pdf.param.
