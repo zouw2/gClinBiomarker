@@ -143,11 +143,11 @@ PlotParam <- function(pdf.name, pdf.param, par.param) {
     if (all(vec)) {
         # Load old par on exit and shut down the graphical device.
         if (names(dev.cur()) != "RStudioGD" & length(knitr::all_labels()) == 0) {
-            invisible(par(old.par))
+            par(old.par)
             invisible(dev.off())
         } else {
             # Load old par on exit. Does not shutdown the screen device. 
-            invisible(par(old.par))
+            par(old.par)
         }
     } else { 
         # Create/Modify pdf.param.
