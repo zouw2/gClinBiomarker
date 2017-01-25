@@ -11,6 +11,8 @@ SumSingle(data, var, trt = NULL, trt.name = NULL, bep = NULL,
   trt.order = NULL, test.bep = FALSE, na.action = "error")
 }
 \arguments{
+\item{data}{NEED DESCRIPTION}
+
 \item{var}{name of the clinical covariate to test}
 
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
@@ -62,12 +64,16 @@ Testing is not recommendated if either BEP of non-BEP has small sample size.}
 When it is specified as "na.omit", entries with missing trt or bep
 will be automatically removed before calculation.}
 }
+\description{
+Need some description since it complains!!!
+}
 \note{
+This function provides summary statistics of a single clinical covariate. Using default parameters,
+the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+within treatment arm
+
 trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 For more general use, a user can specify trt to get summary statistics for any
 sub-group defination (and leave bep as NULL).
-}
-\author{
-Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
 }
 

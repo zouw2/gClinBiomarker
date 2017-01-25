@@ -15,7 +15,8 @@ ReadData(input, input.specs = NULL)
 A list with two data frames: data and data.specs.
 }
 \description{
-Read two csv files and perform concordance check. First file contains data.
+Read two csv files and perform concordance check. 
+First file contains data.
 Second file provides specs for data.
 }
 \note{
@@ -32,6 +33,6 @@ ReadData("input.csv")
 
 }
 \author{
-Alexey Pronin, Ning Leng
+Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 }
 

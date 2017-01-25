@@ -12,6 +12,8 @@ CompareKM(data, tte, cens, trt = NULL, bep, bep.indicator = 1,
   pdf.param = list(height = 5), par.param = list(mar = c(4, 4, 3, 2)), ...)
 }
 \arguments{
+\item{data}{NEED DESCRIPTION}
+
 \item{tte}{column name that indicates the time to event variable}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
@@ -47,7 +49,13 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
 
 \item{...}{additional parameters for \code{\link{plot}}}
 }
+\description{
+Need some description since it complains!!!
+}
+\note{
+This function generates KM curves to compare ITT vs BEP, within each treatment arm.
+}
 \author{
-Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
+Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
 

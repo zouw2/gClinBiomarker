@@ -3,18 +3,18 @@
 #' \code{PlotParam} can be used to set graphical parameters for a pdf file 
 #' or the default screen device.
 #' 
-#' @author Alexey Pronin, Ning Leng
-#' 
-#' @importFrom grDevices pdf dev.cur dev.off 
-#' @importFrom graphics par 
-#' @importFrom knitr all_labels
+#' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 #' 
 #' @param pdf.name A name of a pdf file.
 #' @param pdf.param A list of parameters that define pdf graphics device. See \code{\link{pdf}}.
 #' @param par.param A list of parameters that define graphcial parameters. See \code{\link{par}}.
 #' 
 #' @note The \code{PlotParam} function is designed to restore graphical parameters \code{par} 
-#' to the default values after execution.     
+#' to the default values after execution.  
+#' 
+#' @importFrom grDevices pdf dev.cur dev.off 
+#' @importFrom graphics par 
+#' @importFrom knitr all_labels      
 #' 
 #' @examples
 #' \dontrun{
@@ -136,6 +136,7 @@
 #' CompareKM(data=input, tte="PFS", cen="PFS.CNSR", trt="Arm", bep="BEP", bep.name="BEP",
 #'           pdf.name="my_graph2.pdf", par.param=list(mar=c(7,7,7,7)))
 #' }
+#' 
 #' @export
 
 PlotParam <- function(pdf.name, pdf.param, par.param) {

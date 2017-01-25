@@ -22,6 +22,6 @@ input.specs
 Data specs define the type of a variable for each column.
 }
 \author{
-Alexey Pronin, Ning Leng
+Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 }
 

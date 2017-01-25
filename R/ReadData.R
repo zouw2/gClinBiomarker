@@ -1,9 +1,10 @@
 #' Read data
 #'
-#' Read two csv files and perform concordance check. First file contains data.
+#' Read two csv files and perform concordance check. 
+#' First file contains data.
 #' Second file provides specs for data.
 #'
-#' @author Alexey Pronin, Ning Leng
+#' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 #' 
 #' @importFrom utils read.csv
 #'
@@ -11,10 +12,12 @@
 #' @param input.specs A csv file with specs for \code{input}. Default is NULL.
 #'
 #' @return A list with two data frames: data and data.specs.
+#' 
 #' @note The ReadData() function reads in the data file and spec file from csv files. 
 #' The function also perform concordance check between the data and its spec. 
 #' Data column names and spec entry names should match. No duplicate names are allowed.
 #' If input.specs is NULL, it will be created based on the input data and then returned without checks.
+#' 
 #' @examples
 #' \dontrun{
 #' ReadData("input.csv", "input_specs.csv")

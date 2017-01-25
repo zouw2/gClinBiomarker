@@ -1,20 +1,28 @@
-#' @export
-#' @title Summary multiple covariates, test across treatment and/or population 
+#' Summary multiple covariates, test across treatment and/or population 
+#' 
+#' Need some description since it complains!!!
+#' 
+#' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
+#' 
 #' @param var a vector of covariate names - the clinical covariate to test
 #' @param var.name preferred display names of the clinical covariates 
 #' If it is NULL, var will be used.
 #' @param ordered.factor.levels.list a list indicates ordered levels for ordered.factor. Each ordered.factor
 #' should have a corresponding element in this list. 
+#' 
 #' @return output object is a matrix with summary statistics. It can be passed to knitr::kable(). 
+#' 
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
-#' @inheritParams SumSingle
-#' @summary This function provides summary statistics of a vector of clinical covariates. Using default parameters,
+#' @note This function provides summary statistics of a vector of clinical covariates. Using default parameters,
 #' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
-#' within treatment arm
-#' @author Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
-#' @examples
+#' within treatment arm.
+#' 
+#' @inheritParams SumSingle
+#' 
+#' @export
+
 SummaryVars <- function (data, var, var.name = NULL, 
 			trt = NULL, trt.name = NULL, 
       bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,itt.name="ITT",
@@ -65,4 +73,3 @@ SummaryVars <- function (data, var, var.name = NULL,
  mat 
 
 }
-

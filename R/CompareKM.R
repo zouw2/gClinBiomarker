@@ -1,7 +1,9 @@
-#' @export
-#' @title Compare KM curve of ITT vs BEP
-#' @importFrom graphics plot axis mtext grid box polygon lines legend
-#' @importFrom survival survfit  
+#' Compare KM curve of ITT vs BEP
+#' 
+#' Need some description since it complains!!!
+#' 
+#' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
+#' 
 #' @param tte column name that indicates the time to event variable
 #' @param cens column name that indicates the censoring variable associated to tte
 #' @param col.itt,col.bep,col.ci Color for itt curve, bep curve and confidence interval curve (CI)
@@ -13,10 +15,15 @@
 #' for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))
 #' @param xlim,xat,ylab,xlab,main see \code{\link{plot}}
 #' @param ... additional parameters for \code{\link{plot}} 
+#' 
+#' @note This function generates KM curves to compare ITT vs BEP, within each treatment arm.
+#'
+#' @importFrom graphics plot axis mtext grid box polygon lines legend
+#' @importFrom survival survfit  
+#'
 #' @inheritParams SumSingle
-#' @summary This function generates KM curves to compare ITT vs BEP, within each treatment arm.
-#' @author Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
-#' @examples
+#' 
+#' @export
 
 CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1, 
 		      bep.name="Biomarker Evaluable", itt.name="ITT",

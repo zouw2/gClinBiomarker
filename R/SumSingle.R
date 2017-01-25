@@ -1,6 +1,8 @@
-#' @export
-#' @title Summary a single covariate, test across treatment and/or population 
-#' @param data
+#' Summary a single covariate, test across treatment and/or population 
+#' 
+#' Need some description since it complains!!!
+#' 
+#' @param data NEED DESCRIPTION
 #' @param var name of the clinical covariate to test
 #' @param trt name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 #' if it is NULL, the comparison will be performed using all samples.
@@ -37,16 +39,18 @@
 #' If class is ordered.factor, cmh test will be performed. The test is always performed between BEP vs nonBEP.
 #' P value columns will be included in the output table if it is specified as TRUE.
 #' Testing is not recommendated if either BEP of non-BEP has small sample size.
-#' @summary This function provides summary statistics of a single clinical covariate. Using default parameters,
+#' 
+#' @note This function provides summary statistics of a single clinical covariate. Using default parameters,
 #' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
 #' within treatment arm
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave bep as NULL).
-#' @author Ning Leng, Alexey Pronin, and previous team members (see DESCRIPTION)
+#' 
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
 #' @importFrom coin cmh_test pvalue
-#' @examples 
+#' 
+#' @export
 
 SumSingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
@@ -249,4 +253,3 @@ SumSingle <- function (data, var,
   for(i in 1:length(result)) outmat[rownames(result[[i]]),colnames(result[[i]])] <- result[[i]]
   outmat
 }
-

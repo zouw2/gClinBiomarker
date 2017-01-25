@@ -2,7 +2,7 @@
 #'
 #' Read a VAD and create specs for it. 
 #'
-#' @author Alexey Pronin, Ning Leng
+#' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 #' 
 #' @importFrom haven read_sas
 #' @importFrom utils write.csv

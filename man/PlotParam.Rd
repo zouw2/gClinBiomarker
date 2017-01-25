@@ -141,8 +141,9 @@ CompareKM(data=input, tte="PFS", cen="PFS.CNSR", trt="Arm", bep="BEP", bep.name=
 CompareKM(data=input, tte="PFS", cen="PFS.CNSR", trt="Arm", bep="BEP", bep.name="BEP",
           pdf.name="my_graph2.pdf", par.param=list(mar=c(7,7,7,7)))
 }
+
 }
 \author{
-Alexey Pronin, Ning Leng
+Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 }
 

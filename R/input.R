@@ -2,7 +2,7 @@
 #'
 #' Data sample from a study.
 #'
-#' @author Alexey Pronin, Ning Leng
+#' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 #'
 #' @name input
 #' 
