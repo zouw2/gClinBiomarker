@@ -76,4 +76,7 @@ trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
 For more general use, a user can specify trt to get summary statistics for any
 sub-group defination (and leave bep as NULL).
 }
+\author{
+Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
+}
 

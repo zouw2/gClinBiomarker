@@ -2,6 +2,8 @@
 #' 
 #' Need some description since it complains!!!
 #' 
+#' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
+#' 
 #' @param data NEED DESCRIPTION
 #' @param var name of the clinical covariate to test
 #' @param trt name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
