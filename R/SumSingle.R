@@ -4,9 +4,9 @@
 #' 
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #' 
-#' @param data Input data frame. Rows are patients and Columns are variables (e.g. demographics variables, time to event variables, 
+#' @param data Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
 #' biomarker variables, treatment indicator, etc.). One patient per row. 
-#' @param var name of the clinical covariate to test
+#' @param var name of the clinical covariate to test. name should be in the column names of data.
 #' @param trt name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 #' if it is NULL, the comparison will be performed using all samples.
 #' @param trt.name preferred display name of the treatment variable
@@ -58,7 +58,7 @@
 SumSingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
       bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,itt.name="ITT",
-			var.class, ordered.factor.levels=NULL,
+			var.class=NULL, ordered.factor.levels=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.bep=FALSE, 
 				 na.action = "error") 
@@ -79,7 +79,12 @@ SumSingle <- function (data, var,
   }
   
   possible.class <-c("categorical","numeric","ordered.factor")
-  if(!all(var.class%in%possible.class))stop(paste('var.class should be in', paste(possible.class,collapse=",")))
+  if(is.null(var.class)||!all(var.class%in%possible.class)){
+  if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
+  if(class(data[,var])%in%c("logical"))data[,var] <- "character"
+  if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
+  }
+  if(is.null(var.class)||!all(var.class%in%possible.class))stop(paste('var.class should be in', paste(possible.class,collapse=",")))
 
   if(var.class=="ordered.factor"){
     if(is.null(ordered.factor.levels)) stop("If class is ordered.factor,
