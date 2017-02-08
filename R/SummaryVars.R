@@ -9,7 +9,15 @@
 #' If it is NULL, var will be used.
 #' @param ordered.factor.levels.list a list indicates ordered levels for ordered.factor. Each ordered.factor
 #' should have a corresponding element in this list. 
-#' 
+#' @param var.class a vector that indicates class of the variables. possible categories are "numeric", "categorical" and
+#' "ordered.factor".  "ordered.factor" can be used to categorical variable with
+#' ordered levels - e.g. IC score 0/1/2/3. If class is ordered.factor ,
+#' ordered.factor.levels need to be specified.
+#' If the user doesn't specify class of all variables (the length of the var.class is less than length of var), 
+#' The program will try to use the class of the column.
+#' "numeric","integer" will be treated as "numeric"
+#' "logical""character","factor" will be treated as "categorical".
+#' In this case the program request that names of the vector var.class is a subset of the var vector. 
 #' @return output object is a matrix with summary statistics. It can be passed to knitr::kable(). 
 #' 
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
@@ -26,7 +34,7 @@
 SummaryVars <- function (data, var, var.name = NULL, 
 			trt = NULL, trt.name = NULL, 
       bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,itt.name="ITT",
-			var.class, ordered.factor.levels.list=NULL,
+			var.class=NULL, ordered.factor.levels.list=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.bep=FALSE, 
 				 na.action = "error") 
@@ -46,10 +54,14 @@ SummaryVars <- function (data, var, var.name = NULL,
     message("test.bep=TRUE but bep is not specified. Reset test.bep as FALSE")
   }
 
-  if(length(var)!= length(var.class)) stop("length of var.class should match length of var!")
  
   possible.class <-c("categorical","numeric","ordered.factor")
   if(!all(var.class%in%possible.class))stop(paste('var.class should be in', paste(possible.class,collapse=",")))
+
+  if(length(var)== length(var.class)) names(var.class) <- var
+  if(length(var)!= length(var.class)) if(!all(names(var.class)%in%var))stop("length of var.class doesn't match length of var - 
+  In this case the program request that names of the vector var.class is a subset of the var vector")
+
   
   k.var <- length(var)
   for(i in 1:k.var){
