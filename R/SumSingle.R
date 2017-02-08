@@ -23,6 +23,9 @@
 #' "ordered.factor".  "ordered.factor" can be used to categorical variable with
 #' ordered levels - e.g. IC score 0/1/2/3. If class is ordered.factor ,
 #' ordered.factor.levels need to be specified.
+#' If it is not specified, will try to use the class of the column.
+#' "numeric","integer" will be treated as "numeric"
+#' "logical""character","factor" will be treated as "categorical".
 #' @param ordered.factor.levels ordered levels of the ordered factor. 
 #' @param cont.show what summary statistics to show for a continuous covariate.
 #' Default is c("N" ,"Mean","Median", "Min-Max","NA's").
