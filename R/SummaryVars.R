@@ -18,6 +18,7 @@
 #' "numeric","integer" will be treated as "numeric"
 #' "logical""character","factor" will be treated as "categorical".
 #' In this case the program request that names of the vector var.class is a subset of the var vector. 
+#' 
 #' @return output object is a matrix with summary statistics. It can be passed to knitr::kable(). 
 #' 
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.

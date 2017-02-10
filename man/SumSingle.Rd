@@ -6,14 +6,15 @@
 \usage{
 SumSingle(data, var, trt = NULL, trt.name = NULL, bep = NULL,
   bep.name = NULL, bep.indicator = 1, compare.itt = TRUE,
-  itt.name = "ITT", var.class, ordered.factor.levels = NULL,
+  itt.name = "ITT", var.class = NULL, ordered.factor.levels = NULL,
   cont.show = c("N", "Mean", "Median", "Min-Max", "NA's"), digits = 2,
   trt.order = NULL, test.bep = FALSE, na.action = "error")
 }
 \arguments{
-\item{data}{NEED DESCRIPTION}
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.}
 
-\item{var}{name of the clinical covariate to test}
+\item{var}{name of the clinical covariate to test. name should be in the column names of data.}
 
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}
@@ -39,7 +40,10 @@ If it is NULL, "ITT" will be used.}
 \item{var.class}{class of the variable. possible categories are "numeric", "categorical" and
 "ordered.factor".  "ordered.factor" can be used to categorical variable with
 ordered levels - e.g. IC score 0/1/2/3. If class is ordered.factor ,
-ordered.factor.levels need to be specified.}
+ordered.factor.levels need to be specified.
+If it is not specified, will try to use the class of the column.
+"numeric","integer" will be treated as "numeric"
+"logical""character","factor" will be treated as "categorical".}
 
 \item{ordered.factor.levels}{ordered levels of the ordered factor.}
 

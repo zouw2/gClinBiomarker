@@ -12,7 +12,8 @@ CompareKM(data, tte, cens, trt = NULL, bep, bep.indicator = 1,
   pdf.param = list(height = 5), par.param = list(mar = c(4, 4, 3, 2)), ...)
 }
 \arguments{
-\item{data}{NEED DESCRIPTION}
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{tte}{column name that indicates the time to event variable}
 
