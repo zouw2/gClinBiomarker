@@ -136,7 +136,7 @@ PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgr
 }}
 	}
  PlotParam()
-
+ out <- fit
 }
 
 
