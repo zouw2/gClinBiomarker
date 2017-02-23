@@ -2,6 +2,7 @@
 
 export(CompareKM)
 export(PlotDens)
+export(PlotKM)
 export(PlotParam)
 export(ReadData)
 export(ReadVAD)

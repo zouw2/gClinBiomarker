@@ -33,7 +33,8 @@
 #' @inheritParams CompareKM
 #' @inheritParams SumSingle
 #' 
-#' @example data(input)
+#' @examples
+#' data(input)
 #' sample.data <- input
 #' PlotKM(data=sample.data, tte="OS",cen="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
 #' @export
