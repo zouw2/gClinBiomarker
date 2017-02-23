@@ -42,9 +42,7 @@ Generate density plot for a continuous covariate.
 }
 \examples{
 data(input)
-PlotDens(data=input, biomarker.var="OS")
-PlotDens(data=input, biomarker.var="PFS", col="red", pdf.name="hist.pdf")
-PlotDens(data=input, biomarker.var="PFS", log2=TRUE, pdf.name="hist_log2.pdf")
+PlotDens(data=input, biomarker.var="KRAS.exprs", log2=TRUE)
 
 }
 \author{
