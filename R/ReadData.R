@@ -26,11 +26,11 @@
 #'
 #' @export
 
-ReadData <- function(input, input.specs = NULL) {
+ReadData <- function(input, input.specs=NULL) {
     
     # Check the input file exists.
     if (file.exists(input)) {
-        input <- read.csv(input, stringsAsFactors = FALSE)
+        input <- read.csv(input, stringsAsFactors=FALSE)
     } else {
         stop("The input file does not exist!")
     }
@@ -45,7 +45,7 @@ ReadData <- function(input, input.specs = NULL) {
     if (!is.null(input.specs)) {
         # Check the spec file exists.
         if (file.exists(input.specs)) {
-        input.specs <- read.csv(input.specs, stringsAsFactors = FALSE)
+        input.specs <- read.csv(input.specs, stringsAsFactors=FALSE)
         } else {
             stop("The specs file does not exist!")
         }
@@ -84,8 +84,8 @@ ReadData <- function(input, input.specs = NULL) {
     } else { #If input.specs is NULL, create it.
         Variable <- names(input)
         Type <- sapply(input, mode)    
-        input.specs <- data.frame(Variable, Type, row.names= NULL)
+        input.specs <- data.frame(Variable, Type, row.names=NULL)
     }
   
-    return(list(data = input, data.specs = input.specs))
+    return(list(data=input, data.specs=input.specs))
 }

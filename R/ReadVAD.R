@@ -26,7 +26,7 @@
 #'
 #' @export
 
-ReadVAD <- function(file, write.csv.to = NULL) {
+ReadVAD <- function(file, write.csv.to=NULL) {
     
     # Check the input file exists.
     if (file.exists(file)) {
@@ -39,16 +39,16 @@ ReadVAD <- function(file, write.csv.to = NULL) {
     Label <- sapply(data, attr, "label")
     Type <- sapply(data, mode)    
     Variable <- names(Type)
-    data.specs <- data.frame(Variable, Type, Label, row.names= NULL)
+    data.specs <- data.frame(Variable, Type, Label, row.names=NULL)
     
     # Write data and data.specs to csv.
     if (!is.null(write.csv.to)) {
         filename <- strsplit(basename(file), "[.]")[[1]][1]
-        data_filepath = paste(write.csv.to, "/", filename, "_", Sys.Date(), ".csv", sep = "")
-        data_specs_filepath = paste(write.csv.to, "/", filename, "_specs_", Sys.Date(), ".csv", sep = "")
-        write.csv(data, data_filepath, row.names = FALSE)
-        write.csv(data.specs, data_specs_filepath, row.names = FALSE)
+        data_filepath <- paste(write.csv.to, "/", filename, "_", Sys.Date(), ".csv", sep="")
+        data_specs_filepath <- paste(write.csv.to, "/", filename, "_specs_", Sys.Date(), ".csv", sep="")
+        write.csv(data, data_filepath, row.names=FALSE)
+        write.csv(data.specs, data_specs_filepath, row.names=FALSE)
     }
 
-    return(list(data = data, data.specs = data.specs))
+    return(list(data=data, data.specs=data.specs))
 }
