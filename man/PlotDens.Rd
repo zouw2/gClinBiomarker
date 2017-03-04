@@ -4,17 +4,16 @@
 \alias{PlotDens}
 \title{Plot Density}
 \usage{
-PlotDens(data, biomarker.var, log2 = FALSE, col = "blue", text.font = 3,
-  main = paste("Distribution of", biomarker.var), add.num = 0,
-  xlab = paste(biomarker.var, ifelse(log2 == TRUE, "(log2 scale)", "")),
-  pdf.name = NULL, pdf.param = list(width = 7, height = 7),
-  par.param = list(mar = c(4, 4, 3, 2)))
+PlotDens(data, var, log2 = FALSE, col = "blue", text.font = 3,
+  main = "Distribution of", add.num = 0, xlab = ifelse(log2 == TRUE,
+  "(log2 scale)", ""), pdf.name = NULL, pdf.param = list(width = 6, height =
+  4.5), par.param = list(mar = c(4, 4, 3, 2)))
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
-\item{biomarker.var}{Name of the variable (e.g. a biomarker variable). Should be in colnames of \code{data}.}
+\item{var}{Name of a variable (e.g. a biomarker variable). It can be a list of variables. Should be in colnames of \code{data}.}
 
 \item{log2}{If TRUE, computes binary (i.e. base 2) logarithm. Default is FALSE.}
 
@@ -22,15 +21,15 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{text.font}{Legend text font size. Default is 3.}
 
-\item{main}{The main title. Default is \code{paste("Distribution of", biomarker.var)}.}
+\item{main}{The main title. Default is \code{"Distribution of"}. A variable name will be added at the end of the title.}
 
 \item{add.num}{The constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Default is 0.}
 
-\item{xlab}{X axis label. Default is \code{paste(biomarker.var, ifelse(log2 == TRUE, "(log2 scale)", ""))}.}
+\item{xlab}{X axis label. Default is \code{ifelse(log2 == TRUE, "(log2 scale)", "")}. A variable name will be added at the beginning of the label.}
 
 \item{pdf.name}{Name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.}
 
-\item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=7, height=7)}.}
+\item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.}
 
 \item{par.param}{A list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 }
@@ -42,7 +41,9 @@ Generate density plot for a continuous covariate.
 }
 \examples{
 data(input)
-PlotDens(data=input, biomarker.var="KRAS.exprs", log2=TRUE)
+PlotDens(data=input, var="KRAS.exprs", log2=TRUE)
+PlotDens(data=input, var=list("KRAS.exprs", "OS"), log2=TRUE,
+         par.param=list(mar=c(4,4,3,2), mfrow=c(1,2), cex=0.75))
 
 }
 \author{
