@@ -139,7 +139,7 @@
 #' 
 #' @export
 
-PlotParam <- function(pdf.nam, pdf.param, par.para) {
+PlotParam <- function(pdf.name, pdf.param, par.param) {
     vec <- c(missing(pdf.name), missing(pdf.param), missing(par.param))
     if (all(vec)) {
         # Load old par on exit and shut down the graphical device.
