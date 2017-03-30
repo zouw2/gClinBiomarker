@@ -124,7 +124,6 @@ observations. For these (sub-)groups no boxplots will be drawn but a jitterplot 
 i.e. using something like 'a + b' to get factor crossing, one has to use the correct formula instead as used in e.g. 'lm', i.e. 'a:b'.
 }
 \examples{
-
 ## generate example dataset
   example <- data.frame( y=c(rnorm(30)+10, rnorm(4)+20, rnorm(15)+15, NA), 
 							time=c(rep("t2", 30), rep("t4",4), rep("t1", 15), "t3"),
@@ -247,6 +246,7 @@ BoxPlot(mtcars, mpg~cyl \%in\% gear, Title=list(main="Miles per Gallon by Number
 		XaxisTab=list(Text=list(col=c(rep("cyan", 3), rep("orange", 3), rep("magenta", 3)))) )
 
 legend(x="topright", pch=c(0, 15), legend=c("automatic", "manual"), box.lty=0, col="wheat4")
+
 }
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}, Vinzent Rolny \email{vinzent.rolny@roche.com}, christina Rabe \email{rabe.christina@gene.com}
