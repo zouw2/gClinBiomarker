@@ -10,7 +10,7 @@
 #' @param biomarker.type can be either "continuous" or "categorical".
 #' @param var name of a clinical variable. It can be a list of variables. Should be in colnames of \code{data}.  
 #' @param var.type can be either "continuous" or "categorical". It can be a list of types. Default is NULL.
-#' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to only continuous variables. Default is FALSE.
+#' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to continuous variables only. Default is FALSE.
 #' @param colour the color of the line segments or dots. Default is "blue".
 #' @param add.num the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.
 #' @param text.font legend text font size. Default is 3.
@@ -30,7 +30,7 @@
 #' @return If only a biomarker variable is given, it will crete a density plot for a continuous variable or bar plot for a categorical variable. 
 #' If only a list of clinical variables is provided, it will create a density plot for each continuous variable and a bar plot for each categorical variable.
 #' If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a continuous pair of variables;
-#' a bar plot for a categorical pair of variables; a boxplot for a pair of continuous and categorical variables.
+#' a bar plot for each categorical variable; a boxplot for a pair of continuous and categorical variables.
 #' 
 #' @examples
 #' data(input)
@@ -310,6 +310,10 @@ PlotProperty <- function(data,
                 
                 # if clinical variable is categorical, then barplot         
                 } else if (var.type[[i]] == "categorical") {
+                    tab <- table(data[, biomarker.var])
+                    freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "))
+                    
                     tab <- table(data[, var[[i]]])
                     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
                     barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[[i]], sep=" "))
@@ -320,55 +324,3 @@ PlotProperty <- function(data,
     
     PlotParam()
 }
-# 
-# # Continuous biomarker variable. No clinical variables.
-# PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous", pdf.name=NULL)
-# # Continuous biomarker variable. No clinical variables. Log transformation.
-# PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous", log2=TRUE, pdf.name=NULL)
-# # Categorical biomarker variable. No clinical variables.
-# PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical", pdf.name=NULL)
-# 
-# # No biomarker variable. Two continuous clinical variables. Log transformation for one varible.
-# PlotProperty(data=input, biomarker.var=NULL, biomarker.type=NULL, 
-#              var=list("KRAS.exprs","OS"), var.type=list("continuous", "continuous"),
-#              log2=list(TRUE, FALSE), pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# # No biomarker variable. Two clinical variables: continuous and categorical. Log transformation for one varible.
-# PlotProperty(data=input, biomarker.var=NULL, biomarker.type=NULL, 
-#              var=list("KRAS.exprs","KRAS.mutant"), var.type=list("continuous", "categorical"),
-#              log2=TRUE, pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# # No biomarker variable. Two clinical categorical variables.
-# PlotProperty(data=input, biomarker.var=NULL, biomarker.type=NULL, 
-#              var=list("CD8.ihc","KRAS.mutant"), var.type=list("categorical", "categorical"),
-#              pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# 
-# # Continuous biomarker variable. Continuous clinical variable. Log transformation for continuous variable.
-# PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous",
-#              log2=list(TRUE, FALSE), var="OS", var.type="continuous", pdf.name=NULL)
-# # Continuous biomarker variable. Two clinical categorical variables.
-# PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous", 
-#              var=list("CD8.ihc","KRAS.mutant"), var.type=list("categorical", "categorical"),
-#              pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# # Continuous biomarker variable. Two clinical categorical variables. Log transformation for continuous variable.
-# PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous",
-#              var=list("CD8.ihc","KRAS.mutant"), var.type=list("categorical", "categorical"),
-#              log2=TRUE, pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# 
-# #BUG
-# # Categorical biomarker variable. Categorical clinical variable.
-# PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical",
-#              var="CD8.ihc", var.type="categorical", pdf.name=NULL)
-# 
-# PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical",
-#              log2=TRUE, var="OS", var.type="continuous", pdf.name=NULL)
-# 
-# PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical",
-#              var="OS", var.type="continuous", pdf.name=NULL)
-# 
-# PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical",
-#              var=list("CD8.ihc","OS"), var.type=list("categorical", "continuous"),
-#              log2=TRUE, pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# 
-# PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical",
-#              var=list("Arm","OS"), var.type=list("categorical", "continuous"),
-#              pdf.name=NULL, par.param = list(mfrow=c(1,2)))
-# 

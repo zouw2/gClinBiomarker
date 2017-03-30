@@ -25,7 +25,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{var.type}{can be either "continuous" or "categorical". It can be a list of types. Default is NULL.}
 
-\item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to only continuous variables. Default is FALSE.}
+\item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to continuous variables only. Default is FALSE.}
 
 \item{colour}{the color of the line segments or dots. Default is "blue".}
 
@@ -61,7 +61,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 If only a biomarker variable is given, it will crete a density plot for a continuous variable or bar plot for a categorical variable. 
 If only a list of clinical variables is provided, it will create a density plot for each continuous variable and a bar plot for each categorical variable.
 If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a continuous pair of variables;
-a bar plot for a categorical pair of variables; a boxplot for a pair of continuous and categorical variables.
+a bar plot for each categorical variable; a boxplot for a pair of continuous and categorical variables.
 }
 \description{
 Plot biomarker or clinical variables properties.
