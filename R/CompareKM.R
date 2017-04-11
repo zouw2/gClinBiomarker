@@ -23,6 +23,12 @@
 #'
 #' @inheritParams SumSingle
 #' 
+#'
+#' @examples
+#' data(input)
+#' sample.data <- input
+#' CompareKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT")
+#' @export
 #' @export
 
 CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1, 

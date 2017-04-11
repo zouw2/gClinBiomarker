@@ -1,4 +1,6 @@
 #' Generate KM curve(s) for full population or subgroups defined by single factor or multiple factors
+#'
+#' The function generates KM curves for full population or subgroups. The subgroups may be defined as a single factor or multiple factors.
 #' 
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #' 
@@ -45,7 +47,7 @@
 #' @examples
 #' data(input)
 #' sample.data <- input
-#' PlotKM(data=sample.data, tte="OS",cen="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
+#' PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
 #' @export
 
 PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgroups.labels=NULL,
@@ -206,7 +208,8 @@ PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgr
 		}
 	}
  PlotParam()
- out <- NULL
+ #out <- CoxTab()
+ out <- ""
 }
 
 
