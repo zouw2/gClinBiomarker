@@ -38,6 +38,7 @@
 CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ordered.factor.levels.list=NULL, strata=NULL, form=NULL, fit=NULL, 
 		   additive=TRUE, digits=2,
 		     bep = NULL, bep.indicator=1){
+  fit0 <- fit
   if(is.null(fit) & is.null(form) & is.null(var)) stop("st least one of var, form, fit need to be not null")
   if(additive==FALSE & !is.null(form))stop("form cannot be specified if additive is FALSE! Please specify var")
 
@@ -111,9 +112,18 @@ CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ord
   fit <- vector("list",1)
   fit$xlevels <- sapply(fit.list, function(jj)jj$xlevels[[1]])
   }
-  }
+}
 
- 
+if(!is.null(fit0)){  
+
+   	model <- summary(fit)
+	  hr <- round(model$coefficients[,"exp(coef)",drop=F],digits)
+	  hrci.l <- round(model$conf.int[,"lower .95",drop=F],digits)
+	  hrci.h <- round(model$conf.int[,"upper .95",drop=F],digits)
+	  res <- cbind(hr, hrci.l, hrci.h,signif(model$coefficients[,"Pr(>|z|)",drop=F],digits))
+	  colnames(res) <- c("HR","CI.low","CI.high","p-value") 
+}
+
   nfactors = 0
   for(i in 1:length(var) ){
     nfactors = nfactors + as.numeric( is.factor(data[,var][[i]]))    
