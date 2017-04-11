@@ -1,6 +1,6 @@
 #' Compare KM curve of ITT vs BEP
 #' 
-#' Need some description since it complains!!!
+#' This function provides K-M curves to compare ITT vs. BEP.
 #' 
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #' 

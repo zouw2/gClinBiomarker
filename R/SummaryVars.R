@@ -1,6 +1,6 @@
 #' Summary multiple covariates, test across treatment and/or population 
 #' 
-#' Need some description since it complains!!!
+#' This function performs demographics imbalance checking of a single covariate across multiple groups.
 #' 
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #' 
