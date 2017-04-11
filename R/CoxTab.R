@@ -13,9 +13,12 @@
 #' For example, 'Age+Sex' or "Age+Sex*Trt+Country"
 #' @param fit a fitted object from coxph() function.
 #' If fit is not NULL, all other parameters will be ignored
+#' @param additive Whether an additive model should be used. If additive=FALSE, separate cox PH models will be fitted to each elements in var 
+#' (stratification factor will be incorpriated for each model).
+#' If additive = FALSE, User can only use 'var' to speficy variables of interest (cannot specify the model via parameter 'form')
 #' @note The function generates a table that contains hazard ratio, CI, p value, and number of patients in each sub category.
 #' User may input column names (via var and strata), a formula (via form), or a fitted coxph object (via fit)
-#' If user chooses to input column names, a additive model will be formed.
+#' If user chooses to input column names, a additive model will be formed if additive=TRUE. If additive=FALSE, separate cox PH models will be formed for each var.
 #' More coplex models may be specified using form (e.g. model with interactions)
 #'
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
@@ -32,9 +35,11 @@
 #' @export
 
 
-CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ordered.factor.levels.list=NULL, strata=NULL, form=NULL, fit=NULL, digits=2,
+CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ordered.factor.levels.list=NULL, strata=NULL, form=NULL, fit=NULL, 
+		   additive=TRUE, digits=2,
 		     bep = NULL, bep.indicator=1){
   if(is.null(fit) & is.null(form) & is.null(var)) stop("st least one of var, form, fit need to be not null")
+  if(additive==FALSE & !is.null(form))stop("form cannot be specified if additive is FALSE! Please specify var")
 
   if(is.null(fit)){ # If fit is not NULL, all other variables will be ignored
   stopifnot(class(data) == "data.frame")
@@ -77,22 +82,38 @@ CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ord
   }
 
 ## Generate 'fit' when fit is null
-     fit <- coxph(form,data=data)
+     if(additive){
+	 fit <- coxph(form,data=data)
+	     
+	  model <- summary(fit)
+	  hr <- round(model$coefficients[,"exp(coef)",drop=F],digits)
+	  hrci.l <- round(model$conf.int[,"lower .95",drop=F],digits)
+	  hrci.h <- round(model$conf.int[,"upper .95",drop=F],digits)
+	  res <- cbind(hr, hrci.l, hrci.h,signif(model$coefficients[,"Pr(>|z|)",drop=F],digits))
+	  colnames(res) <- c("HR","CI.low","CI.high","p-value") 
+}
+
+  if(!additive){
+     	fit.list <- sapply(var, function(vv){
+		  form <- vv
+		  if(!is.null(strata))form <- paste(form, "+", paste(paste0("strata(",strata,")"), collapse="+"))
+                  form <- as.formula(paste("Surv(",tte,",",cens,")~", form)) 
+	     	  fit <- coxph(form,data=data)
+		  model <- summary(fit)
+		  hr <- round(model$coefficients[,"exp(coef)",drop=F],digits)
+		  hrci.l <- round(model$conf.int[,"lower .95",drop=F],digits)
+		  hrci.h <- round(model$conf.int[,"upper .95",drop=F],digits)
+		  res <- cbind(hr, hrci.l, hrci.h,signif(model$coefficients[,"Pr(>|z|)",drop=F],digits))
+		  colnames(res) <- c("HR","CI.low","CI.high","p-value") 
+    		  list(res=res, xlevels=fit$xlevels) 
+},simplify=F)
+  res <- do.call(rbind, sapply(fit.list, function(jj)jj$res))
+  fit <- vector("list",1)
+  fit$xlevels <- sapply(fit.list, function(jj)jj$xlevels[[1]])
+  }
   }
 
-## Generate table
-  model <- summary(fit)
-  hr <- round(model$coefficients[,"exp(coef)"],digits)
-  hrci.l <- round(model$conf.int[,"lower .95"],digits)
-  hrci.h <- round(model$conf.int[,"upper .95"],digits)
-  res <- cbind(hr, hrci.l, hrci.h,signif(model$coefficients[,"Pr(>|z|)"],digits))
-  colnames(res) <- c("HR","CI.low","CI.high","p-value")
-  
-  #### update for formatting of non-factor covariates on Aug 12, 2015 (JS) ###
-  if (length(var)==1   ) {
-    rownames(res) <- rownames(model$coefficients)
-  }
-  
+ 
   nfactors = 0
   for(i in 1:length(var) ){
     nfactors = nfactors + as.numeric( is.factor(data[,var][[i]]))    
@@ -106,6 +127,7 @@ CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ord
     res <- cbind(res, "", "")
     colnames(res)[ncol(res)-1:0] <- c("n","n.ref")
     for(i in 1:length(vars)){
+      if(is.null(vars[[i]]))next
       nn <- names(vars)[i]
       whichi <- setdiff(grep(nn, rownames(res)), ninter)
       rownames(res)[whichi] <- paste(nn," (", vars[[i]][-1], "/", vars[[i]][1], ")",sep="")
@@ -115,17 +137,17 @@ CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ord
     if(length(ninter)>0){
       for(whichi in ninter){
         nn <- rownames(res)[whichi]
-        which2 <- c()
-        for(i in names(vars)){
-          if(length(grep(i, nn))>0)
-            which2 <- c(which2,i)
-        }
+        which2 <-nn
+    	#which2 <- c()
+        #for(i in names(vars)){
+        #  if(length(grep(i, nn))>0)
+        #    which2 <- c(which2,i)
+        #}
         rownames(res)[whichi] <- paste("Interaction (", paste(which2, collapse=":"),")",sep="")  
       }
     }
     
   }
-  #### update for formatting of non-factor covariates on Aug 12, 2015 (JS) ###
   
   res
 }
