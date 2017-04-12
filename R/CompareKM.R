@@ -1,6 +1,6 @@
 #' Compare KM curve of ITT vs BEP
 #' 
-#' Need some description since it complains!!!
+#' This function provides K-M curves to compare ITT vs. BEP.
 #' 
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #' 
@@ -23,6 +23,12 @@
 #'
 #' @inheritParams SumSingle
 #' 
+#'
+#' @examples
+#' data(input)
+#' sample.data <- input
+#' CompareKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT")
+#' @export
 #' @export
 
 CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1, 
