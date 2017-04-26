@@ -2,17 +2,17 @@
 % Please edit documentation in R/PlotKM.R
 \name{PlotKM}
 \alias{PlotKM}
-\title{Generate KM curve(s) for full population or subgroups defined by single factor}
+\title{Generate KM curve(s) for full population or subgroups defined by single factor or multiple factors}
 \usage{
 PlotKM(data, tte, cens, subgroups = NULL, subgroups.levels = NULL,
   subgroups.labels = NULL, bep = NULL, bep.indicator = 1,
   plot.nrisk = TRUE, nrisk.interval = 2, cex.nrisk = 0.8,
   plot.grid = TRUE, grids = seq(0, 1, 0.1), plot.legend = TRUE,
-  col = NULL, lty = 1, lwd = 3, xlab = "Months To Event Or Censoring",
-  ylim = c(0, 1), xlim = NULL, ylab = "Survival Probability", main = "",
-  sub = "", plot.median = FALSE, median.cex = 0.8, digits = 2,
-  pdf.name = NULL, pdf.param = list(height = 5), par.param = list(mar =
-  c(12, 9, 3, 2)))
+  legend.loc = "topright", col = NULL, lty = NULL, lwd = 3,
+  xlab = "Months To Event Or Censoring", ylim = c(0, 1), xlim = NULL,
+  ylab = "Survival Probability", main = "", sub = "",
+  plot.median = FALSE, median.cex = 0.8, digits = 2, pdf.name = NULL,
+  pdf.param = list(height = 5), par.param = list(mar = c(12, 9, 3, 2)))
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
@@ -22,15 +22,23 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
 
-\item{subgroups}{name of the column which indicates the subgroups (e.g. treatment group).
-this column is expected to be categorical. If this column is in character class and subgroups.levels is not specified, 
+\item{subgroups}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
+If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and subgroups.levels is not specified, 
 it will be converted to a factor by factor() function. If subgroups.levels is defined, the column will be converted to
 a factor following the level order in subgroups.levels. 
-In the legend, the subgroups will be ordered based on the order of factor levels.}
+In the legend, the subgroups will be ordered based on the order of factor levels. 
+The parameter subgroups can also be a vector of multiple column names.
+In this case, subgroups will be defined by classes in multiple columns (e.g. treatment and biomarker)}
 
-\item{subgroups.levels}{levels in the subgroups}
+\item{subgroups.levels}{levels in the subgroups. It should be a vector if the parameter subgroups is a single column name. 
+It should be a list if more than one columns are specified in the prarameter subgroups. Each element of the list should contains a vector.
+The elements in the list should match the multiple columns defined in parameter subgroups.}
 
-\item{subgroups.labels}{preferred labels for the subgroups. The order in subgroups.labels should match subgroups.levels}
+\item{subgroups.labels}{preferred labels for the subgroups. 
+subgroups.levels should be provided if subgroupd.labels is specified. The order in subgroups.labels should match subgroups.levels.
+It should be a vector if the parameter subgroups is a single column name. 
+It should be a list if more than one columns are specified in the prarameter subgroups. Each element of the list should contains a vector.
+The elements in the list should match the multiple columns defined in parameter subgroups.}
 
 \item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 If parameter bep is not defined, the KM curve(s) will be draw using all samples.
@@ -53,6 +61,8 @@ at risk will be summarized by subgroup.}
 
 \item{plot.legend}{whether show legend}
 
+\item{legend.loc}{legend location. a single keyword from the list "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center".}
+
 \item{xlim, ylab, xlab, main, col, lty, lwd, sub, ylim}{see \code{\link{plot}}}
 
 \item{plot.median}{whether show median TTE of each subgroup. (won't show if median TTE is NA)}
@@ -72,7 +82,7 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
 \item{...}{additional parameters for \code{\link{plot}}}
 }
 \description{
-Generate KM curve(s) for full population or subgroups defined by single factor
+The function generates KM curves for full population or subgroups. The subgroups may be defined as a single factor or multiple factors.
 }
 \note{
 This function generates KM curve(s) for full population (when parameter subgroups is not defined) 
@@ -81,7 +91,7 @@ or subgroups (when parameter subgroups is defined).
 \examples{
 data(input)
 sample.data <- input
-PlotKM(data=sample.data, tte="OS",cen="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
+PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

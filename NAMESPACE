@@ -3,6 +3,8 @@
 export(BPplot)
 export(BoxPlot)
 export(CompareKM)
+export(CoxTab)
+export(ForestPlotBmkrEffects)
 export(PlotDens)
 export(PlotKM)
 export(PlotParam)

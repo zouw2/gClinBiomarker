@@ -69,7 +69,7 @@ When it is specified as "na.omit", entries with missing trt or bep
 will be automatically removed before calculation.}
 }
 \description{
-Need some description since it complains!!!
+This function performs demographics imbalance checking of a single covariate across multiple groups.
 }
 \note{
 This function provides summary statistics of a single clinical covariate. Using default parameters,
