@@ -29,7 +29,7 @@
 #' @note This function requires "survival" package to call the coxph() function. Two treatment arms are required. 
 #' Treatment group variable can be forced into a factor. Censorship variable is 1 if an event happened, 0 if censored.
 #' 
-#' @importFrom survival coxph Surv
+#' @importFrom survival coxph Surv strata
 #' 
 #' @examples
 #' data(input)
