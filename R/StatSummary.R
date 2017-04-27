@@ -29,6 +29,8 @@
 #' @note This function requires "survival" package to call the coxph() function. Two treatment arms are required. 
 #' Treatment group variable can be forced into a factor. Censorship variable is 1 if an event happened, 0 if censored.
 #' 
+#' @importFrom survival coxph
+#' 
 #' @examples
 #' data(input)
 #' StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.type = "continuous")
