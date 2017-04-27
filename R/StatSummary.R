@@ -18,7 +18,7 @@
 #' @param covariate a vector specifying the covariate variables. This can be added to adjust for in the analysis for survival and continuous outcome variable types. Default is NULL.
 #' @param strat.factor a vector specifying the stratification variables. This can be added for the survival outcome variable type. Default is NULL.
 #' @param return.fit if TRUE, returns a table of summary statistics. Default is FALSE.
-#' @param  fit.para a list of fitting parameters. Currently only \code{'prop.test.use.continuity.correction'} in use. 
+#' @param fit.para a list of fitting parameters. Currently only \code{'prop.test.use.continuity.correction'} in use. 
 #' If \code{'prop.test.use.continuity.correction' = T} (default), the 'correct' parameter in \code{\link{prop.test}} will be set as TRUE.
 #'    
 #' @return A named vector of following entries: 
@@ -31,21 +31,21 @@
 #' 
 #' @examples
 #' data(input)
-#' StatFunc(outcome = input$OS, treatment = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.type = "continuous")
+#' StatSummary(outcome = input$OS, treatment = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.type = "continuous")
 #' 
 #' @export
 
-StatFunc <- function(outcome,
-                     subgroup=NULL,
-                     treatment,
-                     placebo.code,
-                     active.code,
-                     outcome.type,
-                     alpha=0.05,
-                     covariate=NULL,
-                     strat.factor=NULL,
-                     return.fit=FALSE,
-                     fit.para = list('prop.test.use.continuity.correction'=T)) {
+StatSummary <- function(outcome,
+                        subgroup=NULL,
+                        treatment,
+                        placebo.code,
+                        active.code,
+                        outcome.type,
+                        alpha=0.05,
+                        covariate=NULL,
+                        strat.factor=NULL,
+                        return.fit=FALSE,
+                        fit.para = list('prop.test.use.continuity.correction'=T)) {
     
     # If subgroup is not defined, use all input data
     if (is.null(subgroup)) {
