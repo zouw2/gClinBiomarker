@@ -28,7 +28,7 @@
 #' 
 #' @export
 
-ForestPlotBmkrEffects <- function(data,
+ForestPlotBmrkEffects <- function(data,
                                   outcome.type=c("survival", "binary"),
                                   outcome.var, #c(OS,OS.CNSR)
                                   treatment.var, #ARM
