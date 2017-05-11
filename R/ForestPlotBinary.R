@@ -1,9 +1,9 @@
 #' @keywords internal
 
 ForestPlotBinary <- function(data,
-                             outcome.var="",
-                             treatment.var="",
-                             biomarker.var="",
+                             outcome.var,
+                             treatment.var=NULL,
+                             biomarker.var,
                              covariate.var=NULL,
                              strat.var=NULL,
                              placebo.code=NULL,
@@ -64,7 +64,7 @@ ForestPlotBinary <- function(data,
     res <- rbind(res, c(StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
                                   placebo.code="TRUE", active.code="FALSE", outcome.type="binary", alpha=alpha,
                                   covariate.var=Covariate,
-                                  strat.var=Strat.fac),
+                                  strat.factor.var=Strat.fac),
                         "NRsp.Placebo"=sum(Outcome[subgroup & Biomarker == biomarker.code[1]], na.rm=TRUE),
                         "NRsp.Active"=sum(Outcome[subgroup & Biomarker == biomarker.code[2]], na.rm=TRUE)))
     
@@ -75,7 +75,7 @@ ForestPlotBinary <- function(data,
         res <- rbind(res, c(StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
                                       placebo.code="TRUE", active.code="FALSE", outcome.type="binary", alpha=alpha,
                                       covariate.var=Covariate,
-                                      strat.var=Strat.fac),
+                                      strat.factor.var=Strat.fac),
                             "NRsp.Placebo"=sum(Outcome[subgroup&Biomarker == biomarker.code[1]], na.rm=TRUE),
                             "NRsp.Active"=sum(Outcome[subgroup&Biomarker == biomarker.code[2]], na.rm=TRUE)))
         
