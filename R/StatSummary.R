@@ -20,7 +20,7 @@
 #' @param return.fit if TRUE, returns a table of summary statistics. Default is FALSE.
 #' @param fit.para a list of fitting parameters. Currently only \code{'prop.test.use.continuity.correction'} in use. 
 #' If \code{'prop.test.use.continuity.correction' = T} (default), the 'correct' parameter in \code{\link{prop.test}} will be set as TRUE.
-#'    
+#' 
 #' @return A named vector of following entries: 
 #' if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active, N.Placebo, N.Active; 
 #' if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, P; 
@@ -66,7 +66,8 @@ StatSummary <- function(outcome.var,
         
         r1 <- sum(y1, na.rm = TRUE)
         r2 <- sum(y2, na.rm = TRUE)
-        
+        print(n1)
+        print(n2)
         mytest <- prop.test(c(r1, r2), c(n1, n2), conf.level = 1 - alpha,correct =  fit.para[['prop.test.use.continuity.correction']])
         
         ret <- c("Effect.Size" = r1/n1 - r2/n2
