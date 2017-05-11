@@ -72,7 +72,7 @@ ForestPlotSurvival <- function(data,
         res <- rbind(res, StatSummary(outcome.var=Outcome, subgroup.var=rep(TRUE, length(Treatment)), treatment.var=thisgroup,
                                     placebo.code="TRUE", active.code="FALSE", outcome.type="survival", alpha=alpha,
                                     covariate.var=Covariate,
-                                    strat.var=Strat.fac))
+                                    strat.factor.var=Strat.fac))
     }
     
     if (length(Arms) > 1) { # multi-arm study
@@ -88,14 +88,14 @@ ForestPlotSurvival <- function(data,
         res <- rbind(res, StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
                                     placebo.code="TRUE", active.code="FALSE", outcome.type="survival", alpha=alpha,
                                     covariate.var=Covariate,
-                                    strat.var=Strat.fac))
+                                    strat.factor.var=Strat.fac))
         
         for (ac in Arms[-1]) {
             subgroup <- Treatment == ac
             res <- rbind(res, StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
                                         placebo.code="TRUE", active.code="FALSE", outcome.type="survival", alpha=alpha,
                                         covariate.var=Covariate,
-                                        strat.var=Strat.fac))
+                                        strat.factor.var=Strat.fac))
             if(calc.inter.p) {
                 fit1 <- coxph(Surv(Outcome[, 1], Outcome[, 2]) ~ as.character(Treatment) * Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac))
                 fit2 <- coxph(Surv(Outcome[, 1], Outcome[, 2]) ~ as.character(Treatment) + Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac))
