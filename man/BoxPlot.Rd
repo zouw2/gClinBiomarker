@@ -251,4 +251,3 @@ legend(x="topright", pch=c(0, 15), legend=c("automatic", "manual"), box.lty=0, c
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}, Vinzent Rolny \email{vinzent.rolny@roche.com}, christina Rabe \email{rabe.christina@gene.com}
 }
-

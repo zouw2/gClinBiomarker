@@ -44,4 +44,3 @@ addXlabTable(mat, Label=list(font=2, col="red"), Text=list(font=3, col="blue"))
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}
 }
-

@@ -83,4 +83,3 @@ sub-group defination (and leave bep as NULL).
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
-

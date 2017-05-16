@@ -6,23 +6,22 @@
 #' through of geom-specific parameters. For now it just collects
 #' a list with cleaner syntax for adding ggproto objects.
 #'
-ggwrapper <- setClass(
-  "ggwrapper",
+ggpkg <- setClass(
+  "ggpkg",
   slots = c(ggcalls = "list"),
   prototype = list(ggcalls = list())
 )
 
 #' Initialize new object by adding ggproto to list with name label
-setMethod("initialize", "ggwrapper", function(.Object, ggproto_obj = NULL, label = NULL) {
+setMethod("initialize", "ggpkg", function(.Object, ggproto_obj = NULL, label = NULL) {
   if (is.null(ggproto_obj)) return(.Object)
   .Object <- .Object + setNames(list(ggproto_obj), label)
   .Object
 })
 
-#' Overload show method to print ggwrapper
-setMethod("show", "ggwrapper", function(object) { 
-  cat("ggwrapper\nA wrapper of multiple ggplot ggproto objects\n\n")
-  
+#' Overload show method to print ggpkg
+setMethod("show", "ggpkg", function(object) { 
+  cat("ggpkg\nA container for multiple ggplot ggproto objects\n\n")
   if (length(object@ggcalls) == 0) 
     cat("empty\n\n")
   else
@@ -37,14 +36,16 @@ setMethod("show", "ggwrapper", function(object) {
     )
 })
 
-#' Primitive methods for adding ggwrappers to various ggplot objects
-setMethod("+", c("ggwrapper", "ANY"), function(e1, e2) {
-  if ("ggwrapper" %in% class(e2)) e1@ggcalls <- append(e1@ggcalls, e2@ggcalls)
+#' Primitive methods for adding ggpkgs to various ggplot objects
+setMethod("+", c("ggpkg", "ANY"), function(e1, e2) {
+  if ("ggpkg" %in% class(e2)) e1@ggcalls <- append(e1@ggcalls, e2@ggcalls)
   else e1@ggcalls <- append(e1@ggcalls, e2)
   e1
 })
-setMethod("+", c("NULL", "ggwrapper"), function(e1, e2) e2)
-setMethod("+", c("gg", "ggwrapper"), function(e1, e2) e1 + e2@ggcalls)
+setMethod("+", c("NULL", "ggpkg"), function(e1, e2) e2)
+setMethod("+", c("gg", "ggpkg"), function(e1, e2) e1 + e2@ggcalls)
+
+
 
 #' A helper function to wrap ggplot calls, allowing for passing of a
 #' shared list of arguments prefixed by a string. For example,
@@ -68,18 +69,23 @@ setMethod("+", c("gg", "ggwrapper"), function(e1, e2) e1 + e2@ggcalls)
 #' @return a call to the specified function with arguments subset for
 #' only those which match the specified prefix
 #' 
-ggwrap <- function(`_geom`, args_prefix, passed_args, ..., null.empty = FALSE) {
-  passthru_args <- modifyList(ggwrap_filter_args(args_prefix, passed_args), list(...))
+ggbundle <- function(`_geom`, args_prefix = NULL, passed_args = NULL, ..., null.empty = FALSE) {
+  passthru_args <- modifyList(ggbundle_filter_args(args_prefix, passed_args), list(...))
   if (null.empty && length(passthru_args) == 0) return(NULL)
-  ggwrapper(ggproto_obj = do.call(`_geom`, passthru_args), label = args_prefix)
+  if (all(class(`_geom`) == "function")) ggpkg(do.call(`_geom`, passthru_args), args_prefix)
+  else ggpkg(`_geom`, args_prefix)
 }
 
-#' Helper function for ggwrap to filter arguments based on a prefix
+
+
+
+#' Helper function for ggbundle to filter arguments based on a prefix
 #' 
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #' 
-ggwrap_filter_args <- function(prefix, args) {
-  unnamed_args <- ggplot2:::`%||%`(args[[prefix]], list())
+ggbundle_filter_args <- function(prefix, args) {
+  if (is.null(prefix) || is.null(args)) return(args %||% list())
+  unnamed_args <- args[[prefix]] %||% list()
   named_args <- args[grep(paste0('^', prefix, '.'), names(args))]
   named_args <- setNames(named_args, gsub(paste0('^', prefix, '.(.*)$'), '\\1', names(named_args)))
   as.list(c(named_args, unnamed_args))

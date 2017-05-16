@@ -94,10 +94,9 @@ par(old.par)
 }
 
 }
-\author{
-Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}
-}
 \seealso{
 \code{\link{addXlabTable}}
 }
-
+\author{
+Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}
+}
