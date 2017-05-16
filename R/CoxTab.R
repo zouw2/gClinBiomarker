@@ -16,6 +16,7 @@
 #' @param additive Whether an additive model should be used. If additive=FALSE, separate cox PH models will be fitted to each elements in var 
 #' (stratification factor will be incorpriated for each model).
 #' If additive = FALSE, User can only use 'var' to speficy variables of interest (cannot specify the model via parameter 'form')
+
 #' @note The function generates a table that contains hazard ratio, CI, p value, and number of patients in each sub category.
 #' User may input column names (via var and strata), a formula (via form), or a fitted coxph object (via fit)
 #' If user chooses to input column names, a additive model will be formed if additive=TRUE. If additive=FALSE, separate cox PH models will be formed for each var.
@@ -33,7 +34,6 @@
 #' CoxTab(data=sample.data,tte="OS", cens="OS.CNSR",  form="Age+Sex*Arm+Country")
 #'
 #' @export
-
 
 CoxTab <- function(data=NULL, tte=NULL, cens=NULL, var=NULL, var.class=NULL, ordered.factor.levels.list=NULL, strata=NULL, form=NULL, fit=NULL, 
 		   additive=TRUE, digits=2,

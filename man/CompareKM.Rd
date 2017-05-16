@@ -51,10 +51,15 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
 \item{...}{additional parameters for \code{\link{plot}}}
 }
 \description{
-Need some description since it complains!!!
+This function provides K-M curves to compare ITT vs. BEP.
 }
 \note{
 This function generates KM curves to compare ITT vs BEP, within each treatment arm.
+}
+\examples{
+data(input)
+sample.data <- input
+CompareKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

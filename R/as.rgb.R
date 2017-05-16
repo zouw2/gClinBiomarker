@@ -5,7 +5,7 @@
 #' opaque. If an RGB-code is provided and alpha != 1, the RGB-code of the transparency adapted color 
 #' will be returned.
 #' 
-#' @author Andre Schuetzenmeister \email{andre.schuetzenmeister@@roche.com}
+#' @author Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}
 #' 
 #' @param col (character) name of the color to be converted/transformed into RGB-space (code). Only
 #'               those colors can be used which are part of the set returned by function colors(). Defaults
