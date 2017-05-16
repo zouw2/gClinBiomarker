@@ -6,13 +6,16 @@
 #' @param model model function to use (e.g `lm`)
 #' @param fomula formula to use for model fitting (e.g `mpg ~ gear + wt`)
 #' @param model.args list of additional arguments to use in model fitting
+#' @param model.per a formula representing all terms to group data by to 
+#' fit individual models (e.g. `~ am + vs`)
 #' 
 #' @return a data frame with new columns based on model fit
 #' 
 #' @export
 #' 
-augment_predict <- function(.data, model, formula, model.args = NULL, overwrite = FALSE) {
+augment_predict <- function(.data, model, formula, model.args = NULL, model.per = NULL) {
   .data %>% 
+    group_by_(.dots = all.vars(model.per)) %>%
     do(augment(do.call(model, c(list(formula=formula, data=.), model.args)), .)) %>%
     rename_(.dots = setNames(names(.), gsub("^\\.", paste0(deparse(formula[[2]]), "."), names(.))))
 }
