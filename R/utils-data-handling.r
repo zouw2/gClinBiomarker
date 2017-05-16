@@ -36,7 +36,7 @@ augment_predict <- function(.data, model, formula, model.args = NULL, overwrite 
 #' 
 #' @export
 #'
-filter_at <- function(.tbl, .cols, ...) {
+na_if_at <- function(.tbl, .cols, ...) {
   cols <- dplyr:::select_colwise_names(.tbl, .cols)
   f <- lazyeval::lazy_dots(...)
   f <- Reduce(function(l,r) lazyeval::interp(lazyeval::lazy(llz & rlz), llz=l, rlz=r), f)

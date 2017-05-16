@@ -10,7 +10,7 @@
 #' 
 #' @return a list of functions to apply to pass to fun.data in stat_summary
 #' 
-stat.summary.funs <- function(format) { 
+stat.summary.funs <- function(format, args) { 
   if (is.character(format)) {
     unlist(lapply(format, function(f) switch(f,
        
@@ -44,16 +44,28 @@ stat.summary.funs <- function(format) {
         ymax = min(max(d), as.numeric(quantile(d, 0.75)) + 1.58 * IQR(d) / sqrt(length(d))),
         label = length(d)),
       
-      quantile_contour = lapply(seq(0.1, 0.4, 0.1), function(q) { 
-        function(d) c(
-           y = median(d),
-           ymin = as.numeric(quantile(d, q)),
-           ymax = as.numeric(quantile(d, 1 - q)),
-           label = length(d)
-        ) })
-                                             
+      deciles = stat.summary.iles(seq(0.0, 0.4, 0.1)),
+      
+      quartiles = stat.summary.iles(c(0, 0.25)),
+      
+      quantiles = do.call(stat.summary.iles, args)
+  
     )))
-  } else if (is.function(format)) list(format) 
-  else if (is.list(format) && is.function(format[[1]])) format
+  } else if (is.function(format)) { 
+    if (is.null(args)) 
+      list(format) 
+    else 
+      list(do.call(format, args))
+  } else if (is.list(format) && is.function(format[[1]])) format
   else stop("fun.data must be either a string, function or list of functions")
+}
+
+stat.summary.iles <- function(s) {
+  lapply(s, function(q) { 
+    function(d) c(
+      y = median(d),
+      ymin = as.numeric(quantile(d, q)),
+      ymax = as.numeric(quantile(d, 1 - q)),
+      label = length(d)
+    ) })
 }

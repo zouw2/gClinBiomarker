@@ -15,17 +15,18 @@
 #' 
 #' @examples
 #' library(tidyverse) # for pipe and tibble
+#' library(broom)     # for augment
 #' 
 #' # default representation
 #' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature))
 #' 
 #' # a more appropriate representation for large n
 #' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature), 
-#'          fun.data = 'quantile_contour')
+#'          fun.data = 'quartiles')
 #' 
 #' # include linear adjustment accounting for amount of ozone
 #' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature), 
-#'          formula = temperature ~ ozone, fun.data = 'quantile_contour', 
+#'          formula = temperature ~ ozone, fun.data = 'deciles', 
 #'          show.counts = T)
 #' 
 #' @export
@@ -33,20 +34,27 @@
 PlotLong <- function(data, mapping, formula = NULL, model = lm, 
                      model.args = NULL, facet.fun = NULL, ...) {
   
-  # overwrite mapping with new fitted variable ("<y>.fitted")
-  if (!is.null(formula)) mapping$y <- as.name(paste(deparse(mapping$y), "fitted", sep="."))
-          
-  data %>%
-    (function(.data) { 
-      if (!is.null(formula)) augment_predict(.data, model, formula, model.args)
-      else .data
-    }) %>%
+    if (!is.null(formula))  { 
+      # add predicted values based on formula provided
+      data <- augment_predict(data, model, formula, model.args)
+      # overwrite mapping with new fitted variable ("<y>.fitted") from augment_predict
+      mapping$y <- as.name(paste(deparse(mapping$y), "fitted", sep="."))
+    }
     
-    ggplot() + mapping + 
-      do.call(geom_stat_ribbons, list(...)) +
+    # plot using geom_stat_ribbons, passing extra arguments to geom
+    data %>% ggplot() + mapping + 
+      do.call(ggwrap_stat_ribbons, list(...)) +
       (if (!is.null(facet.fun)) facet_grid(facet.fun)
        else facet_null() ) +
       (if (!is.null(formula)) ylab(paste("Adjusted", deparse(formula[[2]])))
-       else NULL)
+       else NULL) +
+      ggwrap(xlab, 'xlab', list(...), null.empty = TRUE) +
+      ggwrap(ylab, 'ylab', list(...), null.empty = TRUE)
   
 }
+
+
+PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature),
+         formula = temperature ~ ozone, fun.data = 'deciles',
+         show.counts = T, xlab="test")
+
