@@ -22,8 +22,8 @@ PlotLong(data, mapping, formula = NULL, model = lm, model.args = NULL,
 \item{facet.fun}{function to use for ggplot faceting in ggplot2::facet_grid}
 
 \item{...}{additional arguments passed to underlying ggplot components
-by prefixing value with ggplot call name. ("ribbons", "line", "text", "xlab", 
-"ylab" or "labs" - e.g. `ribbons.color = 'red'`)}
+by prefixing value with ggplot call name. ("ribbons", "line", "text", "facet", "xlab",
+"ylab", "labs" or "theme" - e.g. `ribbons.color = 'red'`)}
 }
 \value{
 a ggplot object with y values adjusted based on model function if provided
@@ -40,18 +40,18 @@ library(broom)     # for augment
 PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature))
 
 # a more appropriate representation for large n
-PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature), 
+PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
          fun.data = 'quartiles')
 
 # include linear adjustment accounting for amount of ozone
-PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature), 
-         formula = temperature ~ ozone, fun.data = 'deciles', 
+PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
+         formula = temperature ~ ozone, fun.data = 'deciles',
          show.counts = T)
 
 # adjusting by independent models for the northern and southern hemispheres
-PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South")), 
-         aes(x=month, y=temperature), formula = temperature ~ ozone, 
-         model.per = ~ hemi, facet.fun = ~ hemi, fun.data = 'deciles', 
+PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South")),
+         aes(x=month, y=temperature), formula = temperature ~ ozone,
+         model.per = ~ hemi, facet.fun = ~ hemi, fun.data = 'deciles',
          xlab = "Month", ylab = "Temperature Adjusted for Ozone",
          labs.title = "Temperature by Hemisphere",
          labs.caption = "*idependent models fit per hemisphere")

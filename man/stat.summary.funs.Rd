@@ -7,10 +7,10 @@
 stat.summary.funs(format, args)
 }
 \arguments{
-\item{format}{either a function returning a named list of stat transformations or 
-a string matching to one of 'mean_se', 'median_iqr', 'tukey_hinges', 
-'tukey_whiskers' or 'quantile_contour', or a list of strings from 
-this group. The y calculation of the first function in the list 
+\item{format}{either a function returning a named list of stat transformations or
+a string matching to one of 'mean_se', 'median_iqr', 'tukey_hinges',
+'tukey_whiskers' or 'quantile_contour', or a list of strings from
+this group. The y calculation of the first function in the list
 returned is used for placing labels.}
 }
 \value{
