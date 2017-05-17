@@ -6,14 +6,14 @@
 #' @note When specifying arguments for wrapped ggplot geometries, prefix
 #' the parameter with geometry specifiers: "ribbons" for ribbon geometry
 #' "line" for central line geometry, or "label" for count labels. e.g.
-#' \code{ggbundle_stat_ribbons(ribbons.alpha = 0.8, line.alpha = 0.6)}
+#' \code{ggpk_stat_ribbons(ribbons.alpha = 0.8, line.alpha = 0.6)}
 #'
 #' @param mapping a ggplot aesthetic mapping
 #' @param data data to pass to ggplot2::stat_summary functions
 #' @param show.counts True, False, "label" or "table" to display either as
 #' labels at each datapoint or as a table at the top of the plot
 #'
-#' @return a ggbundleper object that can be added to any ggplot to
+#' @return a ggpacket object that can be added to any ggplot to
 #' draw a collection of layers
 #'
 #' @examples
@@ -28,15 +28,15 @@
 #'   # plotting
 #'   ggplot() +
 #'     aes(x=date, y=temperature) +
-#'     ggpkg_stat_ribbons(fun.data = 'deciles') +
+#'     ggpk_stat_ribbons(fun.data = 'deciles') +
 #'     facet_grid(hemisphere ~ .) +
 #'     labs(title="Temperature by Hemisphere")
 #'
 #' @export
 #'
-ggpkg_stat_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
-                               fun.data = 'mean_se',
-                               fun.args = list(), ...) {
+ggpk_stat_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
+                              fun.data = 'mean_se',
+                              fun.args = list(), ...) {
 
   .dots <- list(...)
   fun.data <- stat.summary.funs(fun.data, fun.args)
@@ -44,7 +44,7 @@ ggpkg_stat_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   ## wrap ## ribbons
   # reduce through list of ribbon geoms and collect sum
   Reduce(function(l, r) { l +
-    ggbundle(stat_summary, 'ribbons', .dots,
+    ggpack(stat_summary, 'ribbons', .dots,
       geom = 'ribbon',
       fun.data = r,
       color = NA,
@@ -54,14 +54,14 @@ ggpkg_stat_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
 
   ## wrap ## line
   # plot line along stat y
-  ggbundle(stat_summary, 'line', .dots,
+  ggpack(stat_summary, 'line', .dots,
       geom = 'line',
       fun.data = fun.data[[1]]) +
 
   ## wrap ## label
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
-    ggbundle(stat_summary, 'label', .dots,
+    ggpack(stat_summary, 'label', .dots,
       fun.data = fun.data[[1]],
       direction = "y",
       nudge_y = 0.1,
@@ -70,7 +70,7 @@ ggpkg_stat_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
       fill = 'white',
       alpha = 0.85)
   } else if (show.counts == 'table') {
-    ggbundle(stat_summary, 'label', .dots,
+    ggpack(stat_summary, 'label', .dots,
       fun.data = function(d) c(y=Inf, label = length(d)),
       geom = 'text_repel',
       direction = "y",

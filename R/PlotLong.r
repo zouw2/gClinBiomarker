@@ -52,13 +52,14 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
   }
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
-  data %>% ggplot() + mapping +
-    ggpkg_stat_ribbons(...) +
-    (if (!is.null(facet.fun)) ggbundle(facet_grid, 'facet', list(...), facets = facet.fun) else facet_null() ) +
+  data %>%
+    ggplot() + mapping +
+    ggpk_stat_ribbons(...) +
+    (if (!is.null(facet.fun)) ggpack(facet_grid, 'facet', list(...), facets = facet.fun) else facet_null() ) +
     (if (!is.null(formula)) ylab(paste("Adjusted", deparse(formula[[2]]))) else NULL) +
-    ggbundle(xlab,  'xlab',  list(...), null.empty = T) +
-    ggbundle(ylab,  'ylab',  list(...), null.empty = T) +
-    ggbundle(labs,  'labs',  list(...), null.empty = T) +
-    ggbundle(theme, 'theme', list(...), null.empty = T)
+    ggpack(xlab,  'xlab',  list(...), null.empty = T) +
+    ggpack(ylab,  'ylab',  list(...), null.empty = T) +
+    ggpack(labs,  'labs',  list(...), null.empty = T) +
+    ggpack(theme, 'theme', list(...), null.empty = T)
 
 }
