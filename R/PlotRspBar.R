@@ -41,6 +41,8 @@
 #' 
 #' @examples
 #' data(input)
+#' PlotRspBar (data, rsp="Response", binary=FALSE,
+#' rsp.levels=c("NE","PD","NON CR/PD","SD","PR","CR"),trt="Arm", compare.var=TRUE,var="Sex")
 #' 
 #' @export
 
