@@ -9,7 +9,7 @@ na_if_at(.tbl, .cols, ...)
 \arguments{
 \item{.tbl}{a dataframe or tibble to be sent to mutate}
 
-\item{.cols}{a dplyr::vars() column selection similar to `dplyr::select()` or 
+\item{.cols}{a dplyr::vars() column selection similar to `dplyr::select()` or
 numeric indices of columns to select}
 
 \item{...}{filtering functions to filter column data}
@@ -25,4 +25,3 @@ code.
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-

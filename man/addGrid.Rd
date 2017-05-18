@@ -25,4 +25,3 @@ e.g. \code{x=1:10, y=seq(0,10,2)}.
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}
 }
-

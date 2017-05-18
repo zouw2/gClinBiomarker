@@ -61,4 +61,3 @@ This function creates a forest plot along with table with summary statistics to 
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 }
-
