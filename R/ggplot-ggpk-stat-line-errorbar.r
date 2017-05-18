@@ -4,9 +4,9 @@
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #'
 #' @note When specifying arguments for wrapped ggplot geometries, prefix
-#' the parameter with geometry specifiers: "ribbon" for ribbon geometry
+#' the parameter with geometry specifiers: "ribbons" for ribbon geometry
 #' "line" for central line geometry, or "label" for count labels. e.g.
-#' \code{ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)}
+#' \code{ggpk_stat_line_errorbar(ribbons.alpha = 0.8, line.alpha = 0.6)}
 #'
 #' @param mapping a ggplot aesthetic mapping
 #' @param data data to pass to ggplot2::stat_summary functions
@@ -28,28 +28,30 @@
 #'   # plotting
 #'   ggplot() +
 #'     aes(x=date, y=temperature) +
-#'     ggpk_stat_ribbon(fun.data = 'deciles') +
+#'     ggpk_stat_line_errorbar(fun.data = 'deciles') +
 #'     facet_grid(hemisphere ~ .) +
 #'     labs(title="Temperature by Hemisphere")
 #'
 #' @export
 #'
-ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
-                              fun.data = 'mean_se',
-                              fun.args = list(), ...) {
+ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
+                                    fun.data = 'mean_se', fun.args = list(), ...) {
 
-  .dots <- list(...)
+  defaults <- list(errorbar.width = 0.5,
+                   errorbar.position = position_dodge(width = 0.9))
+
+  .dots <- modifyList(defaults, list(...))
   fun.data <- stat.summary.funs(fun.data, fun.args)
 
-  ## wrap ## ribbon
+  ## wrap ## ribbons
   # reduce through list of ribbon geoms and collect sum
   Reduce(function(l, r) { l +
-    ggpack(stat_summary, 'ribbon', .dots,
-      geom = 'ribbon',
-      fun.data = r,
-      color = NA,
+    ggpack(stat_summary, 'errorbar', .dots,
+      geom = 'errorbar',
+      fun.data = mean_cl_normal,
+      position = position_nudge(x = 100),
       alpha = 0.85 / (length(fun.data) + 2) *
-              ggplot2:::`%||%`(.dots$ribbon.alpha, 1) )
+              ggplot2:::`%||%`(.dots$ribbons.alpha, 1) )
   }, fun.data, init = NULL) +
 
   ## wrap ## line
@@ -81,5 +83,20 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
 
 }
 
+
+library(tidyverse) # for dplyr, ggplot
+library(lubridate)
+
+nasa %>% as_tibble %>%
+  mutate(date = ymd("0000/01/01") + months(month) + years(year)) %>%
+  mutate(hemisphere = ifelse(lat>0,"Northern", "Southern")) %>%
+  mutate(temperature = temperature - 273) %>%
+  filter(month == 1) %>%
+
+  # plotting
+  ggplot() +
+    aes(x=date, y=temperature, color=hemisphere) +
+    ggpk_stat_line_errorbar(fun.data = 'tukey') +
+    labs(title="Temperature by Hemisphere")
 
 

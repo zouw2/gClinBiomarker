@@ -7,14 +7,12 @@ Author: Kwame Okrah <okrah.kwame@gene.com>,
     Alexey Pronin <pronin.alexey@gene.com>
 Maintainer: Alexey Pronin <pronin.alexey@gene.com>
 Description: Biomarker things for ..
-Depends: R(>= 3.1.2),
-    tidyverse,
-    broom
+Depends: R(>= 3.1.2)
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Imports:
-    haven,
+    tidyverse,
     utils,
     stats,
     coin,
