@@ -22,3 +22,7 @@ helper function to interpret strings and functions passed to geom_stat_ribbons
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master

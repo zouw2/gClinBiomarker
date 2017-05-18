@@ -40,6 +40,7 @@ library(broom)     # for augment
 PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature))
 
 # a more appropriate representation for large n
+<<<<<<< HEAD
 PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
          fun.data = 'quartiles')
 
@@ -52,6 +53,20 @@ PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
 PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South")),
          aes(x=month, y=temperature), formula = temperature ~ ozone,
          model.per = ~ hemi, facet.fun = ~ hemi, fun.data = 'deciles',
+=======
+PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
+         fun.data = 'quartiles')
+
+# include linear adjustment accounting for amount of ozone
+PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
+         formula = temperature ~ ozone, fun.data = 'deciles',
+         show.counts = T)
+
+# adjusting by independent models for the northern and southern hemispheres
+PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South")),
+         aes(x=month, y=temperature), formula = temperature ~ ozone,
+         model.per = ~ hemi, facet.fun = ~ hemi, fun.data = 'deciles',
+>>>>>>> master
          xlab = "Month", ylab = "Temperature Adjusted for Ozone",
          labs.title = "Temperature by Hemisphere",
          labs.caption = "*idependent models fit per hemisphere")
@@ -60,3 +75,7 @@ PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South"))
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
