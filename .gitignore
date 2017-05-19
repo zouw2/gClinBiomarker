@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 
-*/man/*.Rd
+man/*.Rd
+NAMESPACE

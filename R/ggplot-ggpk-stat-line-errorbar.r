@@ -37,22 +37,21 @@
 ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
                                     fun.data = 'mean_se', fun.args = list(), ...) {
 
-  defaults <- list(errorbar.width = 0.5,
-                   errorbar.position = position_dodge(width = 0.9))
+  defaults <- list(errorbar.position = position_dodge(width = 0.9))
 
   .dots <- modifyList(defaults, list(...))
-  fun.data <- stat.summary.funs(fun.data, fun.args)
+  fun.data <- stat_summary_funs(fun.data, fun.args)
 
   ## wrap ## ribbons
   # reduce through list of ribbon geoms and collect sum
-  Reduce(function(l, r) { l +
+  Reduce(`+`, mapply(function(f, i) {
     ggpack(stat_summary, 'errorbar', .dots,
-      geom = 'errorbar',
-      fun.data = mean_cl_normal,
-      position = position_nudge(x = 100),
-      alpha = 0.85 / (length(fun.data) + 2) *
-              ggplot2:::`%||%`(.dots$ribbons.alpha, 1) )
-  }, fun.data, init = NULL) +
+           geom = 'errorbar',
+           fun.data = mean_cl_normal,
+           size = .dots$errorbar.size %||% rel(1) * (1 - (i + 1) / length(fun.data)),
+           position = position_dodge(rel(0.33)),
+           alpha = 0.5)
+  }, f = fun.data, i = 1:length(fun.data)) ) +
 
   ## wrap ## line
   # plot line along stat y
