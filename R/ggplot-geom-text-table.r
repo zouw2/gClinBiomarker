@@ -14,11 +14,6 @@ geom_text_table <- function(mapping = NULL, data = NULL, stat = "identity",
                   na.rm = na.rm, ...))
 }
 
-
-#' @rdname ggplot2-ggproto
-#' @format NULL
-#' @usage NULL
-#' @export
 GeomTextTable <- ggproto("GeomTextTable", Geom,
   required_aes = c("x", "y", "label"),
 

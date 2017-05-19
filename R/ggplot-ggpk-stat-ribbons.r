@@ -39,7 +39,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
                               fun.args = list(), ...) {
 
   .dots <- list(...)
-  fun.data <- stat.summary.funs(fun.data, fun.args)
+  fun.data <- stat_summary_funs(fun.data, fun.args)
 
   ## wrap ## ribbon
   # reduce through list of ribbon geoms and collect sum

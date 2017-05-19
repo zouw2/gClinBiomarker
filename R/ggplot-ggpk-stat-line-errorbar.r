@@ -46,9 +46,9 @@ ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = F
   # reduce through list of ribbon geoms and collect sum
   Reduce(`+`, mapply(function(f, i) {
     ggpack(stat_summary, 'errorbar', .dots,
-           geom = 'errorbar',
-           fun.data = mean_cl_normal,
-           size = .dots$errorbar.size %||% rel(1) * (1 - (i + 1) / length(fun.data)),
+           geom = 'linerange',
+           fun.data = f,
+           size = .dots$errorbar.size %||% rel(2) * (1 - (i - 1) / length(fun.data)),
            position = position_dodge(rel(0.33)),
            alpha = 0.5)
   }, f = fun.data, i = 1:length(fun.data)) ) +
@@ -77,25 +77,6 @@ ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = F
       direction = "y",
       segment.colour = NA,
       show.legend = FALSE)
-
   } else NULL
 
 }
-
-
-library(tidyverse) # for dplyr, ggplot
-library(lubridate)
-
-nasa %>% as_tibble %>%
-  mutate(date = ymd("0000/01/01") + months(month) + years(year)) %>%
-  mutate(hemisphere = ifelse(lat>0,"Northern", "Southern")) %>%
-  mutate(temperature = temperature - 273) %>%
-  filter(month == 1) %>%
-
-  # plotting
-  ggplot() +
-    aes(x=date, y=temperature, color=hemisphere) +
-    ggpk_stat_line_errorbar(fun.data = 'tukey') +
-    labs(title="Temperature by Hemisphere")
-
-

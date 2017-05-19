@@ -42,7 +42,8 @@
 #' @export
 #'
 PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NULL,
-                     model.per = NULL, facet.fun = NULL, ...) {
+                     model.per = NULL, facet.fun = NULL,
+                     plot.style = 'ribbons', ...) {
 
   if (!is.null(formula))  {
     # add predicted values based on formula provided
@@ -52,11 +53,13 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
   }
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
-  data %>%
-    ggplot() + mapping +
-    ggpk_stat_ribbons(...) +
-    (if (!is.null(facet.fun)) ggpack(facet_grid, 'facet', list(...), facets = facet.fun) else facet_null() ) +
-    (if (!is.null(formula)) ylab(paste("Adjusted", deparse(formula[[2]]))) else NULL) +
+  data %>% ggplot() + mapping +
+    (if      (plot.style == 'ribbons') ggpk_stat_ribbon(...)
+     else if (plot.style == 'errorbars') ggpk_stat_line_errorbar(...)) +
+    (if (is.null(facet.fun)) facet_null()
+     else ggpack(facet_grid, 'facet', list(...), facets = facet.fun)) +
+    (if (is.null(formula)) NULL
+     else ylab(paste("Adjusted", deparse(formula[[2]])))) +
     ggpack(xlab,  'xlab',  list(...), null.empty = T) +
     ggpack(ylab,  'ylab',  list(...), null.empty = T) +
     ggpack(labs,  'labs',  list(...), null.empty = T) +

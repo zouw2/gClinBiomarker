@@ -10,7 +10,9 @@
 #'
 #' @return a list of functions to apply to pass to fun.data in stat_summary
 #'
-stat.summary.funs <- function(format, args) {
+#' @export
+#'
+stat_summary_funs <- function(format, args) {
   if (is.character(format)) {
     unlist(lapply(format, function(f) switch(f,
 
@@ -50,14 +52,14 @@ stat.summary.funs <- function(format, args) {
       ymax = min(max(d), as.numeric(quantile(d, 0.75)) + 1.5 * IQR(d)),
       label = length(d)),
 
-    tukey = list(stat.summary.funs('tukey_hinges'),
-                stat.summary.funs('tukey_whiskers')),
+    tukey = list(stat_summary_funs('tukey_hinges'),
+                stat_summary_funs('tukey_whiskers')),
 
-    deciles = stat.summary.iles(seq(0.1, 0.5, 0.1)),
+    deciles = stat_summary_iles(seq(0.1, 0.5, 0.1)),
 
-    quartiles = stat.summary.iles(c(0.25, 0.5)),
+    quartiles = stat_summary_iles(c(0.25, 0.5)),
 
-    quantiles = do.call(stat.summary.iles, args)
+    quantiles = do.call(stat_summary_iles, args)
 
     )))
   } else if (is.function(format)) {
@@ -69,7 +71,7 @@ stat.summary.funs <- function(format, args) {
   else stop("fun.data must be either a string, function or list of functions")
 }
 
-stat.summary.iles <- function(s) {
+stat_summary_iles <- function(s) {
   lapply(s, function(s) {
     function(d) c(
       y = median(d),
@@ -79,7 +81,7 @@ stat.summary.iles <- function(s) {
     ) })
 }
 
-stat.summary.from_seq <- function(s) {
+stat_summary_from_seq <- function(s) {
   mapply(function(q_l, q_u) {
     function(d) c(
       y = median(d),
