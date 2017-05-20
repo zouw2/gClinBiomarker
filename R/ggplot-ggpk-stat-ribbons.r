@@ -62,7 +62,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
     ggpack(stat_summary, 'label', .dots,
-      fun.data = fun.data[[1]],
+      fun.data = last(fun.data),
       direction = "y",
       nudge_y = 0.1,
       label.size = 0,
@@ -71,12 +71,9 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
       alpha = 0.85)
   } else if (show.counts == 'table') {
     ggpack(stat_summary, 'label', .dots,
-      fun.data = function(d) c(y=Inf, label = length(d)),
-      geom = 'text_repel',
-      direction = "y",
-      segment.colour = NA,
+      fun.data = last(fun.data),
+      geom = 'text_table',
       show.legend = FALSE)
-
   } else NULL
 
 }

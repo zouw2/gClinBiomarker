@@ -39,6 +39,19 @@
 #'          labs.title = "Temperature by Hemisphere",
 #'          labs.caption = "*idependent models fit per hemisphere")
 #'
+#' # including a table of value counts and subsetting value data to specific months
+#' PlotLong(nasa %>% as_tibble %>% mutate(hemisphere=ifelse(lat>0, "North", "South")),
+#'          aes(x=month, y=temperature, group = hemisphere,
+#'              color = hemisphere, fill = hemisphere),
+#'          formula = temperature ~ ozone,
+#'          model.per = ~ hemisphere, fun.data = 'deciles',
+#'          show.counts = 'table',
+#'          label.data = . %>% filter(month %in% c(1, 6, 12)),
+#'          label.hjust = 'inward',
+#'          xlab = "Month", ylab = "Temperature Adjusted for Ozone",
+#'          labs.title = "Temperature by Hemisphere",
+#'          labs.caption = "*idependent models fit per hemisphere")
+#'
 #' @export
 #'
 PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NULL,
