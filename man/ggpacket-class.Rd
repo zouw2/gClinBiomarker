@@ -2,8 +2,8 @@
 % Please edit documentation in R/ggplot-ggpackets-.r
 \docType{class}
 \name{ggpacket-class}
-\alias{ggpacket-class}
 \alias{ggpacket}
+\alias{ggpacket-class}
 \title{A simple S4 class to contain wrapped ggplots}
 \description{
 A simple S4 class to contain wrapped ggplots
@@ -16,3 +16,4 @@ a list with cleaner syntax for adding ggproto objects.
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gnee.com}
 }
+

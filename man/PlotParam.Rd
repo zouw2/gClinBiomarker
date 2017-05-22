@@ -146,3 +146,4 @@ CompareKM(data=input, tte="PFS", cen="PFS.CNSR", trt="Arm", bep="BEP", bep.name=
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 }
+

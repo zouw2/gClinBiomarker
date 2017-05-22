@@ -13,7 +13,7 @@ augment_predict(.data, model, formula, model.args = NULL, model.per = NULL)
 
 \item{model.args}{list of additional arguments to use in model fitting}
 
-\item{model.per}{a formula representing all terms to group data by to
+\item{model.per}{a formula representing all terms to group data by to 
 fit individual models (e.g. `~ am + vs`)}
 
 \item{fomula}{formula to use for model fitting (e.g `mpg ~ gear + wt`)}
@@ -27,3 +27,4 @@ Adds prediction outputs to data based on model and formula
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
+
