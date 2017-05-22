@@ -76,6 +76,7 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
     ggpack(xlab,  'xlab',  list(...), null.empty = T) +
     ggpack(ylab,  'ylab',  list(...), null.empty = T) +
     ggpack(labs,  'labs',  list(...), null.empty = T) +
+    (if (require(ggenes, quietly = T)) ggenes() else NULL) +
     ggpack(theme, 'theme', list(...), null.empty = T)
 
 }

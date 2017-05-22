@@ -42,7 +42,7 @@ ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = F
   .dots <- modifyList(defaults, list(...))
   fun.data <- stat_summary_funs(fun.data, fun.args)
 
-  ## wrap ## ribbons
+  ## pack ## ribbons
   # reduce through list of ribbon geoms and collect sum
   Reduce(`+`, mapply(function(f, i) {
     ggpack(stat_summary, 'errorbar', .dots,
@@ -53,13 +53,13 @@ ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = F
            alpha = 0.5)
   }, f = fun.data, i = 1:length(fun.data)) ) +
 
-  ## wrap ## line
+  ## pack ## line
   # plot line along stat y
   ggpack(stat_summary, 'line', .dots,
       geom = 'line',
       fun.data = fun.data[[1]]) +
 
-  ## wrap ## label
+  ## pack ## label
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
     ggpack(stat_summary, 'label', .dots,

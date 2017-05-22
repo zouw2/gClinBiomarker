@@ -41,7 +41,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   .dots <- list(...)
   fun.data <- stat_summary_funs(fun.data, fun.args)
 
-  ## wrap ## ribbon
+  ## pack ## ribbon
   # reduce through list of ribbon geoms and collect sum
   Reduce(function(l, r) { l +
     ggpack(stat_summary, 'ribbon', .dots,
@@ -52,13 +52,13 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
               ggplot2:::`%||%`(.dots$ribbon.alpha, 1) )
   }, fun.data, init = NULL) +
 
-  ## wrap ## line
+  ## pack ## line
   # plot line along stat y
   ggpack(stat_summary, 'line', .dots,
       geom = 'line',
       fun.data = fun.data[[1]]) +
 
-  ## wrap ## label
+  ## pack ## label
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
     ggpack(stat_summary, 'label', .dots,

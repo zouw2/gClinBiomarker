@@ -43,7 +43,7 @@ setMethod("+", c("ggpacket", "ANY"), function(e1, e2) {
   e1
 })
 setMethod("+", c("NULL", "ggpacket"), function(e1, e2) e2)
-setMethod("+", c("gg", "ggpacket"), function(e1, e2) e1 + e2@ggcalls)
+suppressMessages(setMethod("+", c("gg", "ggpacket"), function(e1, e2) e1 + e2@ggcalls))
 
 
 
