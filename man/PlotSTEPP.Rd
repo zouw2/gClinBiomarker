@@ -4,14 +4,14 @@
 \alias{PlotSTEPP}
 \title{Create a STEPP (Subpopulation Treatment Effect Pattern Plot)}
 \usage{
-PlotSTEPP(data, outcome.var, treatment.var, biomarker.var,
+PlotSTEPP(data, outcome.var, outcome.class, treatment.var, biomarker.var,
   covariate.var = NULL, strat.var = NULL, placebo.code, active.code,
-  outcome.type, alpha = 0.05, window.width = 0.25, min.pt = NULL,
-  max.pt = NULL, by = 0.05, yrange.lower = NULL, yrange.upper = NULL,
-  xticks = NULL, show.refline = TRUE, refline.color = "grey",
-  show.refline.ac = TRUE, refline.color.ac = "lightblue",
-  estimate.color = "blue", estimate.lty = 1, estimate.lwd = 2,
-  ci.color = "black", ci.lty = 2, ci.lwd = 1, ci.shade = TRUE,
+  alpha = 0.05, window.width = 0.25, min.pt = NULL, max.pt = NULL,
+  by = 0.05, yrange.lower = NULL, yrange.upper = NULL, xticks = NULL,
+  show.refline = TRUE, refline.color = "grey", show.refline.ac = TRUE,
+  refline.color.ac = "lightblue", estimate.color = "blue",
+  estimate.lty = 1, estimate.lwd = 2, ci.color = "black", ci.lty = 2,
+  ci.lwd = 1, ci.shade = TRUE,
   plot.title = "STEPP: Subgroup Treatment Effect Pattern Plot",
   sub.title = NULL, xlabel = "Biomarker Percentile", ylabel = NULL,
   show.legend = TRUE, legend.loc = "topright",
@@ -25,25 +25,25 @@ PlotSTEPP(data, outcome.var, treatment.var, biomarker.var,
   ""), bm.digits = 2)
 }
 \arguments{
-\item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
-\item{outcome.var}{outcome variable. In case of a 'survival', variable, it will be a vector of two variables: 1) time to event 2) Censorship}
+\item{outcome.var}{outcome variable. In case of a 'survival', variable, it will be a vector of two variables: 1) time to event 2) censorship}
+
+\item{outcome.class}{outcome class of the 'outcome' variable. Can be either "continuous", "binary", or "survival".}
 
 \item{treatment.var}{name of the treatment variable.}
 
 \item{biomarker.var}{name of the biomarker variable.}
 
-\item{covariate.var}{vector specifying the covariate variables. 
-This can be added to adjust for in the analysis for survival and continuous outcome variable types.}
+\item{covariate.var}{vector specifying the covariate variables.
+This can be added to adjust for in the analysis for survival and continuous outcome variable classes.}
 
-\item{strat.var}{vector specifying the stratification variables. This can be added for the survival outcome variable type.}
+\item{strat.var}{vector specifying the stratification variables. This can be added for the survival outcome variable class.}
 
 \item{placebo.code}{name of the control group within the treatment variable}
 
 \item{active.code}{name of the treatment/experimental group within the treatment variable}
-
-\item{outcome.type}{outcome type of the 'outcome' variable. Can be either "continuous", "binary", or "survival".}
 
 \item{alpha}{confidence level (CI) for point estimate, i.e. 0.05 for 95 percent CI. Default is 0.05.}
 
@@ -59,7 +59,7 @@ This can be added to adjust for in the analysis for survival and continuous outc
 
 \item{yrange.upper}{value of the upper y-axis. Default is NULL.}
 
-\item{xticks}{x-tick marks. Default is \code{seq(0.25, 0.75, 0.25)}.}
+\item{xticks}{x-tick marks. Default is NULL.}
 
 \item{show.refline}{if TRUE, the reference line will be displayed. Default is TRUE.}
 
@@ -95,7 +95,7 @@ This can be added to adjust for in the analysis for survival and continuous outc
 
 \item{legend.loc}{location of the legend to be displayed. Default is "topright".}
 
-\item{legend.text}{text to be displayed in the legend. 
+\item{legend.text}{text to be displayed in the legend.
 Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Interval",sep=""))}}
 
 \item{legend.col}{colors of the legend. Default is \code{c(estimate.color, ci.color)}.}
@@ -106,7 +106,7 @@ Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Int
 
 \item{legend.bty}{type of box for the legend. Default is "n".}
 
-\item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. 
+\item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf.
 Default is \code{paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = "")}.}
 
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.}
@@ -122,11 +122,23 @@ Default is \code{paste("STEPP ", as.character(Sys.Date()), ".csv", sep = "")}.}
 This function creates a STEPP from the given point estimates and confidence intervals at desired percentiles.
 }
 \note{
-Patient data without corresponding biomarker data are automatically removed. 
+Patient data without corresponding biomarker data are automatically removed.
 For survival data, censorship variable is 1 if an event happened, 0 if censored.
 }
 \examples{
+
 data(input)
+PlotSTEPP(data = input,
+         outcome.var = c("PFS", "PFS.CNSR"),
+         outcome.class = "survival",
+         treatment.var = "Arm",
+         biomarker.var = "KRAS.exprs",
+         covariate.var = "Sex",
+         strat.var = "Age",
+         placebo.code = "CTRL",
+         active.code = "TRT",
+         csv.name = NULL,
+         pdf.name = NULL)
 
 }
 \author{

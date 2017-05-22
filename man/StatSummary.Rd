@@ -5,7 +5,7 @@
 \title{Summary statistics of two-group comparison}
 \usage{
 StatSummary(outcome.var, subgroup.var = NULL, treatment.var, placebo.code,
-  active.code, outcome.type, alpha = 0.05, covariate.var = NULL,
+  active.code, outcome.class, alpha = 0.05, covariate.var = NULL,
   strat.factor.var = NULL, return.fit = FALSE,
   fit.para = list(prop.test.use.continuity.correction = T))
 }
@@ -20,39 +20,39 @@ StatSummary(outcome.var, subgroup.var = NULL, treatment.var, placebo.code,
 
 \item{active.code}{the name of the treatment/experimental group within the treatment variable.}
 
-\item{outcome.type}{the outcome type of the 'outcome.var' variable. One of the 3 values - "survival", "binary", or "continuous".}
+\item{outcome.class}{the outcome class of the 'outcome.var' variable. One of the 3 values - "survival", "binary", or "continuous".}
 
 \item{alpha}{the confidence level (CI) for point estimate, i.e. 0.05 (default) for 95 percent CI.}
 
-\item{covariate.var}{a vector specifying the covariate variables. This can be added to adjust for in the analysis for survival and continuous outcome.var variable types. Default is NULL.}
+\item{covariate.var}{a vector specifying the covariate variables. This can be added to adjust for in the analysis for survival and continuous outcome.var variable classes. Default is NULL.}
 
-\item{strat.factor.var}{a vector specifying the stratification variables. This can be added for the survival outcome.var variable type. Default is NULL.}
+\item{strat.factor.var}{a vector specifying the stratification variables. This can be added for the survival outcome.var variable class. Default is NULL.}
 
 \item{return.fit}{if TRUE, returns a table of summary statistics. Default is FALSE.}
 
-\item{fit.para}{a list of fitting parameters. Currently only \code{'prop.test.use.continuity.correction'} in use. 
+\item{fit.para}{a list of fitting parameters. Currently only \code{'prop.test.use.continuity.correction'} in use.
 If \code{'prop.test.use.continuity.correction' = T} (default), the 'correct' parameter in \code{\link{prop.test}} will be set as TRUE.}
 }
 \value{
-A named vector of following entries: 
-if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active, N.Placebo, N.Active; 
-if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, P; 
+A named vector of following entries:
+if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active, N.Placebo, N.Active;
+if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, P;
 if continuous - Effect.Size (Mean Difference), Lower, Upper, P.
 }
 \description{
 This function returns a summary of two group comparison in terms of effect size, lower and upper limits of CI, and p-value.
-Three types of "outcome.var" variable can be analyzed using this function: 
+Three classes of "outcome.var" variable can be analyzed using this function:
 1) Cox proportional hazards model for survival outcome.var using coxph()
 2) T-test for continuous outcome.var using lm()
 3) Z-test for binary outcome.var using prop.test().
 }
 \note{
-This function requires "survival" package to call the coxph() function. Two treatment arms are required. 
+This function requires "survival" package to call the coxph() function. Two treatment arms are required.
 Treatment group variable can be forced into a factor. Censorship variable is 1 if an event happened, 0 if censored.
 }
 \examples{
 data(input)
-StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.type = "continuous")
+StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous")
 
 }
 \author{

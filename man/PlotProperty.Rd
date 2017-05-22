@@ -4,8 +4,8 @@
 \alias{PlotProperty}
 \title{Plot Distribution}
 \usage{
-PlotProperty(data, biomarker.var, biomarker.type, var = NULL,
-  var.type = NULL, log2 = FALSE, colour = "blue", add.num = 0,
+PlotProperty(data, biomarker.var, biomarker.class, var = NULL,
+  var.class = NULL, log2 = FALSE, colour = "blue", add.num = 0,
   text.font = 3, main = "Distribution of", xlab = "", add.lab = "",
   border = NULL, add.cor = FALSE, cor.method = "spearman",
   lowess.line = FALSE, lowess.line.col = "deepskyblue", f = 0.3,
@@ -14,16 +14,16 @@ PlotProperty(data, biomarker.var, biomarker.type, var = NULL,
   3, 2)))
 }
 \arguments{
-\item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{biomarker.var}{name of the biomarker variable. Should be in colnames of \code{data}.}
 
-\item{biomarker.type}{can be either "continuous" or "categorical".}
+\item{biomarker.class}{can be either "continuous" or "categorical".}
 
 \item{var}{name of a clinical variable. It can be a list of variables. Should be in colnames of \code{data}.}
 
-\item{var.type}{can be either "continuous" or "categorical". It can be a list of types. Default is NULL.}
+\item{var.class}{can be either "continuous" or "categorical". It can be a list of classes. Default is NULL.}
 
 \item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to continuous variables only. Default is FALSE.}
 
@@ -58,7 +58,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 }
 \value{
-If only a biomarker variable is given, it will crete a density plot for a continuous variable or bar plot for a categorical variable. 
+If only a biomarker variable is given, it will crete a density plot for a continuous variable or bar plot for a categorical variable.
 If only a list of clinical variables is provided, it will create a density plot for each continuous variable and a bar plot for each categorical variable.
 If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a continuous pair of variables;
 a bar plot for each categorical variable; a boxplot for a pair of continuous and categorical variables.
@@ -68,9 +68,9 @@ Plot biomarker or clinical variables properties.
 }
 \examples{
 data(input)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous", log2=TRUE, pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.type="continuous", var="OS", var.type="continuous", log2=list(TRUE, FALSE), pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.type="categorical", var=list("Arm","OS"), var.type=list("categorical", "continuous"), pdf.name=NULL, par.param = list(mfrow=c(1,2)))
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="continuous", log2=TRUE, pdf.name=NULL)
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="continuous", var="OS", var.class="continuous", log2=list(TRUE, FALSE), pdf.name=NULL)
+PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "continuous"), pdf.name=NULL, par.param = list(mfrow=c(1,2)))
 
 }
 \author{
