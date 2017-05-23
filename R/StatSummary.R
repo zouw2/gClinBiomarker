@@ -66,8 +66,7 @@ StatSummary <- function(outcome.var,
 
         r1 <- sum(y1, na.rm = TRUE)
         r2 <- sum(y2, na.rm = TRUE)
-        print(n1)
-        print(n2)
+
         mytest <- prop.test(c(r1, r2), c(n1, n2), conf.level = 1 - alpha,correct =  fit.para[['prop.test.use.continuity.correction']])
 
         ret <- c("Effect.Size" = r1/n1 - r2/n2

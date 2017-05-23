@@ -126,6 +126,7 @@ PlotSTEPP <- function(data,
 
     # Read off the data
     Outcome <- data[, outcome.var]
+    browser()
     Treatment <- data[, treatment.var]
     Biomarker <- data[, biomarker.var]
 
