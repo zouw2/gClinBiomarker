@@ -7,21 +7,21 @@
 #' @param bep name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 #' If parameter bep is not defined, the KM curve(s) will be draw using all samples.
 #' If bep is defined, the KM curve(s) will be draw using only samples in BEP.
-#' @param subgroups name (or names) of the column which indicates the subgroups (e.g. treatment group).
-#' If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and subgroups.levels is not specified, 
-#' it will be converted to a factor by factor() function. If subgroups.levels is defined, the column will be converted to
-#' a factor following the level order in subgroups.levels. 
+#' @param var name (or names) of the column which indicates the subgroups (e.g. treatment group).
+#' If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and var.levels is not specified, 
+#' it will be converted to a factor by factor() function. If var.levels is defined, the column will be converted to
+#' a factor following the level order in var.levels. 
 #' In the legend, the subgroups will be ordered based on the order of factor levels. 
-#' The parameter subgroups can also be a vector of multiple column names.
+#' The parameter var can also be a vector of multiple column names.
 #' In this case, subgroups will be defined by classes in multiple columns (e.g. treatment and biomarker)
-#' @param subgroups.levels levels in the subgroups. It should be a vector if the parameter subgroups is a single column name. 
-#' It should be a list if more than one columns are specified in the prarameter subgroups. Each element of the list should contains a vector.
-#' The elements in the list should match the multiple columns defined in parameter subgroups.
-#' @param subgroups.labels preferred labels for the subgroups. 
-#' subgroups.levels should be provided if subgroupd.labels is specified. The order in subgroups.labels should match subgroups.levels.
-#' It should be a vector if the parameter subgroups is a single column name. 
-#' It should be a list if more than one columns are specified in the prarameter subgroups. Each element of the list should contains a vector.
-#' The elements in the list should match the multiple columns defined in parameter subgroups.
+#' @param var.levels levels in the subgroups. It should be a vector if the parameter var is a single column name. 
+#' It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
+#' The elements in the list should match the multiple columns defined in parameter var.
+#' @param var.labels preferred labels for the var. 
+#' var.levels should be provided if subgroupd.labels is specified. The order in var.labels should match var.levels.
+#' It should be a vector if the parameter var is a single column name. 
+#' It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
+#' The elements in the list should match the multiple columns defined in parameter var.
 #' @param plot.nrisk whether show number of patients at risk at the below the graph. If it is specified as TRUE, number of patients
 #' at risk will be summarized by subgroup.
 #' @param nrisk.interval interval to summarize number of patients at risk . Default is to summarize every 2 (months)
@@ -35,8 +35,8 @@
 #' @param xlim,ylab,xlab,main,col,lty,lwd,sub,ylim see \code{\link{plot}}
 #' @param  ... additional parameters for \code{\link{plot}} 
 #' 
-#' @note This function generates KM curve(s) for full population (when parameter subgroups is not defined) 
-#' or subgroups (when parameter subgroups is defined).
+#' @note This function generates KM curve(s) for full population (when parameter var is not defined) 
+#' or var (when parameter var is defined).
 #'
 #' @importFrom graphics plot axis mtext grid box polygon lines legend
 #' @importFrom survival survfit  
@@ -47,10 +47,10 @@
 #' @examples
 #' data(input)
 #' sample.data <- input
-#' PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
+#' PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", var="Arm")
 #' @export
 
-PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgroups.labels=NULL,
+PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
 		   bep=NULL, bep.indicator=1,
                     plot.nrisk=TRUE, nrisk.interval=2, cex.nrisk=.8,
                     plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright",
@@ -62,62 +62,62 @@ PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgr
 
 	stopifnot(class(data) == "data.frame")
 	if(!is.null(bep))if(! bep %in% colnames(data))stop("bep should in column names in the input data!")
-	if(!is.null(subgroups))if(! all(subgroups %in% colnames(data)))stop("names in 'subgroups' should be in column names in the input data!")
+	if(!is.null(var))if(! all(var %in% colnames(data)))stop("names in 'var' should be in column names in the input data!")
 	if(!is.null(bep))data <- data[which(data[,bep]==bep.indicator),]
 	
-	if(!is.null(subgroups.labels) & is.null(subgroups.levels)) stop("subgroups.levels should be provided if subgroups.labels is specified!")
+	if(!is.null(var.labels) & is.null(var.levels)) stop("var.levels should be provided if var.labels is specified!")
 
-	if(length(subgroups)==1){
-	if(!is.null(subgroups.levels))if(nlevels(factor(data[[subgroups]]))!=length(subgroups.levels))
-		stop(paste("number of elements in subgroups.levels should match number of unique values in",subgroups ))
+	if(length(var)==1){
+	if(!is.null(var.levels))if(nlevels(factor(data[[var]]))!=length(var.levels))
+		stop(paste("number of elements in var.levels should match number of unique values in",var ))
 	
-	if(!is.null(subgroups.labels))if(nlevels(factor(data[[subgroups]]))!=length(subgroups.labels))
-		stop(paste("number of elements in subgroups.labels should match number of unique values in",subgroups ))
+	if(!is.null(var.labels))if(nlevels(factor(data[[var]]))!=length(var.labels))
+		stop(paste("number of elements in var.labels should match number of unique values in",var ))
 
 	}
 
-	if(length(subgroups)>1){
-		if(!is.null(subgroups.levels))if(length(subgroups)!=length(subgroups.levels))
-		stop(paste("number of elements in subgroups.levels should match number of column names in parameter 'subgroups'"))
+	if(length(var)>1){
+		if(!is.null(var.levels))if(length(var)!=length(var.levels))
+		stop(paste("number of elements in var.levels should match number of column names in parameter 'var'"))
 	
-		if(!is.null(subgroups.labels))if(length(subgroups)!=length(subgroups.labels))
-		stop(paste("number of elements in subgroups.labels should match number of column names in parameter 'subgroups'"))
+		if(!is.null(var.labels))if(length(var)!=length(var.labels))
+		stop(paste("number of elements in var.labels should match number of column names in parameter 'var'"))
 
 		
-		for(i in 1:length(subgroups)){
+		for(i in 1:length(var)){
 		
-		if(!is.null(subgroups.levels))if(nlevels(factor(data[[subgroups[i]]]))!=length(subgroups.levels[[i]]))
-		stop(paste("number of elements in subgroups.levels should match number of unique values in",subgroups[i] ))
+		if(!is.null(var.levels))if(nlevels(factor(data[[var[i]]]))!=length(var.levels[[i]]))
+		stop(paste("number of elements in var.levels should match number of unique values in",var[i] ))
 	
-		if(!is.null(subgroups.labels))if(nlevels(factor(data[[subgroups[i]]]))!=length(subgroups.labels[[i]]))
-		stop(paste("number of elements in subgroups.labels should match number of unique values in",subgroups[i] ))
+		if(!is.null(var.labels))if(nlevels(factor(data[[var[i]]]))!=length(var.labels[[i]]))
+		stop(paste("number of elements in var.labels should match number of unique values in",var[i] ))
 	
 	}}
 	
-	subgroups.ori <- subgroups
-	subgroups <- "tmp.subgroup"
-	n.subs <- length(subgroups.ori)
+	var.ori <- var
+	var <- "tmp.subgroup"
+	n.subs <- length(var.ori)
 	if(n.subs==0) data$tmp.subgroup <- ""
-	if(n.subs==1) data$tmp.subgroup <- data[[subgroups.ori]]
-	if(n.subs>1) data$tmp.subgroup <-  apply(data[,subgroups.ori],1,function(i)paste0(i,collapse=","))
+	if(n.subs==1) data$tmp.subgroup <- data[[var.ori]]
+	if(n.subs>1) data$tmp.subgroup <-  apply(data[,var.ori],1,function(i)paste0(i,collapse=","))
 	
-	if(is.null(subgroups.levels)){
-		tmp.levels <- sapply(data[,subgroups.ori],function(i)levels(factor(i)), simplify=FALSE)
-		if(n.subs>1)data[,subgroups] <- factor(data[,subgroups], levels = apply(expand.grid(tmp.levels[n.subs:1])[,n.subs:1],1,function(i)paste0(i,collapse=",")))
-		if(n.subs<=1)data[,subgroups] <- factor(data[,subgroups])
+	if(is.null(var.levels)){
+		tmp.levels <- sapply(data[,var.ori],function(i)levels(factor(i)), simplify=FALSE)
+		if(n.subs>1)data[,var] <- factor(data[,var], levels = apply(expand.grid(tmp.levels[n.subs:1])[,n.subs:1],1,function(i)paste0(i,collapse=",")))
+		if(n.subs<=1)data[,var] <- factor(data[,var])
 	}
-	if(!is.null(subgroups.levels)){
-		if(length(subgroups.ori)>1) subgroups.levels <- apply(expand.grid(subgroups.levels[n.subs:1])[,n.subs:1],1,function(i)paste0(i,collapse=","))
-		data[,subgroups] <- factor(data[,subgroups], levels=subgroups.levels)
-		if(!is.null(subgroups.labels)) {
-		if(length(subgroups.ori)>1) subgroups.labels <- apply(expand.grid(subgroups.labels[n.subs:1])[,n.subs:1],1,function(i)paste0(i,collapse=","))
-			levels(data[,subgroups]) <- subgroups.labels
+	if(!is.null(var.levels)){
+		if(length(var.ori)>1) var.levels <- apply(expand.grid(var.levels[n.subs:1])[,n.subs:1],1,function(i)paste0(i,collapse=","))
+		data[,var] <- factor(data[,var], levels=var.levels)
+		if(!is.null(var.labels)) {
+		if(length(var.ori)>1) var.labels <- apply(expand.grid(var.labels[n.subs:1])[,n.subs:1],1,function(i)paste0(i,collapse=","))
+			levels(data[,var]) <- var.labels
 }}
 
 	if(is.null(par.param$mar))par.param$mar <- c(12,9,3,2)
   
 	col.v <- c("blue","red","darkgreen","brown","darkgrey","skyblue","purple","cyan","pink","oragne")
-	strat.vec <- data[,subgroups]
+	strat.vec <- data[,var]
 	nlev <- nlevels(strat.vec)
 	if(n.subs<=1){
 	  if(is.null(col)) col <-  col.v[1:nlev]
@@ -125,15 +125,15 @@ PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgr
 	}
 	# if more than one factors, use color to distinguish first several factors and use lty to distingush the last factor
 	if(n.subs>1) {
-	  nfirst <- length(unique(apply(data[,subgroups.ori[-length(subgroups.ori)], drop=FALSE],1,function(i)paste0(i,collapse=","))))
-	  nlast <- length(unique(data[,subgroups.ori[length(subgroups.ori)]]))
+	  nfirst <- length(unique(apply(data[,var.ori[-length(var.ori)], drop=FALSE],1,function(i)paste0(i,collapse=","))))
+	  nlast <- length(unique(data[,var.ori[length(var.ori)]]))
 	  if(is.null(col))col <- col.v[rep(1:nfirst, each=nlast)]
 	  if(is.null(lty))lty <- rep(1:nlast, nfirst)
 	}
 
-  	if(is.null(subgroups.labels))subgroups.labels <- levels(strat.vec)
+  	if(is.null(var.labels))var.labels <- levels(strat.vec)
     	
-	fit <- survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", subgroups)), data=data)    
+	fit <- survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", var)), data=data)    
 	
 
 	# xlim
@@ -178,7 +178,7 @@ PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgr
   	mtext(xlab,side=1, line=2)
   
 	if(plot.legend & nlev > 1)
-    		legend(legend.loc,subgroups.labels, lwd=2, col=col, lty=lty, bg="white")
+    		legend(legend.loc,var.labels, lwd=2, col=col, lty=lty, bg="white")
   
 	axis(1,at=seq(0,xlim[2],nrisk.interval),seq(0,xlim[2],nrisk.interval))
  	axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0)
@@ -198,11 +198,11 @@ PlotKM <- function(data, tte, cens, subgroups=NULL, subgroups.levels=NULL, subgr
 		jj <- 0
 		for(i in 1:nlev){
 		if(!is.na(meds[i])){
-			text(x=meds[i],y=0.05,labels=paste0(subgroups.labels[i],"\nmedian ",round(meds[i], digits)), col=col[i],cex=median.cex)
+			text(x=meds[i],y=0.05,labels=paste0(var.labels[i],"\nmedian ",round(meds[i], digits)), col=col[i],cex=median.cex)
 			lines(c(meds[i],meds[i]), c(0,.5),lty=3, lwd=1, col=col[i])
 }
 		if(is.na(meds[i])){
-			text(x=xlim[1]+(diff(xlim)/10),y=0.05+(ylim[1]+(diff(ylim)/10)*jj),labels=paste0(subgroups.labels[i],"\nmedian NA"), col=col[i],cex=median.cex)
+			text(x=xlim[1]+(diff(xlim)/10),y=0.05+(ylim[1]+(diff(ylim)/10)*jj),labels=paste0(var.labels[i],"\nmedian NA"), col=col[i],cex=median.cex)
 		jj <- jj+1
 		}
 		}

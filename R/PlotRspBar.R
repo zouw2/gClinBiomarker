@@ -5,7 +5,7 @@
 #' 
 #' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 #'
-#' @param rsp column name of the response variable (e.g. best overall response).
+#' @param outcome.var column name of the response variable (e.g. best overall response).
 #' entries with missing rsp value will be ignored in analysis. 
 #' @param binary whether summarize the response rate by responder/nonresponder (if binary=TRUE),
 #' or by its original category (e.g. PD/SD/PR/CR). If binary is TRUE, responder categories
@@ -44,7 +44,7 @@
 #' 
 #' @export
 
-PlotRspBar <- function(data, rsp, 
+PlotRspBar <- function(data, outcome.var, 
                        binary=FALSE,
                        rsp.response = c("CR","PR"),
                        rsp.nonresponse = c("SD", "PD","NON CR/PD","NE"),
@@ -63,12 +63,12 @@ PlotRspBar <- function(data, rsp,
   
   
   stopifnot(class(data) == "data.frame")
-  if(!all(c(var, trt, bep,rsp) %in% colnames(data)))stop("rsp, var, trt and bep should have matched column names in the input data!")
+  if(!all(c(var, trt, bep,outcome.var) %in% colnames(data)))stop("outcome.var, var, trt and bep should have matched column names in the input data!")
   
   
-  if(length(which(is.na(data[,rsp])))>0){
-    data <- data[!is.na(data[,rsp]),]
-    message(paste("entries with missing rsp are removed!", nrow(data),"entries left"))
+  if(length(which(is.na(data[,outcome.var])))>0){
+    data <- data[!is.na(data[,outcome.var]),]
+    message(paste("entries with missing outcome.var are removed!", nrow(data),"entries left"))
   }
   
   if(compare.bep.itt & is.null(bep)){
@@ -80,15 +80,15 @@ PlotRspBar <- function(data, rsp,
     message("compare.var=TRUE but bep is not specified. Reset test.bep as FALSE")
   }
   
-  if(binary)if(!all(unique(data[,rsp])%in%c(rsp.response,rsp.nonresponse)))
-    stop("all unique values in rsp column should be included in rsp.response or rsp.nonresponse!")
-  if(!binary)if(!all(unique(data[,rsp])%in%c(rsp.levels)))
-    stop("all unique values in rsp column should be included in rsp.levels!")
+  if(binary)if(!all(unique(data[,outcome.var])%in%c(rsp.response,rsp.nonresponse)))
+    stop("all unique values in outcome.var column should be included in rsp.response or rsp.nonresponse!")
+  if(!binary)if(!all(unique(data[,outcome.var])%in%c(rsp.levels)))
+    stop("all unique values in outcome.var column should be included in rsp.levels!")
   
   # generate response
   if(binary) 
-    data$rspvar <- factor(ifelse(data[,rsp]%in%rsp.response,"rsp","non-rsp"),levels=c("non-rsp","rsp"))
-  if(!binary) data$rspvar <- factor(data[,rsp], levels=rsp.levels)
+    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,"rsp","non-rsp"),levels=c("non-rsp","rsp"))
+  if(!binary) data$rspvar <- factor(data[,outcome.var], levels=rsp.levels)
   
   data$sectionvar <- data$trtvar <- rep("All", length(data$rspvar))
   
