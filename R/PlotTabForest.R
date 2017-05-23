@@ -1,6 +1,6 @@
 #' @keywords internal
 
-Forest.Tab <- function(label.text,
+PlotTabForest <- function(label.text,
                        mean,
                        lower,
                        upper,
@@ -20,8 +20,10 @@ Forest.Tab <- function(label.text,
                        heights,
                        cex.headings=1,
                        cex.note=0.8,
-                       par.param=list(xlog=FALSE, cex=1, cex.main=2, cex.sub=1.3, cex.axis=1, pch=19)) {
+				      xlog=FALSE, cex=1, cex.main=2, cex.sub=1.3, cex.axis=1, pch=19,
+                       par.param=NULL){
     
+		
     n.row = dim(label.text)[1]
     n.col = dim(label.text)[2] + 1
     
