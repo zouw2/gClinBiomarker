@@ -259,14 +259,14 @@ PlotTabForestBiomarker <- function(data,
     if(nArms==2){
     res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var], 
                                                   subgroup.var=jj, treatment.var=data.bep[,trt],
-                  placebo.code=placebo.code, active.code=active.code, outcome.type="survival", alpha=alpha,
+                  placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
                   covariate.var=Covariate.bep,
                   strat.factor.var=Strat.fac.bep)))
     
     if(show.itt) {res <- rbind(
       StatSummary(outcome.var=data[,outcome.var], 
                   subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
-                  placebo.code=placebo.code, active.code=active.code, outcome.type="survival", alpha=alpha,
+                  placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
                   covariate.var=Covariate,
                   strat.factor.var=Strat.fac)  
                               ,res)
@@ -295,7 +295,7 @@ PlotTabForestBiomarker <- function(data,
       active.code <- "Yes"
       res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var], 
                                                       subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
-                                                      placebo.code="FALSE", active.code="TRUE", outcome.type="survival", alpha=alpha,
+                                                      placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
                                                       covariate.var=Covariate.bep,
                                                       strat.factor.var=Strat.fac.bep)))
       inter.p <- NULL
@@ -391,7 +391,7 @@ PlotTabForestBiomarker <- function(data,
     thisgroup <- Biomarker == var.code[1]
     res <- NULL
     res <- rbind(res, c(StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
-                                    placebo.code="TRUE", active.code="FALSE", outcome.type="binary", alpha=alpha,
+                                    placebo.code="TRUE", active.code="FALSE", outcome.class="binary", alpha=alpha,
                                     covariate.var=Covariate,
                                     strat.factor.var=Strat.fac),
                         "NRsp.Placebo"=sum(Outcome[subgroup & Biomarker == var.code[1]], na.rm=TRUE),
@@ -402,7 +402,7 @@ PlotTabForestBiomarker <- function(data,
     for (ac in active.code) {
       subgroup <- Treatment == ac
       res <- rbind(res, c(StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
-                                      placebo.code="TRUE", active.code="FALSE", outcome.type="binary", alpha=alpha,
+                                      placebo.code="TRUE", active.code="FALSE", outcome.class="binary", alpha=alpha,
                                       covariate.var=Covariate,
                                       strat.factor.var=Strat.fac),
                           "NRsp.Placebo"=sum(Outcome[subgroup&Biomarker == var.code[1]], na.rm=TRUE),
