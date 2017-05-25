@@ -234,7 +234,7 @@ PlotTabForestBiomarker <- function(data,
      }}
     
     if(within.bin)if(!is.null(numerical.cutoff)){
-      numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),percentile.cutoff)))
+      numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),numerical.cutoff)))
       for(i in 2:length(numerical.cutoff)){
         qt1 <- numerical.cutoff[i-1]
         qt2 <- numerical.cutoff[i]

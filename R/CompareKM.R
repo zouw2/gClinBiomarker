@@ -40,6 +40,7 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
   if(is.null(xlim)){ xlim <- c(0, max(data[,tte], na.rm=TRUE)) + c(0, 0.1*max(data[,tte], na.rm=TRUE)) }
  
   lev <- NULL 
+  nlev <- 1
   if(!is.null(trt)){
   lev <- levels(factor(data[,trt]))
   nlev <- length(lev)
