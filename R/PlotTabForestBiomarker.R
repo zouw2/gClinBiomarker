@@ -121,10 +121,7 @@ PlotTabForestBiomarker <- function(data,
     bep <- "BEPnew"
   }
   if(!is.null(percentile.cutoff) & !is.null(numerical.cutoff)) stop("cannot specify both percentile.cutoff and numerical.cutoff")
-  if(within.bin & any(c(greater, less))){
-    message("within.bin is TRUE, greater and less will be ignored")
-    greater <- less <- FALSE
-  }
+
   Outcome <- data[, outcome.var]
   Biomarker <- data[, var]
   
@@ -183,6 +180,12 @@ PlotTabForestBiomarker <- function(data,
       within.bin <- FALSE
   }
   }
+  
+  if(within.bin & any(c(greater, less))){
+    message("within.bin is TRUE, greater and less will be ignored")
+    greater <- less <- FALSE
+  }
+  
   
   if(is.null(var.name))var.name <- var
   if(is.null(bep.name))bep.name <- "BEP"
