@@ -33,6 +33,7 @@
 #' @param plot.median whether show median TTE of each subgroup. (won't show if median TTE is NA)
 #' @param median.cex font size of marked median. This parameter will be ignored if plot.median=FALSE
 #' @param xlim,ylab,xlab,main,col,lty,lwd,sub,ylim see \code{\link{plot}}
+#' @param y.percentage whether show percentage in y axis (0-100) or probability (0-1). Default is probability
 #' @param  ... additional parameters for \code{\link{plot}} 
 #' 
 #' @note This function generates KM curve(s) for full population (when parameter var is not defined) 
@@ -56,7 +57,7 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
                     plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright",
                     col=NULL, lty=NULL, lwd=3,
                     xlab="Months To Event Or Censoring", ylim=c(0,1), xlim=NULL,  ylab="Survival Probability",
-                    main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,
+                    main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,y.percentage=FALSE,
 		    pdf.name=NULL, pdf.param=list(height=5), par.param=list(mar=c(12,9,3,2))){
   
 
@@ -181,7 +182,9 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
     		legend(legend.loc,var.labels, lwd=2, col=col, lty=lty, bg="white")
   
 	axis(1,at=seq(0,xlim[2],nrisk.interval),seq(0,xlim[2],nrisk.interval))
- 	axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0)
+ 	if(y.percentage==FALSE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0)
+   	if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0)
+
   
 	if(plot.grid) abline(h=grids, col="gray",lty=3)
   	if(plot.nrisk){
