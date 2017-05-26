@@ -24,7 +24,7 @@
 #' cutoff value. If this is TRUE, in 2-arm study, across-arm HR within biomarker high group will be calculated.
 #' In single arm study HR of biomarker high vs low will be calculated.
 #' @param less whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
-#' greater and less can both be TRUE
+#' greater and less can both be TRUE. If compare across subgroups (compare.subgroups=TRUE), both greater and less will be set as TRUE
 #' @param within.bin whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 #' greater and less will be set as FALSE.
 #' @param compare.bep.itt whether want to generate two groups of results to compare the summary statistics
@@ -79,7 +79,7 @@ PlotTabForestMulti <- function(data,
                                   var, #KRAS...
                                   var.class=NULL, var.name=NULL,
                                   percentile.cutoff=0.5,
-                                  greater=TRUE, less=FALSE,
+                                  greater=TRUE, less=TRUE,
                                   within.bin=FALSE,compare.bep.itt=TRUE, compare.subgroups=FALSE,
                                   show.itt=FALSE, show.bep=FALSE,
                                   subgroups=NULL,
@@ -109,6 +109,10 @@ PlotTabForestMulti <- function(data,
     data[[subgroups]] <- factor(data[[subgroups]])
     groups.level <- levels(data[[subgroups]])
     ngroups <- nlevels(data[[subgroups]])
+    if(any(greater, less)) {
+      greater<- TRUE
+       less <- TRUE
+    }
   }
   data.list <- list(ITT=data)
   if(compare.bep.itt){
