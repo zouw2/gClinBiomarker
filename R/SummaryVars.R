@@ -28,13 +28,13 @@
 #' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
 #' within treatment arm.
 #' 
-#' @inheritParams SumSingle
+#' @inheritParams SummarySingle
 #' 
 #' @export
 
 SummaryVars <- function (data, var, var.name = NULL, 
 			trt = NULL, trt.name = NULL, 
-      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.itt=TRUE,itt.name="ITT",
+      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="ITT",
 			var.class=NULL, ordered.factor.levels.list=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.subgroup=FALSE, 
@@ -66,10 +66,10 @@ SummaryVars <- function (data, var, var.name = NULL,
   
   k.var <- length(var)
   for(i in 1:k.var){
-   tmp <- try(SumSingle (data=data, var=var[i], 
+   tmp <- try(SummarySingle (data=data, var=var[i], 
 			trt = trt, trt.name = trt.name, 
                         subgroup = subgroup, subgroup.name = subgroup.name, subgroup.indicator=subgroup.indicator, 
-			compare.itt=compare.itt, itt.name=itt.name,
+			compare.subgroup=compare.subgroup, itt.name=itt.name,
 			var.class=var.class[i], ordered.factor.levels=ordered.factor.levels.list[[var[i]]],
 			cont.show = cont.show, 
 			digits = digits, trt.order = trt.order, test.subgroup=test.subgroup, 

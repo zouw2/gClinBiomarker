@@ -140,9 +140,8 @@ PlotTabForestBiomarker <- function(data,
   
   
   
-  if(length(unique(data[,trt]))==1) {
-    trt <- NULL
-  }
+  if(!is.null(trt))if(length(unique(data[,trt]))==1)  trt <- NULL
+  
   if(is.null(trt)) nArms <- 1
   if (!is.null(trt)) { # multi-arm study
     Treatment <- data[,trt]

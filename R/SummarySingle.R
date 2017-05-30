@@ -38,11 +38,12 @@
 #' @param na.action defaults to "na.omit". Possible options are "na.omit", "error"
 #' When it is specified as "na.omit", entries with missing trt or subgroup
 #' will be automatically removed before calculation.
-#' @param compare.itt whether show summary statistics of subgroup and ITT. If it is FALSE,
-#' the output will show summary statistics of subgroup and nonsubgroup. Default is TRUE.
+#' @param compare.subgroup If it is FALSE,
+#' the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
+#' will show summary statistics of subgroup vs. ITT
 #' @param test.subgroup whether test across subpopulations within treatment arm. If class is numeric,
 #' kruskal wallis rank sum test will be performed. If class is categorical, fisher's exact test will be performed.
-#' If class is ordered.factor, cmh test will be performed. The test is always performed between subgroup vs nonsubgroup.
+#' If class is ordered.factor, cmh test will be performed. The test is always performed between subgroup vs others.
 #' P value columns will be included in the output table if it is specified as TRUE.
 #' Testing is not recommendated if either subgroup of non-subgroup has small sample size.
 #' 
@@ -58,9 +59,9 @@
 #' 
 #' @export
 
-SumSingle <- function (data, var, 
+SummarySingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
-      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.itt=TRUE,itt.name="ITT",
+      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="ITT",
 			var.class=NULL, ordered.factor.levels=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.subgroup=FALSE, 
@@ -147,7 +148,7 @@ SumSingle <- function (data, var,
 
   # if subgroup is NULL, create a column with all 1s as indicator
  
-    
+   compare.itt <- !compare.subgroup 
     if (!is.null(subgroup)) {
       if(compare.itt){
         data[,subgroup] <- ifelse(data[,subgroup]%in%subgroup.indicator,1,0)

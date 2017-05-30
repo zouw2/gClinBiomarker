@@ -24,7 +24,7 @@
 #' cutoff value. If this is TRUE, in 2-arm study, across-arm HR within biomarker high group will be calculated.
 #' In single arm study HR of biomarker high vs low will be calculated.
 #' @param less whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
-#' greater and less can both be TRUE. If compare across subgroups (compare.subgroups=TRUE), both greater and less will be set as TRUE
+#' greater and less can both be TRUE. If compare across subgroups (compare.subgroup=TRUE), both greater and less will be set as TRUE
 #' @param within.bin whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 #' greater and less will be set as FALSE.
 #' @param compare.bep.itt whether want to generate two groups of results to compare the summary statistics
@@ -40,8 +40,8 @@
 #' If it is NULL, "ITT" will be used.
 #' @param bep.indicator In the subpopulation column, which value is used
 #' to define the biomarker evaluable population. 
-#' @param show.itt when performing subgroup comparison (compare.subgroups=TRUE), whether also calculate summary statistics using all patients in itt 
-#' @param show.bep when performing subgroup comparison (compare.subgroups=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population). 
+#' @param show.itt when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in itt 
+#' @param show.bep when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population). 
 #' BEP is defined by variable bep
 #' @param covariate a vector specifying the covariate variables to be adjusted in the model. Default is set to NULL, meaning no adjustment.
 #' @param strata name of the stratification variables. Default is set to NULL, meaning no stratification.
@@ -80,9 +80,9 @@ PlotTabForestMulti <- function(data,
                                   var.class=NULL, var.name=NULL,
                                   percentile.cutoff=0.5,
                                   greater=TRUE, less=TRUE,
-                                  within.bin=FALSE,compare.bep.itt=TRUE, compare.subgroups=FALSE,
+                                  within.bin=FALSE,compare.bep.itt=TRUE, compare.subgroup=FALSE,
                                   show.itt=FALSE, show.bep=FALSE,
-                                  subgroups=NULL,
+                                  subgroup=NULL,
                                   bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
@@ -101,29 +101,29 @@ PlotTabForestMulti <- function(data,
                                   pdf.param=list(width=6, height=4.5),
                                   par.param=list(cex=1.2, cex.main=1.5, cex.sub=1, cex.axis=1)) {
   
-  if(compare.bep.itt & compare.subgroups) stop("compare.bep.itt & compare.subgroups cannot both be true!")
+  if(compare.bep.itt & compare.subgroup) stop("compare.bep.itt & compare.subgroup cannot both be true!")
   if(compare.bep.itt)if(is.null(bep))stop("compare.bep.itt is TRUE, bep needs to be specified!")
   
-  if(!is.null(subgroups)){
-    stopifnot(subgroups%in%colnames(data))
-    data[[subgroups]] <- factor(data[[subgroups]])
-    groups.level <- levels(data[[subgroups]])
-    ngroups <- nlevels(data[[subgroups]])
+  if(!is.null(subgroup)){
+    stopifnot(subgroup%in%colnames(data))
+    data[[subgroup]] <- factor(data[[subgroup]])
+    groups.level <- levels(data[[subgroup]])
+    ngroups <- nlevels(data[[subgroup]])
     if(any(greater, less)) {
       greater<- TRUE
-       less <- TRUE
+      less <- TRUE
     }
   }
   data.list <- list(ITT=data)
   if(compare.bep.itt){
     data.list <- list(ITT=data, BEP=data[which(data[[bep]]%in%bep.indicator),])
   }
-  if(compare.subgroups){
-    data.list <- sapply(groups.level, function(i)data[which(data[[subgroups]]==i),], simplify=F)
+  if(compare.subgroup){
+    data.list <- sapply(groups.level, function(i)data[which(data[[subgroup]]==i),], simplify=F)
     if(show.bep){
       if(is.null(bep)){
-        if(any(is.na(data[[subgroups]])))message("show.bep is TRUE but bep is not specified, will define the non NA entries in subgroups column as BEP")
-        data$BEPnew <- ifelse(is.na(data[[subgroups]]),0,bep.indicator)
+        if(any(is.na(data[[subgroup]])))message("show.bep is TRUE but bep is not specified, will define the non NA entries in subgroup column as BEP")
+        data$BEPnew <- ifelse(is.na(data[[subgroup]]),0,bep.indicator)
         bep <- "BEPnew"
       }
       data.list <- c(list(BEP=data[which(data[[bep]]%in%bep.indicator),]), data.list)
@@ -212,7 +212,7 @@ PlotTabForestMulti <- function(data,
   if (is.null(main)) {
     main.text <- ifelse(nArms==1, "Within arm", "Across arm")
     if(compare.bep.itt)main.text <- paste0(main.text, ", Compare ",bep.name, " vs. " , itt.name )
-    if(compare.subgroups) main.text <- paste0(main.text, ", Compare ",subgroups," subgroups")
+    if(compare.subgroup) main.text <- paste0(main.text, ", Compare ",subgroup," subgroup")
     main.text <- paste0(main.text, "\n", outcome.var[1])
     
     } else {

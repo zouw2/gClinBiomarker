@@ -8,11 +8,11 @@
 #' biomarker variables, treatment indicator, etc.). One patient per row.
 #' @param outcome.var outcome variable. In case of a 'survival', variable, it will be a vector of two variables: 1) time to event 2) censorship
 #' @param outcome.class outcome class of the 'outcome' variable. Can be either "continuous", "binary", or "survival".
-#' @param treatment.var name of the treatment variable.
-#' @param biomarker.var name of the biomarker variable.
-#' @param covariate.var vector specifying the covariate variables.
+#' @param trt name of the treatment variable.
+#' @param var name of the biomarker variable.
+#' @param covariate vector specifying the covariate variables.
 #' This can be added to adjust for in the analysis for survival and continuous outcome variable classes.
-#' @param strat.var vector specifying the stratification variables. This can be added for the survival outcome variable class.
+#' @param strata vector specifying the stratification variables. This can be added for the survival outcome variable class.
 #' @param placebo.code name of the control group within the treatment variable
 #' @param active.code name of the treatment/experimental group within the treatment variable
 #' @param alpha confidence level (CI) for point estimate, i.e. 0.05 for 95 percent CI. Default is 0.05.
@@ -65,10 +65,10 @@
 #' PlotSTEPP(data = input,
 #'          outcome.var = c("PFS", "PFS.CNSR"),
 #'          outcome.class = "survival",
-#'          treatment.var = "Arm",
-#'          biomarker.var = "KRAS.exprs",
-#'          covariate.var = "Sex",
-#'          strat.var = "Age",
+#'          trt = "Arm",
+#'          var = "KRAS.exprs",
+#'          covariate = "Sex",
+#'          strata = "Age",
 #'          placebo.code = "CTRL",
 #'          active.code = "TRT",
 #'          csv.name = NULL,
@@ -82,12 +82,12 @@
 PlotSTEPP <- function(data,
                      outcome.var,
                      outcome.class,
-                     treatment.var,
-                     biomarker.var,
-                     covariate.var = NULL,
-                     strat.var = NULL,
-                     placebo.code,
-                     active.code,
+                     trt=NULL,
+                     var,
+                     covariate = NULL,
+                     strata = NULL,
+                     placebo.code = NULL,
+                     active.code = NULL,
                      alpha = .05,
                      window.width = .25,
                      min.pt = NULL,
@@ -118,34 +118,57 @@ PlotSTEPP <- function(data,
                      legend.lty = c(estimate.lty, ci.lty),
                      legend.lwd = c(estimate.lwd, ci.lwd),
                      legend.bty = "n",
-                     pdf.name = paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = ""),
+                     pdf.name = NULL,#paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = ""),
                      pdf.param = list(width= 11, height=8.5),
                      par.param = list(mar=c(4,4,3,2)),
-                     csv.name = paste("STEPP ", as.character(Sys.Date()), ".csv", sep = ""),
+                     csv.name = NULL,#paste("STEPP ", as.character(Sys.Date()), ".csv", sep = ""),
                      bm.digits = 2) {
 
+  
+  outcome.class <- match.arg(outcome.class, c("survival", "binary", "continuous"))
+  stopifnot(all(c(var, outcome.var, trt)%in%colnames(data)))
+  if(any(is.na(data[[var]])))message("some NA in var column, will ignore NA entries")
+  # Remove patient data without corresponding biomarker value
+  data.ori <- data
+  data <- data[which(!is.na(data[[var]])),]
+  
     # Read off the data
     Outcome <- data[, outcome.var]
-    Treatment <- data[, treatment.var]
-    Biomarker <- data[, biomarker.var]
-
-    if (!is.null(covariate.var)) {
-        Covariate <- data[, covariate.var]
+    Biomarker <- data[, var]
+    
+    
+    if(!is.null(trt))if(length(unique(data[,trt]))==1)  trt <- NULL
+    
+    if(is.null(trt)) nArms <- 1
+    if (!is.null(trt)) { # multi-arm study
+      Treatment <- data[,trt]
+      Arms <- levels(factor(Treatment))
+      if (!is.null(placebo.code)) { # reference arm specified
+        if(length(placebo.code)!=1)stop("placebo.code should have length 1")
+        if(!placebo.code %in% Arms)stop("placebo.code should be an element in treatment column")
+        Arms <- c(placebo.code, setdiff(Arms, placebo.code)) # first placebo then others
+        if (!is.null(active.code)) {
+          if(length(active.code)!=1)stop("active.code should have length 1")
+          if(!all(active.code %in% Arms))stop("active.code should be elements in treatment column")
+          if(length(intersect(placebo.code, active.code))>1)
+            stop("code cannot be in both active.code and placebo.code!")
+          Arms <- c(Arms[1], active.code) #order by specified input
+        }
+      }
+      nArms <- length(Arms)
+      if(!nArms%in%c(2))stop("only 2-arm is allowed")
+      data[,trt] <- factor(data[,trt],levels=Arms)
+      if(is.null(placebo.code))placebo.code <- Arms[1]
+      if(is.null(active.code))active.code <- Arms[-1]
     }
-    if (!is.null(strat.var)) {
-        Strat.factor <- data[, strat.var]
-    }
 
-    # Remove patient data without corresponding biomarker value
-    index <- !is.na(Biomarker)
-
-    if (outcome.class == "survival") {
-        Outcome <- Outcome[index, ]
-    } else {
-        Outcome <- Outcome[index]
+    if (!is.null(covariate)) {
+        Covariate <- data[, covariate]
     }
-    Treatment <- Treatment[index]
-    Biomarker <- Biomarker[index]
+    if (!is.null(strata)) {
+        Strat.factor <- data[, strata]
+    }
+ 
 
     # If min.pt or max.pt are NULL
     if (is.null(min.pt)) {
@@ -181,29 +204,29 @@ PlotSTEPP <- function(data,
     sdata[, "Center.pt"] <- seq(min.pt, max.pt, by)
 
     # Effect size in All Comers
-    if (is.null(covariate.var) & is.null(strat.var)) {
+    if (is.null(covariate) & is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                placebo.code, active.code, outcome.class,
                                alpha,
-                               covariate.var = NULL,
+                               covariate = NULL,
                                strat.factor.var = NULL)["Effect.Size"]
-    } else if (!is.null(covariate.var) & is.null(strat.var)) {
+    } else if (!is.null(covariate) & is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
                                  alpha,
-                                 covariate.var = Covariate,
+                                 covariate = Covariate,
                                  strat.factor.var = NULL)["Effect.Size"]
-    } else if (is.null(covariate.var) & !is.null(strat.var)) {
+    } else if (is.null(covariate) & !is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
                                  alpha,
-                                 covariate.var = NULL,
+                                 covariate = NULL,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
-    } else if (!is.null(covariate.var) & !is.null(strat.var)) {
+    } else if (!is.null(covariate) & !is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
                                  alpha,
-                                 covariate.var = Covariate,
+                                 covariate = Covariate,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
     }
 
@@ -233,33 +256,33 @@ PlotSTEPP <- function(data,
             sdata[i, "Events"] <- sum(Outcome[sindex, 2], na.rm = TRUE)
         }
 
-        if (is.null(covariate.var) & is.null(strat.var)) {
+        if (is.null(covariate) & is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
                             outcome.class, alpha,
-                            covariate.var = NULL,
+                            covariate = NULL,
                             strat.factor.var = NULL)[c("Effect.Size", "Lower", "Upper")]
-        } else if (!is.null(covariate.var) & is.null(strat.var)) {
+        } else if (!is.null(covariate) & is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
                             outcome.class, alpha,
-                            covariate.var = Covariate,
+                            covariate = Covariate,
                             strat.factor.var = NULL)[c("Effect.Size", "Lower", "Upper")]
-        } else if (is.null(covariate.var) & !is.null(strat.var)) {
+        } else if (is.null(covariate) & !is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
                             outcome.class, alpha,
-                            covariate.var = NULL,
+                            covariate = NULL,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
-        } else if (!is.null(covariate.var) & !is.null(strat.var)) {
+        } else if (!is.null(covariate) & !is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
                             outcome.class, alpha,
-                            covariate.var = Covariate,
+                            covariate = Covariate,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
         }
     }
@@ -287,6 +310,8 @@ PlotSTEPP <- function(data,
 
     ##### Draw the plot
     PlotParam(pdf.name, pdf.param, par.param)
+    
+    if(is.null(sub.title))sub.title <- paste("soc:", placebo.code, "; trt:", active.code)
 
     center.pt <- sdata[, "Center.pt"]
     effect.size <- sdata[, "Effect.Size"]
