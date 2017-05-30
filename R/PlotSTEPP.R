@@ -209,7 +209,8 @@ PlotSTEPP <- function(data,
 
     for (i in 1:nbins) {
         # Define this window
-        start <- min.pt + (i-1)*by - window.width/2
+        START_SEQ <- seq( 0 , 1 - min.pt*2 , by = by)
+        start <- START_SEQ[[i]]
         end <- start + window.width
 
         # Save in sdata
