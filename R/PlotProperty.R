@@ -7,10 +7,10 @@
 #' @param data input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 #' biomarker variables, treatment indicator, etc.). One patient per row.
 #' @param biomarker.var name of the biomarker variable. Should be in colnames of \code{data}.
-#' @param biomarker.class can be either "continuous" or "categorical".
+#' @param biomarker.class can be either "numeric" or "categorical".
 #' @param var name of a clinical variable. It can be a list of variables. Should be in colnames of \code{data}.
-#' @param var.class can be either "continuous" or "categorical". It can be a list of classes. Default is NULL.
-#' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to continuous variables only. Default is FALSE.
+#' @param var.class can be either "numeric" or "categorical". It can be a list of classes. Default is NULL.
+#' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.
 #' @param colour the color of the line segments or dots. Default is "blue".
 #' @param add.num the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.
 #' @param text.font legend text font size. Default is 3.
@@ -27,16 +27,16 @@
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 #'
-#' @return If only a biomarker variable is given, it will crete a density plot for a continuous variable or bar plot for a categorical variable.
-#' If only a list of clinical variables is provided, it will create a density plot for each continuous variable and a bar plot for each categorical variable.
-#' If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a continuous pair of variables;
-#' a bar plot for each categorical variable; a boxplot for a pair of continuous and categorical variables.
+#' @return If only a biomarker variable is given, it will crete a density plot for a numeric variable or bar plot for a categorical variable.
+#' If only a list of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
+#' If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a numeric pair of variables;
+#' a bar plot for each categorical variable; a boxplot for a pair of numeric and categorical variables.
 #'
 #' @examples
 #' data(input)
-#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="continuous", log2=TRUE, pdf.name=NULL)
-#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="continuous", var="OS", var.class="continuous", log2=list(TRUE, FALSE), pdf.name=NULL)
-#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "continuous"), pdf.name=NULL, par.param = list(mfrow=c(1,2)))
+#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, pdf.name=NULL)
+#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=list(TRUE, FALSE), pdf.name=NULL)
+#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
 #'
 #' @export
 
@@ -90,14 +90,14 @@ PlotProperty <- function(data,
     }
 
     if (length(biomarker.class) != 0) {
-        if (!all(biomarker.class %in% c("continuous", "categorical"))) {
-            stop("The class of the biomarker variables can be only 'continuous' or 'categorical'. Please check spelling!")
+        if (!all(biomarker.class %in% c("numeric", "categorical"))) {
+            stop("The class of the biomarker variables can be only 'numeric' or 'categorical'. Please check spelling!")
         }
     }
 
     if (length(var.class) != 0) {
-        if (!all(var.class %in% c("continuous", "categorical"))) {
-            stop("The class of the clinical variables can be only 'continuous' or 'categorical'. Please check spelling!")
+        if (!all(var.class %in% c("numeric", "categorical"))) {
+            stop("The class of the clinical variables can be only 'numeric' or 'categorical'. Please check spelling!")
         }
     }
 
@@ -116,7 +116,7 @@ PlotProperty <- function(data,
         # Create a plot for each variable
         for (i in 1:length(vars)) {
             # if continues, then density plot
-            if (classes[[i]] == "continuous") {
+            if (classes[[i]] == "numeric") {
                 V <- data[, vars[[i]]] + add.num
 
                 if (log2[[i]] == TRUE) {
@@ -163,8 +163,8 @@ PlotProperty <- function(data,
 
     # Case 2: Biomarker variable vs Clinical variables
     } else {
-        # if biomarker variable is continuous
-        if (biomarker.class == "continuous") {
+        # if biomarker variable is numeric
+        if (biomarker.class == "numeric") {
 
             BV <- data[, biomarker.var] + add.num
             j <- 1
@@ -178,8 +178,8 @@ PlotProperty <- function(data,
             }
 
             for (i in 1:length(var)) {
-                # if clinical variable is continuous, then scatteplot
-                if (var.class[[i]] == "continuous") {
+                # if clinical variable is numeric, then scatteplot
+                if (var.class[[i]] == "numeric") {
                     j <- j+1
                     V <- data[, var[[i]]] + add.num
 
@@ -252,8 +252,8 @@ PlotProperty <- function(data,
         } else {
             for (i in 1:length(var)) {
                 j <- 1
-                # if clinical variable is continuous, then boxplot
-                if (var.class[[i]] == "continuous") {
+                # if clinical variable is numeric, then boxplot
+                if (var.class[[i]] == "numeric") {
 
                     V <- data[, var[[i]]] + add.num
 

@@ -19,13 +19,13 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{biomarker.var}{name of the biomarker variable. Should be in colnames of \code{data}.}
 
-\item{biomarker.class}{can be either "continuous" or "categorical".}
+\item{biomarker.class}{can be either "numeric" or "categorical".}
 
 \item{var}{name of a clinical variable. It can be a list of variables. Should be in colnames of \code{data}.}
 
-\item{var.class}{can be either "continuous" or "categorical". It can be a list of classes. Default is NULL.}
+\item{var.class}{can be either "numeric" or "categorical". It can be a list of classes. Default is NULL.}
 
-\item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several continuous variables. The \code{log2} transofrmation can be applied to continuous variables only. Default is FALSE.}
+\item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.}
 
 \item{colour}{the color of the line segments or dots. Default is "blue".}
 
@@ -58,19 +58,19 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 }
 \value{
-If only a biomarker variable is given, it will crete a density plot for a continuous variable or bar plot for a categorical variable.
-If only a list of clinical variables is provided, it will create a density plot for each continuous variable and a bar plot for each categorical variable.
-If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a continuous pair of variables;
-a bar plot for each categorical variable; a boxplot for a pair of continuous and categorical variables.
+If only a biomarker variable is given, it will crete a density plot for a numeric variable or bar plot for a categorical variable.
+If only a list of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
+If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a numeric pair of variables;
+a bar plot for each categorical variable; a boxplot for a pair of numeric and categorical variables.
 }
 \description{
 Plot biomarker or clinical variables properties.
 }
 \examples{
 data(input)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="continuous", log2=TRUE, pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="continuous", var="OS", var.class="continuous", log2=list(TRUE, FALSE), pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "continuous"), pdf.name=NULL, par.param = list(mfrow=c(1,2)))
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, pdf.name=NULL)
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=list(TRUE, FALSE), pdf.name=NULL)
+PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
 
 }
 \author{
