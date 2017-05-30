@@ -201,8 +201,9 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
 		jj <- 0
 		for(i in 1:nlev){
 		if(!is.na(meds[i])){
-			text(x=meds[i],y=0.05,labels=paste0(var.labels[i],"\nmedian ",round(meds[i], digits)), col=col[i],cex=median.cex)
+			text(x=meds[i],y=0.05+(ylim[1]+(diff(ylim)/10)*jj),labels=paste0(var.labels[i],"\nmedian ",round(meds[i], digits)), col=col[i],cex=median.cex)
 			lines(c(meds[i],meds[i]), c(0,.5),lty=3, lwd=1, col=col[i])
+			jj <- jj+1
 }
 		if(is.na(meds[i])){
 			text(x=xlim[1]+(diff(xlim)/10),y=0.05+(ylim[1]+(diff(ylim)/10)*jj),labels=paste0(var.labels[i],"\nmedian NA"), col=col[i],cex=median.cex)
