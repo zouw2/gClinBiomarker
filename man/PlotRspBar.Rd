@@ -4,7 +4,7 @@
 \alias{PlotRspBar}
 \title{Generate bar plot to summarize response outcome by subgroups}
 \usage{
-PlotRspBar(data, rsp, binary = FALSE, rsp.response = c("CR", "PR"),
+PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
   rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"), rsp.levels = c("NE",
   "PD", "NON CR/PD", "SD", "PR", "CR"),
   col = colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels)),
@@ -17,7 +17,7 @@ PlotRspBar(data, rsp, binary = FALSE, rsp.response = c("CR", "PR"),
   par.param = list(mar = c(6, 8, 6, 7)))
 }
 \arguments{
-\item{rsp}{column name of the response variable (e.g. best overall response).
+\item{outcome.var}{column name of the response variable (e.g. best overall response).
 entries with missing rsp value will be ignored in analysis.}
 
 \item{binary}{whether summarize the response rate by responder/nonresponder (if binary=TRUE),

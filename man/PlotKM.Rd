@@ -4,15 +4,15 @@
 \alias{PlotKM}
 \title{Generate KM curve(s) for full population or subgroups defined by single factor or multiple factors}
 \usage{
-PlotKM(data, tte, cens, subgroups = NULL, subgroups.levels = NULL,
-  subgroups.labels = NULL, bep = NULL, bep.indicator = 1,
-  plot.nrisk = TRUE, nrisk.interval = 2, cex.nrisk = 0.8,
-  plot.grid = TRUE, grids = seq(0, 1, 0.1), plot.legend = TRUE,
-  legend.loc = "topright", col = NULL, lty = NULL, lwd = 3,
-  xlab = "Months To Event Or Censoring", ylim = c(0, 1), xlim = NULL,
-  ylab = "Survival Probability", main = "", sub = "",
-  plot.median = FALSE, median.cex = 0.8, digits = 2, pdf.name = NULL,
-  pdf.param = list(height = 5), par.param = list(mar = c(12, 9, 3, 2)))
+PlotKM(data, tte, cens, var = NULL, var.levels = NULL, var.labels = NULL,
+  bep = NULL, bep.indicator = 1, plot.nrisk = TRUE, nrisk.interval = 2,
+  cex.nrisk = 0.8, plot.grid = TRUE, grids = seq(0, 1, 0.1),
+  plot.legend = TRUE, legend.loc = "topright", col = NULL, lty = NULL,
+  lwd = 3, xlab = "Months To Event Or Censoring", ylim = c(0, 1),
+  xlim = NULL, ylab = "Survival Probability", main = "", sub = "",
+  plot.median = FALSE, median.cex = 0.8, digits = 2,
+  y.percentage = FALSE, pdf.name = NULL, pdf.param = list(height = 5),
+  par.param = list(mar = c(12, 9, 3, 2)))
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
@@ -22,23 +22,23 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
 
-\item{subgroups}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
-If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and subgroups.levels is not specified, 
-it will be converted to a factor by factor() function. If subgroups.levels is defined, the column will be converted to
-a factor following the level order in subgroups.levels. 
+\item{var}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
+If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and var.levels is not specified, 
+it will be converted to a factor by factor() function. If var.levels is defined, the column will be converted to
+a factor following the level order in var.levels. 
 In the legend, the subgroups will be ordered based on the order of factor levels. 
-The parameter subgroups can also be a vector of multiple column names.
+The parameter var can also be a vector of multiple column names.
 In this case, subgroups will be defined by classes in multiple columns (e.g. treatment and biomarker)}
 
-\item{subgroups.levels}{levels in the subgroups. It should be a vector if the parameter subgroups is a single column name. 
-It should be a list if more than one columns are specified in the prarameter subgroups. Each element of the list should contains a vector.
-The elements in the list should match the multiple columns defined in parameter subgroups.}
+\item{var.levels}{levels in the subgroups. It should be a vector if the parameter var is a single column name. 
+It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
+The elements in the list should match the multiple columns defined in parameter var.}
 
-\item{subgroups.labels}{preferred labels for the subgroups. 
-subgroups.levels should be provided if subgroupd.labels is specified. The order in subgroups.labels should match subgroups.levels.
-It should be a vector if the parameter subgroups is a single column name. 
-It should be a list if more than one columns are specified in the prarameter subgroups. Each element of the list should contains a vector.
-The elements in the list should match the multiple columns defined in parameter subgroups.}
+\item{var.labels}{preferred labels for the var. 
+var.levels should be provided if subgroupd.labels is specified. The order in var.labels should match var.levels.
+It should be a vector if the parameter var is a single column name. 
+It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
+The elements in the list should match the multiple columns defined in parameter var.}
 
 \item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 If parameter bep is not defined, the KM curve(s) will be draw using all samples.
@@ -71,6 +71,8 @@ at risk will be summarized by subgroup.}
 
 \item{digits}{digits for rounding}
 
+\item{y.percentage}{whether show percentage in y axis (0-100) or probability (0-1). Default is probability}
+
 \item{pdf.name}{name of output pdf file. If it is NULL (default), the plots will be displayed but not saved as pdf}
 
 \item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}. 
@@ -85,13 +87,13 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
 The function generates KM curves for full population or subgroups. The subgroups may be defined as a single factor or multiple factors.
 }
 \note{
-This function generates KM curve(s) for full population (when parameter subgroups is not defined) 
-or subgroups (when parameter subgroups is defined).
+This function generates KM curve(s) for full population (when parameter var is not defined) 
+or var (when parameter var is defined).
 }
 \examples{
 data(input)
 sample.data <- input
-PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", subgroups="Arm")
+PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", var="Arm")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
