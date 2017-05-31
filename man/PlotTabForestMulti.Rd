@@ -7,8 +7,8 @@
 PlotTabForestMulti(data, outcome.class = c("survival", "binary"), outcome.var,
   trt = NULL, var, var.class = NULL, var.name = NULL,
   percentile.cutoff = 0.5, greater = TRUE, less = TRUE,
-  within.bin = FALSE, compare.bep.itt = TRUE, compare.subgroups = FALSE,
-  show.itt = FALSE, show.bep = FALSE, subgroups = NULL, bep = NULL,
+  within.bin = FALSE, compare.bep.itt = TRUE, compare.subgroup = FALSE,
+  show.itt = FALSE, show.bep = FALSE, subgroup = NULL, bep = NULL,
   bep.name = "BEP", itt.name = "ITT", bep.indicator = 1,
   covariate = NULL, strata = NULL, quantile.type = 2,
   placebo.code = NULL, active.code = NULL, var.code = NULL,
@@ -44,7 +44,7 @@ cutoff value. If this is TRUE, in 2-arm study, across-arm HR within biomarker hi
 In single arm study HR of biomarker high vs low will be calculated.}
 
 \item{less}{whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
-greater and less can both be TRUE. If compare across subgroups (compare.subgroups=TRUE), both greater and less will be set as TRUE}
+greater and less can both be TRUE. If compare across subgroups (compare.subgroup=TRUE), both greater and less will be set as TRUE}
 
 \item{within.bin}{whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 greater and less will be set as FALSE.}
@@ -53,10 +53,15 @@ greater and less will be set as FALSE.}
 in ITT vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 parameters bep, bep.name, itt.name, bep.indicator will be ignored}
 
-\item{show.itt}{when performing subgroup comparison (compare.subgroups=TRUE), whether also calculate summary statistics using all patients in itt}
+\item{compare.subgroup}{whether want to generate multiple groups of results to compare the summary statistics
+in each subgroup defined by parameter subgroup}
 
-\item{show.bep}{when performing subgroup comparison (compare.subgroups=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population). 
+\item{show.itt}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in itt}
+
+\item{show.bep}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population). 
 BEP is defined by variable bep}
+
+\item{subgroup}{The column which defines subgroups. If compare.subgroup is TRUE, the program will generate forest plot of the vars within each subgroup}
 
 \item{bep}{name of the column which indicates biomarker evaluable population.}
 
@@ -99,11 +104,6 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.}
 
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
-
-\item{compare.subgroup}{whether want to generate multiple groups of results to compare the summary statistics
-in each subgroup defined by parameter subgroup}
-
-\item{subgroup}{The column which defines subgroups. If compare.subgroup is TRUE, the program will generate forest plot of the vars within each subgroup}
 }
 \description{
 This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm 

@@ -4,25 +4,23 @@
 \alias{PlotSTEPP}
 \title{Create a STEPP (Subpopulation Treatment Effect Pattern Plot)}
 \usage{
-PlotSTEPP(data, outcome.var, outcome.class, treatment.var, biomarker.var,
-  covariate.var = NULL, strat.var = NULL, placebo.code, active.code,
-  alpha = 0.05, window.width = 0.25, min.pt = NULL, max.pt = NULL,
-  by = 0.05, yrange.lower = NULL, yrange.upper = NULL, xticks = NULL,
-  show.refline = TRUE, refline.color = "grey", show.refline.ac = TRUE,
-  refline.color.ac = "lightblue", estimate.color = "blue",
-  estimate.lty = 1, estimate.lwd = 2, ci.color = "black", ci.lty = 2,
-  ci.lwd = 1, ci.shade = TRUE,
+PlotSTEPP(data, outcome.var, outcome.class, trt = NULL, var,
+  covariate = NULL, strata = NULL, placebo.code = NULL,
+  active.code = NULL, alpha = 0.05, window.width = 0.25, min.pt = NULL,
+  max.pt = NULL, by = 0.05, yrange.lower = NULL, yrange.upper = NULL,
+  xticks = NULL, show.refline = TRUE, refline.color = "grey",
+  show.refline.ac = TRUE, refline.color.ac = "lightblue",
+  estimate.color = "blue", estimate.lty = 1, estimate.lwd = 2,
+  ci.color = "black", ci.lty = 2, ci.lwd = 1, ci.shade = TRUE,
   plot.title = "STEPP: Subgroup Treatment Effect Pattern Plot",
   sub.title = NULL, xlabel = "Biomarker Percentile", ylabel = NULL,
   show.legend = TRUE, legend.loc = "topright",
   legend.text = c("Point Estimate", paste((1 - alpha) * 100,
   " percent Confidence Interval", sep = "")), legend.col = c(estimate.color,
   ci.color), legend.lty = c(estimate.lty, ci.lty),
-  legend.lwd = c(estimate.lwd, ci.lwd), legend.bty = "n",
-  pdf.name = paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = ""),
+  legend.lwd = c(estimate.lwd, ci.lwd), legend.bty = "n", pdf.name = NULL,
   pdf.param = list(width = 11, height = 8.5), par.param = list(mar = c(4, 4,
-  3, 2)), csv.name = paste("STEPP ", as.character(Sys.Date()), ".csv", sep =
-  ""), bm.digits = 2)
+  3, 2)), csv.name = NULL, bm.digits = 2)
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -32,14 +30,14 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{outcome.class}{outcome class of the 'outcome' variable. Can be either "continuous", "binary", or "survival".}
 
-\item{treatment.var}{name of the treatment variable.}
+\item{trt}{name of the treatment variable.}
 
-\item{biomarker.var}{name of the biomarker variable.}
+\item{var}{name of the biomarker variable.}
 
-\item{covariate.var}{vector specifying the covariate variables.
+\item{covariate}{vector specifying the covariate variables.
 This can be added to adjust for in the analysis for survival and continuous outcome variable classes.}
 
-\item{strat.var}{vector specifying the stratification variables. This can be added for the survival outcome variable class.}
+\item{strata}{vector specifying the stratification variables. This can be added for the survival outcome variable class.}
 
 \item{placebo.code}{name of the control group within the treatment variable}
 
@@ -131,10 +129,10 @@ data(input)
 PlotSTEPP(data = input,
          outcome.var = c("PFS", "PFS.CNSR"),
          outcome.class = "survival",
-         treatment.var = "Arm",
-         biomarker.var = "KRAS.exprs",
-         covariate.var = "Sex",
-         strat.var = "Age",
+         trt = "Arm",
+         var = "KRAS.exprs",
+         covariate = "Sex",
+         strata = "Age",
          placebo.code = "CTRL",
          active.code = "TRT",
          csv.name = NULL,

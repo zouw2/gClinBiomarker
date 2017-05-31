@@ -5,10 +5,11 @@
 \title{Summary multiple covariates, test across treatment and/or population}
 \usage{
 SummaryVars(data, var, var.name = NULL, trt = NULL, trt.name = NULL,
-  bep = NULL, bep.name = NULL, bep.indicator = 1, compare.itt = TRUE,
-  itt.name = "ITT", var.class = NULL, ordered.factor.levels.list = NULL,
-  cont.show = c("N", "Mean", "Median", "Min-Max", "NA's"), digits = 2,
-  trt.order = NULL, test.bep = FALSE, na.action = "error")
+  subgroup = NULL, subgroup.name = NULL, subgroup.indicator = 1,
+  compare.subgroup = FALSE, itt.name = "ITT", var.class = NULL,
+  ordered.factor.levels.list = NULL, cont.show = c("N", "Mean", "Median",
+  "Min-Max", "NA's"), digits = 2, trt.order = NULL, test.subgroup = FALSE,
+  na.action = "error")
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
@@ -25,17 +26,18 @@ if it is NULL, the comparison will be performed using all samples.}
 \item{trt.name}{preferred display name of the treatment variable
 If it is NULL, trt will be used.}
 
-\item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)}
+\item{subgroup}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)}
 
-\item{bep.name}{preferred display name of the subpopulation (e.g. biomarker evaluable population).
-If it is NULL, bep will be used.}
+\item{subgroup.name}{preferred display name of the subpopulation (e.g. biomarker evaluable population).
+If it is NULL, subgroup will be used.}
 
-\item{bep.indicator}{In the subpopulation column, which value is used
+\item{subgroup.indicator}{In the subpopulation column, which value is used
 to define the subpopulation (e.g. biomarker evaluable population). 
 Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.}
 
-\item{compare.itt}{whether show summary statistics of BEP and ITT. If it is FALSE,
-the output will show summary statistics of BEP and nonBEP. Default is TRUE.}
+\item{compare.subgroup}{If it is FALSE,
+the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
+will show summary statistics of subgroup vs. ITT}
 
 \item{itt.name}{preferred display name of ITT
 If it is NULL, "ITT" will be used.}
@@ -64,14 +66,14 @@ Possible options are "N" ,"Mean","SEM", "SD","Median",
 order, it can be defined here. All elements in trt.order should be the same
 unique values in the treatment column.}
 
-\item{test.bep}{whether test across subpopulations within treatment arm. If class is numeric,
+\item{test.subgroup}{whether test across subpopulations within treatment arm. If class is numeric,
 kruskal wallis rank sum test will be performed. If class is categorical, fisher's exact test will be performed.
-If class is ordered.factor, cmh test will be performed. The test is always performed between BEP vs nonBEP.
+If class is ordered.factor, cmh test will be performed. The test is always performed between subgroup vs others.
 P value columns will be included in the output table if it is specified as TRUE.
-Testing is not recommendated if either BEP of non-BEP has small sample size.}
+Testing is not recommendated if either subgroup of non-subgroup has small sample size.}
 
 \item{na.action}{defaults to "na.omit". Possible options are "na.omit", "error"
-When it is specified as "na.omit", entries with missing trt or bep
+When it is specified as "na.omit", entries with missing trt or subgroup
 will be automatically removed before calculation.}
 }
 \value{
@@ -81,9 +83,9 @@ output object is a matrix with summary statistics. It can be passed to knitr::ka
 This function performs demographics imbalance checking of a single covariate across multiple groups.
 }
 \note{
-trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
+trt allows for more than 2 levels. However, only 2 levels are allowed for subgroup.
 For more general use, a user can specify trt to get summary statistics for any
-sub-group defination (and leave bep as NULL).
+sub-group defination (and leave subgroup as NULL).
 
 This function provides summary statistics of a vector of clinical covariates. Using default parameters,
 the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
