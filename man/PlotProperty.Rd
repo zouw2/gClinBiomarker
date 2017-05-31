@@ -5,7 +5,7 @@
 \title{Plot Distribution}
 \usage{
 PlotProperty(data, biomarker.var, biomarker.class, var = NULL,
-  var.class = NULL, log2 = FALSE, colour = "blue", add.num = 0,
+  var.class = NULL, log2 = FALSE, col = "blue", add.num = 0,
   text.font = 3, main = "Distribution of", xlab = "", add.lab = "",
   border = NULL, add.cor = FALSE, cor.method = "spearman",
   lowess.line = FALSE, lowess.line.col = "deepskyblue", f = 0.3,
@@ -21,13 +21,13 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{biomarker.class}{can be either "numeric" or "categorical".}
 
-\item{var}{name of a clinical variable. It can be a list of variables. Should be in colnames of \code{data}.}
+\item{var}{name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}.}
 
-\item{var.class}{can be either "numeric" or "categorical". It can be a list of classes. Default is NULL.}
+\item{var.class}{can be either "numeric" or "categorical". It can be a vector of classes. Default is NULL.}
 
-\item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.}
+\item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a vector if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.}
 
-\item{colour}{the color of the line segments or dots. Default is "blue".}
+\item{col}{the color of the line segments or dots. Default is "blue".}
 
 \item{add.num}{the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.}
 

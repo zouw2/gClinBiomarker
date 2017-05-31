@@ -15,9 +15,6 @@ PlotKM(data, tte, cens, var = NULL, var.levels = NULL, var.labels = NULL,
   par.param = list(mar = c(12, 9, 3, 2)))
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
-biomarker variables, treatment indicator, etc.). One patient per row.}
-
 \item{tte}{column name that indicates the time to event variable}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
@@ -44,10 +41,6 @@ The elements in the list should match the multiple columns defined in parameter 
 If parameter bep is not defined, the KM curve(s) will be draw using all samples.
 If bep is defined, the KM curve(s) will be draw using only samples in BEP.}
 
-\item{bep.indicator}{In the subpopulation column, which value is used
-to define the subpopulation (e.g. biomarker evaluable population). 
-Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.}
-
 \item{plot.nrisk}{whether show number of patients at risk at the below the graph. If it is specified as TRUE, number of patients
 at risk will be summarized by subgroup.}
 
@@ -68,8 +61,6 @@ at risk will be summarized by subgroup.}
 \item{plot.median}{whether show median TTE of each subgroup. (won't show if median TTE is NA)}
 
 \item{median.cex}{font size of marked median. This parameter will be ignored if plot.median=FALSE}
-
-\item{digits}{digits for rounding}
 
 \item{y.percentage}{whether show percentage in y axis (0-100) or probability (0-1). Default is probability}
 

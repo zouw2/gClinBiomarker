@@ -12,27 +12,9 @@ CompareKM(data, tte, cens, trt = NULL, bep, bep.indicator = 1,
   pdf.param = list(height = 5), par.param = list(mar = c(4, 4, 3, 2)), ...)
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
-biomarker variables, treatment indicator, etc.). One patient per row.}
-
 \item{tte}{column name that indicates the time to event variable}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
-
-\item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
-if it is NULL, the comparison will be performed using all samples.}
-
-\item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)}
-
-\item{bep.indicator}{In the subpopulation column, which value is used
-to define the subpopulation (e.g. biomarker evaluable population). 
-Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.}
-
-\item{bep.name}{preferred display name of the subpopulation (e.g. biomarker evaluable population).
-If it is NULL, bep will be used.}
-
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
 
 \item{col.itt, col.bep, col.ci}{Color for itt curve, bep curve and confidence interval curve (CI)}
 
