@@ -43,7 +43,7 @@
 #' @importFrom survival survfit  
 #'
 #' @inheritParams CompareKM
-#' @inheritParams SumSingle
+#' @inheritParams SummarySingle
 #' 
 #' @examples
 #' data(input)
