@@ -109,7 +109,7 @@ PlotTabForestBiomarker <- function(data,
   possible.class <-c("categorical","numeric")
   if(is.null(var.class)||!all(var.class%in%possible.class)){
     if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
-    if(class(data[,var])%in%c("logical"))data[,var] <- "character"
+    if(class(data[,var])%in%c("logical"))class(data[,var]) <- "character"
     if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
   }
   

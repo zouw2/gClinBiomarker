@@ -66,7 +66,7 @@ SummaryVars <- function (data, var, var.name = NULL,
   
   k.var <- length(var)
   for(i in 1:k.var){
-   tmp <- try(SummarySingle (data=data, var=var[i], 
+   tmp <- try(SummarySingle(data=data, var=var[i], 
 			trt = trt, trt.name = trt.name, 
                         subgroup = subgroup, subgroup.name = subgroup.name, subgroup.indicator=subgroup.indicator, 
 			compare.subgroup=compare.subgroup, itt.name=itt.name,

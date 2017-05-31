@@ -85,7 +85,7 @@ SummarySingle <- function (data, var,
   possible.class <-c("categorical","numeric","ordered.factor")
   if(is.null(var.class)||!all(var.class%in%possible.class)){
   if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
-  if(class(data[,var])%in%c("logical"))data[,var] <- "character"
+  if(class(data[,var])%in%c("logical"))class(data[,var]) <- "character"
   if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
   }
   if(is.null(var.class)||!all(var.class%in%possible.class))stop(paste('var.class should be in', paste(possible.class,collapse=",")))
@@ -158,10 +158,12 @@ SummarySingle <- function (data, var,
       }
       if(!compare.itt){
         subgroup.l <- paste0(subgroup.name,"_", c(subgroup.indicator,paste0("not_",subgroup.indicator)))
+        
+        tmp <- unique(data[which(!data[,subgroup]%in%subgroup.indicator),subgroup])
+        if(length(tmp==1)) subgroup.l[2] <- paste0(subgroup.name,"_",  tmp)
         data[,subgroup.l[1]] <- ifelse(data[,subgroup]%in%subgroup.indicator,1,0)
         data[,subgroup.l[2]] <- ifelse(data[,subgroup]%in%subgroup.indicator,0,1)
-        tmp <- unique(data[which(!data[,subgroup]%in%subgroup.indicator),subgroup])
-        if(length(tmp==1)) subgroup.l[2] <- tmp
+        
         subgroup <- subgroup.l
         subgroup.name <- subgroup.l
       }
