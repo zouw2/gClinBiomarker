@@ -8,10 +8,10 @@
 #' biomarker variables, treatment indicator, etc.). One patient per row.
 #' @param biomarker.var name of the biomarker variable. Should be in colnames of \code{data}.
 #' @param biomarker.class can be either "numeric" or "categorical".
-#' @param var name of a clinical variable. It can be a list of variables. Should be in colnames of \code{data}.
-#' @param var.class can be either "numeric" or "categorical". It can be a list of classes. Default is NULL.
-#' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a list if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.
-#' @param colour the color of the line segments or dots. Default is "blue".
+#' @param var name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}.
+#' @param var.class can be either "numeric" or "categorical". It can be a vector of classes. Default is NULL.
+#' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a vector if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.
+#' @param col the color of the line segments or dots. Default is "blue".
 #' @param add.num the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.
 #' @param text.font legend text font size. Default is 3.
 #' @param main the main title. Default is \code{"Distribution of"}.
@@ -46,7 +46,7 @@ PlotProperty <- function(data,
                          var=NULL,
                          var.class=NULL,
                          log2=FALSE,
-                         colour="blue",
+                         col="blue",
                          add.num=0,
                          text.font=3,
                          main="Distribution of",
@@ -116,12 +116,12 @@ PlotProperty <- function(data,
         # Create a plot for each variable
         for (i in 1:length(vars)) {
             # if continues, then density plot
-            if (classes[[i]] == "numeric") {
-                V <- data[, vars[[i]]] + add.num
+            if (classes[i] == "numeric") {
+                V <- data[, vars[i]] + add.num
 
-                if (log2[[i]] == TRUE) {
-                    if (any(data[, vars[[i]]] <= 0, na.rm=T)) {
-                        stop(paste(vars[[i]], " contains values less than or equal 0!
+                if (log2[i] == TRUE) {
+                    if (any(data[, vars[i]] <= 0, na.rm=T)) {
+                        stop(paste(vars[i], " contains values less than or equal 0!
                        No log transformation possible! You may set add.num to add a constant to all values."))
                     }
                     V <- log2(V)
@@ -141,22 +141,22 @@ PlotProperty <- function(data,
                 old.xlab <- xlab
 
                 if (xlab == "") {
-                    xlab <- paste(vars[[i]], ifelse(log2[[i]] == TRUE, "(log2 scale)", ""))
+                    xlab <- paste(vars[i], ifelse(log2[i] == TRUE, "(log2 scale)", ""))
                 }
 
-                hist(V, prob=T, main=paste(main, vars[[i]], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+                hist(V, prob=T, main=paste(main, vars[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
 
                 xlab <- old.xlab
 
-                lines(density(V, na.rm=T), lwd=2, col=colour)
+                lines(density(V, na.rm=T), lwd=2, col=col)
                 legend("topright", leg.text, bty="n", text.font=text.font)
                 mtext(side=3, line=0, paste("N=", sum(!is.na(V))))
                 box()
             # if categorical, then barplot
             } else {
-                    tab <- table(data[, vars[[i]]])
+                    tab <- table(data[, vars[i]])
                     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[[i]], sep=" "))
+                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[i], sep=" "))
             }
         }
 
@@ -169,7 +169,7 @@ PlotProperty <- function(data,
             BV <- data[, biomarker.var] + add.num
             j <- 1
 
-            if (log2[[j]] == TRUE) {
+            if (log2[j] == TRUE) {
                 if (any(data[, biomarker.var] <= 0, na.rm=T)) {
                     stop(paste(biomarker.var, " contains values less than or equal 0!
                        No log transformation possible! You may set add.num to add a constant to all values."))
@@ -179,13 +179,13 @@ PlotProperty <- function(data,
 
             for (i in 1:length(var)) {
                 # if clinical variable is numeric, then scatteplot
-                if (var.class[[i]] == "numeric") {
+                if (var.class[i] == "numeric") {
                     j <- j+1
-                    V <- data[, var[[i]]] + add.num
+                    V <- data[, var[i]] + add.num
 
-                    if (log2[[j]] == TRUE) {
-                        if (any(data[, var[[i]]] <= 0, na.rm=T)) {
-                            stop(paste(var[[i]], " contains values less than or equal 0!
+                    if (log2[j] == TRUE) {
+                        if (any(data[, var[i]] <= 0, na.rm=T)) {
+                            stop(paste(var[i], " contains values less than or equal 0!
                                        No log transformation possible! You may set add.num to add a constant to all values."))
                         }
                         V <- log2(V)
@@ -193,9 +193,9 @@ PlotProperty <- function(data,
 
                     x <- V
                     y <- BV
-                    plot(x, y, ylab=paste(biomarker.var, add.lab, ifelse(log2[[1]] == TRUE, "(log2 scale)", "")),
-                         xlab=paste(var[[i]], ifelse(log2[[j]] == TRUE, "(log2 scale)", "")),
-                         main=paste(biomarker.var, "by", var[[i]]), col=colour)
+                    plot(x, y, ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")),
+                         xlab=paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", "")),
+                         main=paste(biomarker.var, "by", var[i]), col=col)
                     grid(nx=NULL, ny=NULL)
 
                     if(lowess.line) {
@@ -203,27 +203,27 @@ PlotProperty <- function(data,
                     }
 
                 # if clinical variable is categorical, then boxplot
-                } else if (var.class[[i]] == "categorical") {
-                    x <- factor(data[, var[[i]]])
+                } else if (var.class[i] == "categorical") {
+                    x <- factor(data[, var[i]])
                     xx <- jitter(as.numeric(x))
                     yy <- BV
                     nlev <- nlevels(x)
                     ylim <- range(yy, na.rm=T)
 
-                    if (is.null(colour)){
-                        colour <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
-                        colour <- colour[as.numeric(x)]
+                    if (is.null(col)){
+                        col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
+                        col <- col[as.numeric(x)]
                     }
 
-                    if (na.exclude(colour)[1] == FALSE) {
-                        colour <- NULL
+                    if (na.exclude(col)[1] == FALSE) {
+                        col <- NULL
                     }
 
-                    bx <- boxplot(as.formula(paste("yy ~ factor(", var[[i]], ")")), data=data,
-                                  main=paste(biomarker.var, "by", var[[i]]),
+                    bx <- boxplot(as.formula(paste("yy ~ factor(", var[i], ")")), data=data,
+                                  main=paste(biomarker.var, "by", var[i]),
                                   border=border, ylim=ylim, outline=F, axes=F,
-                                  ylab=paste(biomarker.var, add.lab, ifelse(log2[[1]] == TRUE, "(log2 scale)", "")))
-                    points(xx, yy, col=colour)
+                                  ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")))
+                    points(xx, yy, col=col)
 
                     if (add.cor) {
                         mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
@@ -253,13 +253,13 @@ PlotProperty <- function(data,
             for (i in 1:length(var)) {
                 j <- 1
                 # if clinical variable is numeric, then boxplot
-                if (var.class[[i]] == "numeric") {
+                if (var.class[i] == "numeric") {
 
-                    V <- data[, var[[i]]] + add.num
+                    V <- data[, var[i]] + add.num
 
-                    if (log2[[j]] == TRUE) {
-                        if (any(data[, var[[i]]] <= 0, na.rm=T)) {
-                            stop(paste(var[[i]], " contains values less than or equal 0!
+                    if (log2[j] == TRUE) {
+                        if (any(data[, var[i]] <= 0, na.rm=T)) {
+                            stop(paste(var[i], " contains values less than or equal 0!
                        No log transformation possible! You may set add.num to add a constant to all values."))
                         }
                         V <- log2(V)
@@ -271,20 +271,20 @@ PlotProperty <- function(data,
                     nlev <- nlevels(x)
                     ylim <- range(yy, na.rm=T)
 
-                    if (is.null(colour)){
-                        colour <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
-                        colour <- col[as.numeric(x)]
+                    if (is.null(col)){
+                        col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
+                        col <- col[as.numeric(x)]
                     }
 
-                    if (na.exclude(colour)[1] == FALSE) {
-                        colour <- NULL
+                    if (na.exclude(col)[1] == FALSE) {
+                        col <- NULL
                     }
 
                     bx <- boxplot(as.formula(paste("yy ~ factor(", biomarker.var, ")")), data=data,
-                                  main=paste(var[[i]], "by", biomarker.var),
+                                  main=paste(var[i], "by", biomarker.var),
                                   border=border, ylim=ylim, outline=F, axes=F,
-                                  ylab=paste(var[[i]], add.lab, ifelse(log2[[j]] == TRUE, "(log2 scale)", "")))
-                    points(xx, yy, col=colour)
+                                  ylab=paste(var[i], add.lab, ifelse(log2[j] == TRUE, "(log2 scale)", "")))
+                    points(xx, yy, col=col)
 
                     if (add.cor) {
                         mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
@@ -309,14 +309,14 @@ PlotProperty <- function(data,
                     j <- j+1
 
                 # if clinical variable is categorical, then barplot
-                } else if (var.class[[i]] == "categorical") {
+                } else if (var.class[i] == "categorical") {
                     tab <- table(data[, biomarker.var])
                     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
                     barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "))
 
-                    tab <- table(data[, var[[i]]])
+                    tab <- table(data[, var[i]])
                     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[[i]], sep=" "))
+                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "))
                 }
             }
         }

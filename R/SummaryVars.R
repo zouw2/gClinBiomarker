@@ -21,38 +21,38 @@
 #' 
 #' @return output object is a matrix with summary statistics. It can be passed to knitr::kable(). 
 #' 
-#' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
+#' @note trt allows for more than 2 levels. However, only 2 levels are allowed for subgroup.
 #' For more general use, a user can specify trt to get summary statistics for any
-#' sub-group defination (and leave bep as NULL).
+#' sub-group defination (and leave subgroup as NULL).
 #' @note This function provides summary statistics of a vector of clinical covariates. Using default parameters,
 #' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
 #' within treatment arm.
 #' 
-#' @inheritParams SumSingle
+#' @inheritParams SummarySingle
 #' 
 #' @export
 
 SummaryVars <- function (data, var, var.name = NULL, 
 			trt = NULL, trt.name = NULL, 
-      bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,itt.name="ITT",
+      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="ITT",
 			var.class=NULL, ordered.factor.levels.list=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
-			digits = 2, trt.order = NULL, test.bep=FALSE, 
+			digits = 2, trt.order = NULL, test.subgroup=FALSE, 
 				 na.action = "error") 
 {
   stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
-  if(is.null(trt) & is.null(bep))stop("trt and bep are both empty! need to specify at least one of them")
-  if(!all(c(var, trt, bep) %in% colnames(data)))stop("var, trt and bep should have matched column names in the input data!")
-  if(!is.null(bep)) if(nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
+  if(is.null(trt) & is.null(subgroup))stop("trt and subgroup are both empty! need to specify at least one of them")
+  if(!all(c(var, trt, subgroup) %in% colnames(data)))stop("var, trt and subgroup should have matched column names in the input data!")
+  if(!is.null(subgroup)) if(nlevels(as.factor(data[,subgroup]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",
                      "Min","Max" ,"Min-Max","1st Qrtl.","3rd Qrtl.",
                      "IQR" ,"NA's")
   if(length(setdiff(cont.show, possible.show))>0) 
     stop(paste("possible cont.show elements are:", possible.show ))
-  if(test.bep & is.null(bep)){
-    test.bep <- FALSE
-    message("test.bep=TRUE but bep is not specified. Reset test.bep as FALSE")
+  if(test.subgroup & is.null(subgroup)){
+    test.subgroup <- FALSE
+    message("test.subgroup=TRUE but subgroup is not specified. Reset test.subgroup as FALSE")
   }
 
  
@@ -66,13 +66,13 @@ SummaryVars <- function (data, var, var.name = NULL,
   
   k.var <- length(var)
   for(i in 1:k.var){
-   tmp <- try(SumSingle (data=data, var=var[i], 
+   tmp <- try(SummarySingle(data=data, var=var[i], 
 			trt = trt, trt.name = trt.name, 
-                        bep = bep, bep.name = bep.name, bep.indicator=bep.indicator, 
-			compare.itt=compare.itt, itt.name=itt.name,
+                        subgroup = subgroup, subgroup.name = subgroup.name, subgroup.indicator=subgroup.indicator, 
+			compare.subgroup=compare.subgroup, itt.name=itt.name,
 			var.class=var.class[i], ordered.factor.levels=ordered.factor.levels.list[[var[i]]],
 			cont.show = cont.show, 
-			digits = digits, trt.order = trt.order, test.bep=test.bep, 
+			digits = digits, trt.order = trt.order, test.subgroup=test.subgroup, 
 				 na.action = na.action))
    if(class(tmp)=="try-error") stop(paste("error in", var[i] ))
    if(i==1)kcol <- ncol(tmp)

@@ -11,12 +11,12 @@
 #' if it is NULL, the comparison will be performed using all samples.
 #' @param trt.name preferred display name of the treatment variable
 #' If it is NULL, trt will be used.
-#' @param bep name of the column which indicates subpopulation (e.g. biomarker evaluable population)
-#' @param bep.name preferred display name of the subpopulation (e.g. biomarker evaluable population).
-#' If it is NULL, bep will be used.
+#' @param subgroup name of the column which indicates subpopulation (e.g. biomarker evaluable population)
+#' @param subgroup.name preferred display name of the subpopulation (e.g. biomarker evaluable population).
+#' If it is NULL, subgroup will be used.
 #' @param itt.name preferred display name of ITT
 #' If it is NULL, "ITT" will be used.
-#' @param bep.indicator In the subpopulation column, which value is used
+#' @param subgroup.indicator In the subpopulation column, which value is used
 #' to define the subpopulation (e.g. biomarker evaluable population). 
 #' Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.
 #' @param var.class class of the variable. possible categories are "numeric", "categorical" and
@@ -36,55 +36,56 @@
 #' order, it can be defined here. All elements in trt.order should be the same
 #' unique values in the treatment column.
 #' @param na.action defaults to "na.omit". Possible options are "na.omit", "error"
-#' When it is specified as "na.omit", entries with missing trt or bep
+#' When it is specified as "na.omit", entries with missing trt or subgroup
 #' will be automatically removed before calculation.
-#' @param compare.itt whether show summary statistics of BEP and ITT. If it is FALSE,
-#' the output will show summary statistics of BEP and nonBEP. Default is TRUE.
-#' @param test.bep whether test across subpopulations within treatment arm. If class is numeric,
+#' @param compare.subgroup If it is FALSE,
+#' the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
+#' will show summary statistics of subgroup vs. ITT
+#' @param test.subgroup whether test across subpopulations within treatment arm. If class is numeric,
 #' kruskal wallis rank sum test will be performed. If class is categorical, fisher's exact test will be performed.
-#' If class is ordered.factor, cmh test will be performed. The test is always performed between BEP vs nonBEP.
+#' If class is ordered.factor, cmh test will be performed. The test is always performed between subgroup vs others.
 #' P value columns will be included in the output table if it is specified as TRUE.
-#' Testing is not recommendated if either BEP of non-BEP has small sample size.
+#' Testing is not recommendated if either subgroup of non-subgroup has small sample size.
 #' 
 #' @note This function provides summary statistics of a single clinical covariate. Using default parameters,
 #' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
 #' within treatment arm
-#' @note trt allows for more than 2 levels. However, only 2 levels are allowed for bep.
+#' @note trt allows for more than 2 levels. However, only 2 levels are allowed for subgroup.
 #' For more general use, a user can specify trt to get summary statistics for any
-#' sub-group defination (and leave bep as NULL).
+#' sub-group defination (and leave subgroup as NULL).
 #' 
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
 #' @importFrom coin cmh_test pvalue
 #' 
 #' @export
 
-SumSingle <- function (data, var, 
+SummarySingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
-      bep = NULL, bep.name = NULL, bep.indicator=1, compare.itt=TRUE,itt.name="ITT",
+      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="ITT",
 			var.class=NULL, ordered.factor.levels=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
-			digits = 2, trt.order = NULL, test.bep=FALSE, 
+			digits = 2, trt.order = NULL, test.subgroup=FALSE, 
 				 na.action = "error") 
 {
   stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
-  if(is.null(trt) & is.null(bep))stop("trt and bep are both empty! need to specify at least one of them")
-  if(!all(c(var, trt, bep) %in% colnames(data)))stop("var, trt and bep should have matched column names in the input data!")
-  if(!is.null(bep)) if(nlevels(as.factor(data[,bep]))<2)stop("subpopulation column has only one unique value!")
+  if(is.null(trt) & is.null(subgroup))stop("trt and subgroup are both empty! need to specify at least one of them")
+  if(!all(c(var, trt, subgroup) %in% colnames(data)))stop("var, trt and subgroup should have matched column names in the input data!")
+  if(!is.null(subgroup)) if(nlevels(as.factor(data[,subgroup]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",
                      "Min","Max" ,"Min-Max","1st Qrtl.","3rd Qrtl.",
                      "IQR" ,"NA's")
   if(length(setdiff(cont.show, possible.show))>0) 
     stop(paste("possible cont.show elements are:", possible.show ))
-  if(test.bep & is.null(bep)){
-    test.bep <- FALSE
-    message("test.bep=TRUE but bep is not specified. Reset test.bep as FALSE")
+  if(test.subgroup & is.null(subgroup)){
+    test.subgroup <- FALSE
+    message("test.subgroup=TRUE but subgroup is not specified. Reset test.subgroup as FALSE")
   }
   
   possible.class <-c("categorical","numeric","ordered.factor")
   if(is.null(var.class)||!all(var.class%in%possible.class)){
   if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
-  if(class(data[,var])%in%c("logical"))data[,var] <- "character"
+  if(class(data[,var])%in%c("logical"))class(data[,var]) <- "character"
   if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
   }
   if(is.null(var.class)||!all(var.class%in%possible.class))stop(paste('var.class should be in', paste(possible.class,collapse=",")))
@@ -100,7 +101,7 @@ SumSingle <- function (data, var,
     }
   }
   
-  if( (!is.null(bep))) bep.name <- ifelse(is.null(bep.name), bep, bep.name)
+  if( (!is.null(subgroup))) subgroup.name <- ifelse(is.null(subgroup.name), subgroup, subgroup.name)
   if( (!is.null(trt))) trt.name <- ifelse(is.null(trt.name), trt, trt.name)
   
 
@@ -115,15 +116,15 @@ SumSingle <- function (data, var,
     }
   }
 
-# bep missing value
-  if (!is.null(bep)) {
-    if (length(bep) == 1 && bep %in% colnames(data)) {
-      if (any(is.na(data[, bep]))) {
+# subgroup missing value
+  if (!is.null(subgroup)) {
+    if (length(subgroup) == 1 && subgroup %in% colnames(data)) {
+      if (any(is.na(data[, subgroup]))) {
         if (na.action == "na.omit") {
-          data <- data[complete.cases(data[, bep]), ]
-          warning("There were observations without 'bep' information! These were omitted (na.action=\"na.omit\")!")
+          data <- data[complete.cases(data[, subgroup]), ]
+          warning("There were observations without 'subgroup' information! These were omitted (na.action=\"na.omit\")!")
         }
-        else stop("There were observations without 'bep' information!")
+        else stop("There were observations without 'subgroup' information!")
       }
     }
   }
@@ -145,27 +146,31 @@ SumSingle <- function (data, var,
     trt.lev <- levels(data$trt)
   }
 
-  # if bep is NULL, create a column with all 1s as indicator
+  # if subgroup is NULL, create a column with all 1s as indicator
  
-    
-    if (!is.null(bep)) {
+   compare.itt <- !compare.subgroup 
+    if (!is.null(subgroup)) {
       if(compare.itt){
-        data[,bep] <- ifelse(data[,bep]%in%bep.indicator,1,0)
+        data[,subgroup] <- ifelse(data[,subgroup]%in%subgroup.indicator,1,0)
         data$ITT <- rep(1, nrow(data))
-        bep.name <- c(itt.name,bep.name)
-        bep <- c("ITT",bep)
+        subgroup.name <- c(itt.name,subgroup.name)
+        subgroup <- c("ITT",subgroup)
       }
       if(!compare.itt){
-        bep.l <- paste0(bep.name,"_", c(bep.indicator,paste0("not_",bep.indicator)))
-        data[,bep.l[1]] <- ifelse(data[,bep]%in%bep.indicator,1,0)
-        data[,bep.l[2]] <- ifelse(data[,bep]%in%bep.indicator,0,1)
-        bep <- bep.l
-        bep.name <- bep.l
+        subgroup.l <- paste0(subgroup.name,"_", c(subgroup.indicator,paste0("not_",subgroup.indicator)))
+        
+        tmp <- unique(data[which(!data[,subgroup]%in%subgroup.indicator),subgroup])
+        if(length(tmp==1)) subgroup.l[2] <- paste0(subgroup.name,"_",  tmp)
+        data[,subgroup.l[1]] <- ifelse(data[,subgroup]%in%subgroup.indicator,1,0)
+        data[,subgroup.l[2]] <- ifelse(data[,subgroup]%in%subgroup.indicator,0,1)
+        
+        subgroup <- subgroup.l
+        subgroup.name <- subgroup.l
       }
   }
   
   # output matrix (trt by population)
-  res <- matrix(ncol = sum(1, length(trt.lev) * length(bep)), 
+  res <- matrix(ncol = sum(1, length(trt.lev) * length(subgroup)), 
                 nrow = 0)
 
   if (var.class== "categorical") {
@@ -182,75 +187,75 @@ SumSingle <- function (data, var,
   res.ind <- 1
   for (i in 1:length(trt.lev)) {
     trt.mat <- data[which(data$trt == trt.lev[i]), ]
-    for (j in 1:length(bep.name)) {
-      bep.mat <- trt.mat[which(trt.mat[, bep[j]]==1), ]
-      Nna <- length(which(is.na(bep.mat[, var])))
-      Na <- nrow(bep.mat) - Nna
+    for (j in 1:length(subgroup.name)) {
+      subgroup.mat <- trt.mat[which(trt.mat[, subgroup[j]]==1), ]
+      Nna <- length(which(is.na(subgroup.mat[, var])))
+      Na <- nrow(subgroup.mat) - Nna
 
       if (var.class%in%c("categorical","ordered.factor") ){
-        res.bep <- data.frame(1)
-          res.bep$Total <- Na
-          res.bep$"NA's" <- Nna
+        res.subgroup <- data.frame(1)
+          res.subgroup$Total <- Na
+          res.subgroup$"NA's" <- Nna
           for (k in Lev) {
-            res.bep[, k] <- length(which(bep.mat[, var] ==  k))
-            res.bep[, k] <- paste(res.bep[, k], " ", 
-                                    "(", 100 * round(res.bep[, k]/Na, digits + 
+            res.subgroup[, k] <- length(which(subgroup.mat[, var] ==  k))
+            res.subgroup[, k] <- paste(res.subgroup[, k], " ", 
+                                    "(", 100 * round(res.subgroup[, k]/Na, digits + 
                                                        2), "%)", sep = "")
           }
         #}
-        res.bep <- t(res.bep[, -1])
+        res.subgroup <- t(res.subgroup[, -1])
       } else {
-        smry <- summary(bep.mat[, var], digits = 16)
-        res.bep <- data.frame(1)
-          res.bep$N <- Na
-          res.bep$Mean <- round(ifelse(is.nan(smry["Mean"]), 
+        smry <- summary(subgroup.mat[, var], digits = 16)
+        res.subgroup <- data.frame(1)
+          res.subgroup$N <- Na
+          res.subgroup$Mean <- round(ifelse(is.nan(smry["Mean"]), 
                                               NA, smry["Mean"]),  digits=digits)
-          res.bep$SEM <- round(sd(bep.mat[, var], 
-                                         na.rm = TRUE)/sqrt(length(which(!is.na(bep.mat[, 
+          res.subgroup$SEM <- round(sd(subgroup.mat[, var], 
+                                         na.rm = TRUE)/sqrt(length(which(!is.na(subgroup.mat[, 
                                                             var])))),  digits=digits)
-          res.bep$SD <- round(sd(bep.mat[, var], 
+          res.subgroup$SD <- round(sd(subgroup.mat[, var], 
                                         na.rm = TRUE),  digits=digits)
-          res.bep$Median <- round(smry["Median"], 
+          res.subgroup$Median <- round(smry["Median"], 
                                          digits=digits)
-          res.bep$Min <- round(smry["Min."],  digits=digits)
-          res.bep$Max <- round(smry["Max."],  digits=digits)
+          res.subgroup$Min <- round(smry["Min."],  digits=digits)
+          res.subgroup$Max <- round(smry["Max."],  digits=digits)
           if (any(is.na(smry[c("Min.", "Max.")]))) 
-            res.bep$"Min-Max" <- NA
-          else res.bep$"Min-Max" <- paste(round(smry["Min."], 
+            res.subgroup$"Min-Max" <- NA
+          else res.subgroup$"Min-Max" <- paste(round(smry["Min."], 
                                                         digits=digits), 
 					round(smry["Max."],  digits=digits), 
                                           sep = "...")
         
-          res.bep$"1st Qrtl." <- round(smry["1st Qu."],  digits=digits)
-          res.bep$"3rd Qrtl." <- round(smry["3rd Qu."],   digits=digits)
-          res.bep$IQR <- round(smry["3rd Qu."] -   smry["1st Qu."],  digits=digits)
-          res.bep$"NA's" <- Nna
-          res.bep <- t(res.bep[cont.show])
+          res.subgroup$"1st Qrtl." <- round(smry["1st Qu."],  digits=digits)
+          res.subgroup$"3rd Qrtl." <- round(smry["3rd Qu."],   digits=digits)
+          res.subgroup$IQR <- round(smry["3rd Qu."] -   smry["1st Qu."],  digits=digits)
+          res.subgroup$"NA's" <- Nna
+          res.subgroup <- t(res.subgroup[cont.show])
 
       }
       if (j == 1) 
-        p.res <- res.bep
-      else p.res <- cbind(p.res, res.bep)
+        p.res <- res.subgroup
+      else p.res <- cbind(p.res, res.subgroup)
     }
-    colnames(p.res) <- bep.name
-    # If all ITT are in BEP, no test can be performed
-    if(test.bep){
-      if(length(which(trt.mat[,bep[2]]!=1))==0){
-        test.bep  <-  FALSE
-        message("All ITT patients are in BEP. bep.test is set to FALSE")
+    colnames(p.res) <- subgroup.name
+    # If all ITT are in subgroup, no test can be performed
+    if(test.subgroup){
+      if(length(which(trt.mat[,subgroup[2]]!=1))==0){
+        test.subgroup  <-  FALSE
+        message("All ITT patients are in subgroup. subgroup.test is set to FALSE")
       }  
     }
-    if(test.bep){
+    if(test.subgroup){
       if(var.class=="numeric")
-        tt <- kruskal.test(list(trt.mat[which(trt.mat[,bep[2]]!=1),var],
-                     trt.mat[which(trt.mat[,bep[2]]==1),var]))$p.value
+        tt <- kruskal.test(list(trt.mat[which(trt.mat[,subgroup[2]]!=1),var],
+                     trt.mat[which(trt.mat[,subgroup[2]]==1),var]))$p.value
     if(var.class=="categorical")
-      tt <- fisher.test(table(trt.mat[,c(var,bep[2])]))$p.value
+      tt <- fisher.test(table(trt.mat[,c(var,subgroup[2])]))$p.value
     if(var.class=="ordered.factor"){
       #require(coin)
       tmp.mat <- trt.mat
-      tmp.mat[[bep[2]]] <- as.factor(tmp.mat[[bep[2]]])
-      tt <- pvalue(cmh_test(as.formula(paste0(var,' ~ ',bep[2])),data=tmp.mat))
+      tmp.mat[[subgroup[2]]] <- as.factor(tmp.mat[[subgroup[2]]])
+      tt <- pvalue(cmh_test(as.formula(paste0(var,' ~ ',subgroup[2])),data=tmp.mat))
     }
     p.res <- cbind(p.res, pvalue=c(round(tt,digits),rep("",nrow(p.res)-1)))
   }
