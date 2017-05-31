@@ -21,7 +21,7 @@
 #' @importFrom graphics plot axis mtext grid box polygon lines legend
 #' @importFrom survival survfit  
 #'
-#' @inheritParams SumSingle
+#' @inheritParams SummarySingle
 #' 
 #'
 #' @examples

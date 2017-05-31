@@ -15,6 +15,9 @@ PlotKM(data, tte, cens, var = NULL, var.levels = NULL, var.labels = NULL,
   par.param = list(mar = c(12, 9, 3, 2)))
 }
 \arguments{
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.}
+
 \item{tte}{column name that indicates the time to event variable}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
@@ -61,6 +64,8 @@ at risk will be summarized by subgroup.}
 \item{plot.median}{whether show median TTE of each subgroup. (won't show if median TTE is NA)}
 
 \item{median.cex}{font size of marked median. This parameter will be ignored if plot.median=FALSE}
+
+\item{digits}{digits for rounding}
 
 \item{y.percentage}{whether show percentage in y axis (0-100) or probability (0-1). Default is probability}
 

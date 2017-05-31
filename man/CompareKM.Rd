@@ -12,9 +12,18 @@ CompareKM(data, tte, cens, trt = NULL, bep, bep.indicator = 1,
   pdf.param = list(height = 5), par.param = list(mar = c(4, 4, 3, 2)), ...)
 }
 \arguments{
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.}
+
 \item{tte}{column name that indicates the time to event variable}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
+
+\item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
+if it is NULL, the comparison will be performed using all samples.}
+
+\item{itt.name}{preferred display name of ITT
+If it is NULL, "ITT" will be used.}
 
 \item{col.itt, col.bep, col.ci}{Color for itt curve, bep curve and confidence interval curve (CI)}
 
