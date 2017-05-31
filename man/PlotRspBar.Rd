@@ -50,6 +50,11 @@ in subgroups defined by var (e.g. categorical demographics or biomarker variable
 . If this is TRUE, paramemeter var should be specified. If this is FALSE,
 parameters var, var.name, show.combine.var will be ignored}
 
+\item{var}{a vector of covariate names - the clinical covariate to test}
+
+\item{var.name}{preferred display names of the clinical covariates 
+If it is NULL, var will be used.}
+
 \item{show.combine.var}{if this is TRUE, will show summarization of combined data across var levels as well}
 
 \item{main}{main title of the barplot. Default is "Association of biomarker expression with response rate".}

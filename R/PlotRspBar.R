@@ -35,7 +35,7 @@
 #' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "rsp.barplot.pdf".
 #' @param pdf.param list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}. 
 #' @param par.param list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
-#' @inherit SummaryVars
+#' @inheritParams SummaryVars
 #' 
 #' @return a bar plot that summarizes response outcome
 #' 
