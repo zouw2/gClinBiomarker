@@ -4,7 +4,7 @@
 \alias{PlotProperty}
 \title{Plot Distribution}
 \usage{
-PlotProperty(data, biomarker.var, biomarker.class, var = NULL,
+PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
   var.class = NULL, log2 = FALSE, col = "blue", add.num = 0,
   text.font = 3, main = "Distribution of", xlab = "", add.lab = "",
   border = NULL, add.cor = FALSE, cor.method = "spearman",
@@ -19,11 +19,11 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{biomarker.var}{name of the biomarker variable. Should be in colnames of \code{data}.}
 
-\item{biomarker.class}{can be either "numeric" or "categorical".}
+\item{biomarker.class}{can be either "numeric" or "categorical". If NULL (default), the class will be defined automatically.}
 
-\item{var}{name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}.}
+\item{var}{name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}. Default is NULL.}
 
-\item{var.class}{can be either "numeric" or "categorical". It can be a vector of classes. Default is NULL.}
+\item{var.class}{can be either "numeric" or "categorical". It can be a vector of classes. If NULL (default) and var is not NULL, then \code{var.class} will be defined automatically.}
 
 \item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a vector if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.}
 
@@ -69,8 +69,8 @@ Plot biomarker or clinical variables properties.
 \examples{
 data(input)
 PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=list(TRUE, FALSE), pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE), pdf.name=NULL)
+PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
 
 }
 \author{

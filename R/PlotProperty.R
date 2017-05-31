@@ -7,9 +7,9 @@
 #' @param data input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 #' biomarker variables, treatment indicator, etc.). One patient per row.
 #' @param biomarker.var name of the biomarker variable. Should be in colnames of \code{data}.
-#' @param biomarker.class can be either "numeric" or "categorical".
-#' @param var name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}.
-#' @param var.class can be either "numeric" or "categorical". It can be a vector of classes. Default is NULL.
+#' @param biomarker.class can be either "numeric" or "categorical". If NULL (default), the class will be defined automatically.
+#' @param var name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}. Default is NULL.
+#' @param var.class can be either "numeric" or "categorical". It can be a vector of classes. If NULL (default) and var is not NULL, then \code{var.class} will be defined automatically.
 #' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a vector if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.
 #' @param col the color of the line segments or dots. Default is "blue".
 #' @param add.num the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.
@@ -35,14 +35,14 @@
 #' @examples
 #' data(input)
 #' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, pdf.name=NULL)
-#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=list(TRUE, FALSE), pdf.name=NULL)
-#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=list("Arm","OS"), var.class=list("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
+#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE), pdf.name=NULL)
+#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
 #'
 #' @export
 
 PlotProperty <- function(data,
                          biomarker.var,
-                         biomarker.class,
+                         biomarker.class=NULL,
                          var=NULL,
                          var.class=NULL,
                          log2=FALSE,
@@ -63,11 +63,11 @@ PlotProperty <- function(data,
                          par.param=list(mar=c(4,4,3,2))) {
 
     # Check the data
-    if (!(is.data.frame(data))) {
+    if (!is.data.frame(data)) {
         stop("An input is not a data frame!")
     }
 
-    if ((is.null(biomarker.var) & is.null(var)))  {
+    if (is.null(biomarker.var) & is.null(var))  {
         stop("At least one biomarker variable or clinical variable should be provided!")
     }
 
@@ -75,7 +75,7 @@ PlotProperty <- function(data,
         stop("Only one biomarker variable should be given!")
     }
 
-    if (length(biomarker.class) > 1 ) {
+    if (!is.null(biomarker.class) & length(biomarker.class) > 1 ) {
         stop("Only one class of biomarker variable should be given!")
     }
 
@@ -91,7 +91,7 @@ PlotProperty <- function(data,
 
     if (length(biomarker.class) != 0) {
         if (!all(biomarker.class %in% c("numeric", "categorical"))) {
-            stop("The class of the biomarker variables can be only 'numeric' or 'categorical'. Please check spelling!")
+            stop("The class of the biomarker variables can be only 'numeric' or 'categorical'!")
         }
     }
 
@@ -99,6 +99,33 @@ PlotProperty <- function(data,
         if (!all(var.class %in% c("numeric", "categorical"))) {
             stop("The class of the clinical variables can be only 'numeric' or 'categorical'. Please check spelling!")
         }
+    }
+
+    possible.class <- c("categorical", "numeric")
+    if (is.null(biomarker.class)) {
+      if (class(data[, biomarker.var]) %in% c("numeric", "integer")) {
+        biomarker.class <- "numeric"
+      }
+      if (class(data[, biomarker.var]) %in% c("logical")) {
+        class(data[, biomarker.var]) <- "character"
+      }
+      if (class(data[, biomarker.var]) %in% c("character", "factor")) {
+        biomarker.class <- "categorical"
+      }
+    }
+
+    if (!is.null(var) & is.null(var.class)) {
+      for (i in 1:length(var)) {
+        if (class(data[, var[i]]) %in% c("numeric", "integer")) {
+          var.class[i] <- "numeric"
+        }
+        if (class(data[, var[i]]) %in% c("logical")) {
+          class(data[, var[i]]) <- "character"
+        }
+        if (class(data[, var[i]]) %in% c("character", "factor")) {
+          var.class[i] <- "categorical"
+        }
+      }
     }
 
     PlotParam(pdf.name, pdf.param, par.param)
