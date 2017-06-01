@@ -366,7 +366,7 @@ PlotTabForestBiomarker <- function(data,
     hl <- 0
     if(show.itt) hl <- c(hl,max(hl)+2)
     if(show.bep) hl <- c(hl, max(hl)+2)
-    if(within.bin) hl <- c(hl, length(bm.list)*2)
+   # if(within.bin) hl <- c(hl, max(hl)+length(bm.list)*2)
     if(greater) hl <- c(hl, max(hl)+ncut*2)
     if(less) hl <- c(hl, max(hl)+ncut*2)
     note <- ""
@@ -413,11 +413,11 @@ PlotTabForestBiomarker <- function(data,
                  mean=c(NA,as.numeric(tabletext[-1,5])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
                  upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
-                 xlab=paste("<---",active.code, "better --- [HR] ---",placebo.code, "better --->", 
+                 xlab=paste("<--",active.code, "better [HR] ",placebo.code, "better -->", 
                             "\n", note),
                  hrzl_lines=hz,align="l",
                  lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols), 
-                 clip=clip, xlog=TRUE,
+                  xlog=TRUE,
                  title=paste(main.text,"\n",sub.text),
                  #graphwidth=unit(100, 'mm'),
                  colgap=unit(cex.note*4,"mm"),
