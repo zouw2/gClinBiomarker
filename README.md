@@ -1,6 +1,6 @@
 # gClinBiomarker
 
-gClinBiomarler is an R package that contains functions to perform baseline and longitutinal biomarker analyses 
+gClinBiomarker is an R package that contains functions to perform baseline and longitutinal biomarker analyses 
 
 Some documentations could be found at:
 https://github.roche.com/lengn/gClinbiomarker_documents
