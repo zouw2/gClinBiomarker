@@ -407,7 +407,7 @@ PlotTabForestBiomarker <- function(data,
       }
       
       tabletext2 <- tabletext
-      tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2)),6],")")
+      tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
       
       forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,5])),

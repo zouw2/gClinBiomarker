@@ -10,7 +10,9 @@ Description: Biomarker things for ..
 Depends:
     R(>= 3.1.2),
     tidyverse,
-    broom
+    broom,
+    survival,
+    forestplot
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 5.0.1
@@ -19,7 +21,5 @@ Imports:
     utils,
     stats,
     coin,
-    survival,
     graphics,
     knitr,
-    forestplot
