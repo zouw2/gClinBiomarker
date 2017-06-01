@@ -50,6 +50,8 @@
 #' @param var.code ordered levels of the biomarker variable. This will be ignored for continuous biomarker. 
 #' If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function
 #' @param alpha type I error rate. Default is 0.05.
+#' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function. 
+#' If it is TRUE, a table will be generated with forest plots incorpriated
 #' @param main main title of the forest plot. Default is "Association of biomarker effect within treatment arms".
 #' @param sub sub title under the forest plot. Default is NULL.
 #' @param clip range of the x-axis of the forest plot. Default is NULL.
@@ -90,6 +92,7 @@ PlotTabForestMulti <- function(data,
                                   placebo.code=NULL,
                                   active.code=NULL,
                                   var.code=NULL,
+                                  tabforest=FALSE,
                                   alpha=0.05,
                                   main=NULL,
                                   sub=NULL,
@@ -180,6 +183,7 @@ PlotTabForestMulti <- function(data,
                                        bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
                                        covariate=covariate, #Sex
                                        strata=strata, #Age
+                                       tabforest=tabforest,
                                        quantile.type=quantile.type,
                                        placebo.code=placebo.code,
                                        active.code=active.code,
@@ -249,7 +253,9 @@ PlotTabForestMulti <- function(data,
   
   note <- ""
   if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
-  PlotTabForest(label.text=tabletext[-c(1), ],
+  
+  if(tabforest){
+    PlotTabForest(label.text=tabletext[-c(1), ],
                 mean=as.numeric(tabletext[-1, 5]),
                 lower=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1])),
                 upper=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2])),
@@ -271,7 +277,43 @@ PlotTabForestMulti <- function(data,
                 cex.note=cex.note, 
                 par.param=par.parm
   )
+  }
   
+  if(!tabforest){
+    if(!tabforest){
+      
+      hz <- vector("list",1)
+      for(i in 1:length(hl)){
+        if(hl[i] < nrow(tabletext)){
+          hz[[i]] <- gpar(lwd=2, col="#99999999")
+          names(hz)[i] <- hl[i]+2
+        }
+      }
+      
+      tabletext2 <- tabletext
+      tabletext2[seq(1,nrow(tabletext2)),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2)),6],")")
+      
+      forestplot(tabletext2,
+                 mean=c(NA,as.numeric(tabletext[-1,5])),
+                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
+                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
+                 xlab=paste("<---",active.code, "better --- [HR] ---",placebo.code, "better --->", 
+                            "\n", note),
+                 hrzl_lines=hz,align="l",
+                 lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols), 
+                 clip=clip, xlog=TRUE,
+                 title=paste(main.text,"\n",sub.text),
+                 #graphwidth=unit(100, 'mm'),
+                 colgap=unit(cex.note*4,"mm"),
+                 line.margin =unit(cex.note*2,"mm"),
+                 txt_gp=fpTxtGp(label=gpar(cex=cex.note),
+                                ticks=gpar(cex=cex.note),
+                                xlab=gpar(cex = cex.note))
+      )
+      
+    }
+    
+  }
   PlotParam()  
   
   out <- tabletext

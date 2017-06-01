@@ -9,12 +9,13 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   var.name = NULL, percentile.cutoff = 0.5, numerical.cutoff = NULL,
   greater = TRUE, less = FALSE, within.bin = FALSE, show.itt = TRUE,
   show.bep = TRUE, bep = NULL, bep.name = "BEP", itt.name = "ITT",
-  bep.indicator = 1, covariate = NULL, strata = NULL, quantile.type = 2,
-  digits = 2, placebo.code = NULL, active.code = NULL, var.code = NULL,
-  alpha = 0.05, main = NULL, sub = NULL, clip = NULL,
-  cex.headings = 1.1, cex.note = 1, cols = 4, only.stat = FALSE,
-  pdf.name = NULL, pdf.param = list(width = 6, height = 4.5),
-  par.param = list(cex = 1.2, cex.main = 1.5, cex.sub = 1, cex.axis = 1))
+  bep.indicator = 1, covariate = NULL, strata = NULL, tabforest = FALSE,
+  quantile.type = 2, digits = 2, placebo.code = NULL,
+  active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
+  sub = NULL, clip = NULL, cex.headings = 1.1, cex.note = 0.8,
+  cols = 4, only.stat = FALSE, pdf.name = NULL, pdf.param = list(width =
+  12, height = 4.5), par.param = list(cex = 1, cex.main = 1, cex.sub = 1,
+  cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
@@ -70,6 +71,9 @@ to define the biomarker evaluable population.}
 \item{covariate}{a vector specifying the covariate variables to be adjusted in the model. Default is set to NULL, meaning no adjustment.}
 
 \item{strata}{name of the stratification variables. Default is set to NULL, meaning no stratification.}
+
+\item{tabforest}{Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function. 
+If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{digits}{number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified}
 
