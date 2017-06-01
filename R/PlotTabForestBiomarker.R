@@ -44,6 +44,8 @@
 #' @param active.code of the treatment/experimental arm of the treatment variable
 #' @param var.code ordered levels of the biomarker variable. This will be ignored for continuous biomarker. 
 #' If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function
+#' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function. 
+#' If it is TRUE, a table will be generated with forest plots incorpriated
 #' @param alpha type I error rate. Default is 0.05.
 #' @param digits number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified
 #' @param main main title of the forest plot. Default is "Association of biomarker effect within treatment arms".
@@ -83,6 +85,7 @@ PlotTabForestBiomarker <- function(data,
                                   bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
+                                  tabforest=FALSE,
                                   quantile.type=2, digits=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
@@ -92,12 +95,12 @@ PlotTabForestBiomarker <- function(data,
                                   sub=NULL,
                                   clip=NULL,
                                   cex.headings=1.1,
-                                  cex.note=1,
+                                  cex.note=.8,
                                   cols=4,
                                   only.stat=FALSE,
                                   pdf.name=NULL,
-                                  pdf.param=list(width=6, height=4.5),
-                                  par.param=list(cex=1.2, cex.main=1.5, cex.sub=1, cex.axis=1)) {
+                                  pdf.param=list(width=12, height=4.5),
+                                  par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
   # multiple arm - different plots?
   outcome.class <- match.arg(outcome.class, c("survival", "binary"))
   if(is.null(var))show.itt <- TRUE
@@ -363,12 +366,13 @@ PlotTabForestBiomarker <- function(data,
     hl <- 0
     if(show.itt) hl <- c(hl,max(hl)+2)
     if(show.bep) hl <- c(hl, max(hl)+2)
-    if(within.bin) hl <- c(hl, max(hl)+length(bm.list)*2)
+    if(within.bin) hl <- c(hl, length(bm.list)*2)
     if(greater) hl <- c(hl, max(hl)+ncut*2)
     if(less) hl <- c(hl, max(hl)+ncut*2)
     note <- ""
     if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
     if(!is.null(inter.p)) note <- paste0("* Unadjusted Interaction P = ", paste(round.signif(inter.p, 2), collapse=" ; "))
+    if(tabforest){
     PlotTabForest(label.text=tabletext[-c(1), ],
               mean=as.numeric(tabletext[-1, 5]),
               lower=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1])),
@@ -391,6 +395,39 @@ PlotTabForestBiomarker <- function(data,
               cex.note=cex.note, 
               par.param=par.parm
     )
+    }
+    if(!tabforest){
+      
+      hz <- vector("list",1)
+      for(i in 1:length(hl)){
+        if(hl[i] < nrow(tabletext)){
+        hz[[i]] <- gpar(lwd=2, col="#99999999")
+        names(hz)[i] <- hl[i]+2
+        }
+      }
+      
+      tabletext2 <- tabletext
+      tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2)),6],")")
+      
+      forestplot(tabletext2,
+                 mean=c(NA,as.numeric(tabletext[-1,5])),
+                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
+                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
+                 xlab=paste("<---",active.code, "better --- [HR] ---",placebo.code, "better --->", 
+                            "\n", note),
+                 hrzl_lines=hz,align="l",
+                 lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols), 
+                 clip=clip, xlog=TRUE,
+                 title=paste(main.text,"\n",sub.text),
+                 #graphwidth=unit(100, 'mm'),
+                 colgap=unit(cex.note*4,"mm"),
+                 line.margin =unit(cex.note*2,"mm"),
+                 txt_gp=fpTxtGp(label=gpar(cex=cex.note),
+                                ticks=gpar(cex=cex.note),
+                                xlab=gpar(cex = cex.note))
+      )
+      
+    }
     
     PlotParam()  
     }
