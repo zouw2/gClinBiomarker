@@ -23,6 +23,7 @@
 #' @param lowess.line performs the computations for the \code{LOWESS} smoother which uses locally-weighted polynomial regression. See \code{\link{lowess}}.
 #' @param lowess.line.col the smoother color. Default is "deepskyblue".
 #' @param f the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.
+#' @param show.biomarker.uni,show.clinical.uni,show.association indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively
 #' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is paste("BMDist_", as.character(Sys.Date()), ".pdf", sep="")
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
@@ -57,11 +58,17 @@ PlotProperty <- function(data,
                          cor.method="spearman",
                          lowess.line=FALSE,
                          lowess.line.col="deepskyblue",
+                         show.biomarker.uni = TRUE, show.clinical.uni = TRUE, show.association = TRUE, 
                          f=0.3,
                          pdf.name=paste("BMDist_", as.character(Sys.Date()), ".pdf", sep=""),
                          pdf.param=list(width=6, height=4.5),
                          par.param=list(mar=c(4,4,3,2))) {
 
+  if(all(c(show.biomarker.uni, show.clinical.uni, show.association)==FALSE)) stop("show.biomarker.uni, show.clinical.uni, show.association cannot all be FALSE!")
+  if(!show.biomarker.uni)message("show.biomarker.uni = FALSE option is not available yet, will be available soon")
+  if(!show.clinical.uni)message("show.clinical.uni = FALSE option is not available yet, will be available soon")
+  if(!show.association)message("show.association = FALSE option is not available yet, will be available soon")
+  
     # Check the data
     if (!is.data.frame(data)) {
         stop("An input is not a data frame!")

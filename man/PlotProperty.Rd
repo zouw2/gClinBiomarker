@@ -8,10 +8,11 @@ PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
   var.class = NULL, log2 = FALSE, col = "blue", add.num = 0,
   text.font = 3, main = "Distribution of", xlab = "", add.lab = "",
   border = NULL, add.cor = FALSE, cor.method = "spearman",
-  lowess.line = FALSE, lowess.line.col = "deepskyblue", f = 0.3,
-  pdf.name = paste("BMDist_", as.character(Sys.Date()), ".pdf", sep = ""),
-  pdf.param = list(width = 6, height = 4.5), par.param = list(mar = c(4, 4,
-  3, 2)))
+  lowess.line = FALSE, lowess.line.col = "deepskyblue",
+  show.biomarker.uni = TRUE, show.clinical.uni = TRUE,
+  show.association = TRUE, f = 0.3, pdf.name = paste("BMDist_",
+  as.character(Sys.Date()), ".pdf", sep = ""), pdf.param = list(width = 6,
+  height = 4.5), par.param = list(mar = c(4, 4, 3, 2)))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -48,6 +49,8 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{lowess.line}{performs the computations for the \code{LOWESS} smoother which uses locally-weighted polynomial regression. See \code{\link{lowess}}.}
 
 \item{lowess.line.col}{the smoother color. Default is "deepskyblue".}
+
+\item{show.biomarker.uni, show.clinical.uni, show.association}{indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively}
 
 \item{f}{the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.}
 
