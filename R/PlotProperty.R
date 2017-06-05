@@ -60,7 +60,7 @@ PlotProperty <- function(data,
                          lowess.line.col="deepskyblue",
                          show.biomarker.uni = TRUE, show.clinical.uni = TRUE, show.association = TRUE, 
                          f=0.3,
-                         pdf.name=paste("BMDist_", as.character(Sys.Date()), ".pdf", sep=""),
+                         pdf.name=NULL,#paste("BMDist_", as.character(Sys.Date()), ".pdf", sep=""),
                          pdf.param=list(width=6, height=4.5),
                          par.param=list(mar=c(4,4,3,2))) {
 
