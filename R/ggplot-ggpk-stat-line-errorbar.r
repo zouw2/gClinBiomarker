@@ -37,7 +37,9 @@
 ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
                                     fun.data = 'mean_se', fun.args = list(), ...) {
 
-  defaults <- list(errorbar.position = position_dodge(width = 0.9))
+  defaults <- list(
+    errorbar.alpha = 0.5,
+    errorbar.position = position_dodge(width = rel(0.33)))
 
   .dots <- modifyList(defaults, list(...))
   fun.data <- stat_summary_funs(fun.data, fun.args)
@@ -48,10 +50,15 @@ ggpk_stat_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = F
     ggpack(stat_summary, 'errorbar', .dots,
            geom = 'linerange',
            fun.data = f,
-           size = .dots$errorbar.size %||% rel(2) * (1 - (i - 1) / length(fun.data)),
-           position = position_dodge(rel(0.33)),
-           alpha = 0.5)
+           size = .dots$errorbar.size %||% rel(2) * (1 - (i - 1) / length(fun.data)))
   }, f = fun.data, i = 1:length(fun.data)) ) +
+
+  ## pack ## point
+  # plot point along stat y
+  ggpack(stat_summary, 'point', .dots,
+         geom = 'point',
+         fun.data = fun.data[[1]],
+         size = rel(3)) +
 
   ## pack ## line
   # plot line along stat y

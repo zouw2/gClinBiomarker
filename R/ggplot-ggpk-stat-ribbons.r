@@ -52,6 +52,13 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
               ggplot2:::`%||%`(.dots$ribbon.alpha, 1) )
   }, fun.data, init = NULL) +
 
+  ## pack ## point
+  # plot point along stat y
+  ggpack(stat_summary, 'point', .dots,
+         geom = 'point',
+         fun.data = fun.data[[1]],
+         size = rel(3)) +
+
   ## pack ## line
   # plot line along stat y
   ggpack(stat_summary, 'line', .dots,

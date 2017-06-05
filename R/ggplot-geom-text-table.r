@@ -29,11 +29,11 @@ GeomTextTable <- ggproto("GeomTextTable", Geom,
 
   default_aes = aes(
     colour = "black", size = 3.88, angle = 0, hjust = 0.5,
-    vjust = 0.5, alpha = NA, family = "", fontface = 1, lineheight = 1.2
+    vjust = 0.5, alpha = NA, family = "", fontface = 1, lineheight = 1.8
   ),
 
   draw_panel = function(data, panel_params, coord, parse = FALSE,
-                        na.rm = FALSE, check_overlap = FALSE, location = 'top') {
+                        na.rm = FALSE, check_overlap = FALSE) {
 
     if (parse) data$label <- parse(text = as.character(lab))
     data$group[data$group == -1] <- 1
@@ -42,15 +42,16 @@ GeomTextTable <- ggproto("GeomTextTable", Geom,
     if (is.character(data$vjust)) data$vjust <- ggplot2:::compute_just(data$vjust, data$y)
     if (is.character(data$hjust)) data$hjust <- ggplot2:::compute_just(data$hjust, data$x)
 
-    lineheight.npc <- convertHeight(unit(data$lineheight * data$size * .pt, "bigpts"), "npc", TRUE)
-    data$y <- convertHeight(unit(1, "npc") - lineheight.npc * unit(data$group, "npc") * 1.5, "npc", TRUE)
+    lineheight.npc <- grid:::convertHeight(unit(data$lineheight * 2 * data$size * .pt, "bigpts"), "npc", TRUE)
+    data$y <- grid:::convertHeight(unit(0.98, "npc") - lineheight.npc * unit((data$group - 1), "npc"), "npc", TRUE)
+    data$vjust <- 1
 
-    textGrob(
+    grid:::textGrob(
       data$label,
       data$x, data$y, default.units = "native",
       hjust = data$hjust, vjust = data$vjust,
       rot = data$angle,
-      gp = gpar(
+      gp = grid:::gpar(
         col = alpha(data$colour, data$alpha),
         fontsize = data$size * .pt,
         fontfamily = data$family,
