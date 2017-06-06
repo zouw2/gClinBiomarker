@@ -42,7 +42,7 @@ GeomTextTable <- ggproto("GeomTextTable", Geom,
     if (is.character(data$vjust)) data$vjust <- ggplot2:::compute_just(data$vjust, data$y)
     if (is.character(data$hjust)) data$hjust <- ggplot2:::compute_just(data$hjust, data$x)
 
-    lineheight.npc <- grid:::convertHeight(unit(data$lineheight * 2 * data$size * .pt, "bigpts"), "npc", TRUE)
+    lineheight.npc <- grid:::convertHeight(unit(data$lineheight * 1.25 * data$size * .pt, "bigpts"), "npc", TRUE)
     data$y <- grid:::convertHeight(unit(0.98, "npc") - lineheight.npc * unit((data$group - 1), "npc"), "npc", TRUE)
     data$vjust <- 1
 

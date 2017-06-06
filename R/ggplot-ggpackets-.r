@@ -90,3 +90,15 @@ ggpack_filter_args <- function(prefix, args) {
   named_args <- setNames(named_args, gsub(paste0('^', prefix, '.(.*)$'), '\\1', names(named_args)))
   as.list(c(named_args, unnamed_args))
 }
+
+
+
+#' Wrapper for common decorators to package
+#'
+#' @export
+ggpack.decorators <- function(...) {
+  ggpack(xlab,  'xlab',  list(...), null.empty = T) +
+  ggpack(ylab,  'ylab',  list(...), null.empty = T) +
+  ggpack(labs,  'labs',  list(...), null.empty = T) +
+  ggpack(theme, 'theme', list(...), null.empty = T)
+}
