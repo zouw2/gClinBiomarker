@@ -73,6 +73,9 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
      else ggpack(facet_grid, 'facet', list(...), facets = facet.fun)) +
     (if (is.null(formula)) NULL
      else ylab(paste("Adjusted", deparse(formula[[2]])))) +
-    ggpack.decorators(...)
+    ggpack(xlab,  'xlab',  list(...), null.empty = T) +
+    ggpack(ylab,  'ylab',  list(...), null.empty = T) +
+    ggpack(labs,  'labs',  list(...), null.empty = T) +
+    ggpack(theme, 'theme', list(...), null.empty = T)
 
 }
