@@ -282,7 +282,6 @@ PlotTabForestMulti <- function(data,
   }
   
   if(!tabforest){
-    if(!tabforest){
       
       hz <- vector("list",1)
       for(i in 1:length(hl)){
@@ -314,8 +313,6 @@ PlotTabForestMulti <- function(data,
       )
       
     }
-    
-  }
   PlotParam()  
   
   out <- tabletext
