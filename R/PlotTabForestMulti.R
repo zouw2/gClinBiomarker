@@ -118,9 +118,11 @@ PlotTabForestMulti <- function(data,
     }
   }
   data.list <- list(ITT=data)
+  names(data.list)[1] <- itt.name
   if(compare.bep.itt){
     data.list <- list(ITT=data, BEP=data[which(data[[bep]]%in%bep.indicator),])
-  }
+    names(data.list)[2] <- bep.name
+    }
   if(compare.subgroup){
     data.list <- sapply(groups.level, function(i)data[which(data[[subgroup]]==i),], simplify=F)
     if(show.bep){

@@ -29,7 +29,7 @@
 #' @param plot.grid whether show horizontal grids
 #' @param grids horizontal grids
 #' @param plot.legend whether show legend
-#' @param legend.loc legend location. a single keyword from the list "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center". 
+#' @param legend.loc,legend.x,legend.y legend location. a single keyword from the list "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center". 
 #' @param plot.median whether show median TTE of each subgroup. (won't show if median TTE is NA)
 #' @param median.cex font size of marked median. This parameter will be ignored if plot.median=FALSE
 #' @param xlim,ylab,xlab,main,col,lty,lwd,sub,ylim see \code{\link{plot}}
@@ -54,7 +54,7 @@
 PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
 		   bep=NULL, bep.indicator=1,
                     plot.nrisk=TRUE, nrisk.interval=2, cex.nrisk=.8,
-                    plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright",
+                    plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright", legend.x=NULL, legend.y=NULL,
                     col=NULL, lty=NULL, lwd=3,
                     xlab="Months To Event Or Censoring", ylim=c(0,1), xlim=NULL,  ylab="Survival Probability",
                     main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,y.percentage=FALSE,
@@ -178,9 +178,11 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
 
   	mtext(xlab,side=1, line=2)
   
-	if(plot.legend & nlev > 1)
-    		legend(legend.loc,var.labels, lwd=2, col=col, lty=lty, bg="white")
-  
+	if(plot.legend & nlev > 1){
+    if(!is.null(legend.loc))legend(legend.loc,var.labels, lwd=2, col=col, lty=lty, bg="white")
+	  if(is.null(legend.loc))legend(x=legend.x, y=legend.y,var.labels, lwd=2, col=col, lty=lty, bg="white")
+	  
+	}
 	axis(1,at=seq(0,xlim[2],nrisk.interval),seq(0,xlim[2],nrisk.interval))
  	if(y.percentage==FALSE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0)
    	if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0)
