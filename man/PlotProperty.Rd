@@ -54,7 +54,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{f}{the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.}
 
-\item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is paste("BMDist_", as.character(Sys.Date()), ".pdf", sep="")}
+\item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf.}
 
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.}
 
