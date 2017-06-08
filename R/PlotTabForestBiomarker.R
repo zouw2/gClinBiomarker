@@ -291,6 +291,7 @@ PlotTabForestBiomarker <- function(data,
     
     
          calc.inter.p <- TRUE
+         if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1) calc.inter.p <- FALSE
 
           ac <- Arms[2]  
           # interaction p value: per arm? If originally cont., then use cont. in modeling
