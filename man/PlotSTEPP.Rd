@@ -104,15 +104,13 @@ Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Int
 
 \item{legend.bty}{type of box for the legend. Default is "n".}
 
-\item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf.
-Default is \code{paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = "")}.}
+\item{pdf.name}{name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.}
 
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.}
 
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 
-\item{csv.name}{csv file name (includes numbers used in the graphs). If NULL, the function will return the result.
-Default is \code{paste("STEPP ", as.character(Sys.Date()), ".csv", sep = "")}.}
+\item{csv.name}{csv file name (includes numbers used in the graphs). If NULL (default), the function will return the result.}
 
 \item{bm.digits}{digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.}
 }
@@ -134,9 +132,7 @@ PlotSTEPP(data = input,
          covariate = "Sex",
          strata = "Age",
          placebo.code = "CTRL",
-         active.code = "TRT",
-         csv.name = NULL,
-         pdf.name = NULL)
+         active.code = "TRT")
 
 }
 \author{

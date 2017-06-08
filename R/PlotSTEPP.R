@@ -47,10 +47,8 @@
 #' @param legend.lwd width of the legend lines. Default is \code{c(estimate.lwd, ci.lwd)}.
 #' @param legend.bty type of box for the legend. Default is "n".
 #' @param bm.digits digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.
-#' @param csv.name csv file name (includes numbers used in the graphs). If NULL, the function will return the result.
-#' Default is \code{paste("STEPP ", as.character(Sys.Date()), ".csv", sep = "")}.
-#' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf.
-#' Default is \code{paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = "")}.
+#' @param csv.name csv file name (includes numbers used in the graphs). If NULL (default), the function will return the result.
+#' @param pdf.name name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 
@@ -70,9 +68,7 @@
 #'          covariate = "Sex",
 #'          strata = "Age",
 #'          placebo.code = "CTRL",
-#'          active.code = "TRT",
-#'          csv.name = NULL,
-#'          pdf.name = NULL)
+#'          active.code = "TRT")
 #'
 #' @seealso
 #' \link{StatSummary}
@@ -118,27 +114,27 @@ PlotSTEPP <- function(data,
                      legend.lty = c(estimate.lty, ci.lty),
                      legend.lwd = c(estimate.lwd, ci.lwd),
                      legend.bty = "n",
-                     pdf.name = NULL,#paste("STEPP ", as.character(Sys.Date()), ".pdf", sep = ""),
+                     pdf.name = NULL,
                      pdf.param = list(width= 11, height=8.5),
                      par.param = list(mar=c(4,4,3,2)),
-                     csv.name = NULL,#paste("STEPP ", as.character(Sys.Date()), ".csv", sep = ""),
+                     csv.name = NULL,
                      bm.digits = 2) {
 
-  
+
   outcome.class <- match.arg(outcome.class, c("survival", "binary", "continuous"))
   stopifnot(all(c(var, outcome.var, trt)%in%colnames(data)))
   if(any(is.na(data[[var]])))message("some NA in var column, will ignore NA entries")
   # Remove patient data without corresponding biomarker value
   data.ori <- data
   data <- data[which(!is.na(data[[var]])),]
-  
+
     # Read off the data
     Outcome <- data[, outcome.var]
     Biomarker <- data[, var]
-    
-    
+
+
     if(!is.null(trt))if(length(unique(data[,trt]))==1)  trt <- NULL
-    
+
     if(is.null(trt)) nArms <- 1
     if (!is.null(trt)) { # multi-arm study
       Treatment <- data[,trt]
@@ -168,7 +164,7 @@ PlotSTEPP <- function(data,
     if (!is.null(strata)) {
         Strat.factor <- data[, strata]
     }
- 
+
 
     # If min.pt or max.pt are NULL
     if (is.null(min.pt)) {
@@ -310,7 +306,7 @@ PlotSTEPP <- function(data,
 
     ##### Draw the plot
     PlotParam(pdf.name, pdf.param, par.param)
-    
+
     if(is.null(sub.title))sub.title <- paste("soc:", placebo.code, "; trt:", active.code)
 
     center.pt <- sdata[, "Center.pt"]
