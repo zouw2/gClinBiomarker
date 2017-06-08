@@ -6,7 +6,7 @@
 passing newly fitted model to ggplot geom_stat_ribbon}
 \usage{
 PlotLong(data, mapping, formula = NULL, model = lm, model.args = NULL,
-  model.per = NULL, facet.fun = NULL, ...)
+  model.per = NULL, facet.fun = NULL, plot.style = "ribbons", ...)
 }
 \arguments{
 \item{data}{data to use for model fitting and plotting}
@@ -52,6 +52,19 @@ PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
 PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South")),
          aes(x=month, y=temperature), formula = temperature ~ ozone,
          model.per = ~ hemi, facet.fun = ~ hemi, fun.data = 'deciles',
+         xlab = "Month", ylab = "Temperature Adjusted for Ozone",
+         labs.title = "Temperature by Hemisphere",
+         labs.caption = "*idependent models fit per hemisphere")
+
+# including a table of value counts and subsetting value data to specific months
+PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemisphere=ifelse(lat>0, "North", "South")),
+         aes(x=month, y=temperature, group = hemisphere,
+             color = hemisphere, fill = hemisphere),
+         formula = temperature ~ ozone,
+         model.per = ~ hemisphere, fun.data = 'deciles',
+         show.counts = 'table',
+         label.data = . \%>\% filter(month \%in\% c(1, 6, 12)),
+         label.hjust = 'inward',
          xlab = "Month", ylab = "Temperature Adjusted for Ozone",
          labs.title = "Temperature by Hemisphere",
          labs.caption = "*idependent models fit per hemisphere")
