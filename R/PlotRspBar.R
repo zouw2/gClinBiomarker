@@ -105,7 +105,9 @@ PlotRspBar <- function(data, outcome.var,
 
   if(compare.var){
     if(is.null(var.name))var.name <- var
-    data$sectionvar <- factor(paste0(var.name,"(",data[,var],")"))
+    
+    var.levs <- levels(factor(data[,var]))
+    data$sectionvar <- factor(paste0(var.name,"(",data[,var],")"), levels=paste0(var.name,"(",var.levs,")"))
   }
   
   if(!is.null(trt)){
