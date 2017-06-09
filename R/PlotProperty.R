@@ -381,19 +381,19 @@ PlotProperty <- function(data,
                     if (show.biomarker.uni == TRUE) {
                         tab <- table(data[, biomarker.var])
                         freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), cex.names=0.8, las=las)
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), cex.names=1, las=las)
                     }
 
                     if (show.clinical.uni == TRUE) {
                         tab <- table(data[, var[i]])
                         freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), cex.names=0.8, las=las)
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), cex.names=1, las=las)
                     }
 
                     if (show.association == TRUE) {
                         tab <- table(data[, biomarker.var], data[, var[i]])
                         freqs <- paste("(", round(100*tab[1,]/sum(tab[1,]), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab[1,]), freqs), cex.names=0.8,
+                        barplot(tab, names.arg=paste(names(tab[1,]), freqs), cex.names=1,
                                 main=paste(main, biomarker.var, "by", var[i], sep=" "),
                                 beside=TRUE, las=las)
                         legend("topleft", legend = names(tab[,1]), fill=c("black", "grey"), cex=0.8)
