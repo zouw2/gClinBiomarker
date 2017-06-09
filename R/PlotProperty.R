@@ -23,21 +23,24 @@
 #' @param lowess.line performs the computations for the \code{LOWESS} smoother which uses locally-weighted polynomial regression. See \code{\link{lowess}}.
 #' @param lowess.line.col the smoother color. Default is "deepskyblue".
 #' @param f the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.
-#' @param show.biomarker.uni,show.clinical.uni,show.association indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively
-#' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf.
+#' @param show.biomarker.uni,show.clinical.uni,show.association indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively. Default is TRUE for all of them.
+#' @param las create a barplot with labels parallel (horizontal) to bars if \code{las=2}. Default is 1.
+#' @param pdf.name name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 #'
 #' @return If only a biomarker variable is given, it will crete a density plot for a numeric variable or bar plot for a categorical variable.
-#' If only a list of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
-#' If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a numeric pair of variables;
-#' a bar plot for each categorical variable; a boxplot for a pair of numeric and categorical variables.
+#' If only a vactor of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
+#' If both a biomarker variable and a vector of clinical variables are given, it will create: a scatter plot for a numeric pair of variables;
+#' a bar plot for each categorical variable; a bar plot for a pair of categorical variables; a density plot for a numeric clinical variable;
+#' a boxplot for a pair of numeric and categorical variables.
 #'
 #' @examples
 #' data(input)
-#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, pdf.name=NULL)
-#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE), pdf.name=NULL)
-#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
+#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
+#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE))
+#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3, 2)))
+#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3,2)))
 #'
 #' @export
 
@@ -60,14 +63,14 @@ PlotProperty <- function(data,
                          lowess.line.col="deepskyblue",
                          show.biomarker.uni = TRUE, show.clinical.uni = TRUE, show.association = TRUE,
                          f=0.3,
-                         pdf.name=NULL,#paste("BMDist_", as.character(Sys.Date()), ".pdf", sep=""),
+                         las=1,
+                         pdf.name=NULL,
                          pdf.param=list(width=6, height=4.5),
                          par.param=list(mar=c(4,4,3,2))) {
 
-  if(all(c(show.biomarker.uni, show.clinical.uni, show.association)==FALSE)) stop("show.biomarker.uni, show.clinical.uni, show.association cannot all be FALSE!")
-  if(!show.biomarker.uni)message("show.biomarker.uni = FALSE option is not available yet, will be available soon")
-  if(!show.clinical.uni)message("show.clinical.uni = FALSE option is not available yet, will be available soon")
-  if(!show.association)message("show.association = FALSE option is not available yet, will be available soon")
+    if (all(c(show.biomarker.uni, show.clinical.uni, show.association)==FALSE)) {
+        stop("show.biomarker.uni, show.clinical.uni, show.association cannot all be FALSE!")
+    }
 
     # Check the data
     if (!is.data.frame(data)) {
@@ -110,29 +113,29 @@ PlotProperty <- function(data,
 
     possible.class <- c("categorical", "numeric")
     if (is.null(biomarker.class)) {
-      if (class(data[, biomarker.var]) %in% c("numeric", "integer")) {
-        biomarker.class <- "numeric"
-      }
-      if (class(data[, biomarker.var]) %in% c("logical")) {
-        class(data[, biomarker.var]) <- "character"
-      }
-      if (class(data[, biomarker.var]) %in% c("character", "factor")) {
-        biomarker.class <- "categorical"
-      }
+        if (class(data[, biomarker.var]) %in% c("numeric", "integer")) {
+            biomarker.class <- "numeric"
+        }
+        if (class(data[, biomarker.var]) %in% c("logical")) {
+            class(data[, biomarker.var]) <- "character"
+        }
+        if (class(data[, biomarker.var]) %in% c("character", "factor")) {
+            biomarker.class <- "categorical"
+        }
     }
 
     if (!is.null(var) & is.null(var.class)) {
-      for (i in 1:length(var)) {
-        if (class(data[, var[i]]) %in% c("numeric", "integer")) {
-          var.class[i] <- "numeric"
+        for (i in 1:length(var)) {
+            if (class(data[, var[i]]) %in% c("numeric", "integer")) {
+                var.class[i] <- "numeric"
+            }
+            if (class(data[, var[i]]) %in% c("logical")) {
+                class(data[, var[i]]) <- "character"
+            }
+            if (class(data[, var[i]]) %in% c("character", "factor")) {
+                var.class[i] <- "categorical"
+            }
         }
-        if (class(data[, var[i]]) %in% c("logical")) {
-          class(data[, var[i]]) <- "character"
-        }
-        if (class(data[, var[i]]) %in% c("character", "factor")) {
-          var.class[i] <- "categorical"
-        }
-      }
     }
 
     PlotParam(pdf.name, pdf.param, par.param)
@@ -186,16 +189,16 @@ PlotProperty <- function(data,
                 legend("topright", leg.text, bty="n", text.font=text.font)
                 mtext(side=3, line=0, paste("N=", sum(!is.na(V))))
                 box()
-            # if categorical, then barplot
+                # if categorical, then barplot
             } else {
-                    tab <- table(data[, vars[i]])
-                    freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[i], sep=" "))
+                tab <- table(data[, vars[i]])
+                freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[i], sep=" "), las=las)
             }
         }
 
 
-    # Case 2: Biomarker variable vs Clinical variables
+        # Case 2: Biomarker variable vs Clinical variables
     } else {
         # if biomarker variable is numeric
         if (biomarker.class == "numeric") {
@@ -236,7 +239,7 @@ PlotProperty <- function(data,
                         lines(lowess(x, y, f=f), lwd=2, col=lowess.line.col)
                     }
 
-                # if clinical variable is categorical, then boxplot
+                    # if clinical variable is categorical, then boxplot
                 } else if (var.class[i] == "categorical") {
                     x <- factor(data[, var[i]])
                     xx <- jitter(as.numeric(x))
@@ -282,11 +285,11 @@ PlotProperty <- function(data,
                 }
             }
 
-        # if biomarker variable is categorical
+            # if biomarker variable is categorical
         } else {
             for (i in 1:length(var)) {
                 j <- 1
-                # if clinical variable is numeric, then boxplot
+                # if clinical variable is numeric, then hist(clin:num) and boxplot (biomar:cat + clin:num)
                 if (var.class[i] == "numeric") {
 
                     V <- data[, var[i]] + add.num
@@ -299,58 +302,102 @@ PlotProperty <- function(data,
                         V <- log2(V)
                     }
 
-                    x <- factor(data[, biomarker.var])
-                    xx <- jitter(as.numeric(x))
-                    yy <- V
-                    nlev <- nlevels(x)
-                    ylim <- range(yy, na.rm=T)
+                    # hist(clin:num)
+                    if (show.clinical.uni == TRUE) {
+                        sd.v <- round(sd(V, na.rm=TRUE), 2)
+                        s.v <- summary(V)
+                        leg.text <- paste(c("Mean", "SD", "Median", "Range"),
+                                          c(round(s.v, 2)["Mean"],
+                                            sd.v,
+                                            round(s.v, 2)["Median"],
+                                            paste("(", round(s.v["Min."], 2), " - ", round(s.v["Max."], 2), ")", sep="")),
+                                          sep=": ")
 
-                    if (is.null(col)){
-                        col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
-                        col <- col[as.numeric(x)]
+                        y2 <- max(density(V, na.rm=T)$y, na.rm=TRUE)
+
+                        old.xlab <- xlab
+
+                        if (xlab == "") {
+                            xlab <- paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", ""))
+                        }
+
+                        hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+
+                        xlab <- old.xlab
+
+                        lines(density(V, na.rm=T), lwd=2, col=col)
+                        legend("topright", leg.text, bty="n", text.font=text.font)
+                        mtext(side=3, line=0, paste("N=", sum(!is.na(V))))
+                        box()
                     }
+                    # boxplot (biomar:cat + clin:num)
+                    if (show.association == TRUE) {
+                        x <- factor(data[, biomarker.var])
+                        xx <- jitter(as.numeric(x))
+                        yy <- V
+                        nlev <- nlevels(x)
+                        ylim <- range(yy, na.rm=T)
 
-                    if (na.exclude(col)[1] == FALSE) {
-                        col <- NULL
+                        if (is.null(col)){
+                            col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
+                            col <- col[as.numeric(x)]
+                        }
+
+                        if (na.exclude(col)[1] == FALSE) {
+                            col <- NULL
+                        }
+
+                        bx <- boxplot(as.formula(paste("yy ~ factor(", biomarker.var, ")")), data=data,
+                                      main=paste(var[i], "by", biomarker.var),
+                                      border=border, ylim=ylim, outline=F, axes=F,
+                                      ylab=paste(var[i], add.lab, ifelse(log2[j] == TRUE, "(log2 scale)", "")))
+                        points(xx, yy, col=col)
+
+                        if (add.cor) {
+                            mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
+                            legend("bottomright", paste("spear cor =", round(mycor, 2), sep=""), text.font=3)
+                        }
+
+                        axis(2)
+                        box()
+
+                        if (par("srt") != 0) {
+                            sp <- ylim[2]-ylim[1]
+                            axis(1, labels=F, at=1:length(bx$n), lwd=0)
+                            text(1:length(bx$n), par("usr")[3] - 0.03*sp, labels=bx$names)
+                        }
+
+                        if (par("srt") == 0) {
+                            axis(1, labels=bx$names, at=1:length(bx$names), lwd=0, font=2)
+                        }
+
+                        axis(3, line=-1, lwd=0, at=1:length(bx$n), paste("N=", bx$n, sep=""), cex=0.8)
+                        grid(nx=NULL, ny=NULL)
+
+                        j <- j+1
                     }
-
-                    bx <- boxplot(as.formula(paste("yy ~ factor(", biomarker.var, ")")), data=data,
-                                  main=paste(var[i], "by", biomarker.var),
-                                  border=border, ylim=ylim, outline=F, axes=F,
-                                  ylab=paste(var[i], add.lab, ifelse(log2[j] == TRUE, "(log2 scale)", "")))
-                    points(xx, yy, col=col)
-
-                    if (add.cor) {
-                        mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
-                        legend("bottomright", paste("spear cor =", round(mycor, 2), sep=""), text.font=3)
-                    }
-
-                    axis(2)
-                    box()
-
-                    if (par("srt") != 0) {
-                        sp <- ylim[2]-ylim[1]
-                        axis(1, labels=F, at=1:length(bx$n), lwd=0)
-                        text(1:length(bx$n), par("usr")[3] - 0.03*sp, labels=bx$names)
-                    }
-
-                    if (par("srt") == 0) {
-                        axis(1, labels=bx$names, at=1:length(bx$names), lwd=0, font=2)
-                    }
-
-                    axis(3, line=-1, lwd=0, at=1:length(bx$n), paste("N=", bx$n, sep=""), cex=0.8)
-                    grid(nx=NULL, ny=NULL)
-                    j <- j+1
-
-                # if clinical variable is categorical, then barplot
+                  # if clinical variable(s) is (are) categorical, then barplot for each + barplot of interaction
                 } else if (var.class[i] == "categorical") {
-                    tab <- table(data[, biomarker.var])
-                    freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "))
+                    if (show.biomarker.uni == TRUE) {
+                        tab <- table(data[, biomarker.var])
+                        freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), cex.names=0.7, las=las)
+                    }
 
-                    tab <- table(data[, var[i]])
-                    freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                    barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "))
+                    if (show.clinical.uni == TRUE) {
+                        tab <- table(data[, var[i]])
+                        freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), cex.names=0.7, las=las)
+                    }
+
+                    if (show.association == TRUE) {
+                        tab <- table(data[, biomarker.var], data[, var[i]])
+                        freqs <- paste("(", round(100*tab[1,]/sum(tab[1,]), 2), "%)", sep="")
+                        barplot(tab, names.arg=paste(names(tab[1,]), freqs), cex.names=0.7,
+                                main=paste(main, biomarker.var, "by", var[i], sep=" "),
+                                beside=TRUE, las=las)
+                        legend("topleft", legend = names(tab[,1]), fill=c("black", "grey"), cex=0.8)
+                    }
                 }
             }
         }
