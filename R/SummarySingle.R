@@ -147,12 +147,11 @@ SummarySingle <- function (data, var,
   }
 
   # if subgroup is NULL, create a column with all 1s as indicator
- 
+   data$ITT <- rep(1, nrow(data))
    compare.itt <- !compare.subgroup 
     if (!is.null(subgroup)) {
       if(compare.itt){
         data[,subgroup] <- ifelse(data[,subgroup]%in%subgroup.indicator,1,0)
-        data$ITT <- rep(1, nrow(data))
         subgroup.name <- c(itt.name,subgroup.name)
         subgroup <- c("ITT",subgroup)
       }
@@ -168,7 +167,7 @@ SummarySingle <- function (data, var,
         subgroup.name <- subgroup.l
       }
   }
-  
+  if(is.null(subgroup)) subgroup <- subgroup.name <-  "ITT"
   # output matrix (trt by population)
   res <- matrix(ncol = sum(1, length(trt.lev) * length(subgroup)), 
                 nrow = 0)
