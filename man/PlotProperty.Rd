@@ -10,7 +10,7 @@ PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
   border = NULL, add.cor = FALSE, cor.method = "spearman",
   lowess.line = FALSE, lowess.line.col = "deepskyblue",
   show.biomarker.uni = TRUE, show.clinical.uni = TRUE,
-  show.association = TRUE, f = 0.3, pdf.name = NULL,
+  show.association = TRUE, f = 0.3, las = 1, pdf.name = NULL,
   pdf.param = list(width = 6, height = 4.5), par.param = list(mar = c(4, 4,
   3, 2)))
 }
@@ -50,11 +50,13 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{lowess.line.col}{the smoother color. Default is "deepskyblue".}
 
-\item{show.biomarker.uni, show.clinical.uni, show.association}{indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively}
+\item{show.biomarker.uni, show.clinical.uni, show.association}{indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively. Default is TRUE for all of them.}
 
 \item{f}{the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.}
 
-\item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf.}
+\item{las}{create a barplot with labels parallel (horizontal) to bars if \code{las=2}. Default is 1.}
+
+\item{pdf.name}{name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.}
 
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.}
 
@@ -62,18 +64,20 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 }
 \value{
 If only a biomarker variable is given, it will crete a density plot for a numeric variable or bar plot for a categorical variable.
-If only a list of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
-If both a biomarker variable and a list of clinical variables are given, it will create: a scatter plot for a numeric pair of variables;
-a bar plot for each categorical variable; a boxplot for a pair of numeric and categorical variables.
+If only a vactor of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
+If both a biomarker variable and a vector of clinical variables are given, it will create: a scatter plot for a numeric pair of variables;
+a bar plot for each categorical variable; a bar plot for a pair of categorical variables; a density plot for a numeric clinical variable;
+a boxplot for a pair of numeric and categorical variables.
 }
 \description{
 Plot biomarker or clinical variables properties.
 }
 \examples{
 data(input)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE), pdf.name=NULL)
-PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), pdf.name=NULL, par.param = list(mfrow=c(1, 3)))
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE))
+PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3, 2)))
+PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3,2)))
 
 }
 \author{
