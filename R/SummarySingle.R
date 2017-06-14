@@ -82,7 +82,7 @@ SummarySingle <- function (data, var,
     message("test.subgroup=TRUE but subgroup is not specified. Reset test.subgroup as FALSE")
   }
   
-  data[[var]][which(nchar(data[[var]])==0)] <- NA
+  data[[var]][which(nchar(as.character(data[[var]])==0))] <- NA
   possible.class <-c("categorical","numeric","ordered.factor")
   if(is.null(var.class)||!all(var.class%in%possible.class)){
   if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
