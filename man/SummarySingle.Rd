@@ -14,7 +14,7 @@ SummarySingle(data, var, trt = NULL, trt.name = NULL, subgroup = NULL,
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
-\item{var}{name of the clinical covariate to test. name should be in the column names of data.}
+\item{var}{name of the clinical covariate to test. name should be in the column names of data. entries with empty value (nchar()==0) will be imputed as NA}
 
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}
