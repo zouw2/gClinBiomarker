@@ -125,7 +125,7 @@ For survival data, censorship variable is 1 if an event happened, 0 if censored.
 
 data(input)
 PlotSTEPP(data = input,
-         outcome.var = c("PFS", "PFS.CNSR"),
+         outcome.var = c("PFS", "PFS.event"),
          outcome.class = "survival",
          trt = "Arm",
          var = "KRAS.exprs",

@@ -61,7 +61,7 @@
 #'
 #' data(input)
 #' PlotSTEPP(data = input,
-#'          outcome.var = c("PFS", "PFS.CNSR"),
+#'          outcome.var = c("PFS", "PFS.event"),
 #'          outcome.class = "survival",
 #'          trt = "Arm",
 #'          var = "KRAS.exprs",

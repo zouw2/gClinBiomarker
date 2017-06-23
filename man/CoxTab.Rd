@@ -10,7 +10,7 @@ CoxTab(data = NULL, tte = NULL, cens = NULL, var = NULL,
   bep.indicator = 1)
 }
 \arguments{
-\item{var}{a vector that indicates variables of interest. 
+\item{var}{a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
 It will be ignored if fit or form is not null.}
 
@@ -30,13 +30,13 @@ should have a corresponding element in this list.}
 \item{strata}{a vector that indicates stratification factors. All elements should be in input data's column names
 strata will be ignored if var is NULL. It will be ignored if form or fit is not NULL}
 
-\item{form}{a formula that includes variables of interest. It will be ignored if fit is not null. 
+\item{form}{a formula that includes variables of interest. It will be ignored if fit is not null.
 For example, 'Age+Sex' or "Age+Sex*Trt+Country"}
 
 \item{fit}{a fitted object from coxph() function.
 If fit is not NULL, all other parameters will be ignored}
 
-\item{additive}{Whether an additive model should be used. If additive=FALSE, separate cox PH models will be fitted to each elements in var 
+\item{additive}{Whether an additive model should be used. If additive=FALSE, separate cox PH models will be fitted to each elements in var
 (stratification factor will be incorpriated for each model).
 If additive = FALSE, User can only use 'var' to speficy variables of interest (cannot specify the model via parameter 'form')}
 }
@@ -52,8 +52,8 @@ More coplex models may be specified using form (e.g. model with interactions)
 \examples{
 data(input)
 sample.data <- input
-CoxTab(data=sample.data,tte="OS", cens="OS.CNSR",  var=c('Sex',"Country","Age"))
-CoxTab(data=sample.data,tte="OS", cens="OS.CNSR",  form="Age+Sex*Arm+Country")
+CoxTab(data=sample.data,tte="OS", cens="OS.event",  var=c('Sex',"Country","Age"))
+CoxTab(data=sample.data,tte="OS", cens="OS.event",  form="Age+Sex*Arm+Country")
 
 }
 \author{

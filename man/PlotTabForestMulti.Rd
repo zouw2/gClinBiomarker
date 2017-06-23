@@ -18,7 +18,7 @@ PlotTabForestMulti(data, outcome.class = c("survival", "binary"), outcome.var,
   par.param = list(cex = 1.2, cex.main = 1.5, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
-\item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{outcome.class}{type of the outcome variable. Default is \code{c("survival", "binary", "continuous")}}
@@ -58,7 +58,7 @@ in each subgroup defined by parameter subgroup}
 
 \item{show.itt}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in itt}
 
-\item{show.bep}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population). 
+\item{show.bep}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population).
 BEP is defined by variable bep}
 
 \item{subgroup}{The column which defines subgroups. If compare.subgroup is TRUE, the program will generate forest plot of the vars within each subgroup}
@@ -82,10 +82,10 @@ to define the biomarker evaluable population.}
 
 \item{active.code}{of the treatment/experimental arm of the treatment variable}
 
-\item{var.code}{ordered levels of the biomarker variable. This will be ignored for continuous biomarker. 
+\item{var.code}{ordered levels of the biomarker variable. This will be ignored for continuous biomarker.
 If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function}
 
-\item{tabforest}{Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function. 
+\item{tabforest}{Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
 If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{alpha}{type I error rate. Default is 0.05.}
@@ -109,8 +109,8 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 }
 \description{
-This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm 
-or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a group of 
+This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm
+or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a group of
 variables. This function may be used to compare effect of these variables in ITT vs biomarker evaluable population. Or compare effect
 of these variables in different biomarker subgroups
 }
@@ -118,10 +118,10 @@ of these variables in different biomarker subgroups
 data(input)
 PlotTabForestBiomarker(data=input,
                       outcome.class=c("survival"),
-                      outcome.var=c("PFS","PFS.CNSR"),
+                      outcome.var=c("PFS","PFS.event"),
                       trt="Arm",
-                      var="KRAS.mutant", 
-                      var.class="categorical") 
+                      var="KRAS.mutant",
+                      var.class="categorical")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

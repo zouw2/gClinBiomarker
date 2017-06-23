@@ -1,21 +1,21 @@
 #' Generate forest plot and summarization table for 2-arm or within-arm comparison
-#' 
-#' This function creates a forest plot along with table with summary statistics to infer biomarker effects, within a single arm 
-#' or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a single 
+#'
+#' This function creates a forest plot along with table with summary statistics to infer biomarker effects, within a single arm
+#' or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a single
 #' biomarker variable
-#' 
+#'
 #' @author  Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
-#' 
-#' @param data input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
-#' biomarker variables, treatment indicator, etc.). One patient per row. 
+#'
+#' @param data input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
+#' biomarker variables, treatment indicator, etc.). One patient per row.
 #' @param outcome.class type of the outcome variable. Default is \code{c("survival", "binary", "continuous")}
 #' @param outcome.var name of the outcome varible. If the outcome.class is binary or coutinuous, only one value should be provided.
 #' If the outcome.class is survival, two values should be provided - name of the 'time to event' variable and 'censorship' variable
-#'  For the censoring variable, 1 indicates event and 0 indicates censoring 
+#'  For the censoring variable, 1 indicates event and 0 indicates censoring
 #' @param trt name of the treatment variable. If this is NULL, within-arm analysis will be performed
 #' @param var name of the biomarker variable. only one variable should be specified.
 #' @param var.class class of the variable. valid categories are "numeric", "categorical". If the class is continuous,
-#' user needs to specify percentile.cutoff or numerical.cutoff to dichotomize the continuous measure into subgroups 
+#' user needs to specify percentile.cutoff or numerical.cutoff to dichotomize the continuous measure into subgroups
 #' @param var.name display name for the biomarker variable
 #' @param percentile.cutoff percentile to dichotomize continuous biomarker measure. This could be a vector with multiple elements.
 #' Values should be between 0 and 1
@@ -37,14 +37,14 @@
 #' @param itt.name preferred display name of ITT
 #' If it is NULL, "ITT" will be used.
 #' @param bep.indicator In the subpopulation column, which value is used
-#' to define the biomarker evaluable population. 
+#' to define the biomarker evaluable population.
 #' @param covariate a vector specifying the covariate variables to be adjusted in the model. Default is set to NULL, meaning no adjustment.
 #' @param strata name of the stratification variables. Default is set to NULL, meaning no stratification.
-#' @param placebo.code name of the control arm of the treatment variable 
+#' @param placebo.code name of the control arm of the treatment variable
 #' @param active.code of the treatment/experimental arm of the treatment variable
-#' @param var.code ordered levels of the biomarker variable. This will be ignored for continuous biomarker. 
+#' @param var.code ordered levels of the biomarker variable. This will be ignored for continuous biomarker.
 #' If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function
-#' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function. 
+#' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
 #' If it is TRUE, a table will be generated with forest plots incorpriated
 #' @param alpha type I error rate. Default is 0.05.
 #' @param digits number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified
@@ -56,24 +56,24 @@
 #' @param cols Color of the 'effect size' displayed in the forest plot.
 #' @param only.stat if it is TRUE, only summary statistics will be generated. No figure will be generated
 #' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "Forestplot.pdf".
-#' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}. 
+#' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
-#' 
+#'
 #' @export
-#' @examples 
+#' @examples
 #' data(input)
 #' PlotTabForestBiomarker(data=input,
 #'                       outcome.class=c("survival"),
-#'                       outcome.var=c("PFS","PFS.CNSR"),
+#'                       outcome.var=c("PFS","PFS.event"),
 #'                       trt="Arm",
-#'                       var="KRAS.mutant", 
-#'                       var.class="categorical") 
+#'                       var="KRAS.mutant",
+#'                       var.class="categorical")
 
 
 
 PlotTabForestBiomarker <- function(data,
                                   outcome.class=c("survival", "binary"),
-                                  outcome.var, #c(OS,OS.CNSR)
+                                  outcome.var, #c(OS,OS.event)
                                   trt=NULL,
                                   var=NULL, #KRAS...
                                   var.class=NULL, var.name=NULL,
@@ -104,14 +104,14 @@ PlotTabForestBiomarker <- function(data,
   # multiple arm - different plots?
   outcome.class <- match.arg(outcome.class, c("survival", "binary"))
   if(is.null(var))show.itt <- TRUE
-  
+
   possible.class <-c("categorical","numeric")
   if(is.null(var.class)||!all(var.class%in%possible.class)){
     if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
     if(class(data[,var])%in%c("logical"))class(data[,var]) <- "character"
     if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
   }
-  
+
   var.class <- match.arg(var.class,c("numeric","categorical"))
   stopifnot(var%in%colnames(data))
   if(is.null(bep)){
@@ -123,7 +123,7 @@ PlotTabForestBiomarker <- function(data,
 
   Outcome <- data[, outcome.var]
   Biomarker <- data[, var]
-  
+
 
 
   if(var.class=="categorical"){
@@ -136,11 +136,11 @@ PlotTabForestBiomarker <- function(data,
   } else {
     var.code <- levels(Biomarker)
   }}
-  
-  
-  
+
+
+
   if(!is.null(trt))if(length(unique(data[,trt]))==1)  trt <- NULL
-  
+
   if(is.null(trt)) nArms <- 1
   if (!is.null(trt)) { # multi-arm study
     Treatment <- data[,trt]
@@ -163,7 +163,7 @@ PlotTabForestBiomarker <- function(data,
     if(is.null(placebo.code))placebo.code <- Arms[1]
     if(is.null(active.code))active.code <- Arms[-1]
   }
-  
+
   if(nArms==1){
     if(show.itt){
       show.itt <- FALSE
@@ -178,20 +178,20 @@ PlotTabForestBiomarker <- function(data,
       within.bin <- FALSE
   }
   }
-  
+
   if(within.bin & any(c(greater, less))){
     message("within.bin is TRUE, greater and less will be ignored")
     greater <- less <- FALSE
   }
-  
-  
+
+
   if(is.null(var.name))var.name <- var
   if(is.null(bep.name))bep.name <- "BEP"
   if(is.null(itt.name))itt.name <- "ITT"
   ncut <- max(length(percentile.cutoff), length(numerical.cutoff))
   if(var.class=="numeric" & ncut==0)stop("numeric var but no cutoff was specified!")
-  
-  
+
+
   data.bep <- data[which(data[[bep]]%in%bep.indicator),]
   bm.list <- list()
   #if(show.itt)bm.list[[itt.name]] <- rep(T, length(data.bep[[1]]))
@@ -220,80 +220,80 @@ PlotTabForestBiomarker <- function(data,
       qt <- i
       bm.list[[paste0(var.name,"(<",i,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
     }
-    
+
     if(within.bin)if(!is.null(percentile.cutoff)){
       percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
      for(i in 2:length(percentile.cutoff)){
       qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),digits)
       qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),digits)
       if(percentile.cutoff[i]!=100)
-        bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]]  <- 
+        bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]]  <-
         ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
       if(percentile.cutoff[i]==100)
-        bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]] <- 
+        bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]] <-
         ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
      }}
-    
+
     if(within.bin)if(!is.null(numerical.cutoff)){
       numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),numerical.cutoff)))
       for(i in 2:length(numerical.cutoff)){
         qt1 <- numerical.cutoff[i-1]
         qt2 <- numerical.cutoff[i]
         if(numerical.cutoff[i]!=max(data.bep[[var]]))
-          bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <- 
+          bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <-
           ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
         if(numerical.cutoff[i]==max(data.bep[[var]]))
-          bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <- 
+          bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <-
           ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
       }}
   }
-    
+
   }
-  
-  
-  #### stratification, 
+
+
+  #### stratification,
   # one for ITT and one for BEP
-  
+
   if(is.null(covariate)) {
     Covariate <- Covariate.bep <- NULL
   } else {
     Covariate.bep <- data.bep[, covariate]
     Covariate <- data[,covariate]
   }
-  
+
   if(is.null(strata)) {
     Strat.fac <- Strat.fac.bep <- NULL
   } else {
     Strat.fac.bep <- data.bep[, strata]
     Strat.fac <- data[,strata]
   }
-  
-  
+
+
   ################## survival #########################
   if(outcome.class=="survival"){
     res <- NULL
     if(nArms==2){
-    if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var], 
+    if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
                                                   subgroup.var=jj, treatment.var=data.bep[,trt],
                   placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
                   covariate.var=Covariate.bep,
                   strat.factor.var=Strat.fac.bep)))
-    
+
     if(show.itt) {res <- rbind(
-      StatSummary(outcome.var=data[,outcome.var], 
+      StatSummary(outcome.var=data[,outcome.var],
                   subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
                   placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
                   covariate.var=Covariate,
-                  strat.factor.var=Strat.fac)  
+                  strat.factor.var=Strat.fac)
                               ,res)
     rownames(res)[1] <- itt.name
     }
-    
-    
+
+
          calc.inter.p <- TRUE
          if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1) calc.inter.p <- FALSE
 
-          ac <- Arms[2]  
+          ac <- Arms[2]
           # interaction p value: per arm? If originally cont., then use cont. in modeling
             # no stratification??
           fit1 <- coxph(Surv(data.bep[,outcome.var[1]], data.bep[,outcome.var[2]]) ~ data.bep[,trt] * data.bep[,var] )
@@ -306,11 +306,11 @@ PlotTabForestBiomarker <- function(data,
           inter.p <- pchisq(stat, df=n1-n2, lower.tail=FALSE)
 
 }
- 
+
     if(nArms==1){
       placebo.code <- "No"
       active.code <- "Yes"
-      res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var], 
+      res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
                                                       subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
                                                       placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
                                                       covariate.var=Covariate.bep,
@@ -318,7 +318,7 @@ PlotTabForestBiomarker <- function(data,
       inter.p <- NULL
       calc.inter.p <- FALSE
     }
-       
+
     tabletext <- rbind(c( "Subgroup","Arm", "Event/N", "MST", "HR", "CI", "raw P"),
                        cbind(as.vector(sapply(rownames(res),function(z)c(z, ""))),
                              rep(c(placebo.code, active.code),nrow(res)),
@@ -328,8 +328,8 @@ PlotTabForestBiomarker <- function(data,
                              as.vector(t(cbind(rep("", nrow(res)), round(res[, 7], 2)))),
                              as.vector(t(cbind(rep("", nrow(res)), paste(round(res[, 8], 2), round(res[, 9], 2), sep=" - ")))),
                              as.vector(t(cbind(rep("", nrow(res)), round.signif(res[, 10], 2))))))
-    
-    
+
+
     if(!only.stat){
     if (is.null(main)) {
       main.text <- ifelse(nArms==1, "Prognostic Effect of Biomarker (Within arm)", "Prognostic and Predictive Effects of Biomarker (Across arm)")
@@ -337,7 +337,7 @@ PlotTabForestBiomarker <- function(data,
     } else {
       main.text <- main
     }
-    
+
     if (is.null(sub)) {
       sub1.text <- NULL
       if(length(covariate) > 0)sub1.text <- paste("Results adjusted by ", paste(covariate, collapse=" , "), sep="")
@@ -352,18 +352,18 @@ PlotTabForestBiomarker <- function(data,
     } else {
       sub.text <- sub
     }
-    
-    PlotParam(pdf.name, pdf.param, par.param)  
-    
+
+    PlotParam(pdf.name, pdf.param, par.param)
+
     if (is.null(clip)) {
       good1 <- !is.na(res[, 8]) & is.finite(res[, 8]) & res[, 8] != 0
       good2 <- !is.na(res[, 9]) & is.finite(res[, 9])
       xrange <- c(min(round(res[good1, 8], 2)), max(as.numeric(round(res[good2, 9], 2))))
       clip <- exp(c(-max(abs(log(xrange))), max(abs(log(xrange)))))
     }
-    
+
     wid <- max(nchar(sapply(rownames(res), function(z)strsplit(z, "\n")[[1]][1])))/6
-    
+
     hl <- 0
     if(show.itt) hl <- c(hl,max(hl)+2)
     if(show.bep) hl <- c(hl, max(hl)+2)
@@ -393,12 +393,12 @@ PlotTabForestBiomarker <- function(data,
               sub.main=c(paste(active.code, "better", sep=" "),
                          paste(placebo.code, "better", sep=" ")),
               cex.headings=cex.headings,
-              cex.note=cex.note, 
+              cex.note=cex.note,
               par.param=par.parm
     )
     }
     if(!tabforest){
-      
+
       hz <- vector("list",1)
       for(i in 1:length(hl)){
         if(hl[i] < nrow(tabletext)){
@@ -406,18 +406,18 @@ PlotTabForestBiomarker <- function(data,
         names(hz)[i] <- hl[i]+2
         }
       }
-      
+
       tabletext2 <- tabletext
       tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
-      
+
       forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,5])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
                  upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
-                 xlab=paste("<--",active.code, "better [HR] ",placebo.code, "better -->", 
+                 xlab=paste("<--",active.code, "better [HR] ",placebo.code, "better -->",
                             "\n", note),
                  hrzl_lines=hz,align="l",
-                 lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols), 
+                 lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
                   xlog=TRUE,
                  title=paste(main.text,"\n",sub.text),
                  #graphwidth=unit(100, 'mm'),
@@ -427,16 +427,16 @@ PlotTabForestBiomarker <- function(data,
                                 ticks=gpar(cex=cex.note),
                                 xlab=gpar(cex = cex.note))
       )
-      
+
     }
-    
-    PlotParam()  
+
+    PlotParam()
     }
   out <- tabletext
   }
-  
-  
-  if(outcome.class=="binary")  { 
+
+
+  if(outcome.class=="binary")  {
     stop("binary not ready yet")
     subgroup <- Treatment == placebo.code
     thisgroup <- Biomarker == var.code[1]
@@ -447,9 +447,9 @@ PlotTabForestBiomarker <- function(data,
                                     strat.factor.var=Strat.fac),
                         "NRsp.Placebo"=sum(Outcome[subgroup & Biomarker == var.code[1]], na.rm=TRUE),
                         "NRsp.Active"=sum(Outcome[subgroup & Biomarker == var.code[2]], na.rm=TRUE)))
-    
+
     inter.p <- NULL
-    
+
     for (ac in active.code) {
       subgroup <- Treatment == ac
       res <- rbind(res, c(StatSummary(outcome.var=Outcome, subgroup.var=subgroup, treatment.var=thisgroup,
@@ -458,7 +458,7 @@ PlotTabForestBiomarker <- function(data,
                                       strat.factor.var=Strat.fac),
                           "NRsp.Placebo"=sum(Outcome[subgroup&Biomarker == var.code[1]], na.rm=TRUE),
                           "NRsp.Active"=sum(Outcome[subgroup&Biomarker == var.code[2]], na.rm=TRUE)))
-      
+
       fit1 <- glm(Outcome~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
       fit2 <- glm(Outcome~as.character(Treatment)+Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
       L1 <- summary(fit1)$deviance
@@ -468,7 +468,7 @@ PlotTabForestBiomarker <- function(data,
       stat <- L2-L1
       inter.p <- c(inter.p, pchisq(stat, df=n2-n1, lower.tail=FALSE))
     }
-    
+
     tabletext <- rbind(c("Arm", "Pt Group", "Resp/N", "Resp Rate", "deltaRR", "CI", "raw P"),
                        cbind(c(placebo.code, "", insert(active.code, "")),
                              rep(var.code, length(c(placebo.code, active.code))),
@@ -489,24 +489,24 @@ PlotTabForestBiomarker <- function(data,
     } else {
       sub.text <- sub
     }
-    
-    PlotParam(pdf.name, pdf.param, par.param)  
-    
+
+    PlotParam(pdf.name, pdf.param, par.param)
+
     if (is.null(clip)) {
       good1 <- !is.na(res[, "Lower"]) & is.finite(res[, "Lower"])
       good2 <- !is.na(res[, "Upper"]) & is.finite(res[, "Upper"])
       xrange <-  c(min(as.numeric(res[good1, "Lower"])), max(as.numeric(res[good2, "Upper"]), na.rm=TRUE))
       clip <- round(c(-max(abs(xrange)), max(abs(xrange))), 2)
     }
-    
+
     wid <- max(nchar(sapply(var.code, function(z)strsplit(z, "\n")[[1]][1])))/4
-    
+
     if(is.null(inter.p)) {
       note <- c()
     } else {
       note <- c(paste("* Interaction P = ", paste(round.signif(inter.p, 2), collapse=" ; "), sep=""))
     }
-    
+
     ForestTab(labeltext=tabletext[-c(1), ],
               mean=as.numeric(tabletext[-1,5]),
               lower=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1])),
@@ -521,17 +521,17 @@ PlotTabForestBiomarker <- function(data,
               sub.main=c(paste(var.code[1], "better", sep=" "),
                          paste(var.code[2], "better", sep=" ")),
               cex.headings=cex.headings,
-              cex.note=cex.note, 
+              cex.note=cex.note,
               lwd=2,
               pdf.name=pdf.name,
               pdf.param=pdf.param,
               par.param=par.param
     )
-    
-    PlotParam()  
+
+    PlotParam()
   }
-  
-  if(outcome.class=="continuous")  { 
+
+  if(outcome.class=="continuous")  {
     stop("continuous not ready yet")}
  out
-  } 
+  }

@@ -33,7 +33,7 @@ If it is NULL, "ITT" will be used.}
 
 \item{pdf.name}{name of output pdf file. If it is NULL (default), the plots will be displayed but not saved as pdf}
 
-\item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}. 
+\item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}.
 for example, pdf.param=list(width=10, height=5)}
 
 \item{par.param}{A list of parameters that define graphcial parameters. See \code{\link{par}}.
@@ -50,7 +50,7 @@ This function generates KM curves to compare ITT vs BEP, within each treatment a
 \examples{
 data(input)
 sample.data <- input
-CompareKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT")
+CompareKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

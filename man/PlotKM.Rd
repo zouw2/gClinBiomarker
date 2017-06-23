@@ -24,20 +24,20 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{cens}{column name that indicates the censoring variable associated to tte}
 
 \item{var}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
-If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and var.levels is not specified, 
+If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and var.levels is not specified,
 it will be converted to a factor by factor() function. If var.levels is defined, the column will be converted to
-a factor following the level order in var.levels. 
-In the legend, the subgroups will be ordered based on the order of factor levels. 
+a factor following the level order in var.levels.
+In the legend, the subgroups will be ordered based on the order of factor levels.
 The parameter var can also be a vector of multiple column names.
 In this case, subgroups will be defined by classes in multiple columns (e.g. treatment and biomarker)}
 
-\item{var.levels}{levels in the subgroups. It should be a vector if the parameter var is a single column name. 
+\item{var.levels}{levels in the subgroups. It should be a vector if the parameter var is a single column name.
 It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
 The elements in the list should match the multiple columns defined in parameter var.}
 
-\item{var.labels}{preferred labels for the var. 
+\item{var.labels}{preferred labels for the var.
 var.levels should be provided if subgroupd.labels is specified. The order in var.labels should match var.levels.
-It should be a vector if the parameter var is a single column name. 
+It should be a vector if the parameter var is a single column name.
 It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
 The elements in the list should match the multiple columns defined in parameter var.}
 
@@ -72,7 +72,7 @@ at risk will be summarized by subgroup.}
 
 \item{pdf.name}{name of output pdf file. If it is NULL (default), the plots will be displayed but not saved as pdf}
 
-\item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}. 
+\item{pdf.param}{A list of parameters that define pdf graphics device. See \code{\link{pdf}}.
 for example, pdf.param=list(width=10, height=5)}
 
 \item{par.param}{A list of parameters that define graphcial parameters. See \code{\link{par}}.
@@ -84,13 +84,13 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
 The function generates KM curves for full population or subgroups. The subgroups may be defined as a single factor or multiple factors.
 }
 \note{
-This function generates KM curve(s) for full population (when parameter var is not defined) 
+This function generates KM curve(s) for full population (when parameter var is not defined)
 or var (when parameter var is defined).
 }
 \examples{
 data(input)
 sample.data <- input
-PlotKM(data=sample.data, tte="OS",cens="OS.CNSR", main="OS ITT by treatment", var="Arm")
+PlotKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT by treatment", var="Arm")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
