@@ -1,4 +1,4 @@
-"Patient.ID","Sample.ID","Arm","Age","Weight","ECOG","Sex","Best.SLD","Country","CD8.ihc","KRAS.mutant","KRAS.exprs","OS","OS.CNSR","PFS","PFS.CNSR","Response","BEP"
+"Patient.ID","Sample.ID","Arm","Age","Weight","ECOG","Sex","Best.SLD","Country","CD8.ihc","KRAS.mutant","KRAS.exprs","OS","OS.event","PFS","PFS.event","Response","BEP"
 "PID001","SID001","TRT",40,61,0,"F",550.496960952424,"Western Europe",3,"Mutant",171.25,9.6919917864,0,5.7823408624,0,"PR",1
 "PID002","SID002","TRT",60,87,1,"F",549.77512528457,"USA",2,"Wild Type",2.77,4.4353182752,1,1.4127310062,1,"PD",1
 "PID003","SID003","TRT",53,57.6,1,"M",548.882856834668,"Western Europe",3,"Wild Type",61.82,9.6919917864,0,1.2156057495,1,"PD",1
