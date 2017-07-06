@@ -6,12 +6,13 @@
 \usage{
 PlotSTEPP(data, outcome.var, outcome.class, trt = NULL, var,
   covariate = NULL, strata = NULL, placebo.code = NULL,
-  active.code = NULL, alpha = 0.05, window.width = 0.25, min.pt = NULL,
-  max.pt = NULL, by = 0.05, yrange.lower = NULL, yrange.upper = NULL,
-  xticks = NULL, show.refline = TRUE, refline.color = "grey",
-  show.refline.ac = TRUE, refline.color.ac = "lightblue",
-  estimate.color = "blue", estimate.lty = 1, estimate.lwd = 2,
-  ci.color = "black", ci.lty = 2, ci.lwd = 1, ci.shade = TRUE,
+  active.code = NULL, quantile.type = 1, alpha = 0.05,
+  window.width = 0.25, min.pt = NULL, max.pt = NULL, by = 0.05,
+  yrange.lower = NULL, yrange.upper = NULL, xticks = NULL,
+  show.refline = TRUE, refline.color = "grey", show.refline.ac = TRUE,
+  refline.color.ac = "lightblue", estimate.color = "blue",
+  estimate.lty = 1, estimate.lwd = 2, ci.color = "black", ci.lty = 2,
+  ci.lwd = 1, ci.shade = TRUE,
   plot.title = "STEPP: Subgroup Treatment Effect Pattern Plot",
   sub.title = NULL, xlabel = "Biomarker Percentile", ylabel = NULL,
   show.legend = TRUE, legend.loc = "topright",
@@ -42,6 +43,8 @@ This can be added to adjust for in the analysis for survival and continuous outc
 \item{placebo.code}{name of the control group within the treatment variable}
 
 \item{active.code}{name of the treatment/experimental group within the treatment variable}
+
+\item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
 
 \item{alpha}{confidence level (CI) for point estimate, i.e. 0.05 for 95 percent CI. Default is 0.05.}
 

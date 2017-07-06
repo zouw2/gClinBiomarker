@@ -15,6 +15,7 @@
 #' @param strata vector specifying the stratification variables. This can be added for the survival outcome variable class.
 #' @param placebo.code name of the control group within the treatment variable
 #' @param active.code name of the treatment/experimental group within the treatment variable
+#' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.
 #' @param alpha confidence level (CI) for point estimate, i.e. 0.05 for 95 percent CI. Default is 0.05.
 #' @param min.pt minimum center.pt. Default is NULL.
 #' @param max.pt maximum center.pt. Default is NULL.
@@ -84,6 +85,7 @@ PlotSTEPP <- function(data,
                      strata = NULL,
                      placebo.code = NULL,
                      active.code = NULL,
+                     quantile.type = 1,
                      alpha = .05,
                      window.width = .25,
                      min.pt = NULL,
@@ -181,9 +183,9 @@ PlotSTEPP <- function(data,
         if (nbins > 4) {
             allticks <- seq(min.pt, max.pt, by = by)
             if (nbins %% 2 == 0) {
-                xticks <- c(min.pt, quantile(allticks, c(.33, .67), type = 1), max.pt)
+                xticks <- c(min.pt, quantile(allticks, c(.33, .67), type = quantile.type), max.pt)
             } else {
-                xticks <- c(min.pt, quantile(allticks, c(.25, .5, .75), type = 1), max.pt)
+                xticks <- c(min.pt, quantile(allticks, c(.25, .5, .75), type = quantile.type), max.pt)
             }
         } else {
             xticks <- seq(min.pt, max.pt, by = by)
@@ -238,8 +240,8 @@ PlotSTEPP <- function(data,
 
         # Biomarker values corresponding to the percentiles
         # 'type'=2 is used to match the result from median()
-        LL <- quantile(Biomarker, start, type = 2)
-        UL <- quantile(Biomarker, end, type = 2)
+        LL <- quantile(Biomarker, start, type = quantile.type)
+        UL <- quantile(Biomarker, end, type = quantile.type)
         sdata[i, c("BMV.LL", "BMV.UL")] <- c(LL, UL)
 
         # The subgroup index for this window
