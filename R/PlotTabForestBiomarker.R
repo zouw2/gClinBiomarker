@@ -46,7 +46,7 @@
 #' If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function
 #' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
 #' If it is TRUE, a table will be generated with forest plots incorpriated
-#' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}.
+#' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.
 #' @param alpha type I error rate. Default is 0.05.
 #' @param digits number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified
 #' @param main main title of the forest plot. Default is "Association of biomarker effect within treatment arms".
@@ -68,8 +68,7 @@
 #'                       outcome.var=c("PFS","PFS.event"),
 #'                       trt="Arm",
 #'                       var="KRAS.mutant",
-#'                       var.class="categorical",
-#'                       quantile.type=2)
+#'                       var.class="categorical")
 
 
 
@@ -94,7 +93,7 @@ PlotTabForestBiomarker <- function(data,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
                                   tabforest=FALSE,
-                                  quantile.type,
+                                  quantile.type=2,
                                   digits=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
