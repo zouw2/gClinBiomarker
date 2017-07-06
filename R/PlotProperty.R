@@ -23,7 +23,7 @@
 #' @param lowess.line performs the computations for the \code{LOWESS} smoother which uses locally-weighted polynomial regression. See \code{\link{lowess}}.
 #' @param lowess.line.col the smoother color. Default is "deepskyblue".
 #' @param f the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.
-#' @param show.biomarker.uni,show.clinical.uni,show.association indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively. Default is TRUE for all of them.
+#' @param show.biomarker.uni,show.clinical.uni,show.association indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively. Default is TRUE for all but show.clinical.uni.
 #' @param las create a barplot with labels parallel (horizontal) to bars if \code{las=2}. Default is 1.
 #' @param pdf.name name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
@@ -61,7 +61,7 @@ PlotProperty <- function(data,
                          cor.method="spearman",
                          lowess.line=FALSE,
                          lowess.line.col="deepskyblue",
-                         show.biomarker.uni = TRUE, show.clinical.uni = TRUE, show.association = TRUE,
+                         show.biomarker.uni = TRUE, show.clinical.uni = FALSE, show.association = TRUE,
                          f=0.3,
                          las=1,
                          pdf.name=NULL,
@@ -138,7 +138,7 @@ PlotProperty <- function(data,
         }
     }
     if(length(log2) == 1) log2 <- rep(log2, length(c(biomarker.var, var)))
-    if(length(log2) < length(c(biomarker.var, var))) 
+    if(length(log2) < length(c(biomarker.var, var)))
     stop(paste('the length of parameter log2 should be either 1 or length of c(biomarker.var, var)'))
 
     PlotParam(pdf.name, pdf.param, par.param)
@@ -306,13 +306,13 @@ PlotProperty <- function(data,
                     yy <- BV
                     nlev <- nlevels(x)
                     ylim <- range(yy, na.rm=T)
-                    
+
                     if(show.clinical.uni==TRUE){
                       tab <- table(data[, var[i]])
                       freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
                      barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las)
                     }
-                    
+
                     if(show.association==TRUE){
                     if (is.null(col)){
                         col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)

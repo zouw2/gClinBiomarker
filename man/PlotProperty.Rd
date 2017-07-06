@@ -9,7 +9,7 @@ PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
   text.font = 3, main = "Distribution of", xlab = "", add.lab = "",
   border = NULL, add.cor = FALSE, cor.method = "spearman",
   lowess.line = FALSE, lowess.line.col = "deepskyblue",
-  show.biomarker.uni = TRUE, show.clinical.uni = TRUE,
+  show.biomarker.uni = TRUE, show.clinical.uni = FALSE,
   show.association = TRUE, f = 0.3, las = 1, pdf.name = NULL,
   pdf.param = list(width = 6, height = 4.5), par.param = list(mar = c(4, 4,
   3, 2)))
@@ -50,7 +50,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{lowess.line.col}{the smoother color. Default is "deepskyblue".}
 
-\item{show.biomarker.uni, show.clinical.uni, show.association}{indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively. Default is TRUE for all of them.}
+\item{show.biomarker.uni, show.clinical.uni, show.association}{indicate whether to show biomarker uni-variate plot, clinical variable uni-variate plot, biomarker-clinical variable association plot, respectively. Default is TRUE for all but show.clinical.uni.}
 
 \item{f}{the smoother span. This gives the proportion of points in the plot which influence the smooth at each value. Larger values give more smoothness. Default is 0.3.}
 
