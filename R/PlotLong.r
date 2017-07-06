@@ -76,16 +76,3 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
     ggpack.decorators(...)
 
 }
-
-dat <- nasa %>%
-  as_tibble %>%
-  mutate(hemisphere = ifelse(lat>0, "North", "South"),
-         region     = ifelse(long < -85, "East", "West"))
-
-PlotLong(dat,
-         aes(x=month, y=temperature, group = hemisphere, linetype = region,
-             color = hemisphere, fill = hemisphere),
-         formula = temperature ~ ozone,
-         plot.style = 'errorbars', fun.data = 'tukey')
-
-
