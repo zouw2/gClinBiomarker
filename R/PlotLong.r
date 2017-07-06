@@ -77,17 +77,15 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
 
 }
 
-PlotLong(nasa %>% as_tibble %>% mutate(hemisphere=ifelse(lat>0, "North", "South"), test=ifelse(long < -85, "Left", "Right")),
-         aes(x=month, y=temperature, group = hemisphere, linetype = test,
+dat <- nasa %>%
+  as_tibble %>%
+  mutate(hemisphere = ifelse(lat>0, "North", "South"),
+         region     = ifelse(long < -85, "East", "West"))
+
+PlotLong(dat,
+         aes(x=month, y=temperature, group = hemisphere, linetype = region,
              color = hemisphere, fill = hemisphere),
          formula = temperature ~ ozone,
-         model.per = ~ hemisphere, fun.data = 'tukey',
-         plot.style = 'errorbars',
-         show.counts = 'table',
-         label.data = . %>% filter(month %in% c(1, 6, 12)),
-         label.hjust = 'inward',
-         xlab = "Month", ylab = "Temperature Adjusted for Ozone",
-         labs.title = "Temperature by Hemisphere",
-         labs.caption = "*dependent models fit per hemisphere")
+         plot.style = 'errorbars', fun.data = 'tukey')
 
 

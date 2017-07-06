@@ -129,10 +129,11 @@ ggpack_remove_aesthetics <- function(mapping, ...) {
 #'
 #' @export
 ggpack.decorators <- function(...) {
+  ggpack(geom_blank, "blank", list(...)) +
   ggpack(xlab,  'xlab',  list(...), null.empty = TRUE) +
-    ggpack(ylab,  'ylab',  list(...), null.empty = TRUE) +
-    ggpack(labs,  'labs',  list(...), null.empty = TRUE) +
-    ggpack(theme, 'theme', list(...), null.empty = TRUE)
+  ggpack(ylab,  'ylab',  list(...), null.empty = TRUE) +
+  ggpack(labs,  'labs',  list(...), null.empty = TRUE) +
+  ggpack(theme, 'theme', list(...), null.empty = TRUE)
 }
 
 
