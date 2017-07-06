@@ -45,6 +45,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   # reduce through list of ribbon geoms and collect sum
   Reduce(function(l, r) { l +
     ggpack(stat_summary, 'ribbon', .dots,
+      mapping = mapping,
       geom = 'ribbon',
       fun.data = r,
       color = NA,
@@ -55,6 +56,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   ## pack ## point
   # plot point along stat y
   ggpack(stat_summary, 'point', .dots,
+         mapping = mapping,
          geom = 'point',
          fun.data = fun.data[[1]],
          size = rel(3)) +
@@ -62,6 +64,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   ## pack ## line
   # plot line along stat y
   ggpack(stat_summary, 'line', .dots,
+      mapping = mapping,
       geom = 'line',
       fun.data = fun.data[[1]]) +
 
@@ -69,6 +72,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
     ggpack(stat_summary, 'label', .dots,
+      mapping = mapping,
       fun.data = last(fun.data),
       direction = "y",
       nudge_y = 0.1,
@@ -78,6 +82,7 @@ ggpk_stat_ribbon <- function(mapping = NULL, data = NULL, show.counts = FALSE,
       alpha = 0.85)
   } else if (show.counts == 'table') {
     ggpack(stat_summary, 'label', .dots,
+      mapping = mapping,
       fun.data = last(fun.data),
       geom = 'text_table',
       show.legend = FALSE)

@@ -66,9 +66,9 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
   }
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
-  data %>% ggplot() + mapping +
-    (if      (plot.style == 'ribbons') ggpk_stat_ribbon(...)
-     else if (plot.style == 'errorbars') ggpk_stat_line_errorbar(...)) +
+  data %>% ggplot() +
+    (if      (plot.style == 'ribbons') ggpk_stat_ribbon(mapping, ...)
+     else if (plot.style == 'errorbars') ggpk_stat_line_errorbar(mapping, ...)) +
     (if (is.null(facet.fun)) facet_null()
      else ggpack(facet_grid, 'facet', list(...), facets = facet.fun)) +
     (if (is.null(formula)) NULL
@@ -76,3 +76,18 @@ PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NUL
     ggpack.decorators(...)
 
 }
+
+PlotLong(nasa %>% as_tibble %>% mutate(hemisphere=ifelse(lat>0, "North", "South"), test=ifelse(long < -85, "Left", "Right")),
+         aes(x=month, y=temperature, group = hemisphere, linetype = test,
+             color = hemisphere, fill = hemisphere),
+         formula = temperature ~ ozone,
+         model.per = ~ hemisphere, fun.data = 'tukey',
+         plot.style = 'errorbars',
+         show.counts = 'table',
+         label.data = . %>% filter(month %in% c(1, 6, 12)),
+         label.hjust = 'inward',
+         xlab = "Month", ylab = "Temperature Adjusted for Ozone",
+         labs.title = "Temperature by Hemisphere",
+         labs.caption = "*dependent models fit per hemisphere")
+
+
