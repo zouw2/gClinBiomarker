@@ -46,6 +46,7 @@
 #' If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function
 #' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
 #' If it is TRUE, a table will be generated with forest plots incorpriated
+#' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}.
 #' @param alpha type I error rate. Default is 0.05.
 #' @param digits number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified
 #' @param main main title of the forest plot. Default is "Association of biomarker effect within treatment arms".
@@ -67,7 +68,8 @@
 #'                       outcome.var=c("PFS","PFS.event"),
 #'                       trt="Arm",
 #'                       var="KRAS.mutant",
-#'                       var.class="categorical")
+#'                       var.class="categorical",
+#'                       quantile.type=2)
 
 
 
@@ -76,17 +78,24 @@ PlotTabForestBiomarker <- function(data,
                                   outcome.var, #c(OS,OS.event)
                                   trt=NULL,
                                   var=NULL, #KRAS...
-                                  var.class=NULL, var.name=NULL,
+                                  var.class=NULL,
+                                  var.name=NULL,
                                   percentile.cutoff=0.5,
                                   numerical.cutoff=NULL,
-                                  greater=TRUE, less=FALSE,
+                                  greater=TRUE,
+                                  less=FALSE,
                                   within.bin=FALSE,
-                                  show.itt=TRUE, show.bep=TRUE,
-                                  bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
+                                  show.itt=TRUE,
+                                  show.bep=TRUE,
+                                  bep = NULL,
+                                  bep.name = "BEP",
+                                  itt.name="ITT",
+                                  bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
                                   tabforest=FALSE,
-                                  quantile.type=2, digits=2,
+                                  quantile.type,
+                                  digits=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
                                   var.code=NULL,

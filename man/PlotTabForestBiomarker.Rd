@@ -10,12 +10,11 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   greater = TRUE, less = FALSE, within.bin = FALSE, show.itt = TRUE,
   show.bep = TRUE, bep = NULL, bep.name = "BEP", itt.name = "ITT",
   bep.indicator = 1, covariate = NULL, strata = NULL, tabforest = FALSE,
-  quantile.type = 2, digits = 2, placebo.code = NULL,
-  active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
-  sub = NULL, clip = NULL, cex.headings = 1.1, cex.note = 0.8,
-  cols = 4, only.stat = FALSE, pdf.name = NULL, pdf.param = list(width =
-  12, height = 4.5), par.param = list(cex = 1, cex.main = 1, cex.sub = 1,
-  cex.axis = 1))
+  quantile.type, digits = 2, placebo.code = NULL, active.code = NULL,
+  var.code = NULL, alpha = 0.05, main = NULL, sub = NULL, clip = NULL,
+  cex.headings = 1.1, cex.note = 0.8, cols = 4, only.stat = FALSE,
+  pdf.name = NULL, pdf.param = list(width = 12, height = 4.5),
+  par.param = list(cex = 1, cex.main = 1, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -75,6 +74,8 @@ to define the biomarker evaluable population.}
 \item{tabforest}{Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
 If it is TRUE, a table will be generated with forest plots incorpriated}
 
+\item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}.}
+
 \item{digits}{number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified}
 
 \item{placebo.code}{name of the control arm of the treatment variable}
@@ -118,7 +119,8 @@ PlotTabForestBiomarker(data=input,
                       outcome.var=c("PFS","PFS.event"),
                       trt="Arm",
                       var="KRAS.mutant",
-                      var.class="categorical")
+                      var.class="categorical",
+                      quantile.type=2)
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
