@@ -317,6 +317,8 @@ PlotSTEPP <- function(data,
     upper = sdata[, "Upper"]
     bml = round(sdata[, "BMV.LL"], bm.digits)
     bmu = round(sdata[, "BMV.UL"], bm.digits)
+    num.events = sdata[, "Events"]
+    num.pats = sdata[, "N"]
 
     # If center.pt is NULL
     if (is.null(center.pt)) {
@@ -371,8 +373,8 @@ PlotSTEPP <- function(data,
              type = "n",
              axes = FALSE,
              xlim = c(min.pt, max.pt),
-             xlab = xlabel,
-             ylab = ylabel,
+             xlab = "",
+             ylab = xlabel,
              main = plot.title,
              sub = sub.title)
         # y-axis in % scale
@@ -410,6 +412,8 @@ PlotSTEPP <- function(data,
         text_ <- round(effect.ac, 1)
     }
 
+    #title(line = 0, xlab = xlabel)
+
     # Reference lines for no effect/all comers result
     if (show.refline) {
         abline(h = h_, col = refline.color)
@@ -429,12 +433,16 @@ PlotSTEPP <- function(data,
     # ticks on x-axis: percentiles
     lefts <- paste((xticks - window.width/2)*100, "%", sep = "")
     rights <- paste((xticks + window.width/2)*100, "%", sep = "")
-    axis(1, xticks, paste("[", lefts, ", ", rights, "]", sep = ""))
+    axis(1, xticks, paste("[", lefts, ", ", rights, "]", sep = ""), cex.axis = 0.8)
 
     # ticks on x-axis: biomarker values
     bmlefts <- bml[match(as.numeric(xticks), as.numeric(center.pt))]
     bmrights <- bmu[match(as.numeric(xticks), as.numeric(center.pt))]
-    mtext(paste("[", bmlefts, ", ", bmrights, "]", sep = ""), side = 1, line = 2, at = xticks)
+    mtext(paste("[", bmlefts, ", ", bmrights, "]", sep = ""), side = 1, line = 1.7, at = xticks, cex = 0.8)
+
+    num.events.lefts <- num.events[match(as.numeric(xticks), as.numeric(center.pt))]
+    num.pats.rights <- num.pats[match(as.numeric(xticks), as.numeric(center.pt))]
+    mtext(paste("Events: ", num.events.lefts, " / ", "N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
 
     # Wrap around with a box
     box()
@@ -443,6 +451,8 @@ PlotSTEPP <- function(data,
     lines(center.pt, effect.size, lwd = 2, col = estimate.color)
     lines(center.pt, lower, lty = 2,  col = ci.color)
     lines(center.pt, upper, lty = 2,  col = ci.color)
+
+    print(sdata)
 
     # Add shading
     if (ci.shade) {
