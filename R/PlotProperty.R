@@ -139,7 +139,7 @@ PlotProperty <- function(data,
     }
     if(length(log2) == 1) log2 <- rep(log2, length(c(biomarker.var, var)))
     if(length(log2) < length(c(biomarker.var, var)))
-    stop(paste('the length of parameter log2 should be either 1 or length of c(biomarker.var, var)'))
+        stop(paste('the length of parameter log2 should be either 1 or length of c(biomarker.var, var)'))
 
     PlotParam(pdf.name, pdf.param, par.param)
 
@@ -195,6 +195,13 @@ PlotProperty <- function(data,
                 # if categorical, then barplot
             } else {
                 tab <- table(data[, vars[i]])
+                if (length(names(tab)) > 0) {
+                    for (p in 1:length(names(tab))) {
+                        if (nchar(names(tab)[p]) >= 8) {
+                            names(tab)[p] <- paste0(trimws(substr(names(tab)[p], 1, 8)), "..")
+                        }
+                    }
+                }
                 freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
                 barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[i], sep=" "), las=las)
             }
@@ -216,9 +223,9 @@ PlotProperty <- function(data,
                 }
                 BV <- log2(BV)
             }
-             if (show.biomarker.uni == TRUE) {
-            V <- BV
-            sd.v <- round(sd(V, na.rm=TRUE), 2)
+            if (show.biomarker.uni == TRUE) {
+                V <- BV
+                sd.v <- round(sd(V, na.rm=TRUE), 2)
                 s.v <- summary(V)
                 leg.text <- paste(c("Mean", "SD", "Median", "Range"),
                                   c(round(s.v, 2)["Mean"],
@@ -243,7 +250,7 @@ PlotProperty <- function(data,
                 legend("topright", leg.text, bty="n", text.font=text.font)
                 mtext(side=3, line=0, paste("N=", sum(!is.na(V))))
                 box()
-                }
+            }
 
             for (i in 1:length(var)) {
                 # if clinical variable is numeric, then scatterplot
@@ -258,45 +265,45 @@ PlotProperty <- function(data,
                         }
                         V <- log2(V)
                     }
-                   if(show.clinical.uni == TRUE){
-                                  sd.v <- round(sd(V, na.rm=TRUE), 2)
-                s.v <- summary(V)
-                leg.text <- paste(c("Mean", "SD", "Median", "Range"),
-                                  c(round(s.v, 2)["Mean"],
-                                    sd.v,
-                                    round(s.v, 2)["Median"],
-                                    paste("(", round(s.v["Min."], 2), " - ", round(s.v["Max."], 2), ")", sep="")),
-                                  sep=": ")
+                    if(show.clinical.uni == TRUE){
+                        sd.v <- round(sd(V, na.rm=TRUE), 2)
+                        s.v <- summary(V)
+                        leg.text <- paste(c("Mean", "SD", "Median", "Range"),
+                                          c(round(s.v, 2)["Mean"],
+                                            sd.v,
+                                            round(s.v, 2)["Median"],
+                                            paste("(", round(s.v["Min."], 2), " - ", round(s.v["Max."], 2), ")", sep="")),
+                                          sep=": ")
 
-                y2 <- max(density(V, na.rm=T)$y, na.rm=TRUE)
+                        y2 <- max(density(V, na.rm=T)$y, na.rm=TRUE)
 
-                old.xlab <- xlab
+                        old.xlab <- xlab
 
-                if (xlab == "") {
-                    xlab <- paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", ""))
-                }
+                        if (xlab == "") {
+                            xlab <- paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", ""))
+                        }
 
-                hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+                        hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
 
-                xlab <- old.xlab
+                        xlab <- old.xlab
 
-                lines(density(V, na.rm=T), lwd=2, col=col)
-                legend("topright", leg.text, bty="n", text.font=text.font)
-                mtext(side=3, line=0, paste("N=", sum(!is.na(V))))
-                box()
-                   }
+                        lines(density(V, na.rm=T), lwd=2, col=col)
+                        legend("topright", leg.text, bty="n", text.font=text.font)
+                        mtext(side=3, line=0, paste("N=", sum(!is.na(V))))
+                        box()
+                    }
 
                     x <- V
                     y <- BV
-              if(show.association==TRUE){
-                    plot(x, y, ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")),
-                         xlab=paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", "")),
-                         main=paste(biomarker.var, "by", var[i]), col=col)
-                    grid(nx=NULL, ny=NULL)
+                    if(show.association==TRUE){
+                        plot(x, y, ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")),
+                             xlab=paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", "")),
+                             main=paste(biomarker.var, "by", var[i]), col=col)
+                        grid(nx=NULL, ny=NULL)
 
-                    if(lowess.line) {
-                        lines(lowess(x, y, f=f), lwd=2, col=lowess.line.col)
-                    }
+                        if(lowess.line) {
+                            lines(lowess(x, y, f=f), lwd=2, col=lowess.line.col)
+                        }
                     }
 
                     # if clinical variable is categorical, then boxplot
@@ -307,36 +314,43 @@ PlotProperty <- function(data,
                     nlev <- nlevels(x)
                     ylim <- range(yy, na.rm=T)
 
-                    if(show.clinical.uni==TRUE){
-                      tab <- table(data[, var[i]])
-                      freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                     barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las)
+                    if(show.clinical.uni==TRUE) {
+                        tab <- table(data[, var[i]])
+                        if (length(names(tab)) > 0) {
+                            for (p in 1:length(names(tab))) {
+                                if (nchar(names(tab)[p]) >= 8) {
+                                    names(tab)[p] <- paste0(trimws(substr(names(tab)[p], 1, 8)), "..")
+                                }
+                            }
+                        }
+                        freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las)
                     }
 
                     if(show.association==TRUE){
-                    if (is.null(col)){
-                        col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
-                        col <- col[as.numeric(x)]
+                        if (is.null(col)){
+                            col <- colorRampPalette(c("deepskyblue", "tomato"))(nlev)
+                            col <- col[as.numeric(x)]
+                        }
+
+                        if (na.exclude(col)[1] == FALSE) {
+                            col <- NULL
+                        }
+
+                        bx <- boxplot(as.formula(paste("yy ~ factor(", var[i], ")")), data=data,
+                                      main=paste(biomarker.var, "by", var[i]),
+                                      border=border, ylim=ylim, outline=F, axes=F,
+                                      ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")))
+                        points(xx, yy, col=col)
+
+                        if (add.cor) {
+                            mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
+                            legend("bottomright", paste("spear cor =", round(mycor, 2), sep=""), text.font=3)
+                        }
+
+                        axis(2)
+                        box()
                     }
-
-                    if (na.exclude(col)[1] == FALSE) {
-                        col <- NULL
-                    }
-
-                    bx <- boxplot(as.formula(paste("yy ~ factor(", var[i], ")")), data=data,
-                                  main=paste(biomarker.var, "by", var[i]),
-                                  border=border, ylim=ylim, outline=F, axes=F,
-                                  ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")))
-                    points(xx, yy, col=col)
-
-                    if (add.cor) {
-                        mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
-                        legend("bottomright", paste("spear cor =", round(mycor, 2), sep=""), text.font=3)
-                    }
-
-                    axis(2)
-                    box()
-}
                     if (par("srt") != 0) {
                         sp <- ylim[2]-ylim[1]
                         axis(1, labels=F, at=1:length(bx$n), lwd=0)
@@ -354,11 +368,18 @@ PlotProperty <- function(data,
 
             # if biomarker variable is categorical
         } else {
-                    if (show.biomarker.uni == TRUE) {
-                        tab <- table(data[, biomarker.var])
-                        freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
+            if (show.biomarker.uni == TRUE) {
+                tab <- table(data[, biomarker.var])
+                if (length(names(tab)) > 0) {
+                    for (p in 1:length(names(tab))) {
+                        if (nchar(names(tab)[p]) >= 8) {
+                            names(tab)[p] <- paste0(trimws(substr(names(tab)[p], 1, 8)), "..")
+                        }
                     }
+                }
+                freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
+            }
 
             for (i in 1:length(var)) {
                 j <- 1
@@ -419,7 +440,7 @@ PlotProperty <- function(data,
                         if (na.exclude(col)[1] == FALSE) {
                             col <- NULL
                         }
-#2
+
                         bx <- boxplot(as.formula(paste("yy ~ factor(", biomarker.var, ")")), data=data,
                                       main=paste(var[i], "by", biomarker.var),
                                       border=border, ylim=ylim, outline=F, axes=F,
@@ -449,27 +470,41 @@ PlotProperty <- function(data,
 
                         j <- j+1
                     }
-                  # if clinical variable(s) is (are) categorical, then barplot for each + barplot of interaction
+                    # if clinical variable(s) is (are) categorical, then barplot for each + barplot of interaction
                 } else if (var.class[i] == "categorical") {
-                   # if (show.biomarker.uni == TRUE) {
-                  #    tab <- table(data[, biomarker.var])
-                   #     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                  #      barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
-                  #  }
+                    # if (show.biomarker.uni == TRUE) {
+                    #    tab <- table(data[, biomarker.var])
+                    #     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
+                    #      barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
+                    #  }
 
                     if (show.clinical.uni == TRUE) {
                         tab <- table(data[, var[i]])
+                        if (length(names(tab)) > 0) {
+                            for (p in 1:length(names(tab))) {
+                                if (nchar(names(tab)[p]) >= 8) {
+                                    names(tab)[p] <- paste0(trimws(substr(names(tab)[p], 1, 8)), "..")
+                                }
+                            }
+                        }
                         freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
                         barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las)
                     }
 
                     if (show.association == TRUE) {
                         tab <- table(data[, biomarker.var], data[, var[i]])
-                        freqs <- paste("(", round(100*tab[1,]/sum(tab[1,]), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab[1,]), freqs),
+                        if (length(names(tab[1, ])) > 0) {
+                            for (p in 1:length(names(tab[1, ]))) {
+                                if (nchar(names(tab[1, ])[p]) >= 8) {
+                                    colnames(tab)[p] <- paste0(trimws(substr(names(tab[1, ])[p], 1, 8)), "..")
+                                }
+                            }
+                        }
+                        freqs <- paste("(", round(100*tab[1, ]/sum(tab[1, ]), 2), "%)", sep="")
+                        barplot(tab, names.arg=paste(names(tab[1, ]), freqs),
                                 main=paste(main, biomarker.var, "by", var[i], sep=" "),
                                 beside=TRUE, las=las)
-                        legend("topleft", legend = names(tab[,1]), fill=c("black", "grey"), cex=0.8)
+                        legend("topleft", legend = names(tab[, 1]), fill=c("black", "grey"), cex=0.8)
                     }
                 }
             }
