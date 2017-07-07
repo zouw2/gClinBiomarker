@@ -317,7 +317,9 @@ PlotSTEPP <- function(data,
     upper = sdata[, "Upper"]
     bml = round(sdata[, "BMV.LL"], bm.digits)
     bmu = round(sdata[, "BMV.UL"], bm.digits)
-    num.events = sdata[, "Events"]
+    if (outcome.class == "survival") {
+        num.events = sdata[, "Events"]
+    }
     num.pats = sdata[, "N"]
 
     # If center.pt is NULL
@@ -440,7 +442,12 @@ PlotSTEPP <- function(data,
     bmrights <- bmu[match(as.numeric(xticks), as.numeric(center.pt))]
     mtext(paste("[", bmlefts, ", ", bmrights, "]", sep = ""), side = 1, line = 1.7, at = xticks, cex = 0.8)
 
-    num.events.lefts <- num.events[match(as.numeric(xticks), as.numeric(center.pt))]
+    # add events and patients
+    if (outcome.class == "survival") {
+        num.events.lefts <- num.events[match(as.numeric(xticks), as.numeric(center.pt))]
+    } else {
+        num.events.lefts <- "NA"
+    }
     num.pats.rights <- num.pats[match(as.numeric(xticks), as.numeric(center.pt))]
     mtext(paste("Events: ", num.events.lefts, " / ", "N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
 
