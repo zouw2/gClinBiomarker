@@ -5,9 +5,9 @@
 \title{Plot Distribution}
 \usage{
 PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
-  var.class = NULL, log2 = FALSE, col = "blue", add.num = 0,
-  text.font = 3, main = "Distribution of", xlab = "", add.lab = "",
-  border = NULL, add.cor = FALSE, cor.method = "spearman",
+  var.class = NULL, log2 = FALSE, col = rgb(0, 0, 1, alpha = 0.3),
+  add.num = 0, text.font = 3, main = "Distribution of", xlab = "",
+  add.lab = "", border = NULL, add.cor = FALSE, cor.method = "spearman",
   lowess.line = FALSE, lowess.line.col = "deepskyblue",
   show.biomarker.uni = TRUE, show.clinical.uni = FALSE,
   show.association = TRUE, f = 0.3, las = 1, pdf.name = NULL,
@@ -28,7 +28,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{log2}{if TRUE, computes binary (i.e. base 2) logarithm. It can be a vector if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.}
 
-\item{col}{the color of the line segments or dots. Default is "blue".}
+\item{col}{the color of the line segments or dots. Default is "blue" with 30 percent transparency, i.e. \code{rgb(0, 0, 1, alpha=0.3)}.}
 
 \item{add.num}{the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.}
 
@@ -77,7 +77,7 @@ data(input)
 PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
 PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE))
 PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3, 2)))
-PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3,2)))
+PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), col=rgb(0, 0, 1, 0.2), par.param=list(mfrow=c(3,2)))
 
 }
 \author{

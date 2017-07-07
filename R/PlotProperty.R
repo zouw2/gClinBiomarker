@@ -11,7 +11,7 @@
 #' @param var name of a clinical variable. It can be a vector of variables. Should be in colnames of \code{data}. Default is NULL.
 #' @param var.class can be either "numeric" or "categorical". It can be a vector of classes. If NULL (default) and var is not NULL, then \code{var.class} will be defined automatically.
 #' @param log2 if TRUE, computes binary (i.e. base 2) logarithm. It can be a vector if there are several numeric variables. The \code{log2} transofrmation can be applied to numeric variables only. Default is FALSE.
-#' @param col the color of the line segments or dots. Default is "blue".
+#' @param col the color of the line segments or dots. Default is "blue" with 30 percent transparency, i.e. \code{rgb(0, 0, 1, alpha=0.3)}.
 #' @param add.num the constant to add to all values. Helps to avoid applying log transformation on 0 or negative values. Will be ignored if covariate is categorical. Default is 0.
 #' @param text.font legend text font size. Default is 3.
 #' @param main the main title. Default is \code{"Distribution of"}.
@@ -40,7 +40,7 @@
 #' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
 #' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE))
 #' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3, 2)))
-#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3,2)))
+#' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), col=rgb(0, 0, 1, 0.2), par.param=list(mfrow=c(3,2)))
 #'
 #' @export
 
@@ -50,7 +50,7 @@ PlotProperty <- function(data,
                          var=NULL,
                          var.class=NULL,
                          log2=FALSE,
-                         col="blue",
+                         col=rgb(0, 0, 1, alpha=0.3),
                          add.num=0,
                          text.font=3,
                          main="Distribution of",
@@ -61,7 +61,7 @@ PlotProperty <- function(data,
                          cor.method="spearman",
                          lowess.line=FALSE,
                          lowess.line.col="deepskyblue",
-                         show.biomarker.uni = TRUE, show.clinical.uni = FALSE, show.association = TRUE,
+                         show.biomarker.uni=TRUE, show.clinical.uni=FALSE, show.association=TRUE,
                          f=0.3,
                          las=1,
                          pdf.name=NULL,
@@ -419,7 +419,7 @@ PlotProperty <- function(data,
                         if (na.exclude(col)[1] == FALSE) {
                             col <- NULL
                         }
-
+#2
                         bx <- boxplot(as.formula(paste("yy ~ factor(", biomarker.var, ")")), data=data,
                                       main=paste(var[i], "by", biomarker.var),
                                       border=border, ylim=ylim, outline=F, axes=F,
