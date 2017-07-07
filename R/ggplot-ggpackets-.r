@@ -71,14 +71,16 @@ suppressMessages(setMethod("+", c("gg", "ggpacket"), function(e1, e2) e1 + e2@gg
 #'
 ggpack <- function(`_call`, args_prefix = NULL, passed_args = NULL, ..., null.empty = FALSE) {
   passthru_args <- modifyList(ggpack_filter_args(args_prefix, passed_args), list(...))
-  if (null.empty && length(passthru_args) == 0) return(NULL)
+  if (null.empty && length(passthru_args) == 0) return(ggpacket(NULL))
 
   # account for mismatched aesthetics when mapping being passed through
   # (code largely made to mirror ggplot2 layer.r's compute_aesthetics())
   if ('mapping' %in% names(passthru_args)) {
     callfname <- deparse(as.list(match.call())$"_call")
-    if (grepl("geom_", callfname))             geom <- ggplot2:::find_subclass("Geom", gsub("^[^_]*_", "", callfname), parent.frame())
-    else if ("geom" %in% names(passthru_args)) geom <- ggplot2:::find_subclass("Geom", passthru_args$geom, parent.frame())
+    if (grepl("geom_", callfname))
+      geom <- ggplot2:::find_subclass("Geom", gsub("^[^_]*_", "", callfname), parent.frame())
+    else if ("geom" %in% names(passthru_args))
+      geom <- ggplot2:::find_subclass("Geom", passthru_args$geom, parent.frame())
     passthru_args$mapping <- ggpack_filter_aesthetics(geom, passthru_args$mapping)
   }
 
@@ -88,6 +90,13 @@ ggpack <- function(`_call`, args_prefix = NULL, passed_args = NULL, ..., null.em
 
 
 #' Helper function for ggpack to filter arguments based on a prefix
+#'
+#' @param prefix a string specifying the prefix to be used to filter args
+#' @param args a list of arguments to be subset by the prefix match
+#'
+#' @return a list of arguments that originally were prefaced by the
+#' specified prefix, now with that prefix removed.
+#'
 ggpack_filter_args <- function(prefix, args) {
   if (is.null(prefix) || is.null(args)) return(args %||% list())
   unnamed_args <- args[[prefix]] %||% list()
@@ -97,7 +106,31 @@ ggpack_filter_args <- function(prefix, args) {
 }
 
 
+
+
 #' Helper function to filter aesthetic mappings based on geometry
+#'
+#' @param geom a ggplot2 Geom object
+#' @param mapping a ggplot2 aesthetic mapping
+#'
+#' @return the mapping filtered by accepted aesthetics for the given Geom
+#'
+ggpack_flatten_aesthetics_to_group <- function(mapping, ...) {
+  .dots = list(...); if (length(.dots) == 0) return(mapping)
+  mapped_vars <- mapping[!(names(mapping) %in% c('x', 'y'))]
+  mapped_vals <- unique(unlist(mapped_vars, use.names=FALSE))
+  if (length(mapped_vals) > 0) mapping$group <- as.call(c(list(as.symbol("interaction")), mapped_vals))
+  mapping
+}
+
+
+#' Helper function to filter aesthetic mappings based on geometry
+#'
+#' @param geom a ggplot2 Geom object
+#' @param mapping a ggplot2 aesthetic mapping
+#'
+#' @return the mapping filtered by accepted aesthetics for the given Geom
+#'
 ggpack_filter_aesthetics <- function(geom, mapping) {
   allowed_aes <- c('x', 'y', 'group', geom$required_aes, names(geom$default_aes))
   mapping_aes_names <- names(ggplot2:::rename_aes(mapping))
@@ -117,19 +150,22 @@ ggpack_filter_aesthetics <- function(geom, mapping) {
 #'
 #' @export
 ggpack_remove_aesthetics <- function(mapping, ...) {
-  .dots = list(...); if (length(.dots) == 0) return(mapping)
-  mapped_vars <- mapping[!(names(mapping) %in% c('x', 'y'))]
-  mapped_vals <- unique(unlist(mapped_vars, use.names=FALSE))
-  mapping$group <- as.call(c(list(as.symbol("interaction")), mapped_vals))
-  mapping[!(names(mapping) %in% .dots)]
+  mapping <- ggpack_flatten_aesthetics_to_group(mapping, ...)
+  mapping[!(names(mapping) %in% list(...))]
 }
 
 
 #' Wrapper for common decorators to package
 #'
+#' @param ... arguments to be passed to any of the bundled
+#' decorator plot functions, blank, xlab, ylab, labs or theme
+#' prefaced by any of those strings ('labs.title').
+#'
+#' @return a ggpacket object containing a collection of
+#' decorating plot functions.
+#'
 #' @export
 ggpack.decorators <- function(...) {
-  ggpack(geom_blank, "blank", list(...)) +
   ggpack(xlab,  'xlab',  list(...), null.empty = TRUE) +
   ggpack(ylab,  'ylab',  list(...), null.empty = TRUE) +
   ggpack(labs,  'labs',  list(...), null.empty = TRUE) +

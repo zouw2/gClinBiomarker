@@ -21,9 +21,9 @@ GeomTextTable <- ggproto("GeomTextTable", Geom,
 
   setup_data = function(data, params) {
     if (params$location %||% 'top' == 'top')
-      data$y <- (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2 + min(data$ymin %||% data$y)
+      data$y <- (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.25 + min(data$ymin %||% data$y)
     else if (params$location == 'bottom')
-      data$y <- max(data$ymax %||% data$y) - (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2
+      data$y <- max(data$ymax %||% data$y) - (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.25
     data
   },
 
@@ -42,7 +42,7 @@ GeomTextTable <- ggproto("GeomTextTable", Geom,
     if (is.character(data$vjust)) data$vjust <- ggplot2:::compute_just(data$vjust, data$y)
     if (is.character(data$hjust)) data$hjust <- ggplot2:::compute_just(data$hjust, data$x)
 
-    lineheight.npc <- grid:::convertHeight(unit(data$lineheight * 1.25 * data$size * .pt, "bigpts"), "npc", TRUE)
+    lineheight.npc <- grid:::convertHeight(unit(data$lineheight * 1.0 * data$size * .pt, "bigpts"), "npc", TRUE)
     data$y <- grid:::convertHeight(unit(0.98, "npc") - lineheight.npc * unit((data$group - 1), "npc"), "npc", TRUE)
     data$vjust <- 1
 
