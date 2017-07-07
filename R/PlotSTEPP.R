@@ -443,13 +443,13 @@ PlotSTEPP <- function(data,
     mtext(paste("[", bmlefts, ", ", bmrights, "]", sep = ""), side = 1, line = 1.7, at = xticks, cex = 0.8)
 
     # add events and patients
+    num.pats.rights <- num.pats[match(as.numeric(xticks), as.numeric(center.pt))]
     if (outcome.class == "survival") {
         num.events.lefts <- num.events[match(as.numeric(xticks), as.numeric(center.pt))]
+        mtext(paste("Events: ", num.events.lefts, " / ", "N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
     } else {
-        num.events.lefts <- "NA"
+        mtext(paste("N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
     }
-    num.pats.rights <- num.pats[match(as.numeric(xticks), as.numeric(center.pt))]
-    mtext(paste("Events: ", num.events.lefts, " / ", "N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
 
     # Wrap around with a box
     box()
