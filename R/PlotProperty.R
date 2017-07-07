@@ -137,9 +137,13 @@ PlotProperty <- function(data,
             }
         }
     }
-    if(length(log2) == 1) log2 <- rep(log2, length(c(biomarker.var, var)))
-    if(length(log2) < length(c(biomarker.var, var)))
+    if (length(log2) == 1) {
+        log2 <- rep(log2, length(c(biomarker.var, var)))
+    }
+
+    if (length(log2) < length(c(biomarker.var, var))) {
         stop(paste('the length of parameter log2 should be either 1 or length of c(biomarker.var, var)'))
+    }
 
     PlotParam(pdf.name, pdf.param, par.param)
 
@@ -485,10 +489,10 @@ PlotProperty <- function(data,
                     # if clinical variable(s) is (are) categorical, then barplot for each + barplot of interaction
                 } else if (var.class[i] == "categorical") {
                     # if (show.biomarker.uni == TRUE) {
-                    #    tab <- table(data[, biomarker.var])
+                    #     tab <- table(data[, biomarker.var])
                     #     freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                    #      barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
-                    #  }
+                    #     barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
+                    # }
 
                     if (show.clinical.uni == TRUE) {
                         tab <- table(data[, var[i]])
