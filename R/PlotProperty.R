@@ -343,6 +343,12 @@ PlotProperty <- function(data,
                                       ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")))
                         points(xx, yy, col=col)
 
+                        for (v in 1:length(bx$names)) {
+                            if (nchar(bx$names[v]) >= 8) {
+                                bx$names[v] <- paste0(trimws(substr(bx$names[v], 1, 8)), "..")
+                            }
+                        }
+
                         if (add.cor) {
                             mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
                             legend("bottomright", paste("spear cor =", round(mycor, 2), sep=""), text.font=3)
@@ -446,6 +452,12 @@ PlotProperty <- function(data,
                                       border=border, ylim=ylim, outline=F, axes=F,
                                       ylab=paste(var[i], add.lab, ifelse(log2[j] == TRUE, "(log2 scale)", "")))
                         points(xx, yy, col=col)
+
+                        for (v in 1:length(bx$names)) {
+                            if (nchar(bx$names[v]) >= 8) {
+                                bx$names[v] <- paste0(trimws(substr(bx$names[v], 1, 8)), "..")
+                            }
+                        }
 
                         if (add.cor) {
                             mycor <- cor(xx, yy, method=cor.method, use="pairwise.complete")
