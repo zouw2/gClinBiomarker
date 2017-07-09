@@ -51,7 +51,7 @@ PlotRspBar <- function(data, outcome.var,
                        rsp.response = c("CR","PR"),
                        rsp.nonresponse = c("SD", "PD","NON CR/PD","NE"),
                        rsp.levels=c("NE","PD","NON CR/PD","SD","PR","CR"),
-                       col=colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels)),
+                       col=NULL,
                        plot.count=FALSE,digits=1,
                        trt=NULL, trt.name =NULL, show.combine.trt=TRUE,
                        compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="ITT",bep.indicator=1,
@@ -63,7 +63,10 @@ PlotRspBar <- function(data, outcome.var,
                        par.param=list(mar=c(6,8,6,7))) {
     
   
-  
+  if(is.null(col)){
+      if(binary==FALSE) col <- colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels))
+      if(binary==TRUE) col <- c("deepskyblue", "tomato")
+  }
   stopifnot(class(data) == "data.frame")
   if(!all(c(var, trt, bep,outcome.var) %in% colnames(data)))stop("outcome.var, var, trt and bep should have matched column names in the input data!")
   
