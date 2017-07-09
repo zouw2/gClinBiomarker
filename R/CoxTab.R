@@ -135,13 +135,13 @@ if(!is.null(fit0)){
     ninter <- grep(":", rownames(res))
     res0 <- res
     res <- cbind(res, "", "")
-    colnames(res)[ncol(res)-1:0] <- c("n","n.ref")
+    colnames(res)[ncol(res)-1:0] <- c("n.trt","n.ref")
     for(i in 1:length(vars)){
       if(is.null(vars[[i]]))next
       nn <- names(vars)[i]
       whichi <- setdiff(grep(nn, rownames(res)), ninter)
       rownames(res)[whichi] <- paste(nn," (", vars[[i]][-1], "/", vars[[i]][1], ")",sep="")
-      res[whichi, c("n")] <- sapply(vars[[i]][-1],function(j)length(which(data[[names(vars)[i]]]==j)))
+      res[whichi, c("n.trt")] <- sapply(vars[[i]][-1],function(j)length(which(data[[names(vars)[i]]]==j)))
       res[whichi, c("n.ref")] <- sapply(vars[[i]][1],function(j)length(which(data[[names(vars)[i]]]==j)))
     }
     if(length(ninter)>0){

@@ -12,10 +12,10 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   bep.indicator = 1, covariate = NULL, strata = NULL, tabforest = FALSE,
   quantile.type = 2, digits = 2, placebo.code = NULL,
   active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
-  sub = NULL, clip = NULL, cex.headings = 1.1, cex.note = 0.8,
-  cols = 4, only.stat = FALSE, pdf.name = NULL, pdf.param = list(width =
-  12, height = 4.5), par.param = list(cex = 1, cex.main = 1, cex.sub = 1,
-  cex.axis = 1))
+  main.prefix = NULL, sub = NULL, clip = NULL, xticks = NULL,
+  xlab = NULL, cex.headings = 1.1, cex.note = 0.8, cols = NULL,
+  only.stat = FALSE, pdf.name = NULL, pdf.param = list(width = 12, height
+  = 4.5), par.param = list(cex = 1, cex.main = 1, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -88,11 +88,13 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
 
 \item{alpha}{type I error rate. Default is 0.05.}
 
-\item{main}{main title of the forest plot. Default is "Association of biomarker effect within treatment arms".}
+\item{main, main.prefix}{main title (prefix of title) of the forest plot. Default is "Association of biomarker effect within treatment arms".}
 
 \item{sub}{sub title under the forest plot. Default is NULL.}
 
 \item{clip}{range of the x-axis of the forest plot. Default is NULL.}
+
+\item{xlab}{xlab for forest plot}
 
 \item{cex.headings}{amount of magnification of headings of the forest plot relative to cex. Default is 1.1.}
 

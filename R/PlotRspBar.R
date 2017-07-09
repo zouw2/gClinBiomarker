@@ -219,10 +219,5 @@ PlotRspBar <- function(data, outcome.var,
     
     PlotParam()  
     
-    #if (return.table) {
-     #   tmp <- matrix(paste(numtab, "(",round(plottab,2),")"), byrow=FALSE, nrow=nrow(numtab))
-    #    tmp <- cbind(rownames(numtab), tmp, rowSums(numtab,na.rm=TRUE))
-    #    colnames(tmp) <- c("Group", colnames(plottab), "Total")
-    #    return(tmp)
-    #}
+out <- list(count=tab.table, perc=plottab)
 }
