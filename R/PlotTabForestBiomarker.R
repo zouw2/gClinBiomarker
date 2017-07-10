@@ -446,7 +446,7 @@ PlotTabForestBiomarker <- function(data,
       tabletext2 <- tabletext
       tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
       if(is.null(xlab)) {
-        if(nArms==2)xlab <- paste("<-- active.code", "better [HR] ",placebo.code, "better -->\n",note)
+        if(nArms==2)xlab <- paste("<-- ", active.code, "better [HR] ",placebo.code, "better -->\n",note)
         if(nArms==1)xlab <- "HR"
       }
               forestplot(tabletext2,
