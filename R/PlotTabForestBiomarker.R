@@ -48,7 +48,7 @@
 #' If it is TRUE, a table will be generated with forest plots incorpriated
 #' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.
 #' @param alpha type I error rate. Default is 0.05.
-#' @param digits number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified
+#' @param cutoff.digits,digits cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display
 #' @param main,main.prefix main title (prefix of title) of the forest plot. Default is "Association of biomarker effect within treatment arms".
 #' @param sub sub title under the forest plot. Default is NULL.
 #' @param clip range of the x-axis of the forest plot. Default is NULL.
@@ -96,7 +96,7 @@ PlotTabForestBiomarker <- function(data,
                                   strata=NULL, #Age
                                   tabforest=FALSE,
                                   quantile.type=2,
-                                  digits=2,
+                                  digits=2, cutoff.digits=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
                                   var.code=NULL,
@@ -222,11 +222,11 @@ PlotTabForestBiomarker <- function(data,
   if(var.class=="numeric"){
     if(any(is.na(data.bep[[var]])))stop(paste("in BEP patients," ,var,"contains NA"))
     if(greater)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
-      qt <- round(quantile(data.bep[[var]], i, type=quantile.type),digits)
+      qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
       bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
     }
     if(less)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
-      qt <- round(quantile(data.bep[[var]], i, type=quantile.type),digits)
+      qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
       bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
     }
     if(greater)if(!is.null(numerical.cutoff)) for(i in numerical.cutoff){
@@ -241,8 +241,8 @@ PlotTabForestBiomarker <- function(data,
     if(within.bin)if(!is.null(percentile.cutoff)){
       percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
      for(i in 2:length(percentile.cutoff)){
-      qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),digits)
-      qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),digits)
+      qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
+      qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
       if(percentile.cutoff[i]!=100)
         bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]]  <-
         ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
