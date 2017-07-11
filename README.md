@@ -9,5 +9,10 @@ To install this package from R, use install_github() function from the devtools 
 
 In R, type:
 
+```
+## install.packages("devtools")
+library(devtools)
+
 install_github("RPackages/gClinBiomarker",
 host="https://github.roche.com/api/v3")
+```
