@@ -6,6 +6,7 @@
 #' through of geom-specific parameters. For now it just collects
 #' a list with cleaner syntax for adding ggproto objects.
 #'
+#' @export
 ggpacket <- setClass(
   "ggpacket",
   slots = c(ggcalls = "list"),
@@ -69,6 +70,7 @@ suppressMessages(setMethod("+", c("gg", "ggpacket"), function(e1, e2) e1 + e2@gg
 #' @return a call to the specified function with arguments subset for
 #' only those which match the specified prefix
 #'
+#' @export
 ggpack <- function(`_call`, args_prefix = NULL, passed_args = NULL, ..., null.empty = FALSE) {
   passthru_args <- modifyList(ggpack_filter_args(args_prefix, passed_args), list(...))
   if (null.empty && length(passthru_args) == 0) return(ggpacket(NULL))
@@ -115,6 +117,7 @@ ggpack_filter_args <- function(prefix, args) {
 #'
 #' @return the mapping filtered by accepted aesthetics for the given Geom
 #'
+#' @export
 ggpack_flatten_aesthetics_to_group <- function(mapping, ...) {
   .dots = list(...); if (length(.dots) == 0) return(mapping)
   mapped_vars <- mapping[!(names(mapping) %in% c('x', 'y'))]
@@ -131,6 +134,7 @@ ggpack_flatten_aesthetics_to_group <- function(mapping, ...) {
 #'
 #' @return the mapping filtered by accepted aesthetics for the given Geom
 #'
+#' @export
 ggpack_filter_aesthetics <- function(geom, mapping) {
   allowed_aes <- c('x', 'y', 'group', geom$required_aes, names(geom$default_aes))
   mapping_aes_names <- names(ggplot2:::rename_aes(mapping))

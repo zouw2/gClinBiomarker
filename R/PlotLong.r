@@ -54,14 +54,14 @@
 #'
 #' @export
 #'
-PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NULL,
+PlotLong <- function(data, mapping, model.formula = NULL, model = lm, model.args = NULL,
                      model.per = NULL, facet.fun = NULL, plot.style = 'ribbons', ...) {
 
   if (!is.null(formula))  {
     # add predicted values based on formula provided
-    data %<>% augment_predict(model, formula, model.args, model.per)
+    data <- data %>% augment_predict(model, model.formula, model.args, model.per)
     # overwrite mapping with new fitted variable ("<y>.fitted") from augment_predict
-    mapping$y <- as.name(paste(deparse(mapping$y), "fitted", sep="."))
+    mapping$y <- as.name(paste(deparse(mapping$y), "adjusted", sep="."))
   }
 
   # collapse linetype to group since ggpk_line_errorbar will set it to constant for the errorbar geom
