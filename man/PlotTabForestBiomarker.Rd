@@ -7,15 +7,17 @@
 PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   outcome.var, trt = NULL, var = NULL, var.class = NULL,
   var.name = NULL, percentile.cutoff = 0.5, numerical.cutoff = NULL,
-  greater = TRUE, less = FALSE, within.bin = FALSE, show.itt = TRUE,
-  show.bep = TRUE, bep = NULL, bep.name = "BEP", itt.name = "ITT",
-  bep.indicator = 1, covariate = NULL, strata = NULL, tabforest = FALSE,
-  quantile.type = 2, digits = 2, placebo.code = NULL,
+  greater = TRUE, less = FALSE, equal.in.high = TRUE,
+  within.bin = FALSE, show.itt = TRUE, show.bep = TRUE, bep = NULL,
+  bep.name = "BEP", itt.name = "All", bep.indicator = 1,
+  covariate = NULL, strata = NULL, tabforest = FALSE, quantile.type = 2,
+  digits = 2, cutoff.digits = 2, placebo.code = NULL,
   active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
   main.prefix = NULL, sub = NULL, clip = NULL, xticks = NULL,
-  xlab = NULL, cex.headings = 1.1, cex.note = 0.8, cols = NULL,
-  only.stat = FALSE, pdf.name = NULL, pdf.param = list(width = 12, height
-  = 4.5), par.param = list(cex = 1, cex.main = 1, cex.sub = 1, cex.axis = 1))
+  xticks.digits = 1, xlab = NULL, cex.headings = 1.1, cex.note = 0.8,
+  cols = NULL, only.stat = FALSE, pdf.name = NULL,
+  pdf.param = list(width = 12, height = 4.5), par.param = list(cex = 1,
+  cex.main = 1, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -49,10 +51,13 @@ In single arm study HR of biomarker high vs low will be calculated.}
 \item{less}{whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
 greater and less can both be TRUE}
 
+\item{equal.in.high}{whether include equal in high group. Default is TRUE. If it is TRUE, ">=" and "<" will be
+applied. Otherwise "<=" and ">" will be applied.}
+
 \item{within.bin}{whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 greater and less will be set as FALSE.}
 
-\item{show.itt}{whether calculate summary statistics using all patients in itt. This will be ignored in 1arm case}
+\item{show.itt}{whether calculate summary statistics using all patients in full population (e.g. ITT). This will be ignored in 1arm case}
 
 \item{show.bep}{whether calculate summary statistics using all patients in BEP (biomarker evaluable population). This will be ignored in 1arm case}
 
@@ -62,8 +67,8 @@ in biomarker variable will be used as BEP.}
 \item{bep.name}{preferred display name of the biomarker evaluable population.
 If it is NULL, bep will be used.}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{bep.indicator}{In the subpopulation column, which value is used
 to define the biomarker evaluable population.}
@@ -77,7 +82,7 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
 
-\item{digits}{number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified}
+\item{cutoff.digits, digits}{cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display}
 
 \item{placebo.code}{name of the control arm of the treatment variable}
 
@@ -93,6 +98,8 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
 \item{sub}{sub title under the forest plot. Default is NULL.}
 
 \item{clip}{range of the x-axis of the forest plot. Default is NULL.}
+
+\item{xticks, xticks.digits}{x axis tick marks for the forest plot}
 
 \item{xlab}{xlab for forest plot}
 

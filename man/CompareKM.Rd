@@ -22,8 +22,8 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{col.itt, col.bep, col.ci}{Color for itt curve, bep curve and confidence interval curve (CI)}
 

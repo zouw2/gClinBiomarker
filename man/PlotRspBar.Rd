@@ -6,15 +6,14 @@
 \usage{
 PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
   rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"), rsp.levels = c("NE",
-  "PD", "NON CR/PD", "SD", "PR", "CR"),
-  col = colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels)),
-  plot.count = FALSE, digits = 1, trt = NULL, trt.name = NULL,
-  show.combine.trt = TRUE, compare.bep.itt = FALSE, bep = NULL,
-  bep.name = NULL, itt.name = "ITT", bep.indicator = 1,
-  compare.var = FALSE, var = NULL, var.name = NULL,
-  show.combine.var = TRUE, main = "Association of response rate",
-  sub = NULL, cex = 1, pdf.name = NULL, pdf.param = NULL,
-  par.param = list(mar = c(6, 8, 6, 7)))
+  "PD", "NON CR/PD", "SD", "PR", "CR"), col = NULL, plot.count = FALSE,
+  digits = 1, trt = NULL, trt.name = NULL, show.combine.trt = TRUE,
+  compare.bep.itt = FALSE, bep = NULL, bep.name = NULL,
+  itt.name = "Full population", bep.indicator = 1, compare.var = FALSE,
+  var = NULL, var.name = NULL, show.combine.var = TRUE,
+  main = "Association of response rate", sub = NULL, cex = 1,
+  pdf.name = NULL, pdf.param = NULL, par.param = list(mar = c(6, 8, 6,
+  7)))
 }
 \arguments{
 \item{outcome.var}{column name of the response variable (e.g. best overall response).
@@ -42,7 +41,7 @@ the program will summarize the response outcome within each treatment arm.}
 \item{show.combine.trt}{if this is TRUE, will show summarization of combined data across treatment arms as well}
 
 \item{compare.bep.itt}{whether want to generate two groups of bars to compare the summary statistics
-in ITT vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
+in full population (e.g. ITT) vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 parameters bep, bep.name, itt.name, bep.indicator will be ignored}
 
 \item{compare.var}{whether want to generate multiple groups of bars to compare the summary statistics
@@ -74,7 +73,7 @@ a bar plot that summarizes response outcome
 }
 \description{
 This function generates bar plots to compare response outcome summarization (e.g. response rate) across different groups
-(e.g. treatment arm, biomarker variable, demographics variable, itt vs bep, etc.)
+(e.g. treatment arm, biomarker variable, demographics variable, full population vs bep, etc.)
 }
 \examples{
 data(input)

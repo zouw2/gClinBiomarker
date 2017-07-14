@@ -25,7 +25,7 @@
 #' For more general use, a user can specify trt to get summary statistics for any
 #' sub-group defination (and leave subgroup as NULL).
 #' @note This function provides summary statistics of a vector of clinical covariates. Using default parameters,
-#' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+#' the function provides a table to compare summary statistics in All population vs. in BEP (biomarker evaluable population),
 #' within treatment arm.
 #' 
 #' @inheritParams SummarySingle
@@ -34,7 +34,7 @@
 
 SummaryVars <- function (data, var, var.name = NULL, 
 			trt = NULL, trt.name = NULL, 
-      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="ITT",
+      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="All",
 			var.class=NULL, ordered.factor.levels.list=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.subgroup=FALSE, 

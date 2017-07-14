@@ -4,7 +4,9 @@
 \alias{PlotKM}
 \title{Generate KM curve(s) for full population or subgroups defined by single factor or multiple factors}
 \usage{
-PlotKM(data, tte, cens, var = NULL, var.levels = NULL, var.labels = NULL,
+PlotKM(data, tte, cens, trt = NULL, var = NULL, var.class = NULL,
+  var.name = NULL, percentile.cutoff = 0.5, numerical.cutoff = NULL,
+  varlist = NULL, varlist.levels = NULL, varlist.labels = NULL,
   bep = NULL, bep.indicator = 1, plot.nrisk = TRUE, nrisk.interval = 2,
   cex.nrisk = 0.8, plot.grid = TRUE, grids = seq(0, 1, 0.1),
   plot.legend = TRUE, legend.loc = "topright", legend.x = NULL,
@@ -23,6 +25,9 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{cens}{column name that indicates the censoring variable associated to tte}
 
+\item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
+if it is NULL, the comparison will be performed using all samples.}
+
 \item{var}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
 If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and var.levels is not specified,
 it will be converted to a factor by factor() function. If var.levels is defined, the column will be converted to
@@ -31,15 +36,13 @@ In the legend, the subgroups will be ordered based on the order of factor levels
 The parameter var can also be a vector of multiple column names.
 In this case, subgroups will be defined by classes in multiple columns (e.g. treatment and biomarker)}
 
-\item{var.levels}{levels in the subgroups. It should be a vector if the parameter var is a single column name.
-It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
-The elements in the list should match the multiple columns defined in parameter var.}
-
-\item{var.labels}{preferred labels for the var.
-var.levels should be provided if subgroupd.labels is specified. The order in var.labels should match var.levels.
-It should be a vector if the parameter var is a single column name.
-It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
-The elements in the list should match the multiple columns defined in parameter var.}
+\item{var.class}{class of the variable. possible categories are "numeric", "categorical" and
+"ordered.factor".  "ordered.factor" can be used to categorical variable with
+ordered levels - e.g. IC score 0/1/2/3. If class is ordered.factor ,
+ordered.factor.levels need to be specified.
+If it is not specified, will try to use the class of the column.
+"numeric","integer" will be treated as "numeric"
+"logical""character","factor" will be treated as "categorical".}
 
 \item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 If parameter bep is not defined, the KM curve(s) will be draw using all samples.
@@ -77,6 +80,16 @@ for example, pdf.param=list(width=10, height=5)}
 
 \item{par.param}{A list of parameters that define graphcial parameters. See \code{\link{par}}.
 for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
+
+\item{var.levels}{levels in the subgroups. It should be a vector if the parameter var is a single column name.
+It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
+The elements in the list should match the multiple columns defined in parameter var.}
+
+\item{var.labels}{preferred labels for the var.
+var.levels should be provided if subgroupd.labels is specified. The order in var.labels should match var.levels.
+It should be a vector if the parameter var is a single column name.
+It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
+The elements in the list should match the multiple columns defined in parameter var.}
 
 \item{...}{additional parameters for \code{\link{plot}}}
 }

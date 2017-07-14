@@ -51,51 +51,131 @@
 #' PlotKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT by treatment", var="Arm")
 #' @export
 
-PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
-		   bep=NULL, bep.indicator=1,
-                    plot.nrisk=TRUE, nrisk.interval=2, cex.nrisk=.8,
-                    plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright", legend.x=NULL, legend.y=NULL,
-                    col=NULL, lty=NULL, lwd=3,
-                    xlab="Months To Event Or Censoring", ylim=c(0,1), xlim=NULL,  ylab="Survival Probability",
-                    main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,y.percentage=FALSE,
-		    pdf.name=NULL, pdf.param=list(height=5), par.param=list(mar=c(12,9,3,2))){
+PlotKM <- function(data, tte, cens, 
+      trt=NULL, var=NULL, 
+      var.class=NULL,
+      var.name=NULL,
+      percentile.cutoff=0.5,
+      numerical.cutoff=NULL,
+      varlist=NULL, varlist.levels=NULL, varlist.labels=NULL,
+		  bep=NULL, bep.indicator=1,
+      plot.nrisk=TRUE, nrisk.interval=2, cex.nrisk=.8,
+      plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright", legend.x=NULL, legend.y=NULL,
+      col=NULL, lty=NULL, lwd=3,
+      xlab="Months To Event Or Censoring", ylim=c(0,1), xlim=NULL,  ylab="Survival Probability",
+      main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,y.percentage=FALSE,
+		  pdf.name=NULL, pdf.param=list(height=5), par.param=list(mar=c(12,9,3,2))){
 
 
+  if(length(var)>1){
+    message("more than one elements in 'var', trt parameter will be ignored")
+    varlist <- var
+  }
+  if(!is.null(varlist)){
+    var <- trt <- NULL
+    message("'varlist' is specified, trt and var parameters will be ignored")
+    }
+  
 	stopifnot(class(data) == "data.frame")
 	if(!is.null(bep))if(! bep %in% colnames(data))stop("bep should in column names in the input data!")
-	if(!is.null(var))if(! all(var %in% colnames(data)))stop("names in 'var' should be in column names in the input data!")
+	if(!is.null(var))if(! all(c(trt,var,varlist) %in% colnames(data)))stop("names in 'var','trt','var.list' should be in column names in the input data!")
 	if(!is.null(bep))data <- data[which(data[,bep]==bep.indicator),]
 
-	if(!is.null(var.labels) & is.null(var.levels)) stop("var.levels should be provided if var.labels is specified!")
+	
+	# in the cases when trt and var are specified - creat var.list
+	
+	if(!is.null(var)){
+	  possible.class <-c("categorical","numeric")
+	  if(is.null(var.class)||!all(var.class%in%possible.class)){
+	    if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
+	    if(class(data[,var])%in%c("logical"))class(data[,var]) <- "character"
+	    if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
+	  }
+	  data$bm.tmp <- rep(NA, length(data[[1]]))
+	  if(var.class=="numeric"){
+	    if(!is.null(percentile.cutoff)){
+	      percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
+	      for(i in 2:length(percentile.cutoff)){
+	        qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
+	        qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
+	        if(equal.in.high){
+	          if(percentile.cutoff[i]!=100){
+	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")
+	          }
+	          if(percentile.cutoff[i]==100){
+	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+	          }
+	        }
+	        if(!equal.in.high){
+	          if(percentile.cutoff[i]!=0){
+	            data$bm.tmp[which(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+	          }
+	          if(percentile.cutoff[i]==0){
+	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+	          }
+	        }
+	        
+	      }}
+	    
+	    if(!is.null(numerical.cutoff)){
+	      numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),numerical.cutoff)))
+	      for(i in 2:length(numerical.cutoff)){
+	        qt1 <- numerical.cutoff[i-1]
+	        qt2 <- numerical.cutoff[i]
+	        if(equal.in.high){
+	          if(numerical.cutoff[i]!=max(data.bep[[var]]))
+	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2)]  <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")
+	          if(numerical.cutoff[i]==max(data.bep[[var]]))
+	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+	        }
+	        if(!equal.in.high){
+	          if(numerical.cutoff[i]!=min(data.bep[[var]]))
+	            data$bm.tmp[which(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+	          if(numerical.cutoff[i]==min(data.bep[[var]]))
+	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+	        }
+	      }}
+	  
+	  data[,var] <- data$bm.tmp
+    }
+      varlist <- c(trt,var)
+	}
+	
+	var.store <- var
 
-	if(length(var)==1){
-	if(!is.null(var.levels))if(nlevels(factor(data[[var]]))!=length(var.levels))
-		stop(paste("number of elements in var.levels should match number of unique values in",var ))
+	
+	if(!is.null(varlist.labels) & is.null(varlist.levels)) stop("varlist.levels should be provided if varlist.labels is specified!")
 
-	if(!is.null(var.labels))if(nlevels(factor(data[[var]]))!=length(var.labels))
-		stop(paste("number of elements in var.labels should match number of unique values in",var ))
+	if(length(varlist)==1){
+	if(!is.null(varlist.levels))if(nlevels(factor(data[[varlist]]))!=length(varlist.levels))
+		stop(paste("number of elements in varlist.levels should match number of unique values in",varlist ))
+
+	if(!is.null(varlist.labels))if(nlevels(factor(data[[varlist]]))!=length(varlist.labels))
+		stop(paste("number of elements in varlist.labels should match number of unique values in",varlist ))
 
 	}
 
-	if(length(var)>1){
-		if(!is.null(var.levels))if(length(var)!=length(var.levels))
-		stop(paste("number of elements in var.levels should match number of column names in parameter 'var'"))
+	if(length(varlist)>1){
+		if(!is.null(varlist.levels))if(length(varlist)!=length(varlist.levels))
+		stop(paste("number of elements in varlist.levels should match number of column names in parameter 'varlist'"))
 
-		if(!is.null(var.labels))if(length(var)!=length(var.labels))
-		stop(paste("number of elements in var.labels should match number of column names in parameter 'var'"))
+		if(!is.null(varlist.labels))if(length(varlist)!=length(varlist.labels))
+		stop(paste("number of elements in varlist.labels should match number of column names in parameter 'varlist'"))
 
 
-		for(i in 1:length(var)){
+		for(i in 1:length(varlist)){
 
-		if(!is.null(var.levels))if(nlevels(factor(data[[var[i]]]))!=length(var.levels[[i]]))
-		stop(paste("number of elements in var.levels should match number of unique values in",var[i] ))
+		if(!is.null(varlist.levels))if(nlevels(factor(data[[varlist[i]]]))!=length(varlist.levels[[i]]))
+		stop(paste("number of elements in varlist.levels should match number of unique values in",varlist[i] ))
 
-		if(!is.null(var.labels))if(nlevels(factor(data[[var[i]]]))!=length(var.labels[[i]]))
-		stop(paste("number of elements in var.labels should match number of unique values in",var[i] ))
+		if(!is.null(varlist.labels))if(nlevels(factor(data[[varlist[i]]]))!=length(varlist.labels[[i]]))
+		stop(paste("number of elements in varlist.labels should match number of unique values in",varlist[i] ))
 
 	}}
 
-	var.ori <- var
+	var.ori <- varlist
+	var.levels <- varlist.levels
+	var.labels <- varlist.labels
 	var <- "tmp.subgroup"
 	n.subs <- length(var.ori)
 	if(n.subs==0) data$tmp.subgroup <- ""
@@ -121,8 +201,14 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
 	strat.vec <- data[,var]
 	nlev <- nlevels(strat.vec)
 	if(n.subs<=1){
-	  if(is.null(col)) col <-  col.v[1:nlev]
-	  if(is.null(lty)) lty <- 1
+        if(is.null(col)) {
+            col <-  col.v[1:nlev]
+            if(!is.null(var.store)) col <- 1 # when only bm is specified, use different line types
+        }
+        if(is.null(lty)){
+            lty <- 1
+            if(!is.null(var.store)) lty <- 1:nlev # when only bm is specified, use different line types
+        }
 	}
 	# if more than one factors, use color to distinguish first several factors and use lty to distingush the last factor
 	if(n.subs>1) {
@@ -170,6 +256,10 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
   	}
 
 
+	
+	if(nlev>1)meds <- summary(fit)$table[,"median"]
+	if(nlev==1)meds <- summary(fit)$table["median"]
+	
  	PlotParam(pdf.name, pdf.param, par.param)
 
 	plot(fit,col=col,lwd=lwd,xlab="", ylab=ylab,lty=lty,
@@ -179,13 +269,13 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
   	mtext(xlab,side=1, line=2)
 
 	if(plot.legend & nlev > 1){
-    if(!is.null(legend.loc))legend(legend.loc,var.labels, lwd=2, col=col, lty=lty, bg="white")
-	  if(is.null(legend.loc))legend(x=legend.x, y=legend.y,var.labels, lwd=2, col=col, lty=lty, bg="white")
+    if(!is.null(legend.loc))legend(legend.loc,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
+	  if(is.null(legend.loc))legend(x=legend.x, y=legend.y,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
 
 	}
 	axis(1,at=seq(0,xlim[2],nrisk.interval),seq(0,xlim[2],nrisk.interval))
  	if(y.percentage==FALSE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0)
-   	if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0)
+  if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0)
 
 
 	if(plot.grid) abline(h=grids, col="gray",lty=3)
@@ -196,8 +286,6 @@ PlotKM <- function(data, tte, cens, var=NULL, var.levels=NULL, var.labels=NULL,
     			}
      	}
 
-	if(nlev>1)meds <- summary(fit)$table[,"median"]
-	if(nlev==1)meds <- summary(fit)$table["median"]
 	if(plot.median){
 		lines(c(0,max(meds, na.rm=T)),c(.5,.5), col="gray", lty=2)
 		jj <- 0

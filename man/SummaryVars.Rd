@@ -6,7 +6,7 @@
 \usage{
 SummaryVars(data, var, var.name = NULL, trt = NULL, trt.name = NULL,
   subgroup = NULL, subgroup.name = NULL, subgroup.indicator = 1,
-  compare.subgroup = FALSE, itt.name = "ITT", var.class = NULL,
+  compare.subgroup = FALSE, itt.name = "All", var.class = NULL,
   ordered.factor.levels.list = NULL, cont.show = c("N", "Mean", "Median",
   "Min-Max", "NA's"), digits = 2, trt.order = NULL, test.subgroup = FALSE,
   na.action = "error")
@@ -37,10 +37,10 @@ Default is 1. The non-subpopulation enrties is not allowed to be specified as NA
 
 \item{compare.subgroup}{If it is FALSE,
 the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
-will show summary statistics of subgroup vs. ITT}
+will show summary statistics of subgroup vs. All patients}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{var.class}{a vector that indicates class of the variables. possible categories are "numeric", "categorical" and
 "ordered.factor".  "ordered.factor" can be used to categorical variable with
@@ -88,7 +88,7 @@ For more general use, a user can specify trt to get summary statistics for any
 sub-group defination (and leave subgroup as NULL).
 
 This function provides summary statistics of a vector of clinical covariates. Using default parameters,
-the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+the function provides a table to compare summary statistics in All population vs. in BEP (biomarker evaluable population),
 within treatment arm.
 }
 \author{
