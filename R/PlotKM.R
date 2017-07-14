@@ -203,7 +203,7 @@ PlotKM <- function(data, tte, cens,
 	if(n.subs<=1){
         if(is.null(col)) {
             col <-  col.v[1:nlev]
-            if(!is.null(var.store)) col <- 1 # when only bm is specified, use different line types
+            if(!is.null(var.store)) col <- rep(1,nlev) # when only bm is specified, use different line types
         }
         if(is.null(lty)){
             lty <- 1
