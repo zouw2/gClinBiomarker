@@ -6,7 +6,7 @@
 \usage{
 SummarySingle(data, var, trt = NULL, trt.name = NULL, subgroup = NULL,
   subgroup.name = NULL, subgroup.indicator = 1, compare.subgroup = FALSE,
-  itt.name = "ITT", var.class = NULL, ordered.factor.levels = NULL,
+  itt.name = "All", var.class = NULL, ordered.factor.levels = NULL,
   cont.show = c("N", "Mean", "Median", "Min-Max", "NA's"), digits = 2,
   trt.order = NULL, test.subgroup = FALSE, na.action = "error")
 }
@@ -33,10 +33,10 @@ Default is 1. The non-subpopulation enrties is not allowed to be specified as NA
 
 \item{compare.subgroup}{If it is FALSE,
 the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
-will show summary statistics of subgroup vs. ITT}
+will show summary statistics of subgroup vs. All patients}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{var.class}{class of the variable. possible categories are "numeric", "categorical" and
 "ordered.factor".  "ordered.factor" can be used to categorical variable with
@@ -74,7 +74,7 @@ This function performs demographics imbalance checking of a single covariate acr
 }
 \note{
 This function provides summary statistics of a single clinical covariate. Using default parameters,
-the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+the function provides a table to compare summary statistics in All patients vs. in BEP (biomarker evaluable population),
 within treatment arm
 
 trt allows for more than 2 levels. However, only 2 levels are allowed for subgroup.
