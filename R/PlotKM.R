@@ -7,21 +7,25 @@
 #' @param bep name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 #' If parameter bep is not defined, the KM curve(s) will be draw using all samples.
 #' If bep is defined, the KM curve(s) will be draw using only samples in BEP.
-#' @param var name (or names) of the column which indicates the subgroups (e.g. treatment group).
-#' If it is defined as name of a single column, this column is expected to be categorical. If this column is in character class and var.levels is not specified,
-#' it will be converted to a factor by factor() function. If var.levels is defined, the column will be converted to
-#' a factor following the level order in var.levels.
+#' @param varlist name (or names) of the column which indicates the subgroups (e.g. treatment group).
+#' This is an alternative option for specifying variable of interest (instead of specifying trt and var).
+#' trt and var will be ignored if varlist is not NULL.
+#' Compare to specifying trt and var, user can input any numbers of variables to varlist (a vector of column names).
+#' Any specified column is expected to be categorical. If one column is in character class and var.levels is not specified,
+#' it will be converted to a factor by factor() function. If varlist.levels is defined, the column will be converted to
+#' a factor following the level order in varlist.levels.
 #' In the legend, the subgroups will be ordered based on the order of factor levels.
-#' The parameter var can also be a vector of multiple column names.
-#' In this case, subgroups will be defined by classes in multiple columns (e.g. treatment and biomarker)
-#' @param var.levels levels in the subgroups. It should be a vector if the parameter var is a single column name.
-#' It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
-#' The elements in the list should match the multiple columns defined in parameter var.
-#' @param var.labels preferred labels for the var.
-#' var.levels should be provided if subgroupd.labels is specified. The order in var.labels should match var.levels.
-#' It should be a vector if the parameter var is a single column name.
-#' It should be a list if more than one columns are specified in the prarameter var. Each element of the list should contains a vector.
-#' The elements in the list should match the multiple columns defined in parameter var.
+#' The parameter varlist can also be a vector of multiple column names.
+#' @param varlist.levels levels in the subgroups. It should be a vector if the parameter varlist is a single column name.
+#' It should be a list if more than one columns are specified in the prarameter varlist. 
+#' The elements in the list should match the columns defined in parameter varlist.
+#' Each element of the list should contain a vector, elements in the vector defines levels of the corresponding column.
+#' @param varlist.labels preferred labels for the varlist.
+#' varlist.levels should be provided if subgroupd.labels is specified. The order in varlist.labels should match varlist.levels.
+#' It should be a vector if the parameter varlist is a single column name.
+#' It should be a list if more than one columns are specified in the prarameter varlist. 
+#' The elements in the list should match the columns defined in parameter varlist.
+#' Each element of the list should contain a vector, elements in the vector defines labels of the corresponding column.
 #' @param plot.nrisk whether show number of patients at risk at the below the graph. If it is specified as TRUE, number of patients
 #' at risk will be summarized by subgroup.
 #' @param nrisk.interval interval to summarize number of patients at risk . Default is to summarize every 2 (months)
@@ -34,6 +38,9 @@
 #' @param median.cex font size of marked median. This parameter will be ignored if plot.median=FALSE
 #' @param xlim,ylab,xlab,main,col,lty,lwd,sub,ylim see \code{\link{plot}}
 #' @param y.percentage whether show percentage in y axis (0-100) or probability (0-1). Default is probability
+#' @param return.data if it is TRUE, input data frame will be returned. If var is cont., an additional column called
+#' var_group will be added to the data form, which stores the dichotomized values
+#' @param var.levels,var.labels parameter for old versions, please dont use
 #' @param  ... additional parameters for \code{\link{plot}}
 #'
 #' @note This function generates KM curve(s) for full population (when parameter var is not defined)
@@ -44,6 +51,7 @@
 #'
 #' @inheritParams CompareKM
 #' @inheritParams SummarySingle
+#' @inheritParams PloTabForestBiomarker
 #'
 #' @examples
 #' data(input)
@@ -64,12 +72,15 @@ PlotKM <- function(data, tte, cens,
       col=NULL, lty=NULL, lwd=3,
       xlab="Months To Event Or Censoring", ylim=c(0,1), xlim=NULL,  ylab="Survival Probability",
       main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,y.percentage=FALSE,
-		  pdf.name=NULL, pdf.param=list(height=5), par.param=list(mar=c(12,9,3,2))){
+		  pdf.name=NULL, pdf.param=list(height=5), par.param=list(mar=c(12,9,3,2)), return.data=FALSE,
+      var.levels=NULL, var.labels=NULL){
 
 
   if(length(var)>1){
     message("more than one elements in 'var', trt parameter will be ignored")
     varlist <- var
+    varlist.levels <- var.levels
+    varlist.labels <- var.labels
   }
   if(!is.null(varlist)){
     var <- trt <- NULL
@@ -81,6 +92,7 @@ PlotKM <- function(data, tte, cens,
 	if(!is.null(var))if(! all(c(trt,var,varlist) %in% colnames(data)))stop("names in 'var','trt','var.list' should be in column names in the input data!")
 	if(!is.null(bep))data <- data[which(data[,bep]==bep.indicator),]
 
+	var.store <- var
 	
 	# in the cases when trt and var are specified - creat var.list
 	
@@ -92,6 +104,7 @@ PlotKM <- function(data, tte, cens,
 	    if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
 	  }
 	  data$bm.tmp <- rep(NA, length(data[[1]]))
+	  
 	  if(var.class=="numeric"){
 	    if(!is.null(percentile.cutoff)){
 	      percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
@@ -135,13 +148,12 @@ PlotKM <- function(data, tte, cens,
 	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
 	        }
 	      }}
-	  
+	  var <- paste0(var,"_groups")
 	  data[,var] <- data$bm.tmp
     }
       varlist <- c(trt,var)
 	}
 	
-	var.store <- var
 
 	
 	if(!is.null(varlist.labels) & is.null(varlist.levels)) stop("varlist.levels should be provided if varlist.labels is specified!")
@@ -302,8 +314,10 @@ PlotKM <- function(data, tte, cens,
 		}
 	}
  PlotParam()
- #out <- CoxTab()
  out <- ""
+ if(return.data)out <- data
+ out
+ 
 }
 
 
