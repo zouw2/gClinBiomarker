@@ -6,15 +6,14 @@
 \usage{
 PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
   rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"), rsp.levels = c("NE",
-  "PD", "NON CR/PD", "SD", "PR", "CR"),
-  col = colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels)),
-  plot.count = FALSE, digits = 1, trt = NULL, trt.name = NULL,
-  show.combine.trt = TRUE, compare.bep.itt = FALSE, bep = NULL,
-  bep.name = NULL, itt.name = "ITT", bep.indicator = 1,
-  compare.var = FALSE, var = NULL, var.name = NULL,
-  show.combine.var = TRUE, main = "Association of response rate",
-  sub = NULL, cex = 1, pdf.name = NULL, pdf.param = NULL,
-  par.param = list(mar = c(6, 8, 6, 7)))
+  "PD", "NON CR/PD", "SD", "PR", "CR"), col = NULL, plot.count = FALSE,
+  digits = 1, trt = NULL, trt.name = NULL, show.combine.trt = TRUE,
+  compare.bep.itt = FALSE, bep = NULL, bep.name = NULL,
+  itt.name = "ITT", bep.indicator = 1, compare.var = FALSE, var = NULL,
+  var.name = NULL, show.combine.var = TRUE,
+  main = "Association of response rate", sub = NULL, cex = 1,
+  pdf.name = NULL, pdf.param = NULL, par.param = list(mar = c(6, 8, 6,
+  7)))
 }
 \arguments{
 \item{outcome.var}{column name of the response variable (e.g. best overall response).

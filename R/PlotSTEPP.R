@@ -48,6 +48,11 @@
 #' @param legend.lwd width of the legend lines. Default is \code{c(estimate.lwd, ci.lwd)}.
 #' @param legend.bty type of box for the legend. Default is "n".
 #' @param bm.digits digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.
+#' @param actual.scale if TRUE, it generates the figure using the actual scale instead of the scale in percentage. Default is FALSE.
+#' @param equal.in.LL,equal.in.UL if both are TRUE, window is defined using >= and <= (in legend: "\code{[ ]}").
+#' if (TRUE, FALSE), window is defined using >= and < (in legend: "\code{[ )}").
+#' if (FALSE, TRUE), window is defined using > and <= (in legend: "\code{( ]}").
+#' if both are FALSE, window is defined using > and < (in legend: "\code{()}"). Default is (TRUE, FALSE).
 #' @param csv.name csv file name (includes numbers used in the graphs). If NULL (default), the function will return the result.
 #' @param pdf.name name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.
@@ -116,12 +121,14 @@ PlotSTEPP <- function(data,
                      legend.lty = c(estimate.lty, ci.lty),
                      legend.lwd = c(estimate.lwd, ci.lwd),
                      legend.bty = "n",
+                     bm.digits = 2,
+                     actual.scale = FALSE,
+                     equal.in.LL = TRUE,
+                     equal.in.UL = FALSE,
                      pdf.name = NULL,
                      pdf.param = list(width= 11, height=8.5),
                      par.param = list(mar=c(4,4,3,2)),
-                     csv.name = NULL,
-                     bm.digits = 2) {
-
+                     csv.name = NULL) {
 
   outcome.class <- match.arg(outcome.class, c("survival", "binary", "continuous"))
   stopifnot(all(c(var, outcome.var, trt)%in%colnames(data)))
@@ -167,7 +174,6 @@ PlotSTEPP <- function(data,
         Strat.factor <- data[, strata]
     }
 
-
     # If min.pt or max.pt are NULL
     if (is.null(min.pt)) {
         min.pt <- window.width/2
@@ -193,7 +199,7 @@ PlotSTEPP <- function(data,
     }
 
     # Calculate summary statistics for each bin
-    cn <- c("Center.pt", "Effect.Size", "Lower", "Upper", "BMV.LL", "BMV.UL", "Left.pt", "Right.pt", "N")
+    cn <- c("Center.pt", "Effect.Size", "Lower", "Upper", "BMV.LL", "BMV.UL", "BMV.Center", "Left.pt", "Right.pt", "N")
     if (outcome.class == "survival") {
         cn <- c(cn, "Events")
     }
@@ -227,6 +233,7 @@ PlotSTEPP <- function(data,
                                  covariate = Covariate,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
     }
+    options(scipen=999)
 
     for (i in 1:nbins) {
         # Define this window
@@ -242,10 +249,32 @@ PlotSTEPP <- function(data,
         # 'type'=2 is used to match the result from median()
         LL <- quantile(Biomarker, start, type = quantile.type)
         UL <- quantile(Biomarker, end, type = quantile.type)
+
+        # Round LL and UL
+        LL <- round(LL, bm.digits)
+        UL <- round(UL, bm.digits)
+
+        if (LL == 0 & UL == 0) {
+            stop("Please increase the number of digits bm.digits!")
+        }
+
         sdata[i, c("BMV.LL", "BMV.UL")] <- c(LL, UL)
 
         # The subgroup index for this window
-        sindex <- which(Biomarker >= LL  & Biomarker <= UL)
+        if (equal.in.LL == TRUE & equal.in.UL == FALSE) {
+            sindex <- which(Biomarker >= LL  & Biomarker < UL)
+        } else if (equal.in.LL == TRUE & equal.in.UL == TRUE) {
+            sindex <- which(Biomarker >= LL  & Biomarker <= UL)
+        } else if (equal.in.LL == FALSE & equal.in.UL == TRUE) {
+            sindex <- which(Biomarker > LL  & Biomarker <= UL)
+        } else if (equal.in.LL == FALSE & equal.in.UL == FALSE) {
+            sindex <- which(Biomarker > LL  & Biomarker < UL)
+        } else {
+            stop("equal.in.LL and equal.in.UL can be equal to TRUE or FALSE only!")
+        }
+
+        # Calculate median for each bean for Biomarker
+        sdata[i, "BMV.Center"] <- median(Biomarker[sindex])
 
         # Sample size in each bin
         sdata[i, "N"] <- length(sindex)
@@ -283,12 +312,12 @@ PlotSTEPP <- function(data,
                             covariate = Covariate,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
         }
-    }
+    } # end of for (i in 1:nbins)
 
     ##### Print out sdata
     sdata2 <- sdata
-    colnames(sdata2)[1:8] <- c("Window Center", "Effect.Size", "CI Lower", "CI Upper",
-                               "BM Lower", "BM Upper", "Window Left", "Window Right")
+    colnames(sdata2)[1:9] <- c("Window Center", "Effect.Size", "CI Lower", "CI Upper",
+                               "BM Lower", "BM Upper", "BM Center", "Window Left", "Window Right")
 
     if (!is.null(ylabel)) {
         colnames(sdata2) <- gsub("Effect.Size", ylabel, colnames(sdata2))
@@ -315,21 +344,23 @@ PlotSTEPP <- function(data,
     effect.size <- sdata[, "Effect.Size"]
     lower = sdata[, "Lower"]
     upper = sdata[, "Upper"]
-    bml = round(sdata[, "BMV.LL"], bm.digits)
-    bmu = round(sdata[, "BMV.UL"], bm.digits)
+    bml = sdata[, "BMV.LL"]
+    bmu = sdata[, "BMV.UL"]
     if (outcome.class == "survival") {
         num.events = sdata[, "Events"]
     }
     num.pats = sdata[, "N"]
 
-    # If center.pt is NULL
-    if (is.null(center.pt)) {
-        center.pt <- seq(min.pt, max.pt, by = by)
-    }
+    if (actual.scale == FALSE) {
+        # If center.pt is NULL
+        if (is.null(center.pt)) {
+            center.pt <- seq(min.pt, max.pt, by = by)
+        }
 
-    # x values should always be between 0 and 1
-    if (sum(center.pt <= 0 | center.pt >= 1) > 0) {
-        warning("Center percentile must be between 0 and 1 !")
+        # x values should always be between 0 and 1
+        if (sum(center.pt <= 0 | center.pt >= 1) > 0) {
+            warning("Center percentile must be between 0 and 1 !")
+        }
     }
 
     # Starting point should be smaller than Ending point
@@ -370,11 +401,11 @@ PlotSTEPP <- function(data,
 
     # Set an empty panel
     if (outcome.class == "binary") {
-        plot(c(0, 1),
+        plot(c(ifelse(actual.scale == FALSE, 0, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, 1, sdata[nbins, "BMV.Center"])),
              c(yrange.lower, yrange.upper),
              type = "n",
              axes = FALSE,
-             xlim = c(min.pt, max.pt),
+             xlim = c(ifelse(actual.scale == FALSE, min.pt, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, max.pt, sdata[nbins, "BMV.Center"])),
              xlab = "",
              ylab = xlabel,
              main = plot.title,
@@ -387,12 +418,12 @@ PlotSTEPP <- function(data,
         h_ <- 0
         text_ <- paste(round(effect.ac*100), "%", sep = "")
     } else if (outcome.class == "survival") {
-        plot(c(0, 1),
+        plot(c(ifelse(actual.scale == FALSE, 0, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, 1, sdata[nbins, "BMV.Center"])),
              c(yrange.lower, yrange.upper),
              type = "n",
              log = "y",
              xaxt = "n",
-             xlim = c(min.pt, max.pt),
+             xlim = c(ifelse(actual.scale == FALSE, min.pt, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, max.pt, sdata[nbins, "BMV.Center"])),
              xlab = xlabel,
              ylab = ylabel,
              las = 2,
@@ -401,11 +432,11 @@ PlotSTEPP <- function(data,
         h_ <- 1
         text_ <- round(effect.ac, 2)
     } else if (outcome.class == "continuous") {
-        plot(c(0, 1),
+        plot(c(ifelse(actual.scale == FALSE, 0, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, 1, sdata[nbins, "BMV.Center"])),
              c(yrange.lower, yrange.upper),
              type = "n",
              xaxt = "n",
-             xlim = c(min.pt, max.pt),
+             xlim = c(ifelse(actual.scale == FALSE, min.pt, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, max.pt, sdata[nbins, "BMV.Center"])),
              xlab = xlabel,
              ylab = ylabel,
              main = plot.title,
@@ -429,37 +460,101 @@ PlotSTEPP <- function(data,
               las = 1)
     }
 
-    # Annotate some windows
+    # X-axis ticks for actual scale
+    if (actual.scale == TRUE) {
+        xticks2 <- sdata[sdata[, "Center.pt"] %in% xticks, "BMV.Center"]
+        old.xticks = xticks
+        xticks = xticks2
+    }
+
+    # Annotate windows
     abline(v = xticks, col = refline.color, lty = 2)
+    if (actual.scale == TRUE) {
+        xticks = old.xticks
+    }
 
     # ticks on x-axis: percentiles
     lefts <- paste((xticks - window.width/2)*100, "%", sep = "")
     rights <- paste((xticks + window.width/2)*100, "%", sep = "")
-    axis(1, xticks, paste("[", lefts, ", ", rights, "]", sep = ""), cex.axis = 0.8)
 
     # ticks on x-axis: biomarker values
     bmlefts <- bml[match(as.numeric(xticks), as.numeric(center.pt))]
     bmrights <- bmu[match(as.numeric(xticks), as.numeric(center.pt))]
-    mtext(paste("[", bmlefts, ", ", bmrights, "]", sep = ""), side = 1, line = 1.7, at = xticks, cex = 0.8)
+
+    if (actual.scale == TRUE) {
+        xticks = xticks2
+        #mtext(paste("Median value:", xticks[1], sep = ""), side = 1, line = 0.2, adj=1, at = xticks[1], cex = 0.6)
+        #for (i in 2:length(xticks)) {
+        #    mtext(xticks[i], side = 1, line = 0.2, at = xticks[i], cex = 0.6)
+        #}
+        mtext("Median value:            ", side = 1, line = 0.2, adj=1, at = xticks[1], cex = 0.6)
+        mtext(xticks, side = 1, line = 0.2, at = xticks, cex = 0.6)
+    }
+
+    if (equal.in.LL == TRUE & equal.in.UL == FALSE) {
+        for (i in 1:(length(xticks)-1)) {
+            axis(1, xticks[i], paste("[", lefts[i], ", ", rights[i], ")", sep = ""), cex.axis = 0.6)
+            mtext(paste("[", bmlefts[i], ", ", bmrights[i], ")", sep = ""), side = 1, line = 1.7, at = xticks[i], cex = 0.6)
+        }
+        axis(1, xticks[length(xticks)], paste("[", lefts[length(xticks)], ", ", rights[length(xticks)], "]", sep = ""), cex.axis = 0.6)
+        mtext(paste("[", bmlefts[length(xticks)], ", ", bmrights[length(xticks)], "]", sep = ""), side = 1, line = 1.7, at = xticks[length(xticks)], cex = 0.6)
+    } else if (equal.in.LL == TRUE & equal.in.UL == TRUE) {
+        axis(1, xticks, paste("[", lefts, ", ", rights, "]", sep = ""), cex.axis = 0.6)
+        mtext(paste("[", bmlefts, ", ", bmrights, "]", sep = ""), side = 1, line = 1.7, at = xticks, cex = 0.6)
+    } else if (equal.in.LL == FALSE & equal.in.UL == TRUE) {
+        axis(1, xticks[1], paste("[", lefts[1], ", ", rights[1], "]", sep = ""), cex.axis = 0.6)
+        mtext(paste("[", bmlefts[1], ", ", bmrights[1], "]", sep = ""), side = 1, line = 1.7, at = xticks[1], cex = 0.6)
+        for (i in 2:length(xticks)) {
+            axis(1, xticks[i], paste("(", lefts[i], ", ", rights[i], "]", sep = ""), cex.axis = 0.6)
+            mtext(paste("(", bmlefts[i], ", ", bmrights[i], "]", sep = ""), side = 1, line = 1.7, at = xticks[i], cex = 0.6)
+        }
+    } else {
+        axis(1, xticks[1], paste("[", lefts[1], ", ", rights[1], ")", sep = ""), cex.axis = 0.6)
+        mtext(paste("[", bmlefts[1], ", ", bmrights[1], ")", sep = ""), side = 1, line = 1.7, at = xticks[1], cex = 0.6)
+        for (i in 2:(length(xticks)-1)) {
+            axis(1, xticks[i], paste("(", lefts[i], ", ", rights[i], ")", sep = ""), cex.axis = 0.6)
+            mtext(paste("(", bmlefts[i], ", ", bmrights[i], ")", sep = ""), side = 1, line = 1.7, at = xticks[i], cex = 0.6)
+        }
+        axis(1, xticks[length(xticks)], paste("(", lefts[length(xticks)], ", ", rights[length(xticks)], "]", sep = ""), cex.axis = 0.6)
+        mtext(paste("(", bmlefts[length(xticks)], ", ", bmrights[length(xticks)], "]", sep = ""), side = 1, line = 1.7, at = xticks[length(xticks)], cex = 0.6)
+    }
+
+    if (actual.scale == TRUE) {
+        xticks = old.xticks
+    }
 
     # add events and patients
     num.pats.rights <- num.pats[match(as.numeric(xticks), as.numeric(center.pt))]
     if (outcome.class == "survival") {
         num.events.lefts <- num.events[match(as.numeric(xticks), as.numeric(center.pt))]
-        mtext(paste("Events: ", num.events.lefts, " / ", "N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
+        if (actual.scale == TRUE) {
+            xticks = xticks2
+        }
+        mtext("Events/N:            ", side = 1, line = 2.35, at = xticks[1], adj = 1, cex = 0.6)
+        mtext(paste(num.events.lefts, "/", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.6)
     } else {
-        mtext(paste("N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.8)
+        if (actual.scale == TRUE) {
+            xticks = xticks2
+        }
+        mtext(paste("N: ", num.pats.rights, sep = ""), side = 1, line = 2.35, at = xticks, cex = 0.6)
+    }
+
+    if (actual.scale == TRUE) {
+        xticks = old.xticks
     }
 
     # Wrap around with a box
     box()
 
+    # Define center points as median values
+    if (actual.scale == TRUE) {
+        center.pt <- sdata[, "BMV.Center"]
+    }
+
     # Actual STEPP lines are drawn at last on top of all the reference lines
     lines(center.pt, effect.size, lwd = 2, col = estimate.color)
     lines(center.pt, lower, lty = 2,  col = ci.color)
     lines(center.pt, upper, lty = 2,  col = ci.color)
-
-    print(sdata)
 
     # Add shading
     if (ci.shade) {
@@ -483,8 +578,6 @@ PlotSTEPP <- function(data,
 
     PlotParam()
 
-    if (is.null(csv.name)) {
-        return (sdata2)
-    }
+    return(sdata2)
 
 }

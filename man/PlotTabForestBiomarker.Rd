@@ -10,12 +10,13 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   greater = TRUE, less = FALSE, within.bin = FALSE, show.itt = TRUE,
   show.bep = TRUE, bep = NULL, bep.name = "BEP", itt.name = "ITT",
   bep.indicator = 1, covariate = NULL, strata = NULL, tabforest = FALSE,
-  quantile.type = 2, digits = 2, placebo.code = NULL,
+  quantile.type = 2, digits = 2, cutoff.digits = 2, placebo.code = NULL,
   active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
   main.prefix = NULL, sub = NULL, clip = NULL, xticks = NULL,
-  xlab = NULL, cex.headings = 1.1, cex.note = 0.8, cols = NULL,
-  only.stat = FALSE, pdf.name = NULL, pdf.param = list(width = 12, height
-  = 4.5), par.param = list(cex = 1, cex.main = 1, cex.sub = 1, cex.axis = 1))
+  xticks.digits = 1, xlab = NULL, cex.headings = 1.1, cex.note = 0.8,
+  cols = NULL, only.stat = FALSE, pdf.name = NULL,
+  pdf.param = list(width = 12, height = 4.5), par.param = list(cex = 1,
+  cex.main = 1, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -77,7 +78,7 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
 
-\item{digits}{number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified}
+\item{cutoff.digits, digits}{cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display}
 
 \item{placebo.code}{name of the control arm of the treatment variable}
 
@@ -93,6 +94,8 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
 \item{sub}{sub title under the forest plot. Default is NULL.}
 
 \item{clip}{range of the x-axis of the forest plot. Default is NULL.}
+
+\item{xticks, xticks.digits}{x axis tick marks for the forest plot}
 
 \item{xlab}{xlab for forest plot}
 

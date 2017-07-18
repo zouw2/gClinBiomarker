@@ -19,9 +19,10 @@ PlotSTEPP(data, outcome.var, outcome.class, trt = NULL, var,
   legend.text = c("Point Estimate", paste((1 - alpha) * 100,
   " percent Confidence Interval", sep = "")), legend.col = c(estimate.color,
   ci.color), legend.lty = c(estimate.lty, ci.lty),
-  legend.lwd = c(estimate.lwd, ci.lwd), legend.bty = "n", pdf.name = NULL,
-  pdf.param = list(width = 11, height = 8.5), par.param = list(mar = c(4, 4,
-  3, 2)), csv.name = NULL, bm.digits = 2)
+  legend.lwd = c(estimate.lwd, ci.lwd), legend.bty = "n", bm.digits = 2,
+  actual.scale = FALSE, equal.in.LL = TRUE, equal.in.UL = FALSE,
+  pdf.name = NULL, pdf.param = list(width = 11, height = 8.5),
+  par.param = list(mar = c(4, 4, 3, 2)), csv.name = NULL)
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -107,6 +108,15 @@ Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Int
 
 \item{legend.bty}{type of box for the legend. Default is "n".}
 
+\item{bm.digits}{digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.}
+
+\item{actual.scale}{if TRUE, it generates the figure using the actual scale instead of the scale in percentage. Default is FALSE.}
+
+\item{equal.in.LL, equal.in.UL}{if both are TRUE, window is defined using >= and <= (in legend: "\code{[ ]}").
+if (TRUE, FALSE), window is defined using >= and < (in legend: "\code{[ )}").
+if (FALSE, TRUE), window is defined using > and <= (in legend: "\code{( ]}").
+if both are FALSE, window is defined using > and < (in legend: "\code{()}"). Default is (TRUE, FALSE).}
+
 \item{pdf.name}{name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.}
 
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.}
@@ -114,8 +124,6 @@ Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Int
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 
 \item{csv.name}{csv file name (includes numbers used in the graphs). If NULL (default), the function will return the result.}
-
-\item{bm.digits}{digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.}
 }
 \description{
 This function creates a STEPP from the given point estimates and confidence intervals at desired percentiles.
