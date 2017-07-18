@@ -2,7 +2,7 @@
 #'
 #' This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm
 #' or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a group of
-#' variables. This function may be used to compare effect of these variables in ITT vs biomarker evaluable population. Or compare effect
+#' variables. This function may be used to compare effect of these variables in full population vs biomarker evaluable population. Or compare effect
 #' of these variables in different biomarker subgroups
 #'
 #' @author  Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
@@ -36,8 +36,8 @@
 #' @param bep name of the column which indicates biomarker evaluable population.
 #' @param bep.name preferred display name of the biomarker evaluable population.
 #' If it is NULL, bep will be used.
-#' @param itt.name preferred display name of ITT
-#' If it is NULL, "ITT" will be used.
+#' @param itt.name preferred display name of full population
+#' If it is NULL, "All" will be used.
 #' @param bep.indicator In the subpopulation column, which value is used
 #' to define the biomarker evaluable population.
 #' @param show.itt when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in itt
@@ -85,7 +85,7 @@ PlotTabForestMulti <- function(data,
                                   within.bin=FALSE,compare.bep.itt=TRUE, compare.subgroup=FALSE,
                                   show.itt=FALSE, show.bep=FALSE,
                                   subgroup=NULL,
-                                  bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
+                                  bep = NULL, bep.name = "BEP", itt.name="All",bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
                                   quantile.type=2,

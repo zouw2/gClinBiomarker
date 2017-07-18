@@ -26,16 +26,18 @@
 #' In single arm study HR of biomarker high vs low will be calculated.
 #' @param less whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
 #' greater and less can both be TRUE
+#' @param equal.in.high whether include equal in high group. Default is TRUE. If it is TRUE, ">=" and "<" will be
+#' applied. Otherwise "<=" and ">" will be applied. 
 #' @param within.bin whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 #' greater and less will be set as FALSE.
-#' @param show.itt whether calculate summary statistics using all patients in itt. This will be ignored in 1arm case
+#' @param show.itt whether calculate summary statistics using all patients in full population (e.g. ITT). This will be ignored in 1arm case
 #' @param show.bep whether calculate summary statistics using all patients in BEP (biomarker evaluable population). This will be ignored in 1arm case
 #' @param bep name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
 #' in biomarker variable will be used as BEP.
 #' @param bep.name preferred display name of the biomarker evaluable population.
 #' If it is NULL, bep will be used.
-#' @param itt.name preferred display name of ITT
-#' If it is NULL, "ITT" will be used.
+#' @param itt.name preferred display name of the full population (e.g. ITT).
+#' If it is NULL, "All" will be used.
 #' @param bep.indicator In the subpopulation column, which value is used
 #' to define the biomarker evaluable population.
 #' @param covariate a vector specifying the covariate variables to be adjusted in the model. Default is set to NULL, meaning no adjustment.
@@ -85,12 +87,13 @@ PlotTabForestBiomarker <- function(data,
                                   numerical.cutoff=NULL,
                                   greater=TRUE,
                                   less=FALSE,
+                                  equal.in.high = TRUE,
                                   within.bin=FALSE,
                                   show.itt=TRUE,
                                   show.bep=TRUE,
                                   bep = NULL,
                                   bep.name = "BEP",
-                                  itt.name="ITT",
+                                  itt.name="All",
                                   bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
@@ -204,7 +207,7 @@ PlotTabForestBiomarker <- function(data,
   
   if(is.null(var.name))var.name <- var
   if(is.null(bep.name))bep.name <- "BEP"
-  if(is.null(itt.name))itt.name <- "ITT"
+  if(is.null(itt.name))itt.name <- "All"
   ncut <- max(length(percentile.cutoff), length(numerical.cutoff))
   if(var.class=="numeric" & ncut==0)stop("numeric var but no cutoff was specified!")
 
@@ -223,19 +226,23 @@ PlotTabForestBiomarker <- function(data,
     if(any(is.na(data.bep[[var]])))stop(paste("in BEP patients," ,var,"contains NA"))
     if(greater)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
       qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
-      bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
+      if(equal.in.high)bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
+      if(!equal.in.high)bm.list[[paste0(var.name,"(>",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>qt,T,F)
     }
     if(less)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
       qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
-      bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
+      if(equal.in.high)bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
+      if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
     }
     if(greater)if(!is.null(numerical.cutoff)) for(i in numerical.cutoff){
       qt <- i
-      bm.list[[paste0(var.name,"(>=",i,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
+      if(equal.in.high)bm.list[[paste0(var.name,"(>=",i,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
+      if(!equal.in.high)bm.list[[paste0(var.name,"(>",i,")")]] <- ifelse(data.bep[[var]]>qt,T,F)
     }
     if(less)if(!is.null(numerical.cutoff)) for(i in numerical.cutoff){
       qt <- i
-      bm.list[[paste0(var.name,"(<",i,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
+      if(equal.in.high)bm.list[[paste0(var.name,"(<",i,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
+      if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
     }
 
     if(within.bin)if(!is.null(percentile.cutoff)){
@@ -243,12 +250,27 @@ PlotTabForestBiomarker <- function(data,
      for(i in 2:length(percentile.cutoff)){
       qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
       qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
-      if(percentile.cutoff[i]!=100)
-        bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]]  <-
-        ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
-      if(percentile.cutoff[i]==100)
-        bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]] <-
-        ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
+      if(equal.in.high){
+        if(percentile.cutoff[i]!=100){
+          bm.list[[paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]]  <-
+          ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
+        }
+        if(percentile.cutoff[i]==100){
+          bm.list[[paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")]] <-
+          ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
+        }
+      }
+      if(!equal.in.high){
+        if(percentile.cutoff[i]!=0){
+          bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")]]  <-
+            ifelse(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2,T,F)
+        }
+        if(percentile.cutoff[i]==0){
+          bm.list[[paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")]] <-
+            ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
+        }
+      }
+      
      }}
 
     if(within.bin)if(!is.null(numerical.cutoff)){
@@ -256,12 +278,22 @@ PlotTabForestBiomarker <- function(data,
       for(i in 2:length(numerical.cutoff)){
         qt1 <- numerical.cutoff[i-1]
         qt2 <- numerical.cutoff[i]
-        if(numerical.cutoff[i]!=max(data.bep[[var]]))
-          bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <-
-          ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
-        if(numerical.cutoff[i]==max(data.bep[[var]]))
-          bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <-
-          ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
+        if(equal.in.high){
+         if(numerical.cutoff[i]!=max(data.bep[[var]]))
+            bm.list[[paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")]] <-
+            ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
+          if(numerical.cutoff[i]==max(data.bep[[var]]))
+            bm.list[[paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")]] <-
+            ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
+        }
+        if(!equal.in.high){
+          if(numerical.cutoff[i]!=min(data.bep[[var]]))
+            bm.list[[paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")]] <-
+              ifelse(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2,T,F)
+          if(numerical.cutoff[i]==min(data.bep[[var]]))
+            bm.list[[paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")]] <-
+              ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
+        }
       }}
   }
 
@@ -361,7 +393,7 @@ PlotTabForestBiomarker <- function(data,
 
     if(!only.stat){
     if (is.null(main)) {
-      main.text <- ifelse(nArms==1, "Prognostic Effect of Biomarker (Within arm)", "Prognostic and Predictive Effects of Biomarker (Across arm)")
+      main.text <- ifelse(nArms==1, "Within-arm Effect of Biomarker", "Across-arm Effect of Biomarker")
       main.text <- paste0(main.prefix, " ",main.text, "\n", outcome.var[1],", ",var.name)
     } else {
       main.text <- main

@@ -7,10 +7,11 @@
 PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   outcome.var, trt = NULL, var = NULL, var.class = NULL,
   var.name = NULL, percentile.cutoff = 0.5, numerical.cutoff = NULL,
-  greater = TRUE, less = FALSE, within.bin = FALSE, show.itt = TRUE,
-  show.bep = TRUE, bep = NULL, bep.name = "BEP", itt.name = "ITT",
-  bep.indicator = 1, covariate = NULL, strata = NULL, tabforest = FALSE,
-  quantile.type = 2, digits = 2, cutoff.digits = 2, placebo.code = NULL,
+  greater = TRUE, less = FALSE, equal.in.high = TRUE,
+  within.bin = FALSE, show.itt = TRUE, show.bep = TRUE, bep = NULL,
+  bep.name = "BEP", itt.name = "All", bep.indicator = 1,
+  covariate = NULL, strata = NULL, tabforest = FALSE, quantile.type = 2,
+  digits = 2, cutoff.digits = 2, placebo.code = NULL,
   active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
   main.prefix = NULL, sub = NULL, clip = NULL, xticks = NULL,
   xticks.digits = 1, xlab = NULL, cex.headings = 1.1, cex.note = 0.8,
@@ -50,10 +51,13 @@ In single arm study HR of biomarker high vs low will be calculated.}
 \item{less}{whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
 greater and less can both be TRUE}
 
+\item{equal.in.high}{whether include equal in high group. Default is TRUE. If it is TRUE, ">=" and "<" will be
+applied. Otherwise "<=" and ">" will be applied.}
+
 \item{within.bin}{whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 greater and less will be set as FALSE.}
 
-\item{show.itt}{whether calculate summary statistics using all patients in itt. This will be ignored in 1arm case}
+\item{show.itt}{whether calculate summary statistics using all patients in full population (e.g. ITT). This will be ignored in 1arm case}
 
 \item{show.bep}{whether calculate summary statistics using all patients in BEP (biomarker evaluable population). This will be ignored in 1arm case}
 
@@ -63,8 +67,8 @@ in biomarker variable will be used as BEP.}
 \item{bep.name}{preferred display name of the biomarker evaluable population.
 If it is NULL, bep will be used.}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{bep.indicator}{In the subpopulation column, which value is used
 to define the biomarker evaluable population.}

@@ -9,7 +9,7 @@ PlotTabForestMulti(data, outcome.class = c("survival", "binary"), outcome.var,
   percentile.cutoff = 0.5, greater = TRUE, less = TRUE,
   within.bin = FALSE, compare.bep.itt = TRUE, compare.subgroup = FALSE,
   show.itt = FALSE, show.bep = FALSE, subgroup = NULL, bep = NULL,
-  bep.name = "BEP", itt.name = "ITT", bep.indicator = 1,
+  bep.name = "BEP", itt.name = "All", bep.indicator = 1,
   covariate = NULL, strata = NULL, quantile.type = 2,
   placebo.code = NULL, active.code = NULL, var.code = NULL,
   tabforest = FALSE, alpha = 0.05, main = NULL, sub = NULL,
@@ -68,8 +68,8 @@ BEP is defined by variable bep}
 \item{bep.name}{preferred display name of the biomarker evaluable population.
 If it is NULL, bep will be used.}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of full population
+If it is NULL, "All" will be used.}
 
 \item{bep.indicator}{In the subpopulation column, which value is used
 to define the biomarker evaluable population.}
@@ -111,7 +111,7 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \description{
 This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm
 or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a group of
-variables. This function may be used to compare effect of these variables in ITT vs biomarker evaluable population. Or compare effect
+variables. This function may be used to compare effect of these variables in full population vs biomarker evaluable population. Or compare effect
 of these variables in different biomarker subgroups
 }
 \examples{

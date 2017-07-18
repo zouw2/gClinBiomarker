@@ -1,7 +1,7 @@
 #' Generate bar plot to summarize response outcome by subgroups
 #' 
 #' This function generates bar plots to compare response outcome summarization (e.g. response rate) across different groups
-#' (e.g. treatment arm, biomarker variable, demographics variable, itt vs bep, etc.)
+#' (e.g. treatment arm, biomarker variable, demographics variable, full population vs bep, etc.)
 #' 
 #' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 #'
@@ -21,7 +21,7 @@
 #' @param trt.name treatment name to display 
 #' @param show.combine.trt if this is TRUE, will show summarization of combined data across treatment arms as well
 #' @param compare.bep.itt whether want to generate two groups of bars to compare the summary statistics
-#' in ITT vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
+#' in full population (e.g. ITT) vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 #' parameters bep, bep.name, itt.name, bep.indicator will be ignored
 #' @param compare.var whether want to generate multiple groups of bars to compare the summary statistics
 #' in subgroups defined by var (e.g. categorical demographics or biomarker variable)
@@ -54,7 +54,7 @@ PlotRspBar <- function(data, outcome.var,
                        col=NULL,
                        plot.count=FALSE,digits=1,
                        trt=NULL, trt.name =NULL, show.combine.trt=TRUE,
-                       compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="ITT",bep.indicator=1,
+                       compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="Full population",bep.indicator=1,
                        compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE,
                        main="Association of response rate",sub=NULL,cex=1,
                        pdf.name=NULL,
