@@ -125,7 +125,7 @@
 #' ## now as box-percentile plot
 #' BoxPlot(input, KRAS.exprs~Arm, transf = log, box.type="bp", Grid=TRUE)
 #'
-#' ## change y-labal and connect the means with the specified color
+#' ## change y-label and connect the means using specific color
 #' BoxPlot(input, KRAS.exprs~Arm, transf = log, trend="mean", trend.col="red",
 #'       Ylabel=list(text="Example Measurements"))
 #'
