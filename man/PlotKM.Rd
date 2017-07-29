@@ -39,6 +39,14 @@ If it is not specified, will try to use the class of the column.
 "numeric","integer" will be treated as "numeric"
 "logical""character","factor" will be treated as "categorical".}
 
+\item{var.name}{display name for the biomarker variable}
+
+\item{percentile.cutoff}{percentile to dichotomize continuous biomarker measure. This could be a vector with multiple elements.
+Values should be between 0 and 1}
+
+\item{numerical.cutoff}{raw value to dichotomize continuous biomarker measure. numerical.cutoff and percentile.cutoff
+cannot be both specified}
+
 \item{varlist}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
 This is an alternative option for specifying variable of interest (instead of specifying trt and var).
 trt and var will be ignored if varlist is not NULL.
@@ -50,20 +58,23 @@ In the legend, the subgroups will be ordered based on the order of factor levels
 The parameter varlist can also be a vector of multiple column names.}
 
 \item{varlist.levels}{levels in the subgroups. It should be a vector if the parameter varlist is a single column name.
-It should be a list if more than one columns are specified in the prarameter varlist. 
+It should be a list if more than one columns are specified in the prarameter varlist.
 The elements in the list should match the columns defined in parameter varlist.
 Each element of the list should contain a vector, elements in the vector defines levels of the corresponding column.}
 
 \item{varlist.labels}{preferred labels for the varlist.
 varlist.levels should be provided if subgroupd.labels is specified. The order in varlist.labels should match varlist.levels.
 It should be a vector if the parameter varlist is a single column name.
-It should be a list if more than one columns are specified in the prarameter varlist. 
+It should be a list if more than one columns are specified in the prarameter varlist.
 The elements in the list should match the columns defined in parameter varlist.
 Each element of the list should contain a vector, elements in the vector defines labels of the corresponding column.}
 
 \item{bep}{name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 If parameter bep is not defined, the KM curve(s) will be draw using all samples.
 If bep is defined, the KM curve(s) will be draw using only samples in BEP.}
+
+\item{bep.indicator}{In the subpopulation column, which value is used
+to define the biomarker evaluable population.}
 
 \item{plot.nrisk}{whether show number of patients at risk at the below the graph. If it is specified as TRUE, number of patients
 at risk will be summarized by subgroup.}

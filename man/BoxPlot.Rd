@@ -18,7 +18,7 @@ BoxPlot(..., obj, form = NULL, var = NULL, box.type = "b",
   vl.col = "black", Box = TRUE)
 }
 \arguments{
-\item{...}{a numeric matrix, multiple numeric vectors or a (possibly named) list with multiple numeric vectors to be plotted and additional 
+\item{...}{a numeric matrix, multiple numeric vectors or a (possibly named) list with multiple numeric vectors to be plotted and additional
 graphical parameters (identified by names) to be passed on.}
 
 \item{obj}{(data.frame, matrix) corresponding to the dataset to be used.}
@@ -28,7 +28,7 @@ groups according to the grouping variable 'grp'.}
 
 \item{var}{(character) vector specifying the columns in 'obj' to be used for plotting. The order of elements is retained in the boxplot.}
 
-\item{box.type}{(character) "b" = for regular boxes, "bp" = for box-percentile boxes 
+\item{box.type}{(character) "b" = for regular boxes, "bp" = for box-percentile boxes
 (see ? bpplot of package \code{Hmisc}).}
 
 \item{horizontal}{(logical) TRUE = the boxes are drawn horizontally, FALSE = vertical boxplot. Note, this has no effect when box.type="bp", since
@@ -37,7 +37,7 @@ changes the meaning of X- and Y-axis. All arguments referring to Y-axis will the
 
 \item{col}{(character) string(s) specifying colors to be used to color the bodies of the box plots. By default they are in the background color.}
 
-\item{sc.col}{(character) string or vector of strings specifying color(s) of plotting symbols in the stripchart. 
+\item{sc.col}{(character) string or vector of strings specifying color(s) of plotting symbols in the stripchart.
    By default "black" with 80\% transparency (alpha=.2). In case of a vector of strings, it is best practise to provide as
    many elements as there are elements in 'obj', which can be used to highlight an additional grouping factor within a single box.
    Note, it is the responsibility of the user to provide 'sc.col', 'sc.pch' or 'sc.cex' in such a way, that the graphical output
@@ -49,10 +49,10 @@ is meaningful. In case of providing less than 'nrow(obj)' elements, 'sc.col' wil
 
 \item{sc.jitter}{(numeric) specifying the amount of jittering in the stripchart.}
 
-\item{Xaxis}{(list) passed to function 'axis' which allows to fully specify the X-axis labelling (see ?axis). Default is to determine group labels 
+\item{Xaxis}{(list) passed to function 'axis' which allows to fully specify the X-axis labelling (see ?axis). Default is to determine group labels
 automatically and plotting group labels below the plot. Set to NULL for omitting group labels.
 For custom group-labels use the list-element "labels". The order of these labels must correspond to the order of group-levels in case the
-formula interface was used, i.e. check the order of sort(unique(obj$grp)). To obtain your desired ordering, specify classification variables as 
+formula interface was used, i.e. check the order of sort(unique(obj$grp)). To obtain your desired ordering, specify classification variables as
 factor-objects using 'factor(dat$trt, levels=c("Level_1", "Level_2", ..., "Level_n"))' where "trt" is the classification variable and Level_1 to Level_n
 represents your desired order of factor levels (which is used in the plot).}
 
@@ -79,7 +79,7 @@ and the text in the cells of the table ("Text") separately (see examples of func
 \item{Grid}{(list) passed to function 'grid'. Set to NULL to omit (default). For adding a grid simply set 'Grid=TRUE' which applies default settings
 for the added grid or fully specify the grid to be added by specifying each argument (see ?addGrid for details).}
 
-\item{transf}{(function) name of a function to be used to tranform data before plotting, e.g. log, log10 or user-defined functions, 
+\item{transf}{(function) name of a function to be used to tranform data before plotting, e.g. log, log10 or user-defined functions,
 i.e. func=function(x){x[x==0]<-min(x, na.rm=TRUE)/2} and setting 'transf=func'.}
 
 \item{trend}{(character) "mean" = mean values are connected by a line emphasizing the dynamics (especially for time course data)
@@ -116,136 +116,127 @@ i.e. func=function(x){x[x==0]<-min(x, na.rm=TRUE)/2} and setting 'transf=func'.}
 \description{
 This function produces boxplots as function \code{boxplot} and box-percentile plots as function \code{bpplot} (package \code{Hmisc}),
 offering a formula interface, data specification via a vector of variable names, as numeric matrix where all columns will be interpreted as
-variables or by specifying one or multiple numeric vectors (see examples below). It additionally/optionally 
+variables or by specifying one or multiple numeric vectors (see examples below). It additionally/optionally
 adds vertical jitterplots to each boxplot, adds the number of observations, adds mean-values, and allows to add a trend-line connecting either
 mean-values (trend="mean") or median-values (trend="median"). Furthermore, this function filters for groups with less than 'threshold'
-observations. For these (sub-)groups no boxplots will be drawn but a jitterplot will be produced. Labels for each group (X-axis labels) can be customized via 
+observations. For these (sub-)groups no boxplots will be drawn but a jitterplot will be produced. Labels for each group (X-axis labels) can be customized via
 'xlab.srt', 'xlab.cex', 'xlab.col', 'xlab.font'. Note: When using the formula-interface, one cannot specify formulas as in function 'boxplot'
 i.e. using something like 'a + b' to get factor crossing, one has to use the correct formula instead as used in e.g. 'lm', i.e. 'a:b'.
 }
 \examples{
-## generate example dataset
-  example <- data.frame( y=c(rnorm(30)+10, rnorm(4)+20, rnorm(15)+15, NA), 
-							time=c(rep("t2", 30), rep("t4",4), rep("t1", 15), "t3"),
-							grp=sample(1:3, 50, TRUE), sex=sample(1:2, 50, TRUE))
+data(input)
 
-## specify data as named list
-  BoxPlot(list(a=rnorm(50,,3), b=rnorm(25,1,4), c=rnorm(75,2,1)))
+## specify variables to plot
+BoxPlot(input, KRAS.exprs~Arm, transf = log)
 
 ## same plot, now horizontally plotted
-  BoxPlot(list(a=rnorm(50,,3), b=rnorm(25,1,4), c=rnorm(75,2,1)), horizontal=TRUE,
-			 Xaxis=list(las=2, hadj=2), Xaxis2=list(las=2, hadj=-.25))
-
-## specify data as numeric matrix
-  BoxPlot(matrix(rnorm(100), ncol=4, dimnames=list(NULL, LETTERS[1:4])) )
-
-## specify data as numeric (unnamed) vectors
-  BoxPlot(rnorm(50,,3), rnorm(25,1,2), rnorm(75,2,1))
-
-## ... horizontally plotted (no axis-label rotation done here)
-  BoxPlot(rnorm(50,,3), rnorm(25,1,2), rnorm(75,2,1), horizontal=TRUE)
-
-## plot values 'y' according to time 'time' (factor levels are automatically 
-## ordered as e.g. function \\code{sort} does)
-  BoxPlot(example, y~time, sc.pch=16)
+BoxPlot(input, KRAS.exprs~Arm, transf = log, horizontal=TRUE,
+       Xaxis=list(las=2, hadj=2), Xaxis2=list(las=2, hadj=-.25))
 
 ## now as box-percentile plot
-  BoxPlot(example, y~time, sc.pch=16, box.type="bp")
+BoxPlot(input, KRAS.exprs~Arm, transf = log, box.type="bp")
 
-### with custom main title
-  BoxPlot(example, y~time, sc.pch=16, box.type="bp", Title=list(main="Custom Main Title"))
+## with custom main title
+BoxPlot(input, KRAS.exprs~Response, transf = log, box.type="bp", Title=list(main="Custom Main Title"))
 
-## the same plot with trend line (connects either means or medians) and Y-axis label
-  BoxPlot(example, y~time, trend="median", ylab="Y-Axis Label")
+## the same plot with trend line (connects either means or medians)
+BoxPlot(input, KRAS.exprs~Response, transf = log, trend="median")
 
 ## use an addition grouping variable to color points in the stripchart
-  BoxPlot(example, y~time, trend="median", ylab="Y-Axis Label",
-          sc.col=c("red", "blue", "green")[example$grp] )
+BoxPlot(input, KRAS.exprs~Response, transf = log, trend="median",
+       sc.col=c("red", "blue", "green")[input$Country] )
 
 ## use yet another grouping factor for plotting symbols in the stripchart
-  BoxPlot(example, y~time, trend="median", ylab="Y-Axis Label",
-          sc.col=c("red", "blue", "green")[example$grp],
-		     sc.pch=c(5,10)[example$sex] )
+BoxPlot(input, KRAS.exprs~Response, transf = log, trend="median",
+       sc.col=c("red", "blue", "green")[input$Country],
+       sc.pch=c(5,10)[input$Arm])
 
-  legend("bottomright", fill=c("red", "green", "blue", "white", "white"), 
-          legend=c("Stage I", "Stage II", "Stage III", "Female", "Male"), 
-          pch=c(-1, -1, -1, 5, 10), border=NA)
-
-## generate new dataset with different stucture
-  example2 <- data.frame(y1=12+rnorm(15), y2=15+rnorm(15), y3=25+rnorm(15))
+legend("bottomleft", fill=c("red", "blue", "green", "white", "white"),
+      legend=c("Other", "USA", "W Europe", "CTRL", "TRT"),
+      pch=c(-1, -1, -1, 5, 10), border=NA)
 
 ## boxplot with trend lines (mean) and grid added to the plot
-  BoxPlot(example2, var=c("y1", "y2", "y3"), Grid=TRUE, trend="mean")
+BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean")
+
+## changing plotting symbol for mean-values
+BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2)
+
+## specifying the magnification of mean-value plotting symbols
+BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2,
+       mean.cex=2.5)
+
+## specifying the color of mean-value plotting symbols
+BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2,
+       mean.cex=2.5, mean.col="blue")
+
+## specifying the line width of mean-value plotting symbols
+BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2,
+       mean.cex=2.5, mean.col="blue", mean.lwd=4)
 
 ## now as box-percentile plot
-  BoxPlot(example2, var=c("y1", "y2", "y3"), box.type="bp", Grid=TRUE)
+BoxPlot(input, KRAS.exprs~Arm, transf = log, box.type="bp", Grid=TRUE)
 
-## use yet another way to specify the data
-   BoxPlot(rnorm(1856, 5), runif(1245, 2,10), exp(rnorm(2311)), sc.col=as.rgb("black", .05), 
-           box.type="bp", Xaxis=list(labels=c("~N(5,1)", "~Unif(2,10)", "~exp(N(0,1))")), ylim=c(0,15))            
+## change y-labal and connect the means with the specified color
+BoxPlot(input, KRAS.exprs~Arm, transf = log, trend="mean", trend.col="red",
+      Ylabel=list(text="Example Measurements"))
 
-## specifying data as numeric matrix and using a trend-line connecting the means
-   mat <- matrix(c(rep(10,45), rep(15,45), rep(35,45))+rnorm(135), ncol=3)
-   BoxPlot(mat, trend="mean", trend.col="red", Ylabel=list(text="Example Measurements"))
+## multiple grouping factors can be specified via the formula interface
+BoxPlot(input, KRAS.exprs~Arm:Sex, transf = log)
 
-## multiple grouping factors can be specified via the formula interface which is exemplified using the mtcars dataset,
-## of interest is miles per gallon (mgp) depending on number of gears and on the number of cylinders
-  data(mtcars)
-  BoxPlot(mtcars, mpg~gear:cyl)  
+## now 'Arm' is explicitly nested within 'Sex' which changes the ordering of
+## combined grouping factors (which is identical to using formula 'KRAS.exprs~Arm:Sex').
+BoxPlot(input, KRAS.exprs~Arm \%in\% Sex, transf = log)
 
-## now 'cyl' is explicitly nested within 'gear' which changes the ordering of 
-## combined grouping factors (which is identical to using formula 'mpg~cyl:gear').
-  BoxPlot(mtcars, mpg~cyl \%in\% gear)     
-
-## more meaningful group-labels are best specified using custom factor-level names 
+## more meaningful group-labels are best specified using custom factor-level names
 ## (increase width of the plot window)
-  dat <- mtcars
-  dat$cyl <- factor(dat$cyl, levels=c(4,6,8), labels=c("4Cyl", "6Cyl", "8Cyl"))
-  dat$gear <- factor(dat$gear, levels=c(3,4,5), labels=c("3Gear", "4Gear", "5Gear")) 
-  BoxPlot(dat, mpg~cyl \%in\% gear)
+inp <- input
+inp$Sex <- factor(inp$Sex, levels=c("F", "M"), labels=c("Female", "Male"))
+BoxPlot(inp, KRAS.exprs~Arm \%in\% Sex, transf = log)
 
-## one can use a table as Xaxis label representing the factor-level 
-## combination defining sub-classes 
-  BoxPlot(dat, mpg~cyl:gear, XaxisTab=list(),mar=c(8,3,5,1))
+## alternatively one can use the 'Xaxis' argument, but the ordering of these labels is not checked
+## which is not important for automatically generated group-labels as shown in the previous example
+BoxPlot(input, KRAS.exprs~Arm \%in\% Sex, transf = log,
+       Xaxis=list(labels=paste(rep(c("CTRL", "TRT"), 2),
+                               c(rep("Female", 2), rep("Male", 2)), sep=".")))
+
+## one can use a table as Xaxis label representing the factor-level
+## combination defining sub-classes
+BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(), mar=c(8,3,5,1), transf = log)
+
+## using smaller bottom margin will result in smaller table height
+BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(font=2, col="darkblue", cex=1.25),
+       mar=c(5,3,5,1), transf = log)
 
 ## with the original factor levels and as horizontal plot
-  BoxPlot(mtcars, mpg~cyl:gear, XaxisTab=list(), mar=c(5,8,5,4), 
-			 horizontal=TRUE, Ylabel=list(text="Y-axis label now appearing on X-axis"))
+BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(), mar=c(5,8,5,4), transf = log,
+       horizontal=TRUE, Ylabel=list(text="Y-axis label now appearing on X-axis"))
 
-# using smaller bottom margin will result in smaller table height
-  BoxPlot(dat, mpg~cyl:gear, XaxisTab=list(font=2, col="darkblue", cex=1.25), mar=c(5,3,5,1))
+## one can use different font-settings for rownames and cells of the table
+BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(Label=list(font=2, col="darkblue", cex=1.25),
+                                              Text=list(col="red"), mar=c(5,3,5,1)), transf = log)
 
-# one can use different font-settings for rownames and cells of the table
-  BoxPlot(dat, mpg~cyl:gear, XaxisTab=list(Label=list(font=2, col="darkblue", cex=1.25), 
-			 Text=list(col="red")), mar=c(5,3,5,1))
+## use more crossed factors
+BoxPlot(inp, KRAS.exprs~Arm:Sex:Country, transf=log, XaxisTab=list(), mar=c(5,3,5,1))
 
-# use more crossed factors
- BoxPlot(dat, mpg~cyl:gear:vs, XaxisTab=list(), mar=c(5,3,5,1))
- 
-### alternatively one can use the 'Xaxis' argument, but the ordering of these labels is not checked
-### which is not important for automatically generated group-labels as shown in the previous example
-  BoxPlot(mtcars, mpg~cyl \%in\% gear, 
-			 Xaxis=list(labels=paste(rep(c("4Cyl", "6Cyl", "8Cyl"),3), 
-						c(rep("3Gear",3), rep("4Gear",3), rep("5Gear",3)), sep=".")))
+## some fency options
+BoxPlot(inp, KRAS.exprs~Arm \%in\% Sex, transf = log, Title=list(main="Kras.exprs per Arm by Sex",
+                                                              col.main="Green", cex.main=1.5), vline=c(2.5, 6.5), vl.lty=2, vl.col="gray", vl.lwd=2,
+       Xaxis=list(labels=NA, at=1:4, tick=TRUE), col=c(rep("blue", 2), rep("red", 2)),
+       Xaxis2=list(tick=FALSE), Yaxis=list(at=seq(0, 8, 1)), Grid=list(x=1:4, y=seq(0, 8, 1)),
+       Xlabel=list(text=paste(rep(c("Ctrl", "Trt"), 2), c(rep("Female", 2), rep("Male", 2))),
+                   at=1:4, las=2, adj=1, line=0.75, col=c(rep("blue", 2), rep("red", 2))),
+       mean.col=c(rep("cyan", 2), rep("orange", 2)), Box=FALSE, trend="mean", bmar=c(6, 4, 5, 2))
 
-## the same plot with some fency options
-  BoxPlot(dat, mpg~cyl \%in\% gear, Title=list(main="Miles per Gallon by Number of Gears", 
-			 col.main="Green", cex.main=2.5), vline=c(3.5, 6.5), vl.lty=2, vl.col="gray", vl.lwd=2,
-          Xaxis=list(labels=NA, at=1:9, tick=TRUE), col=c(rep("blue", 3), rep("red", 3), rep("green", 3)),
-          Xaxis2=list(tick=FALSE), Yaxis=list(at=seq(10,34,2)), Grid=list(x=1:9, y=seq(10,34,2)),
-          Xlabel=list(text=paste(rep(c("4Cyl", "6Cyl", "8Cyl"),3), c(rep("3Gear",3), rep("4Gear",3), rep("5Gear",3))),
-                      at=1:9, las=2, adj=1, line=0.75, col=c(rep("blue", 3), rep("red", 3), rep("green", 3))), 
-          mean.col=c(rep("cyan", 3), rep("orange", 3), rep("magenta", 3)), Box=FALSE, trend="mean",mar=c(6,4,5,2) )
+## horizontal fency plot
+BoxPlot(input, KRAS.exprs~Arm \%in\% Sex, transf = log, Title=list(main="Kras.exprs per Arm by Sex",
+                                                                col.main="#84d52b", cex.main=1.5),
+       vline=c(2.5, 6.5), vl.lty=2, vl.col="gray", vl.lwd=2,
+       Xaxis2=list(tick=FALSE, las=2, hadj=-0.25), Yaxis=list(at=seq(0, 8, 1)), Grid=list(x=1:4, y=seq(0, 8, 1)),
+       mean.col=c(rep("cyan", 2), rep("orange", 2)), Box=FALSE, trend="mean",
+       mar=c(3, 7, 4, 4), horizontal=TRUE, sc.pch=c(0,15)[input$OS.event+1], sc.col="wheat4",
+       XaxisTab=list(Text=list(col=c(rep("cyan", 2), rep("orange", 2)))))
 
-## horizontal fency plot   
-BoxPlot(mtcars, mpg~cyl \%in\% gear, Title=list(main="Miles per Gallon by Number of Gears", col.main="#84d52b", cex.main=1.5), 
-		vline=c(3.5, 6.5), vl.lty=2, vl.col="gray", vl.lwd=2,
-		Xaxis2=list(tick=FALSE, las=2, hadj=-.25), Yaxis=list(at=seq(10,34,2)), Grid=list(x=1:9, y=seq(10,34,2)),
-		mean.col=c(rep("cyan", 3), rep("orange", 3), rep("magenta", 3)), Box=FALSE, trend="mean",
-		mar=c(3, 7, 4, 4), horizontal=TRUE, sc.pch=c(0, 15)[dat$am+1], sc.col="wheat4",
-		XaxisTab=list(Text=list(col=c(rep("cyan", 3), rep("orange", 3), rep("magenta", 3)))) )
-
-legend(x="topright", pch=c(0, 15), legend=c("automatic", "manual"), box.lty=0, col="wheat4")
+legend(x="topright", pch=c(0, 15), legend=c("event", "no event"), box.lty=0, col="wheat4")
 
 }
 \author{

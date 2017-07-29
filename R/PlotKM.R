@@ -17,13 +17,13 @@
 #' In the legend, the subgroups will be ordered based on the order of factor levels.
 #' The parameter varlist can also be a vector of multiple column names.
 #' @param varlist.levels levels in the subgroups. It should be a vector if the parameter varlist is a single column name.
-#' It should be a list if more than one columns are specified in the prarameter varlist. 
+#' It should be a list if more than one columns are specified in the prarameter varlist.
 #' The elements in the list should match the columns defined in parameter varlist.
 #' Each element of the list should contain a vector, elements in the vector defines levels of the corresponding column.
 #' @param varlist.labels preferred labels for the varlist.
 #' varlist.levels should be provided if subgroupd.labels is specified. The order in varlist.labels should match varlist.levels.
 #' It should be a vector if the parameter varlist is a single column name.
-#' It should be a list if more than one columns are specified in the prarameter varlist. 
+#' It should be a list if more than one columns are specified in the prarameter varlist.
 #' The elements in the list should match the columns defined in parameter varlist.
 #' Each element of the list should contain a vector, elements in the vector defines labels of the corresponding column.
 #' @param plot.nrisk whether show number of patients at risk at the below the graph. If it is specified as TRUE, number of patients
@@ -51,7 +51,7 @@
 #'
 #' @inheritParams CompareKM
 #' @inheritParams SummarySingle
-#' @inheritParams PloTabForestBiomarker
+#' @inheritParams PlotTabForestBiomarker
 #'
 #' @examples
 #' data(input)
@@ -59,8 +59,8 @@
 #' PlotKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT by treatment", var="Arm")
 #' @export
 
-PlotKM <- function(data, tte, cens, 
-      trt=NULL, var=NULL, 
+PlotKM <- function(data, tte, cens,
+      trt=NULL, var=NULL,
       var.class=NULL,
       var.name=NULL,
       percentile.cutoff=0.5,
@@ -86,16 +86,16 @@ PlotKM <- function(data, tte, cens,
     var <- trt <- NULL
     message("'varlist' is specified, trt and var parameters will be ignored")
     }
-  
+
 	stopifnot(class(data) == "data.frame")
 	if(!is.null(bep))if(! bep %in% colnames(data))stop("bep should in column names in the input data!")
 	if(!is.null(var))if(! all(c(trt,var,varlist) %in% colnames(data)))stop("names in 'var','trt','var.list' should be in column names in the input data!")
 	if(!is.null(bep))data <- data[which(data[,bep]==bep.indicator),]
 
 	var.store <- var
-	
+
 	# in the cases when trt and var are specified - creat var.list
-	
+
 	if(!is.null(var)){
 	  possible.class <-c("categorical","numeric")
 	  if(is.null(var.class)||!all(var.class%in%possible.class)){
@@ -104,7 +104,7 @@ PlotKM <- function(data, tte, cens,
 	    if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
 	  }
 	  data$bm.tmp <- rep(NA, length(data[[1]]))
-	  
+
 	  if(var.class=="numeric"){
 	    if(!is.null(percentile.cutoff)){
 	      percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
@@ -127,9 +127,9 @@ PlotKM <- function(data, tte, cens,
 	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
 	          }
 	        }
-	        
+
 	      }}
-	    
+
 	    if(!is.null(numerical.cutoff)){
 	      numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),numerical.cutoff)))
 	      for(i in 2:length(numerical.cutoff)){
@@ -153,9 +153,9 @@ PlotKM <- function(data, tte, cens,
     }
       varlist <- c(trt,var)
 	}
-	
 
-	
+
+
 	if(!is.null(varlist.labels) & is.null(varlist.levels)) stop("varlist.levels should be provided if varlist.labels is specified!")
 
 	if(length(varlist)==1){
@@ -268,10 +268,10 @@ PlotKM <- function(data, tte, cens,
   	}
 
 
-	
+
 	if(nlev>1)meds <- summary(fit)$table[,"median"]
 	if(nlev==1)meds <- summary(fit)$table["median"]
-	
+
  	PlotParam(pdf.name, pdf.param, par.param)
 
 	plot(fit,col=col,lwd=lwd,xlab="", ylab=ylab,lty=lty,
@@ -317,7 +317,7 @@ PlotKM <- function(data, tte, cens,
  out <- ""
  if(return.data)out <- data
  out
- 
+
 }
 
 
