@@ -10,10 +10,10 @@
 #' @param model.args additional model parameters to pass to model
 #' @param facet.fun function to use for ggplot faceting in ggplot2::facet_grid
 #' @param ... additional arguments passed to underlying ggplot components
-#' by prefixing value with ggplot call name. ("ribbons", "line", "text", "facet", "xlab",
-#' "ylab", "labs" or "theme" - e.g. `ribbons.color = 'red'`)
+#' by prefixing value with ggplot call name. ("ribbons", "line", "text",
+#' "facet", "xlab", "ylab", "labs" or "theme" - e.g. `ribbons.color = 'red'`)
 #'
-#' @return a ggplot object with y values adjusted based on model function if provided
+#' @return a ggplot object
 #'
 #' @examples
 #' library(tidyverse) # for pipe and tibble
@@ -39,8 +39,11 @@
 #'          labs.title = "Temperature by Hemisphere",
 #'          labs.caption = "*idependent models fit per hemisphere")
 #'
-#' # including a table of value counts and subsetting value data to specific months
-#' PlotLong(nasa %>% as_tibble %>% mutate(hemisphere=ifelse(lat>0, "North", "South")),
+#' # including a table of value counts and subsetting value data to specific
+#' # months
+#' PlotLong(nasa %>%
+#'            as_tibble %>%
+#'            mutate(hemisphere=ifelse(lat > 0, "North", "South")),
 #'          aes(x=month, y=temperature, group = hemisphere,
 #'              color = hemisphere, fill = hemisphere),
 #'          formula = temperature ~ ozone,
@@ -54,17 +57,26 @@
 #'
 #' @export
 #'
-PlotLong <- function(data, mapping, model.formula = NULL, model = lm, model.args = NULL,
-                     model.per = NULL, facet.fun = NULL, plot.style = 'ribbons', ...) {
+PlotLong <- function(data, mapping, model = lm, model.per = NULL,
+                     model.formula = NULL, facet.fun = NULL,
+                     plot.style = 'ribbons', ...) {
 
-  if (!is.null(formula))  {
+  if (!is.null(model.formula))  {
     # add predicted values based on formula provided
-    data <- data %>% augment_predict(model, model.formula, model.args, model.per)
-    # overwrite mapping with new fitted variable ("<y>.fitted") from augment_predict
-    mapping$y <- as.name(paste(deparse(mapping$y), "adjusted", sep="."))
+    data <- data %>%
+      augment_predict(
+        model,
+        model.per = model.per,
+        model.formula = model.formula,
+        ...)
+
+    # overwrite mapping with residuals after model adjustment ("<y>.resid")
+    # from augment_predict
+    mapping$y <- as.name(paste(deparse(mapping$y), "resid", sep="."))
   }
 
-  # collapse linetype to group since ggpk_line_errorbar will set it to constant for the errorbar geom
+  # collapse linetype to group since ggpk_line_errorbar will set it to constant
+  # for the errorbar geom
   mapping <- ggpack_flatten_aesthetics_to_group(mapping, 'linetype')
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
@@ -79,8 +91,8 @@ PlotLong <- function(data, mapping, model.formula = NULL, model = lm, model.args
      else ggpack(facet_grid, 'facet', list(...), facets = facet.fun)) +
 
     # adjust label to accommodate model fitting if a model was used
-    (if (is.null(formula)) NULL
-     else ylab(paste("Adjusted", deparse(formula[[2]])))) +
+    (if (is.null(model.formula)) NULL
+     else ylab(paste("Adjusted", deparse(model.formula[[2]])))) +
 
     # catch plot labels
     ggpack.decorators(...)

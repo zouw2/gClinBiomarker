@@ -15,12 +15,16 @@
 #'
 #' @export
 #'
-augment_predict <- function(.data, model, model.formula, model.args = NULL, model.per = NULL) {
+augment_predict <- function(.data, model, model.per = NULL, ...) {
+
+  .dots <- ggpack_filter_args('model', list(...))
+  fy <- deparse(.dots$formula[[2]]) # get formula independent variable
+
   .data %>%
     group_by_(.dots = all.vars(model.per)) %>%
-    augment(do.call(model, c(list(formula=formula, data=.), model.args)), .) %>%
-    rename_(.dots = setNames(names(.), gsub("^\\.", paste0(deparse(formula[[2]]), "."), names(.)))) %>%
-    mutate_(.dots = setNames(paste0(deparse(formula[[2]]), "-", deparse(formula[[2]]), ".fitted"), paste0(deparse(formula[[2]]), ".adjusted")))
+    do(augment(do.call(model, c(list(data=.), .dots)), .)) %>%
+    # rename model outputs (".fitted") to instead begin with var ("y.fitted")
+    rename_(.dots = setNames(names(.), gsub("^\\.", paste0(fy, "."), names(.))))
 }
 
 
