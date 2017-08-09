@@ -22,7 +22,7 @@
 #' If \code{'prop.test.use.continuity.correction' = T} (default), the 'correct' parameter in \code{\link{prop.test}} will be set as TRUE.
 #'
 #' @return A named vector of following entries:
-#' if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active, N.Placebo, N.Active;
+#' if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active,  N.Placebo, N.Active, nRsp.Placebo, nRsp.Active;
 #' if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, P;
 #' if continuous - Effect.Size (Mean Difference), Lower, Upper, P.
 #'
@@ -76,7 +76,9 @@ StatSummary <- function(outcome.var,
                  , "Rsp.Placebo" = mytest$estimate[2]
                  , "Rsp.Active" = mytest$estimate[1]
                  , "N.Placebo" = n2
-                 , "N.Active" = n1)
+                 , "N.Active" = n1
+                 , "nRsp.Placebo" = r2
+                 , "nRsp.Active" = r1)
         names(ret)[5:6] <- c("Rsp.Placebo", "Rsp.Active")
     } # end binary
 

@@ -97,6 +97,7 @@ PlotTabForestMulti <- function(data,
                                   main=NULL,
                                   sub=NULL,
                                   clip=NULL,
+                                  xlab=NULL,
                                   cex.headings=1.1,
                                   cex.note=1,
                                   cols="darkgreen",
@@ -242,7 +243,7 @@ PlotTabForestMulti <- function(data,
 
   PlotParam(pdf.name, pdf.param, par.param)
 
-  if (is.null(clip)) {
+  if (is.null(clip) & outcome.class=="survival") {
     r1 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))
     r2 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))
     good1 <- !is.na(r1) & is.finite(r1) & r1!= 0
@@ -250,6 +251,16 @@ PlotTabForestMulti <- function(data,
     xrange <- c(min(round(r1[good1], 2)), max(as.numeric(round(r2[good2], 2))))
     clip <- exp(c(-max(abs(log(xrange))), max(abs(log(xrange)))))
   }
+  if (is.null(clip) & outcome.class=="binary") {
+    r1 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))
+    r2 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))
+    good1 <- !is.na(r1) & is.finite(r1) & r1!= 0
+    good2 <- !is.na(r2) & is.finite(r2)
+    xrange <- c(min(round(r1[good1], 2)), max(as.numeric(round(r2[good2], 2))))
+    mm <- max(abs(xrange))
+    clip <- c(-mm,mm)
+  }
+  
 
   wid <- max(nchar(sapply(tabletext[,1], function(z)strsplit(z, "\n")[[1]][1])),na.rm=T)/6
 
@@ -257,13 +268,21 @@ PlotTabForestMulti <- function(data,
   if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
 
   if(tabforest){
+      if(is.null(xlab)) {
+          if(nArms==2)xlab <- c(paste(active.code, "better", sep=" "),
+          paste(placebo.code, "better", sep=" "))
+          if(nArms==1)xlab <- c("","")
+      }
+    
+    xlog <- FALSE
+    if(outcome.class=="binary") xlog <- TRUE
     PlotTabForest(label.text=tabletext[-c(1), ],
                 mean=as.numeric(tabletext[-1, 5]),
                 lower=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1])),
                 upper=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2])),
                 headings=c(tabletext[1, ], c("Forest plot")),
                 cols=cols,
-                xlog=TRUE,
+                xlog=xlog,
                 xticks=NULL,
                 box.size=rep(2.5, nrow(tabletext)-1),
                 main=main.text,
@@ -273,8 +292,7 @@ PlotTabForestMulti <- function(data,
                 group.hline=hl,
                 note=note,clip=clip,
                 widths=c( wid,2, 1.5, 1, 1, 2, 1, 5),
-                sub.main=c(paste(active.code, "better", sep=" "),
-                           paste(placebo.code, "better", sep=" ")),
+                sub.main=xlab,
                 cex.headings=cex.headings,
                 cex.note=cex.note,
                 par.param=par.parm
@@ -293,16 +311,21 @@ PlotTabForestMulti <- function(data,
 
       tabletext2 <- tabletext
       tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
-
+    
+    if(is.null(xlab)) {
+        if(nArms==2)xlab <- paste("<-- ", active.code, "better [",res.list[[1]][[1]][1,5],"] ",placebo.code, "better -->\n",note)
+        if(nArms==1)xlab <- res.list[[1]][[1]][1,5]
+    }
+      xlog <- FALSE
+      if(outcome.class=="binary") xlog <- TRUE
       forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,5])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
                  upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
-                 xlab=paste("<--",active.code, "better [HR] ",placebo.code, "better -->",
-                            "\n", note),
+                 xlab=xlab,
                  hrzl_lines=hz,align="l",
                  lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
-                  xlog=TRUE,
+                 xlog=xlog,
                  title=paste(main.text,"\n",sub.text),
                  #graphwidth=unit(100, 'mm'),
                  colgap=unit(cex.note*4,"mm"),

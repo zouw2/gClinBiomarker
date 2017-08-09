@@ -7,12 +7,14 @@
 PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   outcome.var, trt = NULL, var = NULL, var.class = NULL,
   var.name = NULL, percentile.cutoff = 0.5, numerical.cutoff = NULL,
-  greater = TRUE, less = FALSE, equal.in.high = TRUE,
-  within.bin = FALSE, show.itt = TRUE, show.bep = TRUE, bep = NULL,
-  bep.name = "BEP", itt.name = "All", bep.indicator = 1,
-  covariate = NULL, strata = NULL, tabforest = FALSE, quantile.type = 2,
-  digits = 2, cutoff.digits = 2, placebo.code = NULL,
-  active.code = NULL, var.code = NULL, alpha = 0.05, main = NULL,
+  greater = TRUE, less = FALSE, greater.by.less = FALSE,
+  across.and.within = FALSE, equal.in.high = TRUE, within.bin = FALSE,
+  show.itt = TRUE, show.bep = TRUE, bep = NULL, bep.name = "BEP",
+  itt.name = "All", bep.indicator = 1, covariate = NULL, strata = NULL,
+  tabforest = FALSE, quantile.type = 2, digits = 2, cutoff.digits = 2,
+  placebo.code = NULL, active.code = NULL, rsp.cat = TRUE,
+  rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
+  "NE", NA), var.code = NULL, alpha = 0.05, main = NULL,
   main.prefix = NULL, sub = NULL, clip = NULL, xticks = NULL,
   xticks.digits = 1, xlab = NULL, cex.headings = 1.1, cex.note = 0.8,
   cols = NULL, only.stat = FALSE, pdf.name = NULL,
@@ -23,11 +25,12 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
-\item{outcome.class}{type of the outcome variable. Default is \code{c("survival", "binary", "continuous")}}
+\item{outcome.class}{type of the outcome variable. Default is \code{c("survival", "binary", "continuous")}. Continuous is not available now}
 
 \item{outcome.var}{name of the outcome varible. If the outcome.class is binary or coutinuous, only one value should be provided.
 If the outcome.class is survival, two values should be provided - name of the 'time to event' variable and 'censorship' variable
- For the censoring variable, 1 indicates event and 0 indicates censoring}
+ For the censoring variable, 1 indicates event and 0 indicates censoring. In all cases but when outcome.class=binary and rsp.cat=TRUE,
+ patients with missing outcome variable (NA) will be excluded from BEP.}
 
 \item{trt}{name of the treatment variable. If this is NULL, within-arm analysis will be performed}
 
@@ -50,6 +53,12 @@ In single arm study HR of biomarker high vs low will be calculated.}
 
 \item{less}{whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
 greater and less can both be TRUE}
+
+\item{greater.by.less}{whether show "greater" bin and "less" bin in consecutive rows. Default is FALSE. If it is TRUE, 
+parameters greater and less will be both set as TRUE}
+
+\item{across.and.within}{whether show across- and within- arm results in the same figure. Default is FALSE. This parameter
+will be ignored if number of arm is 1. If it is TRUE, within-arm analysis results will be shown below the across-arm results.}
 
 \item{equal.in.high}{whether include equal in high group. Default is TRUE. If it is TRUE, ">=" and "<" will be
 applied. Otherwise "<=" and ">" will be applied.}
@@ -87,6 +96,17 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \item{placebo.code}{name of the control arm of the treatment variable}
 
 \item{active.code}{of the treatment/experimental arm of the treatment variable}
+
+\item{rsp.cat}{whether the response outcome variable is coded as binary (1 as responder and 0 as non-responder),
+If rsp.cat is TRUE, responder categories
+and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
+should be included in rsp.response and rsp.nonresponse)
+. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1). 
+At the same time rsp.response and rsp.nonresponse will be ignored.}
+
+\item{rsp.response}{categories that should be considered as responder.}
+
+\item{rsp.nonresponse}{categories that should be considered as non responder.}
 
 \item{var.code}{ordered levels of the biomarker variable. This will be ignored for continuous biomarker.
 If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function}

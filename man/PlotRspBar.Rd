@@ -10,7 +10,7 @@ PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
   digits = 1, trt = NULL, trt.name = NULL, show.combine.trt = TRUE,
   compare.bep.itt = FALSE, bep = NULL, bep.name = NULL,
   itt.name = "Full population", bep.indicator = 1, compare.var = FALSE,
-  var = NULL, var.name = NULL, show.combine.var = TRUE,
+  var = NULL, var.name = NULL, show.combine.var = TRUE, horiz = TRUE,
   main = "Association of response rate", sub = NULL, cex = 1,
   pdf.name = NULL, pdf.param = NULL, par.param = list(mar = c(6, 8, 6,
   7)))
@@ -21,10 +21,17 @@ entries with missing rsp value will be ignored in analysis.}
 
 \item{binary}{whether summarize the response rate by responder/nonresponder (if binary=TRUE),
 or by its original category (e.g. PD/SD/PR/CR). If binary is TRUE, responder categories
-and nonresponder categories should be specified in rsp.response and rsp.nonresponse,
+and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
+should be included in rsp.response and rsp.nonresponse),
 at the same time rsp.levels will be ignored. If binary is FALSE, rsp.levels should be
 specified to provide order of the categories. At the same time rsp.response and
 rsp.nonresponse will be ignored.}
+
+\item{rsp.response}{categories that should be considered as responder.}
+
+\item{rsp.nonresponse}{categories that should be considered as non responder.}
+
+\item{rsp.levels}{vector that indicates how to sort the response categories. This parameter will be ignored if binary is TRUE.}
 
 \item{col}{color for different categories}
 
@@ -55,6 +62,8 @@ parameters var, var.name, show.combine.var will be ignored}
 If it is NULL, var will be used.}
 
 \item{show.combine.var}{if this is TRUE, will show summarization of combined data across var levels as well}
+
+\item{horiz}{whether show barplot horizontally}
 
 \item{main}{main title of the barplot. Default is "Association of biomarker expression with response rate".}
 

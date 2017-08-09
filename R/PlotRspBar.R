@@ -9,10 +9,14 @@
 #' entries with missing rsp value will be ignored in analysis. 
 #' @param binary whether summarize the response rate by responder/nonresponder (if binary=TRUE),
 #' or by its original category (e.g. PD/SD/PR/CR). If binary is TRUE, responder categories
-#' and nonresponder categories should be specified in rsp.response and rsp.nonresponse,
+#' and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
+#' should be included in rsp.response and rsp.nonresponse),
 #' at the same time rsp.levels will be ignored. If binary is FALSE, rsp.levels should be
 #' specified to provide order of the categories. At the same time rsp.response and
 #' rsp.nonresponse will be ignored. 
+#' @param rsp.response categories that should be considered as responder.
+#' @param rsp.nonresponse categories that should be considered as non responder.
+#' @param rsp.levels vector that indicates how to sort the response categories. This parameter will be ignored if binary is TRUE.
 #' @param col color for different categories
 #' @param plot.count default is FALSE. By default percentages will be shown.
 #' If it is TRUE, will show counts instead
@@ -32,6 +36,7 @@
 #' @param sub footnote under the bar plot. Default is NULL.
 #' @param cex cex
 #' @param digits see \code{\link{pdf}}. Number of digits to display for the response rate.
+#' @param horiz whether show barplot horizontally
 #' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "rsp.barplot.pdf".
 #' @param pdf.param list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}. 
 #' @param par.param list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
@@ -55,10 +60,10 @@ PlotRspBar <- function(data, outcome.var,
                        plot.count=FALSE,digits=1,
                        trt=NULL, trt.name =NULL, show.combine.trt=TRUE,
                        compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="Full population",bep.indicator=1,
-                       compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE,
-                       main="Association of response rate",sub=NULL,cex=1,
+                       compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE, horiz=TRUE,
+                       main="Association of response rate",
+                       sub=NULL,cex=1,
                        pdf.name=NULL,
-                       #pdf.param=list(width=6, height=4.5),
                        pdf.param=NULL,
                        par.param=list(mar=c(6,8,6,7))) {
     
@@ -185,10 +190,10 @@ PlotRspBar <- function(data, outcome.var,
     
     PlotParam(pdf.name, pdf.param, par.param)  
     
-    
-    if(!plot.count)bb <- barplot(plottab*100, horiz=T, col=col, space=myspace,
+    num.axis <- ifelse(horiz,4,3)
+    if(!plot.count)bb <- barplot(plottab*100, horiz=horiz, col=col, space=myspace,
                   names=colnames(plottab),las=2, axes=FALSE, xlab="(%)",cex.axis=0.7*cex)
-    if(plot.count)bb <- barplot(tab.table, horiz=T, col=col, space=myspace,
+    if(plot.count)bb <- barplot(tab.table, horiz=horiz, col=col, space=myspace,
                                 names=colnames(plottab),las=2, axes=FALSE,  xlab="count",cex.axis=0.7*cex)
     
     title(main,line=max(nchar(rownames(tab.table)))*.6)
@@ -196,11 +201,11 @@ PlotRspBar <- function(data, outcome.var,
     axis(1, las=1)
     
     if (binary) {
-        axis(4, at=bb, paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""), 
+        axis(num.axis, at=bb, paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""),
                              paste("; Rsp=",round(plottab["rsp",],digits+2)*100,"%",sep=""), sep=""),
              las=2, cex.axis=0.8*cex, line=-0.5, tick=F)  
     } else {
-        axis(4, at=bb, paste("N=",colSums(tab.table,na.rm=TRUE),sep=""), las=2, cex.axis=0.8*cex, line=-0.5, tick=F)
+        axis(num.axis, at=bb, paste("N=",colSums(tab.table,na.rm=TRUE),sep=""), las=2, cex.axis=0.8*cex, line=-0.5, tick=F)
     }
     
     box()
