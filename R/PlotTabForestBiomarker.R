@@ -791,8 +791,8 @@ PlotTabForestBiomarker <- function(data,
     if(!is.null(inter.p)) note <- paste0("* Unadjusted Interaction P = ", paste(round.signif(inter.p, 2), collapse=" ; "))
     if(tabforest){
       if(is.null(xlab)) {
-        if(nArms==2)xlab <- c(paste(active.code, "better", sep=" "),
-                              paste(placebo.code, "better", sep=" "))
+        if(nArms==2)xlab <- c(paste(placebo.code, "better", sep=" "),
+                              paste(active.code, "better", sep=" "))
         if(nArms==1)xlab <- c("","")
         if(across.and.within) xlab <- c("","")
       } 
@@ -831,7 +831,7 @@ PlotTabForestBiomarker <- function(data,
       tabletext2 <- tabletext
       tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
       if(is.null(xlab)) {
-        if(nArms==2)xlab <- paste("<-- ", active.code, "better [deltaRR] ",placebo.code, "better -->\n",note)
+        if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [deltaRR] ",active.code, "better -->\n",note)
         if(nArms==1 | across.and.within)xlab <- "deltaRR"
       }
       if(across.and.within) {

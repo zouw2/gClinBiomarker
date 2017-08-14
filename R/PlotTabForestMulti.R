@@ -317,7 +317,10 @@ PlotTabForestMulti <- function(data,
         if(nArms==1)xlab <- res.list[[1]][[1]][1,5]
     }
       xlog <- FALSE
-      if(outcome.class=="binary") xlog <- TRUE
+      if(outcome.class=="binary") {
+          if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [",res.list[[1]][[1]][1,5],"] ",active.code, "better -->\n",note)
+          xlog <- TRUE
+      }
       forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,5])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
