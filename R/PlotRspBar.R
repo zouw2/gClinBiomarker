@@ -187,8 +187,8 @@ PlotRspBar <- function(data, outcome.var,
    }
     # Define par parameters
     if(is.null(par.param$mar)) {
-        p1 <- max(5,.3*max.bi.txt) 
-        p2 <- max(5,.5*max.name.txt)
+        p1 <- max(5,.3*max.name.txt) 
+        p2 <- max(5,.5*max.bi.txt)
         if(horiz)par.param$mar <- c(5,p1,4,p2)
         if(!horiz) par.param$mar <- c(p1,4,p2,5)
     }
