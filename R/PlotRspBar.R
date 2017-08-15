@@ -187,8 +187,8 @@ PlotRspBar <- function(data, outcome.var,
    }
     # Define par parameters
     if(is.null(par.param$mar)) {
-        p1 <- max(5,.3*max.name.txt) 
-        p2 <- max(5,.5*max.bi.txt)
+        p1 <- max(5,.5*max.name.txt) 
+        p2 <- max(5.5,.55*max.bi.txt)
         if(horiz)par.param$mar <- c(5,p1,4,p2)
         if(!horiz) par.param$mar <- c(p1,4,p2,5)
     }
@@ -214,9 +214,10 @@ PlotRspBar <- function(data, outcome.var,
       xlab <- ifelse(horiz,"count","")
       ylab <- ifelse(horiz,"","count")
       bb <- barplot(tab.table, horiz=horiz, col=col, space=myspace,
-                                names=colnames(plottab),las=2, axes=FALSE,  xlab="count",cex.axis=0.7*cex)
+                                names=colnames(plottab),las=2, axes=FALSE,  xlab=xlab,
+                    ylab=ylab,cex.axis=0.7*cex)
     }
-    title(main,line=max(max.bi.txt*.4,4))
+    title(main,line=max(max.bi.txt*.45,4.5))
     
     axis(perc.axis, las=1)
     
