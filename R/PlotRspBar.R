@@ -55,22 +55,22 @@ PlotRspBar <- function(data, outcome.var,
                        binary=FALSE,
                        rsp.response = c("CR","PR"),
                        rsp.nonresponse = c("SD", "PD","NON CR/PD","NE"),
-                       rsp.levels=c("NE","PD","NON CR/PD","SD","PR","CR"),
+                       rsp.levels=c("CR", "PR","SD","NON CR/PD", "PD","NE"),
                        col=NULL,
                        plot.count=FALSE,digits=1,
                        trt=NULL, trt.name =NULL, show.combine.trt=TRUE,
                        compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="Full population",bep.indicator=1,
-                       compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE, horiz=TRUE,
+                       compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE, horiz=FALSE,
                        main="Association of response rate",
                        sub=NULL,cex=1,
                        pdf.name=NULL,
                        pdf.param=NULL,
-                       par.param=list(mar=c(6,8,6,7))) {
+                       par.param=NULL) {
     
   
   if(is.null(col)){
-      if(binary==FALSE) col <- colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels))
-      if(binary==TRUE) col <- c("deepskyblue", "tomato")
+      if(binary==FALSE) col <- colorRampPalette(c("tomato","deepskyblue"))(length(rsp.levels))
+      if(binary==TRUE) col <- c("tomato","gray")
   }
   stopifnot(class(data) == "data.frame")
   if(!all(c(var, trt, bep,outcome.var) %in% colnames(data)))stop("outcome.var, var, trt and bep should have matched column names in the input data!")
@@ -97,7 +97,7 @@ PlotRspBar <- function(data, outcome.var,
   
   # generate response
   if(binary) 
-    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,"rsp","non-rsp"),levels=c("non-rsp","rsp"))
+    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,"rsp","non-rsp"),levels=c("rsp","non-rsp"))
   if(!binary) data$rspvar <- factor(data[,outcome.var], levels=rsp.levels)
   
   data$sectionvar <- data$trtvar <- rep("All", length(data$rspvar))
@@ -169,10 +169,16 @@ PlotRspBar <- function(data, outcome.var,
     myspace[space] <- 0.8
     if(n.in.section==1&n.section==1)myspace <- .2
     
+    if(binary)bi.txt <- paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""),
+                    paste("; Rsp=",round(plottab["rsp",],digits+2)*100,"%",sep=""), sep="")
+    else bi.txt <- paste("N=",colSums(tab.table,na.rm=TRUE),sep="")
+    max.bi.txt <- max(nchar(bi.txt))
+    max.name.txt <- max(nchar(colnames(plottab)))
+    
     # Parameters for the pdf file if it's created.
    if(!is.null(pdf.name)){
      if (is.null(pdf.param$height)) {
-        pdf.param$height <- ifelse(nrow(plottab) > 6, 8, 6) # 1 by nlev subplots
+        pdf.param$height <- 8
     }
     
     if (is.null(pdf.param$width)) {
@@ -181,7 +187,10 @@ PlotRspBar <- function(data, outcome.var,
    }
     # Define par parameters
     if(is.null(par.param$mar)) {
-        par.param$mar <- c(5,5,4,6)
+        p1 <- max(5,.3*max.bi.txt) 
+        p2 <- max(5,.5*max.bi.txt)
+        if(horiz)par.param$mar <- c(5,p1,4,p2)
+        if(!horiz) par.param$mar <- c(p1,4,p2,5)
     }
     
     if(is.null(par.param$font.axis)) {
@@ -191,33 +200,48 @@ PlotRspBar <- function(data, outcome.var,
     PlotParam(pdf.name, pdf.param, par.param)  
     
     num.axis <- ifelse(horiz,4,3)
-    if(!plot.count)bb <- barplot(plottab*100, horiz=horiz, col=col, space=myspace,
-                  names=colnames(plottab),las=2, axes=FALSE, xlab="(%)",cex.axis=0.7*cex)
-    if(plot.count)bb <- barplot(tab.table, horiz=horiz, col=col, space=myspace,
+    label.axis <- ifelse(horiz,3,4)
+    perc.axis <- ifelse(horiz,1,2)
+    
+    if(!plot.count){
+      xlab <- ifelse(horiz,"(%)","")
+      ylab <- ifelse(horiz,"","(%)")
+      bb <- barplot(plottab*100, horiz=horiz, col=col, space=myspace,
+                  names=colnames(plottab),las=2, axes=FALSE, xlab=xlab,ylab=ylab,
+                  cex.axis=0.7*cex)
+    }
+    if(plot.count){
+      xlab <- ifelse(horiz,"count","")
+      ylab <- ifelse(horiz,"","count")
+      bb <- barplot(tab.table, horiz=horiz, col=col, space=myspace,
                                 names=colnames(plottab),las=2, axes=FALSE,  xlab="count",cex.axis=0.7*cex)
+    }
+    title(main,line=max(max.bi.txt*.4,4))
     
-    title(main,line=max(nchar(rownames(tab.table)))*.6)
-    
-    axis(1, las=1)
+    axis(perc.axis, las=1)
     
     if (binary) {
-        axis(num.axis, at=bb, paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""),
-                             paste("; Rsp=",round(plottab["rsp",],digits+2)*100,"%",sep=""), sep=""),
+        axis(num.axis, at=bb, bi.txt,
              las=2, cex.axis=0.8*cex, line=-0.5, tick=F)  
     } else {
-        axis(num.axis, at=bb, paste("N=",colSums(tab.table,na.rm=TRUE),sep=""), las=2, cex.axis=0.8*cex, line=-0.5, tick=F)
+        axis(num.axis, at=bb, bi.txt, las=2, cex.axis=0.8*cex, line=-0.5, tick=F)
     }
     
     box()
     
-    myoutcome.levels <- levels( data$rspvar)
+    myoutcome.levels <- levels(data$rspvar)
     n.levels <- nlevels(data$rspvar)
     xmax0 <- 100
     if(plot.count) xmax0 <- max(colSums(tab.table))
-    xmax <- xmax0/3
+    xmax <- xmax0
+    if(binary)xmax <- xmax0/3
+    nn <- nchar(myoutcome.levels)
+    nn.unit <- xmax/sum(nn)
+    tmp <- 0
     for (kk in 1:n.levels) {
-        mtext(myoutcome.levels[kk], col=col[kk], side=3, out=FALSE, at=xmax*kk/n.levels - (xmax/2)/n.levels, adj=0, las=3)
-    }
+      mtext(myoutcome.levels[kk], col=col[kk], side=label.axis, out=FALSE, at=tmp, adj=0, las=3)
+      tmp <- tmp +  nn.unit*nn[kk]   
+      }
     
    # abline(h=bb[space]/2+bb[space-1]/2)
     
