@@ -38,8 +38,8 @@
 #' @param na.action defaults to "na.omit". Possible options are "na.omit", "error"
 #' When it is specified as "na.omit", entries with missing trt or subgroup
 #' will be automatically removed before calculation.
-#' @param compare.subgroup If it is FALSE,
-#' the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
+#' @param compare.subgroup If it is TRUE,
+#' the output will show summary statistics of subgroup and others. Default is FALSE. If it is FALSE,
 #' will show summary statistics of subgroup vs. All patients
 #' @param test.subgroup whether test across subpopulations within treatment arm. If class is numeric,
 #' kruskal wallis rank sum test will be performed. If class is categorical, fisher's exact test will be performed.
