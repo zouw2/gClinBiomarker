@@ -254,5 +254,5 @@ PlotRspBar <- function(data, outcome.var,
     
     PlotParam()  
     
-out <- list(count=tab.table, perc=plottab)
+out <- list(count=t(tab.table), perc=t(plottab))
 }
