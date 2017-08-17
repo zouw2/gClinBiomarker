@@ -22,4 +22,6 @@ Imports:
     stats,
     coin,
     graphics,
-    knitr,
+    knitr
+Suggests:
+    testthat
