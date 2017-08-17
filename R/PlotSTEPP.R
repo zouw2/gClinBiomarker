@@ -406,8 +406,8 @@ PlotSTEPP <- function(data,
              type = "n",
              axes = FALSE,
              xlim = c(ifelse(actual.scale == FALSE, min.pt, sdata[1, "BMV.Center"]), ifelse(actual.scale == FALSE, max.pt, sdata[nbins, "BMV.Center"])),
-             xlab = "",
-             ylab = xlabel,
+             xlab = xlabel,
+             ylab = ylabel,
              main = plot.title,
              sub = sub.title)
         # y-axis in % scale

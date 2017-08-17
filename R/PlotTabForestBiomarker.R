@@ -650,8 +650,8 @@ PlotTabForestBiomarker <- function(data,
           ac <- Arms[2]
           # interaction p value: per arm? If originally cont., then use cont. in modeling
             # no stratification??
-          fit1 <- glm(Outcome~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
-          fit2 <- glm(Outcome~as.character(Treatment)+Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
+          fit1 <- glm(data[,outcome.var]~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
+          fit2 <- glm(data[,outcome.var]~as.character(Treatment)+Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
           L1 <- summary(fit1)$deviance
           n1 <- summary(fit1)[[7]]
           L2 <- summary(fit2)$deviance

@@ -17,6 +17,7 @@
 #' @param rsp.response categories that should be considered as responder.
 #' @param rsp.nonresponse categories that should be considered as non responder.
 #' @param rsp.levels vector that indicates how to sort the response categories. This parameter will be ignored if binary is TRUE.
+#' @param rsp.name Display name for the responders. Default is "rsp". 
 #' @param col color for different categories
 #' @param plot.count default is FALSE. By default percentages will be shown.
 #' If it is TRUE, will show counts instead
@@ -56,6 +57,7 @@ PlotRspBar <- function(data, outcome.var,
                        rsp.response = c("CR","PR"),
                        rsp.nonresponse = c("SD", "PD","NON CR/PD","NE"),
                        rsp.levels=c("CR", "PR","SD","NON CR/PD", "PD","NE"),
+                       rsp.name = "Rsp",
                        col=NULL,
                        plot.count=FALSE,digits=1,
                        trt=NULL, trt.name =NULL, show.combine.trt=TRUE,
@@ -97,7 +99,7 @@ PlotRspBar <- function(data, outcome.var,
   
   # generate response
   if(binary) 
-    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,"rsp","non-rsp"),levels=c("rsp","non-rsp"))
+    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,rsp.name,paste0("non-",rsp.name)),levels=c(rsp.name,paste0("non-",rsp.name)))
   if(!binary) data$rspvar <- factor(data[,outcome.var], levels=rsp.levels)
   
   data$sectionvar <- data$trtvar <- rep("All", length(data$rspvar))
@@ -170,7 +172,7 @@ PlotRspBar <- function(data, outcome.var,
     if(n.in.section==1&n.section==1)myspace <- .2
     
     if(binary)bi.txt <- paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""),
-                    paste("; Rsp=",round(plottab["rsp",],digits+2)*100,"%",sep=""), sep="")
+                    paste("; ",rsp.name,"=",round(plottab[rsp.name,],digits+2)*100,"%",sep=""), sep="")
     else bi.txt <- paste("N=",colSums(tab.table,na.rm=TRUE),sep="")
     max.bi.txt <- max(nchar(bi.txt))
     max.name.txt <- max(nchar(colnames(plottab)))
