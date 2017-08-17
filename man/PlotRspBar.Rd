@@ -5,15 +5,15 @@
 \title{Generate bar plot to summarize response outcome by subgroups}
 \usage{
 PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
-  rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"), rsp.levels = c("NE",
-  "PD", "NON CR/PD", "SD", "PR", "CR"), col = NULL, plot.count = FALSE,
-  digits = 1, trt = NULL, trt.name = NULL, show.combine.trt = TRUE,
-  compare.bep.itt = FALSE, bep = NULL, bep.name = NULL,
-  itt.name = "Full population", bep.indicator = 1, compare.var = FALSE,
-  var = NULL, var.name = NULL, show.combine.var = TRUE, horiz = TRUE,
+  rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"), rsp.levels = c("CR",
+  "PR", "SD", "NON CR/PD", "PD", "NE"), rsp.name = "Rsp", col = NULL,
+  plot.count = FALSE, digits = 1, trt = NULL, trt.name = NULL,
+  show.combine.trt = TRUE, compare.bep.itt = FALSE, bep = NULL,
+  bep.name = NULL, itt.name = "Full", bep.indicator = 1,
+  compare.var = FALSE, var = NULL, var.name = NULL,
+  show.combine.var = TRUE, horiz = FALSE,
   main = "Association of response rate", sub = NULL, cex = 1,
-  pdf.name = NULL, pdf.param = NULL, par.param = list(mar = c(6, 8, 6,
-  7)))
+  pdf.name = NULL, pdf.param = NULL, par.param = NULL)
 }
 \arguments{
 \item{outcome.var}{column name of the response variable (e.g. best overall response).
@@ -32,6 +32,8 @@ rsp.nonresponse will be ignored.}
 \item{rsp.nonresponse}{categories that should be considered as non responder.}
 
 \item{rsp.levels}{vector that indicates how to sort the response categories. This parameter will be ignored if binary is TRUE.}
+
+\item{rsp.name}{Display name for the responders. Default is "rsp".}
 
 \item{col}{color for different categories}
 

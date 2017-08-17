@@ -58,14 +58,14 @@ In the legend, the subgroups will be ordered based on the order of factor levels
 The parameter varlist can also be a vector of multiple column names.}
 
 \item{varlist.levels}{levels in the subgroups. It should be a vector if the parameter varlist is a single column name.
-It should be a list if more than one columns are specified in the prarameter varlist. 
+It should be a list if more than one columns are specified in the prarameter varlist.
 The elements in the list should match the columns defined in parameter varlist.
 Each element of the list should contain a vector, elements in the vector defines levels of the corresponding column.}
 
 \item{varlist.labels}{preferred labels for the varlist.
 varlist.levels should be provided if subgroupd.labels is specified. The order in varlist.labels should match varlist.levels.
 It should be a vector if the parameter varlist is a single column name.
-It should be a list if more than one columns are specified in the prarameter varlist. 
+It should be a list if more than one columns are specified in the prarameter varlist.
 The elements in the list should match the columns defined in parameter varlist.
 Each element of the list should contain a vector, elements in the vector defines labels of the corresponding column.}
 

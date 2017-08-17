@@ -31,8 +31,8 @@ If it is NULL, subgroup will be used.}
 to define the subpopulation (e.g. biomarker evaluable population). 
 Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.}
 
-\item{compare.subgroup}{If it is FALSE,
-the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
+\item{compare.subgroup}{If it is TRUE,
+the output will show summary statistics of subgroup and others. Default is FALSE. If it is FALSE,
 will show summary statistics of subgroup vs. All patients}
 
 \item{itt.name}{preferred display name of the full population (e.g. ITT).
