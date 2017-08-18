@@ -42,7 +42,7 @@ SummaryVars <- function (data, var, var.name = NULL,
 {
   stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
-  if(is.null(trt) & is.null(subgroup))stop("trt and subgroup are both empty! need to specify at least one of them")
+
   if(!all(c(var, trt, subgroup) %in% colnames(data)))stop("var, trt and subgroup should have matched column names in the input data!")
   if(!is.null(subgroup)) if(nlevels(as.factor(data[,subgroup]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",
