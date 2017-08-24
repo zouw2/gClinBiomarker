@@ -92,6 +92,7 @@ StatSummary <- function(outcome.var,
             # which corresponds to the treatment effect size
             coef.1 <- summary(myfit)$coef
             mytest <- coef.1[nrow(coef.1), ]
+            mytest2 <- coef.1[1, ]
             myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
         }
 
@@ -105,6 +106,7 @@ StatSummary <- function(outcome.var,
                 # which corresponds to the treatment effect size
                 coef.1 <- summary(myfit)$coef
                 mytest <- coef.1[nrow(coef.1), ]
+                mytest2 <- coef.1[1, ]
                 myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
             }
 
@@ -118,13 +120,14 @@ StatSummary <- function(outcome.var,
                 # (nCV+2)th row (last) is the 'slope' estimate and its associated quantities
                 # which corresponds to the treatment effect size
                 coef.1 <- summary(myfit)$coef
-                mytest <- coef.1[nrow(coef.1), ]
+                mytest <- coef.1[nrow(coef.1), ]            
+                mytest2 <- coef.1[1, ]
                 myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
             }
         }
 
-        ret <- c(mytest[1], myCI, mytest[4])
-        names(ret) <- c("Effect.Size","Lower","Upper","P")
+        ret <- c(mytest[1], myCI, mytest[4],mytest2[1], mytest2[1]+mytest[1])
+        names(ret) <- c("Effect.Size","Lower","Upper","P","Mean.Placebo","Mean.Active")
     } # end continuous
 
     # Survival outcome.var - e.g., progression-free survival
