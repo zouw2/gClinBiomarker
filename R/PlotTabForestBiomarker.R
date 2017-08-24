@@ -134,8 +134,16 @@ PlotTabForestBiomarker <- function(data,
                                   pdf.name=NULL,
                                   pdf.param=list(width=12, height=4.5),
                                   par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
-  # multiple arm - different plots?
-  outcome.class <- match.arg(outcome.class, c("survival", "binary"))
+  outcome.class <- match.arg(outcome.class, c("survival", "binary","continuous"))
+  if(outcome.class=="binary") {
+    covariate <- strata <- NULL
+    message("Covariate adjustment and stratification are not supported for binary outcome")
+  }
+  if(outcome.class=="continuous") {
+    covariate <- strata <- NULL
+    message("Stratification is not supported for continuous outcome")
+  }
+  
   if(outcome.class == "survival" | (outcome.class=="binary" & rsp.cat==F)) {
     tmp <- rowMeans(data[,outcome.var])
     if(length(is.na(tmp))>0){
@@ -864,6 +872,229 @@ PlotTabForestBiomarker <- function(data,
   }
 
   if(outcome.class=="continuous")  {
-    stop("continuous not ready yet")}
+    res <- NULL
+    if(nArms==2){
+      if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+                                                                        subgroup.var=jj, treatment.var=data.bep[,trt],
+                                                                        placebo.code=placebo.code, active.code=active.code, 
+                                                                        outcome.class="continuous", alpha=alpha,
+                                                                        covariate.var=Covariate.bep,
+                                                                        strat.factor.var=Strat.fac.bep)))
+      
+      if(show.itt) {res <- rbind(
+        StatSummary(outcome.var=data[,outcome.var],
+                    subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
+                    placebo.code=placebo.code, active.code=active.code, outcome.class="continuous", alpha=alpha,
+                    covariate.var=Covariate,
+                    strat.factor.var=Strat.fac)
+        ,res)
+      rownames(res)[1] <- itt.name
+      }
+      
+      ac <- Arms[2]
+      # no stratification??
+      fit1 <- lm(data[,outcome.var]~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac))
+      inter.p <- coef(summary(fit1))[4,4]
+      if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
+      
+      if(across.and.within){
+        res.ori <- res
+        data.bep.soc <- data.bep[which(data.bep[[trt]]==placebo.code),]
+        bm.list.subonly <- bm.list[setdiff(names(bm.list),c(itt.name, bep.name))]
+        bm.list.soc <- data.frame(bm.list)[which(data.bep[[trt]]==placebo.code),]
+        bm.list.soc <- bm.list.soc[setdiff(names(bm.list.soc),c(itt.name, bep.name))]
+        if(is.null(covariate))Covariate.bep.soc <- NULL
+        else Covariate.bep.soc <- data.bep.soc[, covariate]
+        if(is.null(strata))Strat.fac.bep.soc <- NULL
+        else Strat.fac.bep.soc <- data.bep.soc[, strata]
+        res.soc <- t(sapply(bm.list.soc,function(jj)StatSummary(outcome.var=data.bep.soc[,outcome.var],
+                                                                subgroup.var=rep(T,length(data.bep.soc[[1]])), treatment.var=jj,
+                                                                placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
+                                                                covariate.var=Covariate.bep.soc,
+                                                                strat.factor.var=Strat.fac.bep.soc)))
+        rownames(res.soc) <- paste0(placebo.code,":", names(bm.list.subonly))
+        
+        data.bep.active <- data.bep[which(data.bep[[trt]]==active.code),]
+        bm.list.active <- data.frame(bm.list)[which(data.bep[[trt]]==active.code),]
+        bm.list.active <- bm.list.active[setdiff(names(bm.list.active),c(itt.name, bep.name))]
+        if(is.null(covariate))Covariate.bep.active <- NULL
+        else Covariate.bep.active <- data.bep.active[, covariate]
+        if(is.null(strata))Strat.fac.bep.active <- NULL
+        else Strat.fac.bep.active <- data.bep.active[, strata]
+        res.active <- t(sapply(bm.list.active,function(jj)StatSummary(outcome.var=data.bep.active[,outcome.var],
+                                                                      subgroup.var=rep(T,length(data.bep.active[[1]])), treatment.var=jj,
+                                                                      placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
+                                                                      covariate.var=Covariate.bep.active,
+                                                                      strat.factor.var=Strat.fac.bep.active)))       
+        rownames(res.active) <- paste0(active.code,":", names(bm.list.subonly))
+        
+        res <- rbind(res.ori, res.soc, res.active)
+      }  
+      
+      
+    }
+    
+    if(nArms==1){
+      placebo.code <- ""
+      active.code <- ""
+      res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+                                                      subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
+                                                      placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
+                                                      covariate.var=Covariate.bep,
+                                                      strat.factor.var=Strat.fac.bep)))
+      inter.p <- NULL
+    }
+    
+    if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
+    if(nArms==2 & across.and.within) code.v.ori <- rep(c(placebo.code, active.code),nrow(res.ori))
+    if(nArms==1 | across.and.within) {
+      if(nArms==1)nn <- names(bm.list)
+      if(across.and.within) nn <- names(bm.list.subonly)
+      vv <- c("less","greater")
+      code.l <- sapply(nn, function(i){
+        j1 <- grep("<",i)
+        j2 <- grep(">",i)
+        j <- c(j1, j2)
+        if(length(j1)==1)out <- c("Greater","Less")
+        if(length(j2)==1) out <- c("Less","Greater")
+        if(length(j)==0)out <- c("No","Yes")
+        out})
+      code.v <- as.vector(code.l)
+      if(across.and.within) code.v <- c(code.v.ori,code.v, code.v)
+    }
+    
+    tabletext <- rbind(c( "Subgroup","Group", "Mean", "delta", "CI", "raw P"),
+                       cbind(as.vector(sapply(rownames(res),function(z)c(z, ""))), 
+                             code.v,
+                             as.vector(t(round(res[,c(5, 6)], 2))),
+                             as.vector(t(cbind(rep("", nrow(res)), round(res[, 1], 2)))),
+                             as.vector(t(cbind(rep("", nrow(res)), paste(round(res[, 2], 2), round(res[, 3], 2), sep=" - ")))),
+                             as.vector(t(cbind(rep("", nrow(res)), round.signif(res[, 4], 2))))))
+    
+    if(!only.stat){
+      if (is.null(main)) {
+        main.text <- ifelse(nArms==1, "Within-arm Effect of Biomarker", "Across-arm Effect of Biomarker")
+        if(across.and.within) main.text <- "Across-arm and Within-arm Effect of Biomarker"
+        main.text <- paste0(main.prefix, " ",main.text, "\n", outcome.var[1],", ",var.name)
+      } else {
+        main.text <- main
+      }
+      
+      if (is.null(sub)) {
+        sub1.text <- NULL
+        if(length(covariate) > 0)sub1.text <- paste("Results adjusted by ", paste(covariate, collapse=" , "), sep="")
+        sub2.text <- NULL
+        if(length(strata) > 0)
+          sub2.text <-  paste("Results stratified by ", paste(strata, collapse=" , "), sep="")
+        if (is.null(sub1.text)  & is.null(sub2.text) ) {
+          sub.text <- "Unadjusted, unstratified analysis"
+        } else {
+          sub.text <- paste(sub1.text, sub2.text, sep=";")
+        }
+      } else {
+        sub.text <- sub
+      }
+      
+      PlotParam(pdf.name, pdf.param, par.param)
+      
+      if (is.null(clip)) {
+        xrange <- c(min(round(res[, 2], digits)), max(as.numeric(round(res[, 3], digits))))
+        mm <- max(abs(xrange))
+        clip <- c(-mm,mm)
+      }
+      if(is.null(xticks))xticks <- round(seq(clip[1],clip[2],length.out=5),digits)
+      
+      
+      wid <- max(nchar(sapply(rownames(res), function(z)strsplit(z, "\n")[[1]][1])))/6
+      
+      if(within.bin) ncut <- ncut+1
+      hl <- 0
+      if(show.itt) hl <- c(hl,max(hl)+2)
+      if(show.bep) hl <- c(hl, max(hl)+2)
+      # if(within.bin) hl <- c(hl, max(hl)+length(bm.list)*2)
+      if(!greater.by.less){
+        if(greater) hl <- c(hl, max(hl)+ncut*2)
+        if(less) hl <- c(hl, max(hl)+ncut*2)
+      }
+      if(greater.by.less) hl <- c(hl, max(hl)+ncut*4)
+      if(across.and.within & !greater.by.less) hl <- c(hl, max(hl)+ncut*2, max(hl)+ncut*4)
+      if(across.and.within & greater.by.less) hl <- c(hl, max(hl)+ncut*4, max(hl)+ncut*8)
+      
+      
+      note <- ""
+      if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
+      if(!is.null(inter.p)) note <- paste0("* Unadjusted Interaction P = ", paste(round.signif(inter.p, 2), collapse=" ; "))
+      if(tabforest){
+        if(is.null(xlab)) {
+          if(nArms==2)xlab <- c(paste(placebo.code, "better", sep=" "),
+                                paste(active.code, "better", sep=" "))
+          if(nArms==1)xlab <- c("","")
+          if(across.and.within) xlab <- c("","")
+        } 
+        PlotTabForest(label.text=tabletext[-c(1), ],
+                      mean=as.numeric(tabletext[-1, 4]),
+                      lower=as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][1])),
+                      upper=as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][2])),
+                      headings=c(tabletext[1, ], c("Forest plot")),
+                      cols=cols,
+                      xlog=FALSE,
+                      xticks=xticks,
+                      box.size=rep(2.5, nrow(tabletext)-1),
+                      main=main.text,
+                      sub=sub.text,
+                      hline=1:nrow(tabletext),
+                      vline=c(1),
+                      group.hline=hl,
+                      note=note,clip=clip,
+                      widths=c( wid,2, 1.5, 1,  2, 1, 5),
+                      sub.main=xlab,
+                      cex.headings=cex.headings,
+                      cex.note=cex.note,
+                      par.param=par.parm
+        )
+      }
+      if(!tabforest){
+        
+        hz <- vector("list",1)
+        for(i in 1:length(hl)){
+          if(hl[i] < nrow(tabletext)){
+            hz[[i]] <- gpar(lwd=2, col="#444444")
+            names(hz)[i] <- hl[i]+2
+          }
+        }
+        
+        tabletext2 <- tabletext
+        tabletext2[seq(1,nrow(tabletext2),2),5] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),5],")")
+        if(is.null(xlab)) {
+          if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [delta] ",active.code, "better -->\n",note)
+          if(nArms==1 | across.and.within)xlab <- "delta"
+        }
+        if(across.and.within) {
+          cols <- rep(cols, nrow(res))
+          cols[(length(bm.list)+1): length(cols)] <- "chocolate4"
+        }
+        forestplot(tabletext2,
+                   mean=c(NA,as.numeric(tabletext[-1,4 ])),
+                   lower=c(NA,as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][1]))),
+                   upper=c(NA,as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][2]))),
+                   xlab=xlab,
+                   hrzl_lines=hz,align="l",
+                   lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
+                   lwd.zero=3,
+                   xlog=FALSE, clip=clip, xticks=xticks,
+                   title=paste(main.text,"\n",sub.text),
+                   #graphwidth=unit(100, 'mm'),
+                   colgap=unit(cex.note*4,"mm"),
+                   line.margin =unit(cex.note*2,"mm"),
+                   txt_gp=fpTxtGp(label=gpar(cex=cex.note),
+                                  ticks=gpar(cex=cex.note),
+                                  xlab=gpar(cex = cex.note))
+        )
+        
+      }
+      
+      PlotParam()
+    }
+    out <- tabletext}
  out
   }

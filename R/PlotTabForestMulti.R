@@ -260,7 +260,15 @@ PlotTabForestMulti <- function(data,
     mm <- max(abs(xrange))
     clip <- c(-mm,mm)
   }
-  
+  if (is.null(clip) & outcome.class=="continuous") {
+    r1 <- as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][1]))
+    r2 <- as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][2]))
+    good1 <- !is.na(r1) & is.finite(r1) & r1!= 0
+    good2 <- !is.na(r2) & is.finite(r2)
+    xrange <- c(min(round(r1[good1], 2)), max(as.numeric(round(r2[good2], 2))))
+    mm <- max(abs(xrange))
+    clip <- c(-mm,mm)
+  } 
 
   wid <- max(nchar(sapply(tabletext[,1], function(z)strsplit(z, "\n")[[1]][1])),na.rm=T)/6
 
@@ -276,10 +284,18 @@ PlotTabForestMulti <- function(data,
     
     xlog <- FALSE
     if(outcome.class=="binary") xlog <- TRUE
+    num1 <- 5
+    num2 <- 6
+    wid2 <- c( wid,2, 1.5, 1, 1, 2, 1, 5)
+    if(outcome.class=="continuous"){
+      num1 <- 4
+      num2 <- 5
+      wid2 <- c( wid,2, 1.5,  1, 2, 1, 5)
+    }
     PlotTabForest(label.text=tabletext[-c(1), ],
-                mean=as.numeric(tabletext[-1, 5]),
-                lower=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1])),
-                upper=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2])),
+                mean=as.numeric(tabletext[-1, num1]),
+                lower=as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1])),
+                upper=as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][2])),
                 headings=c(tabletext[1, ], c("Forest plot")),
                 cols=cols,
                 xlog=xlog,
@@ -310,7 +326,7 @@ PlotTabForestMulti <- function(data,
       }
 
       tabletext2 <- tabletext
-      tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
+      tabletext2[seq(1,nrow(tabletext2),2),num2] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),num2],")")
     
     if(is.null(xlab)) {
         if(nArms==2)xlab <- paste("<-- ", active.code, "better [",res.list[[1]][[1]][1,5],"] ",placebo.code, "better -->\n",note)
@@ -321,10 +337,16 @@ PlotTabForestMulti <- function(data,
           if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [",res.list[[1]][[1]][1,5],"] ",active.code, "better -->\n",note)
           xlog <- TRUE
       }
+      num1 <- 5
+      num2 <- 6
+      if(outcome.class=="continuous"){
+        num1 <- 4
+        num2 <- 5
+      }
       forestplot(tabletext2,
-                 mean=c(NA,as.numeric(tabletext[-1,5])),
-                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
-                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
+                 mean=c(NA,as.numeric(tabletext[-1,num1])),
+                 lower=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1]))),
+                 upper=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][2]))),
                  xlab=xlab,
                  hrzl_lines=hz,align="l",
                  lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
