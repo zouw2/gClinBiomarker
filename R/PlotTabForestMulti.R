@@ -316,7 +316,12 @@ PlotTabForestMulti <- function(data,
   }
 
   if(!tabforest){
-
+    num1 <- 5
+    num2 <- 6
+    if(outcome.class=="continuous"){
+      num1 <- 4
+      num2 <- 5
+    }
       hz <- vector("list",1)
       for(i in 1:length(hl)){
         if(hl[i] < nrow(tabletext)){
@@ -337,12 +342,7 @@ PlotTabForestMulti <- function(data,
           if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [",res.list[[1]][[1]][1,5],"] ",active.code, "better -->\n",note)
           xlog <- TRUE
       }
-      num1 <- 5
-      num2 <- 6
-      if(outcome.class=="continuous"){
-        num1 <- 4
-        num2 <- 5
-      }
+
       forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,num1])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1]))),
