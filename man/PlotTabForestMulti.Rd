@@ -117,12 +117,13 @@ of these variables in different biomarker subgroups
 }
 \examples{
 data(input)
-PlotTabForestBiomarker(data=input,
+PlotTabForestMulti(data=input,
                       outcome.class=c("survival"),
                       outcome.var=c("PFS","PFS.event"),
                       trt="Arm",
                       var="KRAS.mutant",
-                      var.class="categorical")
+                      var.class="categorical",
+                      bep="BEP")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

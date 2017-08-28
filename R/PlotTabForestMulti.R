@@ -65,12 +65,13 @@
 #' @export
 #' @examples
 #' data(input)
-#' PlotTabForestBiomarker(data=input,
+#' PlotTabForestMulti(data=input,
 #'                       outcome.class=c("survival"),
 #'                       outcome.var=c("PFS","PFS.event"),
 #'                       trt="Arm",
 #'                       var="KRAS.mutant",
-#'                       var.class="categorical")
+#'                       var.class="categorical",
+#'                       bep="BEP")
 
 
 
