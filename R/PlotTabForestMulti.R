@@ -342,12 +342,12 @@ PlotTabForestMulti <- function(data,
       tabletext2[seq(1,nrow(tabletext2),2),num2] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),num2],")")
     
     if(is.null(xlab)) {
-        if(nArms==2)xlab <- paste("<-- ", active.code, "better [",res.list[[1]][[1]][1,5],"] ",placebo.code, "better -->\n",note)
-        if(nArms==1)xlab <- res.list[[1]][[1]][1,5]
+        if(nArms==2)xlab <- paste("<-- ", active.code, "better [",res.list[[1]][[1]][1,num1],"] ",placebo.code, "better -->\n",note)
+        if(nArms==1)xlab <- res.list[[1]][[1]][1,num1]
     }
       xlog <- FALSE
       if(outcome.class=="binary") {
-          if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [",res.list[[1]][[1]][1,5],"] ",active.code, "better -->\n",note)
+          if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [",res.list[[1]][[1]][1,num1],"] ",active.code, "better -->\n",note)
           xlog <- TRUE
       }
 

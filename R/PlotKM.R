@@ -63,7 +63,7 @@ PlotKM <- function(data, tte, cens,
       trt=NULL, var=NULL,
       var.class=NULL,
       var.name=NULL,
-      percentile.cutoff=0.5,
+      percentile.cutoff=0.5,quantile.type=2,cutoff.digits=2,equal.in.high = TRUE,
       numerical.cutoff=NULL,
       varlist=NULL, varlist.levels=NULL, varlist.labels=NULL,
 		  bep=NULL, bep.indicator=1,
@@ -93,9 +93,19 @@ PlotKM <- function(data, tte, cens,
 	if(!is.null(bep))data <- data[which(data[,bep]==bep.indicator),]
 
 	var.store <- var
+	
+	ll <- c(trt,var,varlist)
+	if(length(ll)>1){
+	  whichNA <- sapply(data[ll],function(i)which(is.na(i)))
+	  whichNA.v <- unique(unlist(whichNA))
+	  if(length(whichNA.v)>0){
+	    data <- data[-whichNA.v,]
+	    message("entries who have NA in trt, var, or varlist are removed")
+	  }
+	}
 
 	# in the cases when trt and var are specified - creat var.list
-
+  if(!is.null(trt)) varlist <- trt
 	if(!is.null(var)){
 	  possible.class <-c("categorical","numeric")
 	  if(is.null(var.class)||!all(var.class%in%possible.class)){
@@ -109,51 +119,53 @@ PlotKM <- function(data, tte, cens,
 	    if(!is.null(percentile.cutoff)){
 	      percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
 	      for(i in 2:length(percentile.cutoff)){
-	        qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
-	        qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
+	        qt1 <- round(quantile(data[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
+	        qt2 <- round(quantile(data[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
 	        if(equal.in.high){
-	          if(percentile.cutoff[i]!=100){
-	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")
+	          if(percentile.cutoff[i]!=1){
+	            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")
 	          }
-	          if(percentile.cutoff[i]==100){
-	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+	          if(percentile.cutoff[i]==1){
+	            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
 	          }
 	        }
 	        if(!equal.in.high){
 	          if(percentile.cutoff[i]!=0){
-	            data$bm.tmp[which(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+	            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
 	          }
 	          if(percentile.cutoff[i]==0){
-	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+	            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
 	          }
 	        }
 
 	      }}
 
 	    if(!is.null(numerical.cutoff)){
-	      numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),numerical.cutoff)))
+	      numerical.cutoff <- sort(unique(c(min(data[[var]]),max(data[[var]]),numerical.cutoff)))
 	      for(i in 2:length(numerical.cutoff)){
 	        qt1 <- numerical.cutoff[i-1]
 	        qt2 <- numerical.cutoff[i]
+	        if(i==2)qt1 <- qt1 - 10^(-cutoff.digits)
+	        if(i==length(numerical.cutoff)) qt2 <- qt2 + 10^(-cutoff.digits)
 	        if(equal.in.high){
-	          if(numerical.cutoff[i]!=max(data.bep[[var]]))
-	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2)]  <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")
-	          if(numerical.cutoff[i]==max(data.bep[[var]]))
-	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+	          if(numerical.cutoff[i]!=max(data[[var]]))
+	            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]  <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")
+	          if(numerical.cutoff[i]==max(data[[var]]))
+	            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
 	        }
 	        if(!equal.in.high){
-	          if(numerical.cutoff[i]!=min(data.bep[[var]]))
-	            data$bm.tmp[which(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
-	          if(numerical.cutoff[i]==min(data.bep[[var]]))
-	            data$bm.tmp[which(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+	          if(numerical.cutoff[i]!=min(data[[var]]))
+	            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+	          if(numerical.cutoff[i]==min(data[[var]]))
+	            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
 	        }
 	      }}
 	  var <- paste0(var,"_groups")
 	  data[,var] <- data$bm.tmp
     }
-      varlist <- c(trt,var)
-	}
-
+      varlist <- c(varlist,var)
+}
+  
 
 
 	if(!is.null(varlist.labels) & is.null(varlist.levels)) stop("varlist.levels should be provided if varlist.labels is specified!")
