@@ -10,13 +10,14 @@ PlotTabForestMulti(data, outcome.class = c("survival", "binary"), outcome.var,
   within.bin = FALSE, compare.bep.itt = TRUE, compare.subgroup = FALSE,
   show.itt = FALSE, show.bep = FALSE, subgroup = NULL, bep = NULL,
   bep.name = "BEP", itt.name = "All", bep.indicator = 1,
-  covariate = NULL, strata = NULL, quantile.type = 2,
-  placebo.code = NULL, active.code = NULL, var.code = NULL,
-  tabforest = FALSE, alpha = 0.05, main = NULL, sub = NULL,
-  clip = NULL, xlab = NULL, cex.headings = 1.1, cex.note = 1,
-  cols = "darkgreen", pdf.name = NULL, pdf.param = list(width = 6, height
-  = 4.5), par.param = list(cex = 1.2, cex.main = 1.5, cex.sub = 1, cex.axis =
-  1))
+  covariate = NULL, strata = NULL, rsp.cat = TRUE,
+  rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
+  "NE", NA), quantile.type = 2, placebo.code = NULL, active.code = NULL,
+  var.code = NULL, tabforest = FALSE, alpha = 0.05, main = NULL,
+  sub = NULL, clip = NULL, xlab = NULL, cex.headings = 1.1,
+  cex.note = 1, cols = "darkgreen", pdf.name = NULL,
+  pdf.param = list(width = 6, height = 4.5), par.param = list(cex = 1.2,
+  cex.main = 1.5, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -79,6 +80,19 @@ to define the biomarker evaluable population.}
 
 \item{strata}{name of the stratification variables. Default is set to NULL, meaning no stratification.}
 
+\item{rsp.cat}{whether the response outcome variable is coded as binary (1 as responder and 0 as non-responder),
+If rsp.cat is TRUE, responder categories
+and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
+should be included in rsp.response and rsp.nonresponse)
+. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1). 
+At the same time rsp.response and rsp.nonresponse will be ignored.}
+
+\item{rsp.response}{categories that should be considered as responder.}
+
+\item{rsp.nonresponse}{categories that should be considered as non responder.}
+
+\item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
+
 \item{placebo.code}{name of the control arm of the treatment variable}
 
 \item{active.code}{of the treatment/experimental arm of the treatment variable}
@@ -96,6 +110,8 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \item{sub}{sub title under the forest plot. Default is NULL.}
 
 \item{clip}{range of the x-axis of the forest plot. Default is NULL.}
+
+\item{xlab}{xlab for forest plot}
 
 \item{cex.headings}{amount of magnification of headings of the forest plot relative to cex. Default is 1.1.}
 
@@ -121,9 +137,14 @@ PlotTabForestMulti(data=input,
                       outcome.class=c("survival"),
                       outcome.var=c("PFS","PFS.event"),
                       trt="Arm",
+<<<<<<< Updated upstream
                       var="KRAS.mutant",
                       var.class="categorical",
                       bep="BEP")
+=======
+                      var=c("Sex","Age"),
+                      var.class="categorical",bep="BEP")
+>>>>>>> Stashed changes
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

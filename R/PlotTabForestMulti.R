@@ -62,6 +62,7 @@
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 #'
+#' @inheritParams PlotTabForestBiomarker
 #' @export
 #' @examples
 #' data(input)
@@ -69,14 +70,13 @@
 #'                       outcome.class=c("survival"),
 #'                       outcome.var=c("PFS","PFS.event"),
 #'                       trt="Arm",
-#'                       var="KRAS.mutant",
-#'                       var.class="categorical",
-#'                       bep="BEP")
+#'                       var=c("Sex","Age"),
+#'                       var.class="categorical",bep="BEP")
 
 
 
 PlotTabForestMulti <- function(data,
-                                  outcome.class=c("survival", "binary"),
+                                  outcome.class=c("survival", "binary","continuous"),
                                   outcome.var, #c(OS,OS.event)
                                   trt=NULL,
                                   var, #KRAS...
@@ -89,6 +89,10 @@ PlotTabForestMulti <- function(data,
                                   bep = NULL, bep.name = "BEP", itt.name="All",bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
+
+                                rsp.cat = TRUE,
+                                rsp.response = c("CR","PR"),
+                                rsp.nonresponse = c("SD", "PD","NON CR/PD","NE",NA),
                                   quantile.type=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
@@ -185,6 +189,9 @@ PlotTabForestMulti <- function(data,
                                        within.bin=within.bin,
                                        show.itt=FALSE, show.bep=FALSE,
                                        bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
+                                       rsp.cat = rsp.cat,
+                                       rsp.response = rsp.response,
+                                       rsp.nonresponse = rsp.nonresponse,
                                        covariate=covariate, #Sex
                                        strata=strata, #Age
                                        tabforest=tabforest,
