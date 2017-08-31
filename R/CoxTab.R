@@ -20,7 +20,8 @@
 #' @note The function generates a table that contains hazard ratio, CI, p value, and number of patients in each sub category.
 #' User may input column names (via var and strata), a formula (via form), or a fitted coxph object (via fit)
 #' If user chooses to input column names, a additive model will be formed if additive=TRUE. If additive=FALSE, separate cox PH models will be formed for each var.
-#' More coplex models may be specified using form (e.g. model with interactions)
+#' More coplex models may be specified using form (e.g. model with interactions).
+#' To calculate log rank test p value across different subgroups, see LogRankTab()
 #'
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
 #' @importFrom coin cmh_test pvalue

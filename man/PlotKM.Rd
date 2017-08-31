@@ -5,7 +5,8 @@
 \title{Generate KM curve(s) for full population or subgroups defined by single factor or multiple factors}
 \usage{
 PlotKM(data, tte, cens, trt = NULL, var = NULL, var.class = NULL,
-  var.name = NULL, percentile.cutoff = 0.5, numerical.cutoff = NULL,
+  var.name = NULL, percentile.cutoff = 0.5, quantile.type = 2,
+  cutoff.digits = 2, equal.in.high = TRUE, numerical.cutoff = NULL,
   varlist = NULL, varlist.levels = NULL, varlist.labels = NULL,
   bep = NULL, bep.indicator = 1, plot.nrisk = TRUE, nrisk.interval = 2,
   cex.nrisk = 0.8, plot.grid = TRUE, grids = seq(0, 1, 0.1),
@@ -43,6 +44,13 @@ If it is not specified, will try to use the class of the column.
 
 \item{percentile.cutoff}{percentile to dichotomize continuous biomarker measure. This could be a vector with multiple elements.
 Values should be between 0 and 1}
+
+\item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
+
+\item{cutoff.digits}{cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display}
+
+\item{equal.in.high}{whether include equal in high group. Default is TRUE. If it is TRUE, ">=" and "<" will be
+applied. Otherwise "<=" and ">" will be applied.}
 
 \item{numerical.cutoff}{raw value to dichotomize continuous biomarker measure. numerical.cutoff and percentile.cutoff
 cannot be both specified}

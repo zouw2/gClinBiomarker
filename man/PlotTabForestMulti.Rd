@@ -4,9 +4,9 @@
 \alias{PlotTabForestMulti}
 \title{Generate forest plot and summarization table for 2-arm or within-arm comparison for multiple variables}
 \usage{
-PlotTabForestMulti(data, outcome.class = c("survival", "binary"), outcome.var,
-  trt = NULL, var, var.class = NULL, var.name = NULL,
-  percentile.cutoff = 0.5, greater = TRUE, less = TRUE,
+PlotTabForestMulti(data, outcome.class = c("survival", "binary",
+  "continuous"), outcome.var, trt = NULL, var, var.class = NULL,
+  var.name = NULL, percentile.cutoff = 0.5, greater = TRUE, less = TRUE,
   within.bin = FALSE, compare.bep.itt = TRUE, compare.subgroup = FALSE,
   show.itt = FALSE, show.bep = FALSE, subgroup = NULL, bep = NULL,
   bep.name = "BEP", itt.name = "All", bep.indicator = 1,
@@ -137,14 +137,8 @@ PlotTabForestMulti(data=input,
                       outcome.class=c("survival"),
                       outcome.var=c("PFS","PFS.event"),
                       trt="Arm",
-<<<<<<< Updated upstream
-                      var="KRAS.mutant",
-                      var.class="categorical",
-                      bep="BEP")
-=======
                       var=c("Sex","Age"),
                       var.class="categorical",bep="BEP")
->>>>>>> Stashed changes
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
