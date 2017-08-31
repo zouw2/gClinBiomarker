@@ -62,9 +62,9 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", fillname=""){
 			  }
 		  
 		  ##logrank and HR to first level of factor
-		  pval <- c(NA)
-		    hr <- c(NA)
-		    hrci <- c(NA)
+		  pval <- c("")
+		    hr <- c("")
+		    hrci <- c("")
 		      if(nlev>1)
 			          for(i in 2:nlev){
 					        logrank <- survdiff(as.formula(paste("Surv(",tte,",",cens,") ~ factor(",group,")")),data=data[which(data[,group]==lev[1]|data[,group]==lev[i]),])
@@ -76,13 +76,13 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", fillname=""){
 				    }
 		      
 		      
-		      taball <- rbind(tab1,rep(NA,nlev),rep(NA,nlev), med, medci, quart,rg, pval, rep(NA,nlev), hr, hrci)
+		      taball <- rbind(tab1,rep("",nlev),rep("",nlev), med, medci, quart,rg, pval, rep("",nlev), hr, hrci)
 		       
-				    extracol <- c("Patients with event", "Patients without event", NA, paste("Time to event (",time.unit,")",sep=""), "     Median (KM)", "     95% CI Median",
-						                    "     25% and 75%-ile", "     Range (inc. cens.)", "     p-value (Log-Rank Test)", NA, "Hazard Ratio", " 95% CI")
+				    extracol <- c("Patients with event", "Patients without event", "", paste("Time to event (",time.unit,")",sep=""), "     Median (KM)", "     95% CI Median",
+						                    "     25% and 75%-ile", "     Range (inc. cens.)", "     p-value (Log-Rank Test)", "", "Hazard Ratio", " 95% CI")
 		        
 		        taball <- cbind(extracol, taball)
-			  taball <- rbind(c(fillname,lev),c(NA, paste("N=", csum, sep="")), taball)
+			  taball <- rbind(c(fillname,lev),c("", paste("N=", csum, sep="")), taball)
 			  rownames(taball) <- colnames(taball) <- NULL
 			    taball
   }
