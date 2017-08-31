@@ -76,10 +76,14 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", fillname=""){
 				    }
 		      
 		      
-		      taball <- rbind(tab1,rep(" ",nlev),rep(" ",nlev), med, medci, quart,rg, pval, rep(" ",nlev), hr, hrci)
+		      taball <- rbind(tab1,rep("",nlev), med, medci, quart,rg, pval, hr, hrci)
 		       
-				    extracol <- c("Patients with event", "Patients without event", " ", paste("Time to event (",time.unit,")",sep=""), "     Median (KM)", "     95% CI Median",
-						                    "     25% and 75%-ile", "     Range (inc. cens.)", "     p-value (Log-Rank Test)", " ", "Hazard Ratio", " 95% CI")
+				    extracol <- c("Patients with event", "Patients without event",  
+				    paste("Time to event (",time.unit,")",sep=""), 
+				    "     Median (KM)", "     95% CI Median",
+					"     25% and 75%-ile", "     Range (inc. cens.)", 
+					"     p-value (Log-Rank Test)", 
+					"Hazard Ratio", " 95% CI")
 		        
 		        taball <- cbind(extracol, taball)
 			  taball <- rbind(c(fillname,lev),c("", paste("N=", csum, sep="")), taball)
