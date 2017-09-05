@@ -146,7 +146,7 @@ PlotTabForestBiomarker <- function(data,
 
   if(outcome.class == "survival" | (outcome.class=="binary" & rsp.cat==F)) {
     tmp <- rowMeans(data[,outcome.var])
-    if(any(is.na(tmp))){
+    if (anyNA(tmp)) {
      message("Some patients have missing outcome. Exclude these patients from ITT.")
      data <- data[which(!is.na(tmp)),]
     }
