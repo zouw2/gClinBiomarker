@@ -56,8 +56,8 @@ the program will summarize the response outcome within each treatment arm.}
 in full population (e.g. ITT) vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 parameters bep, bep.name, itt.name, bep.indicator will be ignored}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{compare.var}{whether want to generate multiple groups of bars to compare the summary statistics
 in subgroups defined by var (e.g. categorical demographics or biomarker variable)

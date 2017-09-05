@@ -36,7 +36,7 @@ If \code{'prop.test.use.continuity.correction' = T} (default), the 'correct' par
 \value{
 A named vector of following entries:
 if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active,  N.Placebo, N.Active, nRsp.Placebo, nRsp.Active;
-if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, P;
+if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, Wald P;
 if continuous - Effect.Size (Mean Difference), Lower, Upper, P.
 }
 \description{

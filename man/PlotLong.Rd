@@ -5,39 +5,39 @@
 \title{Wrapper for fitting model and adjusting to predicted values and
 passing newly fitted model to ggplot geom_stat_ribbon}
 \usage{
-PlotLong(data, mapping, formula = NULL, model = lm, model.args = NULL,
-  model.per = NULL, facet.fun = NULL, plot.style = "ribbons", ...)
+PlotLong(data, mapping = NULL, model = lm, model.per = NULL,
+  model.formula = NULL, facet.fun = NULL, plot.style = "ribbons", ...)
 }
 \arguments{
 \item{data}{data to use for model fitting and plotting}
 
 \item{mapping}{ggplot aesthetic mapping to use for plotting}
 
-\item{formula}{formula to use for adjusting values}
-
 \item{model}{model function to use for fitting; defaults to lm}
-
-\item{model.args}{additional model parameters to pass to model}
 
 \item{facet.fun}{function to use for ggplot faceting in ggplot2::facet_grid}
 
-\item{...}{additional arguments passed to underlying ggplot components
-by prefixing value with ggplot call name. ("ribbons", "line", "text", "facet", "xlab",
-"ylab", "labs" or "theme" - e.g. `ribbons.color = 'red'`)}
+\item{...}{additional arguments are handled in one of two ways. First,
+arguments which can be used as any of ggplot's default aesthetics will be
+pulled from ... args. Second, remaining arguments are passed to underlying
+ggplot components by prefixing value with ggplot call name. ("ribbons",
+"line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
+`ribbons.color = 'red'`)}
+
+\item{formula}{formula to use for adjusting values}
+
+\item{model.args}{additional model parameters to pass to model}
 }
 \value{
-a ggplot object with y values adjusted based on model function if provided
+a ggplot object
 }
 \description{
 Wrapper for fitting model and adjusting to predicted values and
 passing newly fitted model to ggplot geom_stat_ribbon
 }
 \examples{
-library(tidyverse) # for pipe and tibble
-library(broom)     # for augment
-
 # default representation
-PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature))
+PlotLong(as.data.frame(nasa), aes(x=month, y=temperature))
 
 # a more appropriate representation for large n
 PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
@@ -56,8 +56,11 @@ PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South"))
          labs.title = "Temperature by Hemisphere",
          labs.caption = "*idependent models fit per hemisphere")
 
-# including a table of value counts and subsetting value data to specific months
-PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemisphere=ifelse(lat>0, "North", "South")),
+# including a table of value counts and subsetting value data to specific
+# months
+PlotLong(nasa \%>\%
+           as_tibble \%>\%
+           mutate(hemisphere=ifelse(lat > 0, "North", "South")),
          aes(x=month, y=temperature, group = hemisphere,
              color = hemisphere, fill = hemisphere),
          formula = temperature ~ ozone,

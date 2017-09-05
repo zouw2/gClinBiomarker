@@ -4,19 +4,19 @@
 \alias{augment_predict}
 \title{Adds prediction outputs to data based on model and formula}
 \usage{
-augment_predict(.data, model, formula, model.args = NULL, model.per = NULL)
+augment_predict(.data, model, model.per = NULL, ...)
 }
 \arguments{
 \item{.data}{data to use for model fitting}
 
 \item{model}{model function to use (e.g `lm`)}
 
-\item{model.args}{list of additional arguments to use in model fitting}
-
-\item{model.per}{a formula representing all terms to group data by to 
+\item{model.per}{a formula representing all terms to group data by to
 fit individual models (e.g. `~ am + vs`)}
 
 \item{fomula}{formula to use for model fitting (e.g `mpg ~ gear + wt`)}
+
+\item{model.args}{list of additional arguments to use in model fitting}
 }
 \value{
 a data frame with new columns based on model fit
