@@ -1,12 +1,20 @@
 Package: gClinBiomarker
-Title: The packages is designed for ...
+Title: gClinBiomarker: an R package for clinical biomarker analyses 
 Version: 0.1
-Date: 2016-10-01
-Author: Kwame Okrah <okrah.kwame@gene.com>,
-    Ning Leng <leng.ning@gene.com>,
-    Alexey Pronin <pronin.alexey@gene.com>
-Maintainer: Alexey Pronin <pronin.alexey@gene.com>
-Description: Biomarker things for ..
+Date: 2017-9-5
+Author: Ning Leng <leng.ning@gene.com>,
+    Alexey Pronin <pronin.alexey@gene.com>,
+    Doug Kelkhoff <kelkhoff.douglas@gene.com>,
+    Christina Rabe <rabe.christina@gene.com>,
+    Kwame Okrah <okrah.kwame@gene.com>
+Maintainer: Ning Leng <leng.ning@gene.com>, Alexey Pronin <pronin.alexey@gene.com>
+Description: gClinBiomarker is an R package that allows users to easily perform biomarker analyses and
+generate high-quality figures and tables. It contains a set of functions covering essential biomarker
+analyses conducted in both oncology and non-oncology trials. It also provides an R markdown template
+that allows users to plug in their data set and generate a biomarker analysis report with "one-click".
+The report contains demographics checking, biomarker property characterization, cutoff exploration
+(for continuous biomarkers), subgroup analysis, and longitudinal analysis. The package takes either VADs
+(AdAM) or a customized csv/data frame. 
 Depends:
     R(>= 3.1.2),
     survival,
