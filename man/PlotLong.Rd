@@ -36,21 +36,24 @@ Wrapper for fitting model and adjusting to predicted values and
 passing newly fitted model to ggplot geom_stat_ribbon
 }
 \examples{
+# load data
+nasa.data <- as.data.frame(dplyr::nasa)
+
 # default representation
-PlotLong(as.data.frame(nasa), aes(x=month, y=temperature))
+PlotLong(nasa.data, x = month, y = temperature)
 
 # a more appropriate representation for large n
-PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
-         fun.data = 'quartiles')
+PlotLong(nasa.data, x = month, y = temperature, fun.data = 'quartiles')
 
 # include linear adjustment accounting for amount of ozone
-PlotLong(nasa \%>\% as_tibble, aes(x=month, y=temperature),
+PlotLong(nasa.data, x = month, y = temperature,
          formula = temperature ~ ozone, fun.data = 'deciles',
          show.counts = T)
 
 # adjusting by independent models for the northern and southern hemispheres
-PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South")),
-         aes(x=month, y=temperature), formula = temperature ~ ozone,
+library(dplyr) # needed for \%>\%
+PlotLong(nasa.data \%>\% mutate(hemi=ifelse(lat>0, "North", "South")),
+         x = month, y = temperature, formula = temperature ~ ozone,
          model.per = ~ hemi, facet.fun = ~ hemi, fun.data = 'deciles',
          xlab = "Month", ylab = "Temperature Adjusted for Ozone",
          labs.title = "Temperature by Hemisphere",
@@ -58,11 +61,10 @@ PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemi=ifelse(lat>0, "North", "South"))
 
 # including a table of value counts and subsetting value data to specific
 # months
-PlotLong(nasa \%>\%
-           as_tibble \%>\%
-           mutate(hemisphere=ifelse(lat > 0, "North", "South")),
-         aes(x=month, y=temperature, group = hemisphere,
-             color = hemisphere, fill = hemisphere),
+library(dplyr) # needed for \%>\%
+PlotLong(nasa.data \%>\% mutate(hemisphere=ifelse(lat > 0, "North", "South")),
+         x = month, y = temperature, group = hemisphere,
+         color = hemisphere, fill = hemisphere,
          formula = temperature ~ ozone,
          model.per = ~ hemisphere, fun.data = 'deciles',
          show.counts = 'table',
