@@ -17,6 +17,9 @@ PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
   par.param = list(mar = c(6, 8, 6, 7)))
 }
 \arguments{
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.}
+
 \item{outcome.var}{column name of the response variable (e.g. best overall response).
 entries with missing rsp value will be ignored in analysis.}
 
@@ -44,6 +47,9 @@ the program will summarize the response outcome within each treatment arm.}
 \item{compare.bep.itt}{whether want to generate two groups of bars to compare the summary statistics
 in ITT vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 parameters bep, bep.name, itt.name, bep.indicator will be ignored}
+
+\item{itt.name}{preferred display name of ITT
+If it is NULL, "ITT" will be used.}
 
 \item{compare.var}{whether want to generate multiple groups of bars to compare the summary statistics
 in subgroups defined by var (e.g. categorical demographics or biomarker variable)
@@ -85,4 +91,3 @@ rsp.levels=c("NE","PD","NON CR/PD","SD","PR","CR"),trt="Arm", compare.var=TRUE,v
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 }
-

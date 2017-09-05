@@ -12,4 +12,3 @@ Helper function for ggpack to filter arguments based on a prefix
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-

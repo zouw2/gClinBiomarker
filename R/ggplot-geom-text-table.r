@@ -15,19 +15,23 @@ geom_text_table <- function(mapping = NULL, data = NULL, stat = "identity",
                   na.rm = na.rm, location = location, ...))
 }
 
+#' @importFrom ggplot2 ggproto aes draw_key_text Geom
+#' @importFrom grid textGrob compute_just gpar
 #' @export
-GeomTextTable <- ggproto("GeomTextTable", Geom,
+GeomTextTable <- ggplot2:::ggproto("GeomTextTable", ggplot2:::Geom,
   required_aes = c("x", "y", "label"),
 
   setup_data = function(data, params) {
     if (params$location %||% 'top' == 'top')
-      data$y <- (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2 + min(data$ymin %||% data$y)
+      data$y <- (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2 +
+                min(data$ymin %||% data$y)
     else if (params$location == 'bottom')
-      data$y <- max(data$ymax %||% data$y) - (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2
+      data$y <- max(data$ymax %||% data$y) -
+                (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2
     data
   },
 
-  default_aes = aes(
+  default_aes = ggplot2::aes(
     colour = "black", size = 3.88, angle = 0, hjust = 0.5,
     vjust = 0.5, alpha = NA, family = "", fontface = 1, lineheight = 1.8
   ),
@@ -62,5 +66,5 @@ GeomTextTable <- ggproto("GeomTextTable", Geom,
     )
   },
 
-  draw_key = draw_key_text
+  draw_key = ggplot2:::draw_key_text
 )

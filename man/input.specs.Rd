@@ -24,4 +24,3 @@ Data specs define the type of a variable for each column.
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}
 }
-

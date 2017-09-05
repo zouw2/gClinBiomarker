@@ -73,4 +73,3 @@ PlotLong(nasa \%>\% as_tibble \%>\% mutate(hemisphere=ifelse(lat>0, "North", "So
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-

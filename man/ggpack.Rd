@@ -43,4 +43,3 @@ package for wrapping ggplot functions
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-

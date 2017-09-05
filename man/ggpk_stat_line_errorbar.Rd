@@ -50,4 +50,3 @@ nasa \%>\% as_tibble \%>\%
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-
