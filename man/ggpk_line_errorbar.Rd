@@ -6,13 +6,13 @@
 as an argument}
 \usage{
 ggpk_line_errorbar(mapping = NULL, data = NULL, show.counts = FALSE,
-  fun.data = "mean_se", fun.args = list(), position = position_dodge(width
-  = rel(0.5)), ...)
+  fun.data = "mean_se", fun.args = list(),
+  position = ggplot2::position_dodge(width = ggplot2::rel(0.5)), ...)
 }
 \arguments{
 \item{mapping}{a ggplot aesthetic mapping}
 
-\item{data}{data to pass to ggplot2::stat_summary functions}
+\item{data}{data to pass to ggplot2::ggplot2::stat_summary functions}
 
 \item{show.counts}{True, False, "label" or "table" to display either as
 labels at each datapoint or as a table at the top of the plot}

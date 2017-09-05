@@ -84,7 +84,7 @@ to define the biomarker evaluable population.}
 If rsp.cat is TRUE, responder categories
 and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
 should be included in rsp.response and rsp.nonresponse)
-. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1). 
+. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1).
 At the same time rsp.response and rsp.nonresponse will be ignored.}
 
 \item{rsp.response}{categories that should be considered as responder.}

@@ -170,15 +170,16 @@ ggpack_remove_aesthetics <- function(mapping, ...) {
 ggpack_aes_from_dots <- function(...) {
   aes_args <- structure(substitute(...()), class = 'uneval')
   aes_args <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]
-  do.call(aes, aes_args)
+  do.call(ggplot2::aes, aes_args)
 }
 
 #' @export
 ggpack_split_aes_from_dots <- function(...) {
-  aes_args <- structure(substitute(...()), class = 'uneval')
-  aes_args <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]
-  list(aes = do.call(aes, aes_args),
-       not_aes = aes_args[! names(aes_args) %in% ggplot2:::.all_aesthetics])
+  aes_args     <- structure(substitute(...()), class = 'uneval')
+  not_aes_args <- aes_args[!names(aes_args) %in% ggplot2:::.all_aesthetics]
+  aes_args     <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]
+  list(aes = do.call(ggplot2::aes, aes_args),
+       not_aes = not_aes_args)
 }
 
 

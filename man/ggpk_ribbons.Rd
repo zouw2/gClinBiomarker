@@ -11,7 +11,7 @@ ggpk_ribbons(mapping = NULL, data = NULL, show.counts = FALSE,
 \arguments{
 \item{mapping}{a ggplot aesthetic mapping}
 
-\item{data}{data to pass to ggplot2::stat_summary functions}
+\item{data}{data to pass to ggplot2::ggplot2::stat_summary functions}
 
 \item{show.counts}{True, False, "label" or "table" to display either as
 labels at each datapoint or as a table at the top of the plot}

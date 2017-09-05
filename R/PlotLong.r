@@ -57,6 +57,7 @@
 #'
 #' @export
 #'
+#' @import ggplot2 dplyr
 PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
                      model.formula = NULL, facet.fun = NULL,
                      plot.style = 'ribbons', ...) {
@@ -83,15 +84,15 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
   mapping <- ggpack_flatten_aesthetics_to_group(mapping, 'linetype')
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
-  data %>% ggplot() + mapping +
+  data %>% ggplot2:::ggplot() + mapping +
 
     # plot with specified styling
     (if      (plot.style == 'ribbons')   do.call(ggpk_ribbons, .dots)
      else if (plot.style == 'errorbars') do.call(ggpk_line_errorbar, .dots)) +
 
     # handle optional facetting
-    (if (is.null(facet.fun)) facet_null()
-     else ggpack(facet_grid, 'facet', .dots, facets = facet.fun)) +
+    (if (is.null(facet.fun)) ggplot2::facet_null()
+     else ggpack(ggplot2::facet_grid, 'facet', .dots, facets = facet.fun)) +
 
     # adjust label to accommodate model fitting if a model was used
     (if (is.null(model.formula)) NULL

@@ -2,3 +2,6 @@
   if (!is.null(a)) a
   else b
 }
+
+`%>%` <- dplyr::`%>%`
+

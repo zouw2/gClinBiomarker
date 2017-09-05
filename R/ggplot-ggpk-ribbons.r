@@ -9,7 +9,7 @@
 #' \code{ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)}
 #'
 #' @param mapping a ggplot aesthetic mapping
-#' @param data data to pass to ggplot2::stat_summary functions
+#' @param data data to pass to ggplot2::ggplot2::stat_summary functions
 #' @param show.counts True, False, "label" or "table" to display either as
 #' labels at each datapoint or as a table at the top of the plot
 #'
@@ -44,31 +44,30 @@ ggpk_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   ## pack ## ribbon
   # reduce through list of ribbon geoms and collect sum
   Reduce(function(l, r) { l +
-    ggpack(stat_summary, 'ribbon', .dots,
+    ggpack(ggplot2::stat_summary, 'ribbon', .dots,
       geom = 'ribbon',
       fun.data = r,
       color = NA,
-      alpha = 0.85 / (length(fun.data) + 2) *
-              ggplot2:::`%||%`(.dots$ribbon.alpha, 1) )
+      alpha = 0.85 / (length(fun.data) + 2) * (.dots$ribbon.alpha %||% 1))
   }, fun.data, init = NULL) +
 
   ## pack ## point
   # plot point along stat y
-  ggpack(stat_summary, 'point', .dots,
+  ggpack(ggplot2::stat_summary, 'point', .dots,
          geom = 'point',
          fun.data = fun.data[[1]],
-         size = rel(3)) +
+         size = ggplot2::rel(3)) +
 
   ## pack ## line
   # plot line along stat y
-  ggpack(stat_summary, 'line', .dots,
+  ggpack(ggplot2::stat_summary, 'line', .dots,
       geom = 'line',
       fun.data = fun.data[[1]]) +
 
   ## pack ## label
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
-    ggpack(stat_summary, 'label', .dots,
+    ggpack(ggplot2::stat_summary, 'label', .dots,
       fun.data = last(fun.data),
       direction = "y",
       nudge_y = 0.1,
@@ -77,7 +76,7 @@ ggpk_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
       fill = 'white',
       alpha = 0.85)
   } else if (show.counts == 'table') {
-    ggpack(stat_summary, 'label', .dots,
+    ggpack(ggplot2::stat_summary, 'label', .dots,
       fun.data = last(fun.data),
       geom = 'text_table',
       show.legend = FALSE)

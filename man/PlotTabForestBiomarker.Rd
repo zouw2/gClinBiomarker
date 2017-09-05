@@ -54,7 +54,7 @@ In single arm study HR of biomarker high vs low will be calculated.}
 \item{less}{whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
 greater and less can both be TRUE}
 
-\item{greater.by.less}{whether show "greater" bin and "less" bin in consecutive rows. Default is FALSE. If it is TRUE, 
+\item{greater.by.less}{whether show "greater" bin and "less" bin in consecutive rows. Default is FALSE. If it is TRUE,
 parameters greater and less will be both set as TRUE}
 
 \item{across.and.within}{whether show across- and within- arm results in the same figure. Default is FALSE. This parameter
@@ -101,7 +101,7 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 If rsp.cat is TRUE, responder categories
 and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
 should be included in rsp.response and rsp.nonresponse)
-. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1). 
+. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1).
 At the same time rsp.response and rsp.nonresponse will be ignored.}
 
 \item{rsp.response}{categories that should be considered as responder.}

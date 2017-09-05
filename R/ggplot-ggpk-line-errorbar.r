@@ -9,7 +9,7 @@
 #' \code{ggpk_stat_line_errorbar(ribbons.alpha = 0.8, line.alpha = 0.6)}
 #'
 #' @param mapping a ggplot aesthetic mapping
-#' @param data data to pass to ggplot2::stat_summary functions
+#' @param data data to pass to ggplot2::ggplot2::stat_summary functions
 #' @param show.counts True, False, "label" or "table" to display either as
 #' labels at each datapoint or as a table at the top of the plot
 #'
@@ -35,8 +35,9 @@
 #' @export
 #'
 ggpk_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
-                               fun.data = 'mean_se', fun.args = list(),
-                               position = position_dodge(width = rel(0.5)), ...) {
+    fun.data = 'mean_se', fun.args = list(),
+    position = ggplot2::position_dodge(width = ggplot2::rel(0.5)),
+    ...) {
 
   defaults <- list(
     errorbar.alpha = 0.5,
@@ -51,29 +52,30 @@ ggpk_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
   ## pack ## ribbons
   # reduce through list of ribbon geoms and collect sum
   Reduce(`+`, mapply(function(f, i) {
-    ggpack(stat_summary, 'errorbar', .dots,
+    ggpack(ggplot2::stat_summary, 'errorbar', .dots,
            geom = 'errorbar',
            width = 0,
            fun.data = f,
-           size = .dots$errorbar.size %||% rel(2) * (1 - (i - 1) / length(fun.data)))
+           size = .dots$errorbar.size %||% ggplot2::rel(2) * (1 - (i - 1) /
+                  length(fun.data)))
   }, f = fun.data, i = 1:length(fun.data)) ) +
 
   ## pack ## point
   # plot point along stat y
-  ggpack(stat_summary, 'point', .dots,
+  ggpack(ggplot2::stat_summary, 'point', .dots,
          geom = 'point',
          fun.data = fun.data[[1]]) +
 
   ## pack ## line
   # plot line along stat y
-  ggpack(stat_summary, 'line', .dots,
+  ggpack(ggplot2::stat_summary, 'line', .dots,
       geom = 'line',
       fun.data = fun.data[[1]]) +
 
   ## pack ## label
   # add labels of group counts
   if (isTRUE(show.counts) || show.counts == 'label') {
-    ggpack(stat_summary, 'label', .dots,
+    ggpack(ggplot2::stat_summary, 'label', .dots,
       fun.data = last(fun.data),
       direction = "y",
       nudge_y = 0.1,
@@ -82,7 +84,7 @@ ggpk_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
       fill = 'white',
       alpha = 0.85)
   } else if (show.counts == 'table') {
-    ggpack(stat_summary, 'label', .dots,
+    ggpack(ggplot2::stat_summary, 'label', .dots,
       fun.data = last(fun.data),
       geom = 'text_table',
       show.legend = FALSE)
