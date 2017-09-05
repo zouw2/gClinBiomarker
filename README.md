@@ -6,7 +6,7 @@ Documentations could be found at:
 https://github.roche.com/lengn/gClinbiomarker_documents
 
 The repository includes
-- A user vignette demonstrates how gClinBiomarker package may help with your biomarker analysis
+- A user vignette demonstrates how gClinBiomarker package may help in your biomarker analysis
 - An exapmle use case document which contains more detailed use cases
 - A set of Rmarkdown templates that allow you to generate biomarker analysis report by "one click"
 
