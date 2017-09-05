@@ -7,9 +7,6 @@
 LogRankTab(data, tte, cens, var, time.unit = "month", fillname = "")
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
-biomarker variables, treatment indicator, etc.). One patient per row.}
-
 \item{var}{a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
 It will be ignored if fit or form is not null.}
@@ -33,3 +30,4 @@ LogRankTab(data=input,tte="PFS", cens="PFS.event",var="Arm")
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
+

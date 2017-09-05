@@ -146,9 +146,10 @@ PlotSTEPP(data = input,
          active.code = "TRT")
 
 }
-\seealso{
-\link{StatSummary}
-}
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 }
+\seealso{
+\link{StatSummary}
+}
+

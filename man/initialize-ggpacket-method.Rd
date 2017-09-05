@@ -10,3 +10,4 @@
 \description{
 Initialize new object by adding ggproto to list with name label
 }
+

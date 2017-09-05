@@ -16,3 +16,4 @@ filtering for aesthetics in ggplot2:::.all_aesthetics()
 \description{
 Helper function to cull aesthetic mapping from parameter inputs in ellipses
 }
+

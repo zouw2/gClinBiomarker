@@ -18,3 +18,4 @@ decorating plot functions.
 \description{
 Wrapper for common decorators to package
 }
+
