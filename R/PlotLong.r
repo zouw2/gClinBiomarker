@@ -9,9 +9,12 @@
 #' @param model model function to use for fitting; defaults to lm
 #' @param model.args additional model parameters to pass to model
 #' @param facet.fun function to use for ggplot faceting in ggplot2::facet_grid
-#' @param ... additional arguments passed to underlying ggplot components
-#' by prefixing value with ggplot call name. ("ribbons", "line", "text",
-#' "facet", "xlab", "ylab", "labs" or "theme" - e.g. `ribbons.color = 'red'`)
+#' @param ... additional arguments are handled in one of two ways. First,
+#' arguments which can be used as any of ggplot's default aesthetics will be
+#' pulled from ... args. Second, remaining arguments are passed to underlying
+#' ggplot components by prefixing value with ggplot call name. ("ribbons",
+#' "line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
+#' `ribbons.color = 'red'`)
 #'
 #' @return a ggplot object
 #'
