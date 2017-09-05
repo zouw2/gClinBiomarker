@@ -2,7 +2,7 @@
 #'
 #' This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm
 #' or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a group of
-#' variables. This function may be used to compare effect of these variables in ITT vs biomarker evaluable population. Or compare effect
+#' variables. This function may be used to compare effect of these variables in full population vs biomarker evaluable population. Or compare effect
 #' of these variables in different biomarker subgroups
 #'
 #' @author  Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
@@ -36,8 +36,8 @@
 #' @param bep name of the column which indicates biomarker evaluable population.
 #' @param bep.name preferred display name of the biomarker evaluable population.
 #' If it is NULL, bep will be used.
-#' @param itt.name preferred display name of ITT
-#' If it is NULL, "ITT" will be used.
+#' @param itt.name preferred display name of full population
+#' If it is NULL, "All" will be used.
 #' @param bep.indicator In the subpopulation column, which value is used
 #' to define the biomarker evaluable population.
 #' @param show.itt when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in itt
@@ -62,20 +62,21 @@
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 #'
+#' @inheritParams PlotTabForestBiomarker
 #' @export
 #' @examples
 #' data(input)
-#' PlotTabForestBiomarker(data=input,
+#' PlotTabForestMulti(data=input,
 #'                       outcome.class=c("survival"),
 #'                       outcome.var=c("PFS","PFS.event"),
 #'                       trt="Arm",
-#'                       var="KRAS.mutant",
-#'                       var.class="categorical")
+#'                       var=c("Sex","Age"),
+#'                       var.class="categorical",bep="BEP")
 
 
 
 PlotTabForestMulti <- function(data,
-                                  outcome.class=c("survival", "binary"),
+                                  outcome.class=c("survival", "binary","continuous"),
                                   outcome.var, #c(OS,OS.event)
                                   trt=NULL,
                                   var, #KRAS...
@@ -85,9 +86,13 @@ PlotTabForestMulti <- function(data,
                                   within.bin=FALSE,compare.bep.itt=TRUE, compare.subgroup=FALSE,
                                   show.itt=FALSE, show.bep=FALSE,
                                   subgroup=NULL,
-                                  bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
+                                  bep = NULL, bep.name = "BEP", itt.name="All",bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
+
+                                rsp.cat = TRUE,
+                                rsp.response = c("CR","PR"),
+                                rsp.nonresponse = c("SD", "PD","NON CR/PD","NE",NA),
                                   quantile.type=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
@@ -97,6 +102,7 @@ PlotTabForestMulti <- function(data,
                                   main=NULL,
                                   sub=NULL,
                                   clip=NULL,
+                                  xlab=NULL,
                                   cex.headings=1.1,
                                   cex.note=1,
                                   cols="darkgreen",
@@ -183,6 +189,9 @@ PlotTabForestMulti <- function(data,
                                        within.bin=within.bin,
                                        show.itt=FALSE, show.bep=FALSE,
                                        bep = NULL, bep.name = "BEP", itt.name="ITT",bep.indicator=1,
+                                       rsp.cat = rsp.cat,
+                                       rsp.response = rsp.response,
+                                       rsp.nonresponse = rsp.nonresponse,
                                        covariate=covariate, #Sex
                                        strata=strata, #Age
                                        tabforest=tabforest,
@@ -242,7 +251,7 @@ PlotTabForestMulti <- function(data,
 
   PlotParam(pdf.name, pdf.param, par.param)
 
-  if (is.null(clip)) {
+  if (is.null(clip) & outcome.class=="survival") {
     r1 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))
     r2 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))
     good1 <- !is.na(r1) & is.finite(r1) & r1!= 0
@@ -250,6 +259,24 @@ PlotTabForestMulti <- function(data,
     xrange <- c(min(round(r1[good1], 2)), max(as.numeric(round(r2[good2], 2))))
     clip <- exp(c(-max(abs(log(xrange))), max(abs(log(xrange)))))
   }
+  if (is.null(clip) & outcome.class=="binary") {
+    r1 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))
+    r2 <- as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))
+    good1 <- !is.na(r1) & is.finite(r1) & r1!= 0
+    good2 <- !is.na(r2) & is.finite(r2)
+    xrange <- c(min(round(r1[good1], 2)), max(as.numeric(round(r2[good2], 2))))
+    mm <- max(abs(xrange))
+    clip <- c(-mm,mm)
+  }
+  if (is.null(clip) & outcome.class=="continuous") {
+    r1 <- as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][1]))
+    r2 <- as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][2]))
+    good1 <- !is.na(r1) & is.finite(r1) & r1!= 0
+    good2 <- !is.na(r2) & is.finite(r2)
+    xrange <- c(min(round(r1[good1], 2)), max(as.numeric(round(r2[good2], 2))))
+    mm <- max(abs(xrange))
+    clip <- c(-mm,mm)
+  } 
 
   wid <- max(nchar(sapply(tabletext[,1], function(z)strsplit(z, "\n")[[1]][1])),na.rm=T)/6
 
@@ -257,13 +284,29 @@ PlotTabForestMulti <- function(data,
   if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
 
   if(tabforest){
+      if(is.null(xlab)) {
+          if(nArms==2)xlab <- c(paste(active.code, "better", sep=" "),
+          paste(placebo.code, "better", sep=" "))
+          if(nArms==1)xlab <- c("","")
+      }
+    
+    xlog <- FALSE
+    if(outcome.class=="binary") xlog <- TRUE
+    num1 <- 5
+    num2 <- 6
+    wid2 <- c( wid,2, 1.5, 1, 1, 2, 1, 5)
+    if(outcome.class=="continuous"){
+      num1 <- 4
+      num2 <- 5
+      wid2 <- c( wid,2, 1.5,  1, 2, 1, 5)
+    }
     PlotTabForest(label.text=tabletext[-c(1), ],
-                mean=as.numeric(tabletext[-1, 5]),
-                lower=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1])),
-                upper=as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2])),
+                mean=as.numeric(tabletext[-1, num1]),
+                lower=as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1])),
+                upper=as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][2])),
                 headings=c(tabletext[1, ], c("Forest plot")),
                 cols=cols,
-                xlog=TRUE,
+                xlog=xlog,
                 xticks=NULL,
                 box.size=rep(2.5, nrow(tabletext)-1),
                 main=main.text,
@@ -273,8 +316,7 @@ PlotTabForestMulti <- function(data,
                 group.hline=hl,
                 note=note,clip=clip,
                 widths=c( wid,2, 1.5, 1, 1, 2, 1, 5),
-                sub.main=c(paste(active.code, "better", sep=" "),
-                           paste(placebo.code, "better", sep=" ")),
+                sub.main=xlab,
                 cex.headings=cex.headings,
                 cex.note=cex.note,
                 par.param=par.parm
@@ -282,7 +324,12 @@ PlotTabForestMulti <- function(data,
   }
 
   if(!tabforest){
-
+    num1 <- 5
+    num2 <- 6
+    if(outcome.class=="continuous"){
+      num1 <- 4
+      num2 <- 5
+    }
       hz <- vector("list",1)
       for(i in 1:length(hl)){
         if(hl[i] < nrow(tabletext)){
@@ -292,17 +339,26 @@ PlotTabForestMulti <- function(data,
       }
 
       tabletext2 <- tabletext
-      tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
+      tabletext2[seq(1,nrow(tabletext2),2),num2] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),num2],")")
+    
+    if(is.null(xlab)) {
+        if(nArms==2)xlab <- paste("<-- ", active.code, "better [",res.list[[1]][[1]][1,num1],"] ",placebo.code, "better -->\n",note)
+        if(nArms==1)xlab <- res.list[[1]][[1]][1,num1]
+    }
+      xlog <- FALSE
+      if(outcome.class=="binary") {
+          if(nArms==2)xlab <- paste("<-- ", placebo.code, "better [",res.list[[1]][[1]][1,num1],"] ",active.code, "better -->\n",note)
+          xlog <- TRUE
+      }
 
       forestplot(tabletext2,
-                 mean=c(NA,as.numeric(tabletext[-1,5])),
-                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
-                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
-                 xlab=paste("<--",active.code, "better [HR] ",placebo.code, "better -->",
-                            "\n", note),
+                 mean=c(NA,as.numeric(tabletext[-1,num1])),
+                 lower=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1]))),
+                 upper=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][2]))),
+                 xlab=xlab,
                  hrzl_lines=hz,align="l",
                  lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
-                  xlog=TRUE,
+                 xlog=xlog,
                  title=paste(main.text,"\n",sub.text),
                  #graphwidth=unit(100, 'mm'),
                  colgap=unit(cex.note*4,"mm"),

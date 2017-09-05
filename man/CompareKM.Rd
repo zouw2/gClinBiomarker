@@ -2,10 +2,10 @@
 % Please edit documentation in R/CompareKM.R
 \name{CompareKM}
 \alias{CompareKM}
-\title{Compare KM curve of ITT vs BEP}
+\title{Compare KM curve of full population vs. BEP}
 \usage{
 CompareKM(data, tte, cens, trt = NULL, bep, bep.indicator = 1,
-  bep.name = "Biomarker Evaluable", itt.name = "ITT",
+  bep.name = "Biomarker Evaluable", itt.name = "All",
   col.itt = "palegreen4", col.bep = "lightpink2", col.ci = "lightcyan",
   shaded.ci = TRUE, xlim = NULL, xat = NULL, ylab = paste(tte,
   "Survival Probability"), xlab = "Time", main = "", pdf.name = NULL,
@@ -22,8 +22,8 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
+If it is NULL, "All" will be used.}
 
 \item{col.itt, col.bep, col.ci}{Color for itt curve, bep curve and confidence interval curve (CI)}
 
@@ -42,10 +42,10 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))}
 \item{...}{additional parameters for \code{\link{plot}}}
 }
 \description{
-This function provides K-M curves to compare ITT vs. BEP.
+This function provides K-M curves to compare full population vs. BEP.
 }
 \note{
-This function generates KM curves to compare ITT vs BEP, within each treatment arm.
+This function generates KM curves to compare full population vs BEP, within each treatment arm.
 }
 \examples{
 data(input)

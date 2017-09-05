@@ -6,21 +6,23 @@
 \usage{
 PlotSTEPP(data, outcome.var, outcome.class, trt = NULL, var,
   covariate = NULL, strata = NULL, placebo.code = NULL,
-  active.code = NULL, alpha = 0.05, window.width = 0.25, min.pt = NULL,
-  max.pt = NULL, by = 0.05, yrange.lower = NULL, yrange.upper = NULL,
-  xticks = NULL, show.refline = TRUE, refline.color = "grey",
-  show.refline.ac = TRUE, refline.color.ac = "lightblue",
-  estimate.color = "blue", estimate.lty = 1, estimate.lwd = 2,
-  ci.color = "black", ci.lty = 2, ci.lwd = 1, ci.shade = TRUE,
+  active.code = NULL, quantile.type = 1, alpha = 0.05,
+  window.width = 0.25, min.pt = NULL, max.pt = NULL, by = 0.05,
+  yrange.lower = NULL, yrange.upper = NULL, xticks = NULL,
+  show.refline = TRUE, refline.color = "grey", show.refline.ac = TRUE,
+  refline.color.ac = "lightblue", estimate.color = "blue",
+  estimate.lty = 1, estimate.lwd = 2, ci.color = "black", ci.lty = 2,
+  ci.lwd = 1, ci.shade = TRUE,
   plot.title = "STEPP: Subgroup Treatment Effect Pattern Plot",
   sub.title = NULL, xlabel = "Biomarker Percentile", ylabel = NULL,
   show.legend = TRUE, legend.loc = "topright",
   legend.text = c("Point Estimate", paste((1 - alpha) * 100,
   " percent Confidence Interval", sep = "")), legend.col = c(estimate.color,
   ci.color), legend.lty = c(estimate.lty, ci.lty),
-  legend.lwd = c(estimate.lwd, ci.lwd), legend.bty = "n", pdf.name = NULL,
-  pdf.param = list(width = 11, height = 8.5), par.param = list(mar = c(4, 4,
-  3, 2)), csv.name = NULL, bm.digits = 2)
+  legend.lwd = c(estimate.lwd, ci.lwd), legend.bty = "n", bm.digits = 2,
+  actual.scale = FALSE, equal.in.LL = TRUE, equal.in.UL = FALSE,
+  pdf.name = NULL, pdf.param = list(width = 11, height = 8.5),
+  par.param = list(mar = c(4, 4, 3, 2)), csv.name = NULL)
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -42,6 +44,8 @@ This can be added to adjust for in the analysis for survival and continuous outc
 \item{placebo.code}{name of the control group within the treatment variable}
 
 \item{active.code}{name of the treatment/experimental group within the treatment variable}
+
+\item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
 
 \item{alpha}{confidence level (CI) for point estimate, i.e. 0.05 for 95 percent CI. Default is 0.05.}
 
@@ -104,6 +108,15 @@ Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Int
 
 \item{legend.bty}{type of box for the legend. Default is "n".}
 
+\item{bm.digits}{digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.}
+
+\item{actual.scale}{if TRUE, it generates the figure using the actual scale instead of the scale in percentage. Default is FALSE.}
+
+\item{equal.in.LL, equal.in.UL}{if both are TRUE, window is defined using >= and <= (in legend: "\code{[ ]}").
+if (TRUE, FALSE), window is defined using >= and < (in legend: "\code{[ )}").
+if (FALSE, TRUE), window is defined using > and <= (in legend: "\code{( ]}").
+if both are FALSE, window is defined using > and < (in legend: "\code{()}"). Default is (TRUE, FALSE).}
+
 \item{pdf.name}{name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.}
 
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.}
@@ -111,8 +124,6 @@ Default is \code{c("Point Estimate",paste((1-alpha)*100," percent Confidence Int
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
 
 \item{csv.name}{csv file name (includes numbers used in the graphs). If NULL (default), the function will return the result.}
-
-\item{bm.digits}{digits to be displayed/used for the lower and upper confidence level estimates. Default is 2.}
 }
 \description{
 This function creates a STEPP from the given point estimates and confidence intervals at desired percentiles.

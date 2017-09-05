@@ -17,10 +17,11 @@
 #' (stratification factor will be incorpriated for each model).
 #' If additive = FALSE, User can only use 'var' to speficy variables of interest (cannot specify the model via parameter 'form')
 
-#' @note The function generates a table that contains hazard ratio, CI, p value, and number of patients in each sub category.
+#' @note The function generates a table that contains hazard ratio, CI, wald p value, and number of patients in each sub category.
 #' User may input column names (via var and strata), a formula (via form), or a fitted coxph object (via fit)
 #' If user chooses to input column names, a additive model will be formed if additive=TRUE. If additive=FALSE, separate cox PH models will be formed for each var.
-#' More coplex models may be specified using form (e.g. model with interactions)
+#' More coplex models may be specified using form (e.g. model with interactions).
+#' To calculate log rank test p value across different subgroups, see LogRankTab()
 #'
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
 #' @importFrom coin cmh_test pvalue
@@ -135,13 +136,13 @@ if(!is.null(fit0)){
     ninter <- grep(":", rownames(res))
     res0 <- res
     res <- cbind(res, "", "")
-    colnames(res)[ncol(res)-1:0] <- c("n","n.ref")
+    colnames(res)[ncol(res)-1:0] <- c("n.trt","n.ref")
     for(i in 1:length(vars)){
       if(is.null(vars[[i]]))next
       nn <- names(vars)[i]
       whichi <- setdiff(grep(nn, rownames(res)), ninter)
       rownames(res)[whichi] <- paste(nn," (", vars[[i]][-1], "/", vars[[i]][1], ")",sep="")
-      res[whichi, c("n")] <- sapply(vars[[i]][-1],function(j)length(which(data[[names(vars)[i]]]==j)))
+      res[whichi, c("n.trt")] <- sapply(vars[[i]][-1],function(j)length(which(data[[names(vars)[i]]]==j)))
       res[whichi, c("n.ref")] <- sapply(vars[[i]][1],function(j)length(which(data[[names(vars)[i]]]==j)))
     }
     if(length(ninter)>0){

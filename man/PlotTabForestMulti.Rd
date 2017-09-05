@@ -4,18 +4,20 @@
 \alias{PlotTabForestMulti}
 \title{Generate forest plot and summarization table for 2-arm or within-arm comparison for multiple variables}
 \usage{
-PlotTabForestMulti(data, outcome.class = c("survival", "binary"), outcome.var,
-  trt = NULL, var, var.class = NULL, var.name = NULL,
-  percentile.cutoff = 0.5, greater = TRUE, less = TRUE,
+PlotTabForestMulti(data, outcome.class = c("survival", "binary",
+  "continuous"), outcome.var, trt = NULL, var, var.class = NULL,
+  var.name = NULL, percentile.cutoff = 0.5, greater = TRUE, less = TRUE,
   within.bin = FALSE, compare.bep.itt = TRUE, compare.subgroup = FALSE,
   show.itt = FALSE, show.bep = FALSE, subgroup = NULL, bep = NULL,
-  bep.name = "BEP", itt.name = "ITT", bep.indicator = 1,
-  covariate = NULL, strata = NULL, quantile.type = 2,
-  placebo.code = NULL, active.code = NULL, var.code = NULL,
-  tabforest = FALSE, alpha = 0.05, main = NULL, sub = NULL,
-  clip = NULL, cex.headings = 1.1, cex.note = 1, cols = "darkgreen",
-  pdf.name = NULL, pdf.param = list(width = 6, height = 4.5),
-  par.param = list(cex = 1.2, cex.main = 1.5, cex.sub = 1, cex.axis = 1))
+  bep.name = "BEP", itt.name = "All", bep.indicator = 1,
+  covariate = NULL, strata = NULL, rsp.cat = TRUE,
+  rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
+  "NE", NA), quantile.type = 2, placebo.code = NULL, active.code = NULL,
+  var.code = NULL, tabforest = FALSE, alpha = 0.05, main = NULL,
+  sub = NULL, clip = NULL, xlab = NULL, cex.headings = 1.1,
+  cex.note = 1, cols = "darkgreen", pdf.name = NULL,
+  pdf.param = list(width = 6, height = 4.5), par.param = list(cex = 1.2,
+  cex.main = 1.5, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -68,8 +70,8 @@ BEP is defined by variable bep}
 \item{bep.name}{preferred display name of the biomarker evaluable population.
 If it is NULL, bep will be used.}
 
-\item{itt.name}{preferred display name of ITT
-If it is NULL, "ITT" will be used.}
+\item{itt.name}{preferred display name of full population
+If it is NULL, "All" will be used.}
 
 \item{bep.indicator}{In the subpopulation column, which value is used
 to define the biomarker evaluable population.}
@@ -77,6 +79,19 @@ to define the biomarker evaluable population.}
 \item{covariate}{a vector specifying the covariate variables to be adjusted in the model. Default is set to NULL, meaning no adjustment.}
 
 \item{strata}{name of the stratification variables. Default is set to NULL, meaning no stratification.}
+
+\item{rsp.cat}{whether the response outcome variable is coded as binary (1 as responder and 0 as non-responder),
+If rsp.cat is TRUE, responder categories
+and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
+should be included in rsp.response and rsp.nonresponse)
+. If rsp.cat is FALSE, the response outcome variable should be coded as binary (0/1). 
+At the same time rsp.response and rsp.nonresponse will be ignored.}
+
+\item{rsp.response}{categories that should be considered as responder.}
+
+\item{rsp.nonresponse}{categories that should be considered as non responder.}
+
+\item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
 
 \item{placebo.code}{name of the control arm of the treatment variable}
 
@@ -96,6 +111,8 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{clip}{range of the x-axis of the forest plot. Default is NULL.}
 
+\item{xlab}{xlab for forest plot}
+
 \item{cex.headings}{amount of magnification of headings of the forest plot relative to cex. Default is 1.1.}
 
 \item{cex.note}{amount of magnification of the note. Default is 1.}
@@ -111,17 +128,17 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \description{
 This function creates a forest plot along with table with summary statistics to infer effect of multiple clinical variables, within a single arm
 or across two treatment arms.  The outcome could be survival, binary or continuous. This function can be used to summarize a group of
-variables. This function may be used to compare effect of these variables in ITT vs biomarker evaluable population. Or compare effect
+variables. This function may be used to compare effect of these variables in full population vs biomarker evaluable population. Or compare effect
 of these variables in different biomarker subgroups
 }
 \examples{
 data(input)
-PlotTabForestBiomarker(data=input,
+PlotTabForestMulti(data=input,
                       outcome.class=c("survival"),
                       outcome.var=c("PFS","PFS.event"),
                       trt="Arm",
-                      var="KRAS.mutant",
-                      var.class="categorical")
+                      var=c("Sex","Age"),
+                      var.class="categorical",bep="BEP")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

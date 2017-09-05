@@ -1,7 +1,7 @@
 #' Generate bar plot to summarize response outcome by subgroups
 #' 
 #' This function generates bar plots to compare response outcome summarization (e.g. response rate) across different groups
-#' (e.g. treatment arm, biomarker variable, demographics variable, itt vs bep, etc.)
+#' (e.g. treatment arm, biomarker variable, demographics variable, full population vs bep, etc.)
 #' 
 #' @author Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 #'
@@ -9,10 +9,15 @@
 #' entries with missing rsp value will be ignored in analysis. 
 #' @param binary whether summarize the response rate by responder/nonresponder (if binary=TRUE),
 #' or by its original category (e.g. PD/SD/PR/CR). If binary is TRUE, responder categories
-#' and nonresponder categories should be specified in rsp.response and rsp.nonresponse,
+#' and nonresponder categories should be specified in rsp.response and rsp.nonresponse (all values in the outcome column
+#' should be included in rsp.response and rsp.nonresponse),
 #' at the same time rsp.levels will be ignored. If binary is FALSE, rsp.levels should be
 #' specified to provide order of the categories. At the same time rsp.response and
 #' rsp.nonresponse will be ignored. 
+#' @param rsp.response categories that should be considered as responder.
+#' @param rsp.nonresponse categories that should be considered as non responder.
+#' @param rsp.levels vector that indicates how to sort the response categories. This parameter will be ignored if binary is TRUE.
+#' @param rsp.name Display name for the responders. Default is "rsp". 
 #' @param col color for different categories
 #' @param plot.count default is FALSE. By default percentages will be shown.
 #' If it is TRUE, will show counts instead
@@ -21,7 +26,7 @@
 #' @param trt.name treatment name to display 
 #' @param show.combine.trt if this is TRUE, will show summarization of combined data across treatment arms as well
 #' @param compare.bep.itt whether want to generate two groups of bars to compare the summary statistics
-#' in ITT vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
+#' in full population (e.g. ITT) vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 #' parameters bep, bep.name, itt.name, bep.indicator will be ignored
 #' @param compare.var whether want to generate multiple groups of bars to compare the summary statistics
 #' in subgroups defined by var (e.g. categorical demographics or biomarker variable)
@@ -32,6 +37,7 @@
 #' @param sub footnote under the bar plot. Default is NULL.
 #' @param cex cex
 #' @param digits see \code{\link{pdf}}. Number of digits to display for the response rate.
+#' @param horiz whether show barplot horizontally
 #' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "rsp.barplot.pdf".
 #' @param pdf.param list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}. 
 #' @param par.param list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
@@ -50,20 +56,24 @@ PlotRspBar <- function(data, outcome.var,
                        binary=FALSE,
                        rsp.response = c("CR","PR"),
                        rsp.nonresponse = c("SD", "PD","NON CR/PD","NE"),
-                       rsp.levels=c("NE","PD","NON CR/PD","SD","PR","CR"),
-                       col=colorRampPalette(c("deepskyblue", "tomato"))(length(rsp.levels)),
+                       rsp.levels=c("CR", "PR","SD","NON CR/PD", "PD","NE"),
+                       rsp.name = "Rsp",
+                       col=NULL,
                        plot.count=FALSE,digits=1,
                        trt=NULL, trt.name =NULL, show.combine.trt=TRUE,
-                       compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="ITT",bep.indicator=1,
-                       compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE,
-                       main="Association of response rate",sub=NULL,cex=1,
+                       compare.bep.itt=FALSE, bep = NULL, bep.name = NULL, itt.name="Full",bep.indicator=1,
+                       compare.var=FALSE, var=NULL, var.name=NULL, show.combine.var=TRUE, horiz=FALSE,
+                       main="Association of response rate",
+                       sub=NULL,cex=1,
                        pdf.name=NULL,
-                       #pdf.param=list(width=6, height=4.5),
                        pdf.param=NULL,
-                       par.param=list(mar=c(6,8,6,7))) {
+                       par.param=NULL) {
     
   
-  
+  if(is.null(col)){
+      if(binary==FALSE) col <- colorRampPalette(c("tomato","deepskyblue"))(length(rsp.levels))
+      if(binary==TRUE) col <- c("tomato","gray")
+  }
   stopifnot(class(data) == "data.frame")
   if(!all(c(var, trt, bep,outcome.var) %in% colnames(data)))stop("outcome.var, var, trt and bep should have matched column names in the input data!")
   
@@ -89,7 +99,7 @@ PlotRspBar <- function(data, outcome.var,
   
   # generate response
   if(binary) 
-    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,"rsp","non-rsp"),levels=c("non-rsp","rsp"))
+    data$rspvar <- factor(ifelse(data[,outcome.var]%in%rsp.response,rsp.name,paste0("non-",rsp.name)),levels=c(rsp.name,paste0("non-",rsp.name)))
   if(!binary) data$rspvar <- factor(data[,outcome.var], levels=rsp.levels)
   
   data$sectionvar <- data$trtvar <- rep("All", length(data$rspvar))
@@ -161,10 +171,16 @@ PlotRspBar <- function(data, outcome.var,
     myspace[space] <- 0.8
     if(n.in.section==1&n.section==1)myspace <- .2
     
+    if(binary)bi.txt <- paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""),
+                    paste("; ",rsp.name,"=",round(plottab[rsp.name,],digits+2)*100,"%",sep=""), sep="")
+    else bi.txt <- paste("N=",colSums(tab.table,na.rm=TRUE),sep="")
+    max.bi.txt <- max(nchar(bi.txt))
+    max.name.txt <- max(nchar(colnames(plottab)))
+    
     # Parameters for the pdf file if it's created.
    if(!is.null(pdf.name)){
      if (is.null(pdf.param$height)) {
-        pdf.param$height <- ifelse(nrow(plottab) > 6, 8, 6) # 1 by nlev subplots
+        pdf.param$height <- 8
     }
     
     if (is.null(pdf.param$width)) {
@@ -173,7 +189,10 @@ PlotRspBar <- function(data, outcome.var,
    }
     # Define par parameters
     if(is.null(par.param$mar)) {
-        par.param$mar <- c(5,5,4,6)
+        p1 <- max(5,.5*max.name.txt) 
+        p2 <- max(5.5,.55*max.bi.txt)
+        if(horiz)par.param$mar <- c(5,p1,4,p2)
+        if(!horiz) par.param$mar <- c(p1,4,p2,5)
     }
     
     if(is.null(par.param$font.axis)) {
@@ -182,34 +201,50 @@ PlotRspBar <- function(data, outcome.var,
     
     PlotParam(pdf.name, pdf.param, par.param)  
     
+    num.axis <- ifelse(horiz,4,3)
+    label.axis <- ifelse(horiz,3,4)
+    perc.axis <- ifelse(horiz,1,2)
     
-    if(!plot.count)bb <- barplot(plottab*100, horiz=T, col=col, space=myspace,
-                  names=colnames(plottab),las=2, axes=FALSE, xlab="(%)",cex.axis=0.7*cex)
-    if(plot.count)bb <- barplot(tab.table, horiz=T, col=col, space=myspace,
-                                names=colnames(plottab),las=2, axes=FALSE,  xlab="count",cex.axis=0.7*cex)
+    if(!plot.count){
+      xlab <- ifelse(horiz,"(%)","")
+      ylab <- ifelse(horiz,"","(%)")
+      bb <- barplot(plottab*100, horiz=horiz, col=col, space=myspace,
+                  names=colnames(plottab),las=2, axes=FALSE, xlab=xlab,ylab=ylab,
+                  cex.axis=0.7*cex)
+    }
+    if(plot.count){
+      xlab <- ifelse(horiz,"count","")
+      ylab <- ifelse(horiz,"","count")
+      bb <- barplot(tab.table, horiz=horiz, col=col, space=myspace,
+                                names=colnames(plottab),las=2, axes=FALSE,  xlab=xlab,
+                    ylab=ylab,cex.axis=0.7*cex)
+    }
+    title(main,line=max(max.bi.txt*.45,4.5))
     
-    title(main,line=max(nchar(rownames(tab.table)))*.6)
-    
-    axis(1, las=1)
+    axis(perc.axis, las=1)
     
     if (binary) {
-        axis(4, at=bb, paste(paste("N=",colSums(tab.table,na.rm=TRUE),sep=""), 
-                             paste("; Rsp=",round(plottab["rsp",],digits+2)*100,"%",sep=""), sep=""),
+        axis(num.axis, at=bb, bi.txt,
              las=2, cex.axis=0.8*cex, line=-0.5, tick=F)  
     } else {
-        axis(4, at=bb, paste("N=",colSums(tab.table,na.rm=TRUE),sep=""), las=2, cex.axis=0.8*cex, line=-0.5, tick=F)
+        axis(num.axis, at=bb, bi.txt, las=2, cex.axis=0.8*cex, line=-0.5, tick=F)
     }
     
     box()
     
-    myoutcome.levels <- levels( data$rspvar)
+    myoutcome.levels <- levels(data$rspvar)
     n.levels <- nlevels(data$rspvar)
     xmax0 <- 100
     if(plot.count) xmax0 <- max(colSums(tab.table))
-    xmax <- xmax0/3
+    xmax <- xmax0
+    if(binary)xmax <- xmax0/3
+    nn <- nchar(myoutcome.levels)
+    nn.unit <- xmax/sum(nn)
+    tmp <- 0
     for (kk in 1:n.levels) {
-        mtext(myoutcome.levels[kk], col=col[kk], side=3, out=FALSE, at=xmax*kk/n.levels - (xmax/2)/n.levels, adj=0, las=3)
-    }
+      mtext(myoutcome.levels[kk], col=col[kk], side=label.axis, out=FALSE, at=tmp, adj=0, las=3)
+      tmp <- tmp +  nn.unit*nn[kk]   
+      }
     
    # abline(h=bb[space]/2+bb[space-1]/2)
     
@@ -219,10 +254,5 @@ PlotRspBar <- function(data, outcome.var,
     
     PlotParam()  
     
-    #if (return.table) {
-     #   tmp <- matrix(paste(numtab, "(",round(plottab,2),")"), byrow=FALSE, nrow=nrow(numtab))
-    #    tmp <- cbind(rownames(numtab), tmp, rowSums(numtab,na.rm=TRUE))
-    #    colnames(tmp) <- c("Group", colnames(plottab), "Total")
-    #    return(tmp)
-    #}
+out <- list(count=t(tab.table), perc=t(plottab))
 }

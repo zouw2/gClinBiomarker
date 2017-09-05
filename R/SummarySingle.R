@@ -14,8 +14,8 @@
 #' @param subgroup name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 #' @param subgroup.name preferred display name of the subpopulation (e.g. biomarker evaluable population).
 #' If it is NULL, subgroup will be used.
-#' @param itt.name preferred display name of ITT
-#' If it is NULL, "ITT" will be used.
+#' @param itt.name preferred display name of the full population (e.g. ITT).
+#' If it is NULL, "All" will be used.
 #' @param subgroup.indicator In the subpopulation column, which value is used
 #' to define the subpopulation (e.g. biomarker evaluable population). 
 #' Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.
@@ -38,9 +38,9 @@
 #' @param na.action defaults to "na.omit". Possible options are "na.omit", "error"
 #' When it is specified as "na.omit", entries with missing trt or subgroup
 #' will be automatically removed before calculation.
-#' @param compare.subgroup If it is FALSE,
-#' the output will show summary statistics of subgroup and others. Default is FALSE. If it is TRUE,
-#' will show summary statistics of subgroup vs. ITT
+#' @param compare.subgroup If it is TRUE,
+#' the output will show summary statistics of subgroup and others. Default is FALSE. If it is FALSE,
+#' will show summary statistics of subgroup vs. All patients
 #' @param test.subgroup whether test across subpopulations within treatment arm. If class is numeric,
 #' kruskal wallis rank sum test will be performed. If class is categorical, fisher's exact test will be performed.
 #' If class is ordered.factor, cmh test will be performed. The test is always performed between subgroup vs others.
@@ -48,7 +48,7 @@
 #' Testing is not recommendated if either subgroup of non-subgroup has small sample size.
 #' 
 #' @note This function provides summary statistics of a single clinical covariate. Using default parameters,
-#' the function provides a table to compare summary statistics in ITT vs. in BEP (biomarker evaluable population),
+#' the function provides a table to compare summary statistics in All patients vs. in BEP (biomarker evaluable population),
 #' within treatment arm
 #' @note trt allows for more than 2 levels. However, only 2 levels are allowed for subgroup.
 #' For more general use, a user can specify trt to get summary statistics for any
@@ -61,7 +61,7 @@
 
 SummarySingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
-      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="ITT",
+      subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="All",
 			var.class=NULL, ordered.factor.levels=NULL,
 			cont.show = c("N" ,"Mean","Median", "Min-Max","NA's"),
 			digits = 2, trt.order = NULL, test.subgroup=FALSE, 
@@ -69,7 +69,6 @@ SummarySingle <- function (data, var,
 {
   stopifnot(na.action%in% c("na.omit", "error"))
   stopifnot(class(data) == "data.frame")
-  if(is.null(trt) & is.null(subgroup))stop("trt and subgroup are both empty! need to specify at least one of them")
   if(!all(c(var, trt, subgroup) %in% colnames(data)))stop("var, trt and subgroup should have matched column names in the input data!")
   if(!is.null(subgroup)) if(nlevels(as.factor(data[,subgroup]))<2)stop("subpopulation column has only one unique value!")
   possible.show <- c("N" ,"Mean","SEM", "SD","Median",

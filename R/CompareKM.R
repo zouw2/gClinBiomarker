@@ -1,6 +1,6 @@
-#' Compare KM curve of ITT vs BEP
+#' Compare KM curve of full population vs. BEP
 #'
-#' This function provides K-M curves to compare ITT vs. BEP.
+#' This function provides K-M curves to compare full population vs. BEP.
 #'
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #'
@@ -16,7 +16,7 @@
 #' @param xlim,xat,ylab,xlab,main see \code{\link{plot}}
 #' @param ... additional parameters for \code{\link{plot}}
 #'
-#' @note This function generates KM curves to compare ITT vs BEP, within each treatment arm.
+#' @note This function generates KM curves to compare full population vs BEP, within each treatment arm.
 #'
 #' @importFrom graphics plot axis mtext grid box polygon lines legend
 #' @importFrom survival survfit
@@ -32,7 +32,7 @@
 #' @export
 
 CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
-		      bep.name="Biomarker Evaluable", itt.name="ITT",
+		      bep.name="Biomarker Evaluable", itt.name="All",
 		      col.itt="palegreen4", col.bep="lightpink2", col.ci="lightcyan",shaded.ci=TRUE,
 		      xlim=NULL, xat=NULL, ylab=paste(tte,"Survival Probability"), xlab="Time", main="",
                       pdf.name = NULL, pdf.param=list(height=5), par.param=list(mar=c(4,4,3,2)),...){
@@ -101,7 +101,7 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
     sfflag <- survfit(as.formula(paste("Surv(",tte,",",cens,")~1")), data=tmp[which(tmp[,bep]==bep.indicator),], conf.type="log")
     lines(sfflag, mark.time=FALSE, col=col.bep, lwd=3)
 
-    legend("topright", lty=1, lwd=3, col=c(col.itt, col.bep), legend=c(itt.name,bep.name ))
+    legend("topright", lty=1, lwd=3, col=c(col.itt, col.bep), legend=c(itt.name,bep.name), bg="white")
 
   }
   PlotParam()

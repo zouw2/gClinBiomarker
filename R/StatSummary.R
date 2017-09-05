@@ -22,8 +22,8 @@
 #' If \code{'prop.test.use.continuity.correction' = T} (default), the 'correct' parameter in \code{\link{prop.test}} will be set as TRUE.
 #'
 #' @return A named vector of following entries:
-#' if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active, N.Placebo, N.Active;
-#' if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, P;
+#' if binary - Effect.Size (Proportion Difference), Lower, Upper, P, Rsp.Placebo, Rsp.Active,  N.Placebo, N.Active, nRsp.Placebo, nRsp.Active;
+#' if survival - [Events, N, Median Suvival Time] for each group, Effect.Size (Hazard Ratio), Lower, Upper, Wald P;
 #' if continuous - Effect.Size (Mean Difference), Lower, Upper, P.
 #'
 #' @note This function requires "survival" package to call the coxph() function. Two treatment arms are required.
@@ -76,7 +76,9 @@ StatSummary <- function(outcome.var,
                  , "Rsp.Placebo" = mytest$estimate[2]
                  , "Rsp.Active" = mytest$estimate[1]
                  , "N.Placebo" = n2
-                 , "N.Active" = n1)
+                 , "N.Active" = n1
+                 , "nRsp.Placebo" = r2
+                 , "nRsp.Active" = r1)
         names(ret)[5:6] <- c("Rsp.Placebo", "Rsp.Active")
     } # end binary
 
@@ -90,6 +92,7 @@ StatSummary <- function(outcome.var,
             # which corresponds to the treatment effect size
             coef.1 <- summary(myfit)$coef
             mytest <- coef.1[nrow(coef.1), ]
+            mytest2 <- coef.1[1, ]
             myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
         }
 
@@ -103,6 +106,7 @@ StatSummary <- function(outcome.var,
                 # which corresponds to the treatment effect size
                 coef.1 <- summary(myfit)$coef
                 mytest <- coef.1[nrow(coef.1), ]
+                mytest2 <- coef.1[1, ]
                 myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
             }
 
@@ -116,13 +120,14 @@ StatSummary <- function(outcome.var,
                 # (nCV+2)th row (last) is the 'slope' estimate and its associated quantities
                 # which corresponds to the treatment effect size
                 coef.1 <- summary(myfit)$coef
-                mytest <- coef.1[nrow(coef.1), ]
+                mytest <- coef.1[nrow(coef.1), ]            
+                mytest2 <- coef.1[1, ]
                 myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
             }
         }
 
-        ret <- c(mytest[1], myCI, mytest[4])
-        names(ret) <- c("Effect.Size","Lower","Upper","P")
+        ret <- c(mytest[1], myCI, mytest[4],mytest2[1], mytest2[1]+mytest[1])
+        names(ret) <- c("Effect.Size","Lower","Upper","P","Mean.Placebo","Mean.Active")
     } # end continuous
 
     # Survival outcome.var - e.g., progression-free survival
