@@ -2,8 +2,13 @@
 
 gClinBiomarker is an R package that contains functions to perform baseline and longitutinal biomarker analyses 
 
-Some documentations could be found at:
+Documentations could be found at:
 https://github.roche.com/lengn/gClinbiomarker_documents
+
+The repository includes
+- A user vignette demonstrates how gClinBiomarker package may help with your biomarker analysis
+- An exapmle use case document which contains more detailed use cases
+- A set of Rmarkdown templates that allow you to generate biomarker analysis report by "one click"
 
 To install this package from R, use `install_github()` function from the **devtools** package
 
