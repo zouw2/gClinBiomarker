@@ -9,18 +9,18 @@
 #' @param model model function to use for fitting; defaults to lm
 #' @param model.args additional model parameters to pass to model
 #' @param facet.fun function to use for ggplot faceting in ggplot2::facet_grid
-#' @param ... additional arguments passed to underlying ggplot components
-#' by prefixing value with ggplot call name. ("ribbons", "line", "text", "facet", "xlab",
-#' "ylab", "labs" or "theme" - e.g. `ribbons.color = 'red'`)
+#' @param ... additional arguments are handled in one of two ways. First,
+#' arguments which can be used as any of ggplot's default aesthetics will be
+#' pulled from ... args. Second, remaining arguments are passed to underlying
+#' ggplot components by prefixing value with ggplot call name. ("ribbons",
+#' "line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
+#' `ribbons.color = 'red'`)
 #'
-#' @return a ggplot object with y values adjusted based on model function if provided
+#' @return a ggplot object
 #'
 #' @examples
-#' library(tidyverse) # for pipe and tibble
-#' library(broom)     # for augment
-#'
 #' # default representation
-#' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature))
+#' PlotLong(as.data.frame(nasa), aes(x=month, y=temperature))
 #'
 #' # a more appropriate representation for large n
 #' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature),
@@ -39,8 +39,11 @@
 #'          labs.title = "Temperature by Hemisphere",
 #'          labs.caption = "*idependent models fit per hemisphere")
 #'
-#' # including a table of value counts and subsetting value data to specific months
-#' PlotLong(nasa %>% as_tibble %>% mutate(hemisphere=ifelse(lat>0, "North", "South")),
+#' # including a table of value counts and subsetting value data to specific
+#' # months
+#' PlotLong(nasa %>%
+#'            as_tibble %>%
+#'            mutate(hemisphere=ifelse(lat > 0, "North", "South")),
 #'          aes(x=month, y=temperature, group = hemisphere,
 #'              color = hemisphere, fill = hemisphere),
 #'          formula = temperature ~ ozone,
@@ -54,28 +57,47 @@
 #'
 #' @export
 #'
-PlotLong <- function(data, mapping, formula = NULL, model = lm, model.args = NULL,
-                     model.per = NULL, facet.fun = NULL,
+PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
+                     model.formula = NULL, facet.fun = NULL,
                      plot.style = 'ribbons', ...) {
 
-  if (!is.null(formula))  {
-    # add predicted values based on formula provided
-    data <- augment_predict(data, model, formula, model.args, model.per)
-    # overwrite mapping with new fitted variable ("<y>.fitted") from augment_predict
-    mapping$y <- as.name(paste(deparse(mapping$y), "fitted", sep="."))
+  if (is.null(mapping)) {
+    args <- ggpack_split_aes_from_dots(...)
+    mapping <- args$aes; .dots <- args$not_aes
+  } else .dots <- list(...)
+
+  if (!is.null(model.formula))  {
+    # ensure model variables reflect plotted variables
+    if (deparse(mapping$y) != model.formula[[2]])
+      stop('Independent model.formula variable must be the same as y aesthetic')
+
+    # add model fit output to data
+    data <- do.call(augment_predict,
+        c(list(data, model, model.per, model.formula=model.formula), .dots))
+
+    # change aesthetic y to be fitted values
+    mapping$y <- as.name(sprintf("%s.fitted", deparse(mapping$y)))
   }
+
+  # collapse linetype to group to account for ggpack overrides
+  mapping <- ggpack_flatten_aesthetics_to_group(mapping, 'linetype')
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
   data %>% ggplot() + mapping +
-    (if      (plot.style == 'ribbons') ggpk_stat_ribbon(...)
-     else if (plot.style == 'errorbars') ggpk_stat_line_errorbar(...)) +
+
+    # plot with specified styling
+    (if      (plot.style == 'ribbons')   do.call(ggpk_ribbons, .dots)
+     else if (plot.style == 'errorbars') do.call(ggpk_line_errorbar, .dots)) +
+
+    # handle optional facetting
     (if (is.null(facet.fun)) facet_null()
-     else ggpack(facet_grid, 'facet', list(...), facets = facet.fun)) +
-    (if (is.null(formula)) NULL
-     else ylab(paste("Adjusted", deparse(formula[[2]])))) +
-    ggpack(xlab,  'xlab',  list(...), null.empty = T) +
-    ggpack(ylab,  'ylab',  list(...), null.empty = T) +
-    ggpack(labs,  'labs',  list(...), null.empty = T) +
-    ggpack(theme, 'theme', list(...), null.empty = T)
+     else ggpack(facet_grid, 'facet', .dots, facets = facet.fun)) +
+
+    # adjust label to accommodate model fitting if a model was used
+    (if (is.null(model.formula)) NULL
+     else ylab(paste("Adjusted", deparse(model.formula[[2]])))) +
+
+    # catch plot labels
+    do.call(ggpack.decorators, .dots)
 
 }

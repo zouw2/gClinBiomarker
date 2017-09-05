@@ -1,23 +1,30 @@
 #' Adds prediction outputs to data based on model and formula
-#' 
+#'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
-#' 
+#'
 #' @param .data data to use for model fitting
 #' @param model model function to use (e.g `lm`)
 #' @param fomula formula to use for model fitting (e.g `mpg ~ gear + wt`)
 #' @param model.args list of additional arguments to use in model fitting
-#' @param model.per a formula representing all terms to group data by to 
+#' @param model.per a formula representing all terms to group data by to
 #' fit individual models (e.g. `~ am + vs`)
-#' 
+#'
 #' @return a data frame with new columns based on model fit
-#' 
+#'
+#' @importFrom broom augment
+#'
 #' @export
-#' 
-augment_predict <- function(.data, model, formula, model.args = NULL, model.per = NULL) {
-  .data %>% 
+#'
+augment_predict <- function(.data, model, model.per = NULL, ...) {
+
+  .dots <- ggpack_filter_args('model', list(...))
+  fy <- deparse(.dots$formula[[2]]) # get formula independent variable
+
+  .data %>%
     group_by_(.dots = all.vars(model.per)) %>%
-    do(augment(do.call(model, c(list(formula=formula, data=.), model.args)), .)) %>%
-    rename_(.dots = setNames(names(.), gsub("^\\.", paste0(deparse(formula[[2]]), "."), names(.))))
+    do(augment(do.call(model, c(list(data=.), .dots)), .)) %>%
+    # rename model outputs (".fitted") to instead begin with var ("y.fitted")
+    rename_(.dots = setNames(names(.), gsub("^\\.", paste0(fy, "."), names(.))))
 }
 
 
@@ -29,14 +36,14 @@ augment_predict <- function(.data, model, formula, model.args = NULL, model.per 
 #' code.
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
-#' 
+#'
 #' @param .tbl a dataframe or tibble to be sent to mutate
-#' @param .cols a dplyr::vars() column selection similar to `dplyr::select()` or 
+#' @param .cols a dplyr::vars() column selection similar to `dplyr::select()` or
 #'              numeric indices of columns to select
 #' @param ... filtering functions to filter column data
 #'
 #' @return a dataframe with the specified columns filtered by the specified conditions
-#' 
+#'
 #' @export
 #'
 na_if_at <- function(.tbl, .cols, ...) {
