@@ -16,11 +16,8 @@
 #' @return a ggplot object
 #'
 #' @examples
-#' library(tidyverse) # for pipe and tibble
-#' library(broom)     # for augment
-#'
 #' # default representation
-#' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature))
+#' PlotLong(as.data.frame(nasa), aes(x=month, y=temperature))
 #'
 #' # a more appropriate representation for large n
 #' PlotLong(nasa %>% as_tibble, aes(x=month, y=temperature),
@@ -57,44 +54,47 @@
 #'
 #' @export
 #'
-PlotLong <- function(data, mapping, model = lm, model.per = NULL,
+PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
                      model.formula = NULL, facet.fun = NULL,
                      plot.style = 'ribbons', ...) {
 
-  if (!is.null(model.formula))  {
-    # add predicted values based on formula provided
-    data <- data %>%
-      augment_predict(
-        model,
-        model.per = model.per,
-        model.formula = model.formula,
-        ...)
+  if (is.null(mapping)) {
+    args <- ggpack_split_aes_from_dots(...)
+    mapping <- args$aes; .dots <- args$not_aes
+  } else .dots <- list(...)
 
-    # overwrite mapping with residuals after model adjustment ("<y>.resid")
-    # from augment_predict
-    mapping$y <- as.name(paste(deparse(mapping$y), "resid", sep="."))
+  if (!is.null(model.formula))  {
+    # ensure model variables reflect plotted variables
+    if (deparse(mapping$y) != model.formula[[2]])
+      stop('Independent model.formula variable must be the same as y aesthetic')
+
+    # add model fit output to data
+    data <- do.call(augment_predict,
+        c(list(data, model, model.per, model.formula=model.formula), .dots))
+
+    # change aesthetic y to be fitted values
+    mapping$y <- as.name(sprintf("%s.fitted", deparse(mapping$y)))
   }
 
-  # collapse linetype to group since ggpk_line_errorbar will set it to constant
-  # for the errorbar geom
+  # collapse linetype to group to account for ggpack overrides
   mapping <- ggpack_flatten_aesthetics_to_group(mapping, 'linetype')
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
   data %>% ggplot() + mapping +
 
-    # plot with specified
-    (if      (plot.style == 'ribbons')   ggpk_ribbons(...)
-     else if (plot.style == 'errorbars') ggpk_line_errorbar(...)) +
+    # plot with specified styling
+    (if      (plot.style == 'ribbons')   do.call(ggpk_ribbons, .dots)
+     else if (plot.style == 'errorbars') do.call(ggpk_line_errorbar, .dots)) +
 
     # handle optional facetting
     (if (is.null(facet.fun)) facet_null()
-     else ggpack(facet_grid, 'facet', list(...), facets = facet.fun)) +
+     else ggpack(facet_grid, 'facet', .dots, facets = facet.fun)) +
 
     # adjust label to accommodate model fitting if a model was used
     (if (is.null(model.formula)) NULL
      else ylab(paste("Adjusted", deparse(model.formula[[2]])))) +
 
     # catch plot labels
-    ggpack.decorators(...)
+    do.call(ggpack.decorators, .dots)
 
 }

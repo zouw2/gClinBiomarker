@@ -159,6 +159,29 @@ ggpack_remove_aesthetics <- function(mapping, ...) {
 }
 
 
+#' Helper function to cull aesthetic mapping from parameter inputs in ellipses
+#'
+#' @param ... ellipses containing aesthetics mapping
+#'
+#' @return the ellipses arguments passed through a ggplot2::aes() call after
+#' filtering for aesthetics in ggplot2:::.all_aesthetics()
+#'
+#' @export
+ggpack_aes_from_dots <- function(...) {
+  aes_args <- structure(substitute(...()), class = 'uneval')
+  aes_args <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]
+  do.call(aes, aes_args)
+}
+
+#' @export
+ggpack_split_aes_from_dots <- function(...) {
+  aes_args <- structure(substitute(...()), class = 'uneval')
+  aes_args <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]
+  list(aes = do.call(aes, aes_args),
+       not_aes = aes_args[! names(aes_args) %in% ggplot2:::.all_aesthetics])
+}
+
+
 #' Wrapper for common decorators to package
 #'
 #' @param ... arguments to be passed to any of the bundled
@@ -170,10 +193,11 @@ ggpack_remove_aesthetics <- function(mapping, ...) {
 #'
 #' @export
 ggpack.decorators <- function(...) {
-  ggpack(xlab,  'xlab',  list(...), null.empty = TRUE) +
-  ggpack(ylab,  'ylab',  list(...), null.empty = TRUE) +
-  ggpack(labs,  'labs',  list(...), null.empty = TRUE) +
-  ggpack(theme, 'theme', list(...), null.empty = TRUE)
+  .dots <- list(...)
+  ggpack(xlab,  'xlab',  .dots, null.empty = TRUE) +
+  ggpack(ylab,  'ylab',  .dots, null.empty = TRUE) +
+  ggpack(labs,  'labs',  .dots, null.empty = TRUE) +
+  ggpack(theme, 'theme', .dots, null.empty = TRUE)
 }
 
 

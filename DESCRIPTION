@@ -13,7 +13,8 @@ License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.0.1
 Imports:
-    tidyverse,
+    dplyr,
+    broom,
     grid,
     utils,
     stats,
