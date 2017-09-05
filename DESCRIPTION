@@ -1,5 +1,5 @@
 Package: gClinBiomarker
-Title: gClinBiomarker: an R package for clinical biomarker analyses 
+Title: gClinBiomarker: an R package for clinical biomarker analyses
 Version: 0.1
 Date: 2017-9-5
 Author: Ning Leng <leng.ning@gene.com>,
@@ -7,21 +7,24 @@ Author: Ning Leng <leng.ning@gene.com>,
     Doug Kelkhoff <kelkhoff.douglas@gene.com>,
     Christina Rabe <rabe.christina@gene.com>,
     Kwame Okrah <okrah.kwame@gene.com>
-Maintainer: Ning Leng <leng.ning@gene.com>, Alexey Pronin <pronin.alexey@gene.com>
-Description: gClinBiomarker is an R package that allows users to easily perform biomarker analyses and
-generate high-quality figures and tables. It contains a set of functions covering essential biomarker
-analyses conducted in both oncology and non-oncology trials. It also provides an R markdown template
-that allows users to plug in their data set and generate a biomarker analysis report with "one-click".
-The report contains demographics checking, biomarker property characterization, cutoff exploration
-(for continuous biomarkers), subgroup analysis, and longitudinal analysis. The package takes either VADs
-(AdAM) or a customized csv/data frame. 
+Maintainer: Ning Leng <leng.ning@gene.com>, Alexey Pronin
+    <pronin.alexey@gene.com>
+Description: gClinBiomarker is an R package that allows users to easily perform
+    biomarker analyses and generate high-quality figures and tables. It contains
+    a set of functions covering essential biomarker analyses conducted in both
+    oncology and non-oncology trials. It also provides an R markdown template that
+    allows users to plug in their data set and generate a biomarker analysis report
+    with "one-click". The report contains demographics checking, biomarker property
+    characterization, cutoff exploration (for continuous biomarkers), subgroup
+    analysis, and longitudinal analysis. The package takes either VADs (AdAM) or a
+    customized csv/data frame.
 Depends:
     R(>= 3.1.2),
     survival,
     forestplot
 License: GPL-2
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 5.0.1
 Imports:
     dplyr,
     ggplot2,
