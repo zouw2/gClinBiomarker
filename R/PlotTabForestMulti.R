@@ -109,8 +109,7 @@ PlotTabForestMulti <- function(data,
                                   only.stat=FALSE,
                                   pdf.name=NULL,
                                   pdf.param=list(width=6, height=4.5),
-                                  par.param=list(cex=1.2, cex.main=1.5, cex.sub=1, cex.axis=1,
-)) {
+                                  par.param=list(cex=1.2, cex.main=1.5, cex.sub=1, cex.axis=1)) {
 
   if(compare.bep.itt & compare.subgroup) stop("compare.bep.itt & compare.subgroup cannot both be true!")
   if(compare.bep.itt)if(is.null(bep))stop("compare.bep.itt is TRUE, bep needs to be specified!")
