@@ -12,17 +12,29 @@
 #' @importFrom lsmeans lsmeans
 #' @importFrom broom tidy
 #'
+#' @examples
+#' library(dplyr) # for %>% operator
+#'
+#' # create model on which to calculate lsmeans
+#' gls(mpg ~ hp + carb + wt,
+#'     data = mtcars %>%
+#'              mutate(carb = as.factor(carb)), # make sure contrast is factor
+#'     na.action = na.exclude) %>%
+#'
+#' # call lsmeans, specifying factors over which means should be calculated
+#' sas.lsmeans(~ carb)
+#'
 #' @export
 sas.lsmeans <- function(model.obj, specs, mode = 'kenward-roger',
-                        as.data.frame = FALSE, quietly = FALSE, ...) {
+                        as.data.frame = FALSE,
+                        quietly = FALSE, verbose = FALSE, ...) {
 
-    if (!quietly)
-        message(paste(
-            "To mirror SAS functionality:",
-            "mode of 'kenward-roger' will be used unless otherwise specified.",
-            "model.obj will be fit with only complete response variables.",
-            "weights set by count per level based on full dataset.",
-            sep = "\n  - "))
+    if (!quietly) message(paste(
+        "To mirror SAS functionality:",
+        " - mode of 'kenward-roger' will be used unless otherwise specified.",
+        " - model.obj will be fit with only complete response variables.",
+        " - weights set by count per level based on full dataset.\n",
+        sep = "\n"))
 
     # get model.obj formula response variable
     model.call  <- as.list(model.obj$call)
@@ -67,8 +79,14 @@ sas.lsmeans <- function(model.obj, specs, mode = 'kenward-roger',
         list(sas.model.obj,
              specs = specs,
              mode = mode,
-             weights = table(eval(data)[lsmeans.levels])),
+             weights = if (is.null(lsmeans.levels)) 'proportional'
+                       else table(eval(data)[lsmeans.levels])),
         list(...))
+
+    if (!quietly & verbose) {
+        message('Running lsmeans::lsmeans with parameters: ')
+        message(show(.dots))
+    }
 
     # fit and output
     lsmeans.fit <- do.call(lsmeans, .dots)

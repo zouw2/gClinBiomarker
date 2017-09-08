@@ -5,7 +5,7 @@
 \title{Compute LSMEANS to mirror SAS functionality}
 \usage{
 sas.lsmeans(model.obj, specs, mode = "kenward-roger", as.data.frame = FALSE,
-  quietly = FALSE, ...)
+  quietly = FALSE, verbose = FALSE, ...)
 }
 \arguments{
 \item{model.obj}{A model object on which to calculate lsmeans}
@@ -22,6 +22,19 @@ sas.lsmeans(model.obj, specs, mode = "kenward-roger", as.data.frame = FALSE,
 }
 \description{
 Compute LSMEANS to mirror SAS functionality
+}
+\examples{
+library(dplyr) # for \%>\% operator
+
+# create model on which to calculate lsmeans
+gls(mpg ~ hp + carb + wt,
+    data = mtcars \%>\%
+             mutate(carb = as.factor(carb)), # make sure contrast is factor
+    na.action = na.exclude) \%>\%
+
+# call lsmeans, specifying factors over which means should be calculated
+sas.lsmeans(~ carb)
+
 }
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}, Christina Rabe \email{rabe.christina@gene.com}
