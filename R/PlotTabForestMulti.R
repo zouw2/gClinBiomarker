@@ -106,9 +106,11 @@ PlotTabForestMulti <- function(data,
                                   cex.headings=1.1,
                                   cex.note=1,
                                   cols="darkgreen",
+                                  only.stat=FALSE,
                                   pdf.name=NULL,
                                   pdf.param=list(width=6, height=4.5),
-                                  par.param=list(cex=1.2, cex.main=1.5, cex.sub=1, cex.axis=1)) {
+                                  par.param=list(cex=1.2, cex.main=1.5, cex.sub=1, cex.axis=1,
+)) {
 
   if(compare.bep.itt & compare.subgroup) stop("compare.bep.itt & compare.subgroup cannot both be true!")
   if(compare.bep.itt)if(is.null(bep))stop("compare.bep.itt is TRUE, bep needs to be specified!")
@@ -300,6 +302,8 @@ PlotTabForestMulti <- function(data,
       num2 <- 5
       wid2 <- c( wid,2, 1.5,  1, 2, 1, 5)
     }
+    if(!only.stat){
+        
     PlotTabForest(label.text=tabletext[-c(1), ],
                 mean=as.numeric(tabletext[-1, num1]),
                 lower=as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1])),
@@ -321,7 +325,7 @@ PlotTabForestMulti <- function(data,
                 cex.note=cex.note,
                 par.param=par.parm
   )
-  }
+    }}
 
   if(!tabforest){
     num1 <- 5
@@ -351,7 +355,9 @@ PlotTabForestMulti <- function(data,
           xlog <- TRUE
       }
 
-      forestplot(tabletext2,
+      if(!only.stat)
+      {
+          forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,num1])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1]))),
                  upper=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][2]))),
@@ -368,7 +374,7 @@ PlotTabForestMulti <- function(data,
                                 xlab=gpar(cex = cex.note))
       )
 
-    }
+      }}
   PlotParam()
 
   out <- tabletext

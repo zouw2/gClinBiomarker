@@ -15,9 +15,9 @@ PlotTabForestMulti(data, outcome.class = c("survival", "binary",
   "NE", NA), quantile.type = 2, placebo.code = NULL, active.code = NULL,
   var.code = NULL, tabforest = FALSE, alpha = 0.05, main = NULL,
   sub = NULL, clip = NULL, xlab = NULL, cex.headings = 1.1,
-  cex.note = 1, cols = "darkgreen", pdf.name = NULL,
+  cex.note = 1, cols = "darkgreen", only.stat = FALSE, pdf.name = NULL,
   pdf.param = list(width = 6, height = 4.5), par.param = list(cex = 1.2,
-  cex.main = 1.5, cex.sub = 1, cex.axis = 1))
+  cex.main = 1.5, cex.sub = 1, cex.axis = 1, ))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -118,6 +118,8 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \item{cex.note}{amount of magnification of the note. Default is 1.}
 
 \item{cols}{Color of the 'effect size' displayed in the forest plot.}
+
+\item{only.stat}{if it is TRUE, only summary statistics will be generated. No figure will be generated}
 
 \item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "Forestplot.pdf".}
 
