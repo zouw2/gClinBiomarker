@@ -250,7 +250,7 @@ PlotTabForestMulti <- function(data,
   } else {
     sub.text <- sub
   }
-
+ if(!only.stat){
   PlotParam(pdf.name, pdf.param, par.param)
 
   if (is.null(clip) & outcome.class=="survival") {
@@ -302,7 +302,7 @@ PlotTabForestMulti <- function(data,
       num2 <- 5
       wid2 <- c( wid,2, 1.5,  1, 2, 1, 5)
     }
-    if(!only.stat){
+   
         
     PlotTabForest(label.text=tabletext[-c(1), ],
                 mean=as.numeric(tabletext[-1, num1]),
@@ -325,7 +325,7 @@ PlotTabForestMulti <- function(data,
                 cex.note=cex.note,
                 par.param=par.parm
   )
-    }}
+    }
 
   if(!tabforest){
     num1 <- 5
@@ -355,8 +355,8 @@ PlotTabForestMulti <- function(data,
           xlog <- TRUE
       }
 
-      if(!only.stat)
-      {
+
+
           forestplot(tabletext2,
                  mean=c(NA,as.numeric(tabletext[-1,num1])),
                  lower=c(NA,as.numeric(sapply(tabletext[-1, num2], function(z)strsplit(z, " - ")[[1]][1]))),
@@ -374,9 +374,9 @@ PlotTabForestMulti <- function(data,
                                 xlab=gpar(cex = cex.note))
       )
 
-      }}
+      }
   PlotParam()
-
+}
   out <- tabletext
 }
 
