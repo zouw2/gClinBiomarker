@@ -3,7 +3,7 @@
 \name{input.specs}
 \alias{input.specs}
 \title{Data specs example}
-\format{A data frame with 18 rows and 2 variables:
+\format{A data frame with 19 rows and 2 variables:
 \describe{
      \item{\code{Variable}}{Variable names.}
      \item{\code{Type}}{Describes how the column types must be specified:\cr\cr
