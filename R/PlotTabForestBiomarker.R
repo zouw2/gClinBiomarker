@@ -1130,4 +1130,5 @@ PlotTabForestBiomarker <- function(data,
         }
         out <- tabletext}
     out
+    }
 }
