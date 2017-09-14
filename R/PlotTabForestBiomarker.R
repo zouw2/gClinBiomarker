@@ -358,8 +358,41 @@ PlotTabForestBiomarker <- function(data,
                 }}
         }
 
-    }
+     hz <- vector("list",1)
+      for(i in 1:length(hl)){
+        if(hl[i] < nrow(tabletext)){
+        hz[[i]] <- gpar(lwd=2, col="#444444")
+        names(hz)[i] <- hl[i]+2
+        }
+      }
 
+      tabletext2 <- tabletext
+      tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
+      if(is.null(xlab)) {
+        if(nArms==2)xlab <- paste("<-- ", active.code, "better [HR] ",placebo.code, "better -->\n",note)
+        if(nArms==1 | across.and.within)xlab <- "HR"
+      }
+      if(across.and.within) {
+        cols <- rep(cols, nrow(res))
+        cols[(length(bm.list)+1): length(cols)] <- "chocolate4"
+      }
+              forestplot(tabletext2,
+                 mean=c(NA,as.numeric(tabletext[-1,5])),
+                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
+                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
+                 xlab=xlab,
+                 hrzl_lines=hz,align="l",
+                 lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
+                 lwd.zero=3,
+                  xlog=TRUE, clip=clip, xticks=xticks,
+                 title=paste(main.text,"\n",sub.text),
+                 #graphwidth=unit(100, 'mm'),
+                 colgap=unit(cex.note*4,"mm"),
+                 line.margin =unit(cex.note*2,"mm"),
+                 txt_gp=fpTxtGp(label=gpar(cex=cex.note),
+                                ticks=gpar(cex=cex.note),
+                                xlab=gpar(cex = cex.note))
+      )
 
     #### stratification,
     # one for ITT and one for BEP
