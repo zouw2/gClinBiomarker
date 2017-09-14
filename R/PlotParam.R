@@ -40,6 +40,12 @@ PlotParam <- function(pdf.name, pdf.param, par.param) {
             par(old.par)
         }
     } else {
+        # Fix the issue of plotting multiple graphs in one graphical device.
+        # It does not fix the issue in markdown though.
+        if (names(dev.cur()) == "RStudioGD") {
+            invisible(dev.off())
+        }
+
         # Create/Modify pdf.param.
         if (!is.null(pdf.name)) {
             if (is.null(pdf.param)) {
