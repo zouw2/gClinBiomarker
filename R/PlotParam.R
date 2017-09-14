@@ -31,7 +31,7 @@ PlotParam <- function(pdf.name, pdf.param, par.param) {
     if (all(vec)) {
         # Load old par on exit and shut down the graphical device.
         #if (names(dev.cur()) != "RStudioGD" & length(all_labels()) == 0) {
-        
+
         if (names(dev.cur()) == "quartz_off_screen" & length(all_labels()) == 0) {
             par(old.par)
             invisible(dev.off())
