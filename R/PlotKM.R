@@ -7,7 +7,7 @@
 #' @param bep name of the column which indicates subpopulation (e.g. biomarker evaluable population)
 #' If parameter bep is not defined, the KM curve(s) will be draw using all samples.
 #' If bep is defined, the KM curve(s) will be draw using only samples in BEP.
-#' @param varlist name (or names) of the column which indicates the subgroups (e.g. treatment group).
+#' @param varlist name (or names) of the column which indicates the subgroups (e.g. treatment group). It is supposed to be a vector.
 #' This is an alternative option for specifying variable of interest (instead of specifying trt and var).
 #' trt and var will be ignored if varlist is not NULL.
 #' Compare to specifying trt and var, user can input any numbers of variables to varlist (a vector of column names).

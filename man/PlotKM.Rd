@@ -55,7 +55,7 @@ applied. Otherwise "<=" and ">" will be applied.}
 \item{numerical.cutoff}{raw value to dichotomize continuous biomarker measure. numerical.cutoff and percentile.cutoff
 cannot be both specified}
 
-\item{varlist}{name (or names) of the column which indicates the subgroups (e.g. treatment group).
+\item{varlist}{name (or names) of the column which indicates the subgroups (e.g. treatment group). It is supposed to be a vector.
 This is an alternative option for specifying variable of interest (instead of specifying trt and var).
 trt and var will be ignored if varlist is not NULL.
 Compare to specifying trt and var, user can input any numbers of variables to varlist (a vector of column names).
