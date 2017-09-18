@@ -21,3 +21,10 @@ library(devtools)
 install_github("RPackages/gClinBiomarker",
 host="https://github.roche.com/api/v3")
 ```
+
+Note that on bce, the default R is from an older version. To install, type
+
+```r
+install_github("RPackages/gClinBiomarker",
+host="github.roche.com/api/v3")
+```
