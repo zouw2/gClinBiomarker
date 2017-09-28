@@ -73,6 +73,8 @@ PlotProperty <- function(data,
     }
 
     # Check the data
+    stopifnot(class(data) == "data.frame")
+
     if (!is.data.frame(data)) {
         stop("An input is not a data frame!")
     }
