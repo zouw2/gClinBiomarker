@@ -5,8 +5,8 @@
 \title{Summary statistics of two-group comparison}
 \usage{
 StatSummary(outcome.var, subgroup.var = NULL, treatment.var, placebo.code,
-  active.code, outcome.class, alpha = 0.05, covariate.var = NULL,
-  strat.factor.var = NULL, return.fit = FALSE,
+  active.code, outcome.class, alpha = 0.05, surv.conf.type = "plain",
+  covariate.var = NULL, strat.factor.var = NULL, return.fit = FALSE,
   fit.para = list(prop.test.use.continuity.correction = T))
 }
 \arguments{
@@ -23,6 +23,8 @@ StatSummary(outcome.var, subgroup.var = NULL, treatment.var, placebo.code,
 \item{outcome.class}{the outcome class of the 'outcome.var' variable. One of the 3 values - "survival", "binary", or "continuous".}
 
 \item{alpha}{the confidence level (CI) for point estimate, i.e. 0.05 (default) for 95 percent CI.}
+
+\item{surv.conf.type}{confidence interval type. See conf.type in survfit. Default is "plain"}
 
 \item{covariate.var}{a vector specifying the covariate variables. This can be added to adjust for in the analysis for survival and continuous outcome.var variable classes. Default is NULL.}
 
@@ -52,7 +54,7 @@ Treatment group variable can be forced into a factor. Censorship variable is 1 i
 }
 \examples{
 data(input)
-StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous")
+StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous",surv.conf.type="plain")
 
 }
 \author{

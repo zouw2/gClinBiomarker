@@ -12,9 +12,9 @@ PlotKM(data, tte, cens, trt = NULL, var = NULL, var.class = NULL,
   cex.nrisk = 0.8, plot.grid = TRUE, grids = seq(0, 1, 0.1),
   plot.legend = TRUE, legend.loc = "topright", legend.x = NULL,
   legend.y = NULL, col = NULL, lty = NULL, lwd = 3,
-  xlab = "Months To Event Or Censoring", ylim = c(0, 1), xlim = NULL,
-  ylab = "Survival Probability", main = "", sub = "",
-  plot.median = FALSE, median.cex = 0.8, digits = 2,
+  surv.conf.type = "plain", xlab = "Months To Event Or Censoring",
+  ylim = c(0, 1), xlim = NULL, ylab = "Survival Probability", main = "",
+  sub = "", plot.median = FALSE, median.cex = 0.8, digits = 2,
   y.percentage = FALSE, pdf.name = NULL, pdf.param = list(height = 5),
   par.param = list(mar = c(12, 9, 3, 2)), return.data = FALSE,
   var.levels = NULL, var.labels = NULL)
@@ -98,6 +98,8 @@ at risk will be summarized by subgroup.}
 \item{plot.legend}{whether show legend}
 
 \item{legend.loc, legend.x, legend.y}{legend location. a single keyword from the list "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" and "center".}
+
+\item{surv.conf.type}{type of confidence interval. Default is "plain". See survfit}
 
 \item{xlim, ylab, xlab, main, col, lty, lwd, sub, ylim}{see \code{\link{plot}}}
 

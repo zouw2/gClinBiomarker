@@ -63,6 +63,7 @@
 #' If it is TRUE, a table will be generated with forest plots incorpriated
 #' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.
 #' @param alpha type I error rate. Default is 0.05.
+#' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit
 #' @param cutoff.digits,digits cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display
 #' @param main,main.prefix main title (prefix of title) of the forest plot. Default is "Association of biomarker effect within treatment arms".
 #' @param sub sub title under the forest plot. Default is NULL.
@@ -121,6 +122,7 @@ rsp.cat = TRUE,
 rsp.response = c("CR","PR"),
 rsp.nonresponse = c("SD", "PD","NON CR/PD","NE",NA),
 var.code=NULL,
+surv.conf.type="plain",
 alpha=0.05,
 main=NULL,
 main.prefix=NULL,
@@ -385,7 +387,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         if(nArms==2){
             if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
             subgroup.var=jj, treatment.var=data.bep[,trt],
-            placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
+            placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,surv.conf.type=surv.conf.type,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
             
@@ -393,6 +395,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 StatSummary(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
                 placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
+		surv.conf.type=surv.conf.type,
                 covariate.var=Covariate,
                 strat.factor.var=Strat.fac)
                 ,res)
@@ -425,6 +428,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 res.soc <- t(sapply(bm.list.soc,function(jj)StatSummary(outcome.var=data.bep.soc[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.soc[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
+		surv.conf.type=surv.conf.type,
                 covariate.var=Covariate.bep.soc,
                 strat.factor.var=Strat.fac.bep.soc)))
                 rownames(res.soc) <- paste0(placebo.code,":", names(bm.list.subonly))
@@ -439,6 +443,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 res.active <- t(sapply(bm.list.active,function(jj)StatSummary(outcome.var=data.bep.active[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.active[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
+		surv.conf.type=surv.conf.type,
                 covariate.var=Covariate.bep.active,
                 strat.factor.var=Strat.fac.bep.active)))
                 rownames(res.active) <- paste0(active.code,":", names(bm.list.subonly))
@@ -455,6 +460,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
             subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
             placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
+	    surv.conf.type=surv.conf.type,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
             inter.p <- NULL

@@ -40,6 +40,7 @@
 #' @param y.percentage whether show percentage in y axis (0-100) or probability (0-1). Default is probability
 #' @param return.data if it is TRUE, input data frame will be returned. If var is cont., an additional column called
 #' var_group will be added to the data form, which stores the dichotomized values
+#' @param surv.conf.type type of confidence interval. Default is "plain". See survfit
 #' @param var.levels,var.labels parameter for old versions, please dont use
 #' @param  ... additional parameters for \code{\link{plot}}
 #'
@@ -69,7 +70,7 @@ PlotKM <- function(data, tte, cens,
                    bep=NULL, bep.indicator=1,
                    plot.nrisk=TRUE, nrisk.interval=2, cex.nrisk=.8,
                    plot.grid=TRUE, grids=seq(0,1,0.1), plot.legend=TRUE,legend.loc="topright", legend.x=NULL, legend.y=NULL,
-                   col=NULL, lty=NULL, lwd=3,
+                   col=NULL, lty=NULL, lwd=3,surv.conf.type="plain",
                    xlab="Months To Event Or Censoring", ylim=c(0,1), xlim=NULL,  ylab="Survival Probability",
                    main="",sub="", plot.median=FALSE,median.cex=.8,digits=2,y.percentage=FALSE,
                    pdf.name=NULL, pdf.param=list(height=5), par.param=list(mar=c(12,9,3,2)), return.data=FALSE,
@@ -244,7 +245,7 @@ PlotKM <- function(data, tte, cens,
 
     if(is.null(var.labels))var.labels <- levels(strat.vec)
 
-    fit <- survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", var)), data=data)
+    fit <- survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", var)),conf.type=surv.conf.type, data=data)
 
 
     # xlim

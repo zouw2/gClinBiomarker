@@ -10,6 +10,7 @@
 #'
 #' @param outcome.var a vector specifying the outcome variable. For 'binary' outcome.var, it should be a vector of 1 or 0. In case of a 'survival' variable, this will be a matrix of two columns: 1) time to event 2) censorship.
 #' @param subgroup.var a vector of row index specifying the subgroup to be included for the analysis. If NULL (default), all data will be used.
+#' @param surv.conf.type confidence interval type. See conf.type in survfit. Default is "plain"
 #' @param treatment.var the name of the treatment variable.
 #' @param placebo.code the name of the control group within the treatment variable.
 #' @param active.code the name of the treatment/experimental group within the treatment variable.
@@ -33,7 +34,7 @@
 #'
 #' @examples
 #' data(input)
-#' StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous")
+#' StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous",surv.conf.type="plain")
 #'
 #' @export
 
@@ -44,6 +45,7 @@ StatSummary <- function(outcome.var,
                         active.code,
                         outcome.class,
                         alpha=0.05,
+			surv.conf.type="plain",
                         covariate.var=NULL,
                         strat.factor.var=NULL,
                         return.fit=FALSE,
@@ -236,7 +238,8 @@ StatSummary <- function(outcome.var,
         Lower <- exp(mytest[1] - qnorm(1 - alpha/2) * mytest[3])
         Upper <- exp(mytest[1] + qnorm(1 - alpha/2) * mytest[3])
 
-        ret <- c(as.numeric(t(summary(survfit(Surv(Response[subgroup.var], Event[subgroup.var]) ~ treatment.var[subgroup.var]))$table[,c("events","n.start","median"),drop=FALSE])),
+        ret <- c(as.numeric(t(summary(survfit(Surv(Response[subgroup.var], Event[subgroup.var]) ~ treatment.var[subgroup.var], 
+					      conf.type=surv.conf.type))$table[,c("events","n.start","median"),drop=FALSE])),
                  Effect.Size, Lower, Upper, mytest[5])
 
         names(ret) <- c(paste(rep(levels(treatment.var),each=3), rep(c("events","n","MST"),2),sep=".")

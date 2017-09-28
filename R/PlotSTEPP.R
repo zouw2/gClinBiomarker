@@ -31,6 +31,7 @@
 #' @param estimate.color color of the estimate line. Default is "blue".
 #' @param estimate.lty type of the estimate line. Default is 1.
 #' @param estimate.lwd width of the estimate line. Default is 2.
+#' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit.
 #' @param ci.color color of the CI lines. Default is "black".
 #' @param ci.lty type of the CI lines. Default is 2.
 #' @param ci.lwd width of the CI lines. Default is 1.
@@ -106,6 +107,7 @@ PlotSTEPP <- function(data,
                      estimate.color="blue",
                      estimate.lty = 1,
                      estimate.lwd = 2,
+		     surv.conf.type="plain",
                      ci.color = "black",
                      ci.lty = 2,
                      ci.lwd = 1,
@@ -211,25 +213,25 @@ PlotSTEPP <- function(data,
     if (is.null(covariate) & is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                placebo.code, active.code, outcome.class,
-                               alpha,
+                               alpha, surv.conf.type=surv.conf.type,
                                covariate = NULL,
                                strat.factor.var = NULL)["Effect.Size"]
     } else if (!is.null(covariate) & is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
-                                 alpha,
+                                 alpha,surv.conf.type=surv.conf.type,
                                  covariate = Covariate,
                                  strat.factor.var = NULL)["Effect.Size"]
     } else if (is.null(covariate) & !is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
-                                 alpha,
+                                 alpha,surv.conf.type=surv.conf.type,
                                  covariate = NULL,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
     } else if (!is.null(covariate) & !is.null(strata)) {
         effect.ac <- StatSummary(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
-                                 alpha,
+                                 alpha,surv.conf.type=surv.conf.type,
                                  covariate = Covariate,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
     }
@@ -294,21 +296,21 @@ PlotSTEPP <- function(data,
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
-                            outcome.class, alpha,
+                            outcome.class, alpha,surv.conf.type=surv.conf.type,
                             covariate = Covariate,
                             strat.factor.var = NULL)[c("Effect.Size", "Lower", "Upper")]
         } else if (is.null(covariate) & !is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
-                            outcome.class, alpha,
+                            outcome.class, alpha,surv.conf.type=surv.conf.type,
                             covariate = NULL,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
         } else if (!is.null(covariate) & !is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 StatSummary(Outcome, sindex, Treatment,
                             placebo.code, active.code,
-                            outcome.class, alpha,
+                            outcome.class, alpha,surv.conf.type=surv.conf.type,
                             covariate = Covariate,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
         }

@@ -4,7 +4,8 @@
 \alias{LogRankTab}
 \title{Log rank test p value and other summary statistics for subgroup analysis}
 \usage{
-LogRankTab(data, tte, cens, var, time.unit = "month", fillname = "")
+LogRankTab(data, tte, cens, var, time.unit = "month",
+  surv.conf.type = "plain", fillname = "")
 }
 \arguments{
 \item{var}{a vector that indicates variables of interest.
@@ -12,6 +13,8 @@ Hazard ratio, CI and pvalue of these variables will be calculated. All elements 
 It will be ignored if fit or form is not null.}
 
 \item{time.unit}{Default is month.}
+
+\item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
 
 \item{fillname}{(character) variable specifying the content for the cell that located in row one and column one, the default value for fillname is NULL.}
 }

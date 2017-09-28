@@ -7,6 +7,7 @@
 #' @param fillname    
 #' (character) variable specifying the content for the cell that located in row one and column one, the default value for fillname is NULL.
 #' @param time.unit Default is month.
+#' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit
 #' @note This function takes time to event outcome, and one categorical variable (parameter var). 
 #' This function generates a table that contains number of patients, median time to event, and log rank test p value ( against first level in var)
 #' For more general time to event modeling, see function CoxTab() (e.g. continuous factor, multiple factors, stratification, hazard ratio estimation, etc)
@@ -15,7 +16,7 @@
 #' data(input)
 #' LogRankTab(data=input,tte="PFS", cens="PFS.event",var="Arm")
 #' @export
-LogRankTab <- function(data, tte, cens, var, time.unit="month", fillname=""){
+LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="plain",fillname=""){
 	if(length(var)!=1) stop("only one element should be specified in parameter var!")
         stopifnot(all(c(tte, cens, var)%in%colnames(data)))	
 	group <- var
@@ -34,7 +35,7 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", fillname=""){
 	  }
 	  
 	  ## Median&Co
-	  fit <- summary(survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", group)), data=data, conf.type="plain"))
+	  fit <- summary(survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", group)), data=data, conf.type=surv.conf.type))
 	  if(class(fit$tab) == 'numeric') return(matrix(fit$tab, nrow=1, dimnames=list(c(), names(fit$tab)))) 
 	    
 	  if(nArms==1) {
