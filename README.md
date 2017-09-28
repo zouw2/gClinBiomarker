@@ -30,3 +30,7 @@ Note that on bce (r.bas.roche.com), the default R is from an older version. To i
 install_github("RPackages/gClinBiomarker",
 host="github.roche.com/api/v3")
 ```
+
+## gClinBiomarker overview:
+
+[embed]https://github.roche.com/lengn/gClinbiomarker_documents/blob/master/BiomarkersTools_overview.pdf[/embed]
