@@ -136,6 +136,9 @@ only.stat=FALSE,
 pdf.name=NULL,
 pdf.param=list(width=12, height=4.5),
 par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
+
+    stopifnot(class(data) == "data.frame")
+
     outcome.class <- match.arg(outcome.class, c("survival", "binary","continuous"))
     if(outcome.class=="binary") {
         covariate <- strata <- NULL
@@ -145,7 +148,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         covariate <- strata <- NULL
         message("Stratification is not supported for continuous outcome")
     }
-    
+
     if(outcome.class == "survival" | (outcome.class=="binary" & rsp.cat==F)) {
         tmp <- rowMeans(data[,outcome.var])
         if (anyNA(tmp)) {
@@ -154,14 +157,14 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         }
     }
     if(is.null(var))show.itt <- TRUE
-    
+
     possible.class <-c("categorical","numeric")
     if(is.null(var.class)||!all(var.class%in%possible.class)){
         if(class(data[,var])%in%c("numeric","integer"))var.class <- "numeric"
         if(class(data[,var])%in%c("logical"))class(data[,var]) <- "character"
         if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
     }
-    
+
     var.class <- match.arg(var.class,c("numeric","categorical"))
     stopifnot(var%in%colnames(data))
     if(is.null(bep)){
@@ -170,12 +173,12 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         bep <- "BEPnew"
     }
     if(!is.null(percentile.cutoff) & !is.null(numerical.cutoff)) stop("Cannot specify both percentile.cutoff and numerical.cutoff")
-    
+
     Outcome <- data[, outcome.var]
     Biomarker <- data[, var]
-    
-    
-    
+
+
+
     if(var.class=="categorical"){
         if (!is.null(var.code)) {
             if (length(var.code) == length(levels(Biomarker))) {
@@ -186,11 +189,11 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         } else {
             var.code <- levels(Biomarker)
         }}
-    
-    
-    
+
+
+
     if(!is.null(trt))if(length(unique(data[,trt]))==1)  trt <- NULL
-    
+
     if(is.null(trt)) nArms <- 1
     if (!is.null(trt)) { # multi-arm study
         Treatment <- data[,trt]
@@ -213,7 +216,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         if(is.null(placebo.code))placebo.code <- Arms[1]
         if(is.null(active.code))active.code <- Arms[-1]
     }
-    
+
     if(nArms==1){
         if(show.itt){
             show.itt <- FALSE
@@ -228,30 +231,30 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             within.bin <- FALSE
         }
     }
-    
+
     if(within.bin & any(c(greater, less))){
         message("within.bin is TRUE, greater and less will be ignored")
         greater <- less <- FALSE
     }
-    
+
     if(greater.by.less) {
         greater <- less <- TRUE
         within.bin <- FALSE
     }
-    
+
     if(is.null(cols)){
         cols <- "mediumblue"
         if(within.bin) cols <- "darkorchid"
         if(nArms==1) cols <- "chocolate4"
     }
-    
+
     if(is.null(var.name))var.name <- var
     if(is.null(bep.name))bep.name <- "BEP"
     if(is.null(itt.name))itt.name <- "All"
     ncut <- max(length(percentile.cutoff), length(numerical.cutoff))
     if(var.class=="numeric" & ncut==0)stop("numeric var but no cutoff was specified!")
-    
-    
+
+
     data.bep <- data[which(data[[bep]]%in%bep.indicator),]
     bm.list <- list()
     #if(show.itt)bm.list[[itt.name]] <- rep(T, length(data.bep[[1]]))
@@ -264,7 +267,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         }
         if(var.class=="numeric"){
             if(any(is.na(data.bep[[var]])))stop(paste("in BEP patients," ,var,"contains NA"))
-            
+
             if(!greater.by.less){
                 if(greater)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
                     qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
@@ -286,7 +289,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                     if(equal.in.high)bm.list[[paste0(var.name,"(<",i,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
                     if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
                 }}
-            
+
             if(greater.by.less){
                 if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
                     qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
@@ -303,7 +306,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                     if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
                 }
             }
-            
+
             if(within.bin)if(!is.null(percentile.cutoff)){
                 percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
                 for(i in 2:length(percentile.cutoff)){
@@ -331,9 +334,9 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                             ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
                         }
                     }
-                    
+
                 }}
-            
+
             if(within.bin)if(!is.null(numerical.cutoff)){
                 numerical.cutoff <- sort(unique(c(min(data.bep[[var]]),max(data.bep[[var]]),numerical.cutoff)))
                 for(i in 2:length(numerical.cutoff)){
@@ -359,28 +362,28 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                     }
                 }}
         }
-        
+
     }
-    
-    
+
+
     #### stratification,
     # one for ITT and one for BEP
-    
+
     if(is.null(covariate)) {
         Covariate <- Covariate.bep <- NULL
     } else {
         Covariate.bep <- data.bep[, covariate]
         Covariate <- data[,covariate]
     }
-    
+
     if(is.null(strata)) {
         Strat.fac <- Strat.fac.bep <- NULL
     } else {
         Strat.fac.bep <- data.bep[, strata]
         Strat.fac <- data[,strata]
     }
-    
-    
+
+
     ################## survival #########################
     if(outcome.class=="survival"){
         res <- NULL
@@ -390,7 +393,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,surv.conf.type=surv.conf.type,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
-            
+
             if(show.itt) {res <- rbind(
                 StatSummary(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
@@ -401,7 +404,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 ,res)
                 rownames(res)[1] <- itt.name
             }
-            
+
             ac <- Arms[2]
             # interaction p value: per arm? If originally cont., then use cont. in modeling
             # no stratification??
@@ -414,7 +417,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             stat <- -2*L2 + 2*L1
             inter.p <- pchisq(stat, df=n1-n2, lower.tail=FALSE)
             if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
-            
+
             if(across.and.within){
                 res.ori <- res
                 data.bep.soc <- data.bep[which(data.bep[[trt]]==placebo.code),]
@@ -432,7 +435,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 covariate.var=Covariate.bep.soc,
                 strat.factor.var=Strat.fac.bep.soc)))
                 rownames(res.soc) <- paste0(placebo.code,":", names(bm.list.subonly))
-                
+
                 data.bep.active <- data.bep[which(data.bep[[trt]]==active.code),]
                 bm.list.active <- data.frame(bm.list)[which(data.bep[[trt]]==active.code),]
                 bm.list.active <- bm.list.active[setdiff(names(bm.list.active),c(itt.name, bep.name))]
@@ -447,13 +450,13 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 covariate.var=Covariate.bep.active,
                 strat.factor.var=Strat.fac.bep.active)))
                 rownames(res.active) <- paste0(active.code,":", names(bm.list.subonly))
-                
+
                 res <- rbind(res.ori, res.soc, res.active)
             }
-            
-            
+
+
         }
-        
+
         if(nArms==1){
             placebo.code <- ""
             active.code <- ""
@@ -465,7 +468,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             strat.factor.var=Strat.fac.bep)))
             inter.p <- NULL
         }
-        
+
         if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
         if(nArms==2 & across.and.within) code.v.ori <- rep(c(placebo.code, active.code),nrow(res.ori))
         if(nArms==1 | across.and.within) {
@@ -483,7 +486,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             code.v <- as.vector(code.l)
             if(across.and.within) code.v <- c(code.v.ori,code.v, code.v)
         }
-        
+
         tabletext <- rbind(c( "Subgroup","Group", "Event/N", "MST", "HR", "CI", "raw P"),
         cbind(as.vector(sapply(rownames(res),function(z)c(z, ""))),
         code.v,
@@ -493,8 +496,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         as.vector(t(cbind(rep("", nrow(res)), round(res[, 7], digits)))),
         as.vector(t(cbind(rep("", nrow(res)), paste(round(res[, 8], digits), round(res[, 9], digits), sep=" - ")))),
         as.vector(t(cbind(rep("", nrow(res)), round.signif(res[, 10], digits))))))
-        
-        
+
+
         if(!only.stat){
             if (is.null(main)) {
                 main.text <- ifelse(nArms==1, "Within-arm Effect of Biomarker", "Across-arm Effect of Biomarker")
@@ -503,7 +506,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             } else {
                 main.text <- main
             }
-            
+
             if (is.null(sub)) {
                 sub1.text <- NULL
                 if(length(covariate) > 0)sub1.text <- paste("Results adjusted by ", paste(covariate, collapse=" , "), sep="")
@@ -518,9 +521,9 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             } else {
                 sub.text <- sub
             }
-            
+
             PlotParam(pdf.name, pdf.param, par.param)
-            
+
             if (is.null(clip)) {
                 good1 <- !is.na(res[, 8]) & is.finite(res[, 8]) & res[, 8] != 0
                 good2 <- !is.na(res[, 9]) & is.finite(res[, 9])
@@ -529,10 +532,10 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 clip <- exp(c(-mm,mm))
             }
             if(is.null(xticks))xticks <- round(c(exp(seq(log(clip[1]),log(clip[2]),length.out=5)),1),digits)
-            
-            
+
+
             wid <- max(nchar(sapply(rownames(res), function(z)strsplit(z, "\n")[[1]][1])))/6
-            
+
             if(within.bin) ncut <- ncut+1
             hl <- 0
             if(show.itt) hl <- c(hl,max(hl)+2)
@@ -545,8 +548,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             if(greater.by.less) hl <- c(hl, max(hl)+ncut*4)
             if(across.and.within & !greater.by.less) hl <- c(hl, max(hl)+ncut*2, max(hl)+ncut*4)
             if(across.and.within & greater.by.less) hl <- c(hl, max(hl)+ncut*4, max(hl)+ncut*8)
-            
-            
+
+
             note <- ""
             if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
             if(!is.null(inter.p)) note <- paste0("unadj P = ", round.signif(inter.p, 2), "(interaction)")
@@ -580,7 +583,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 )
             }
             if(!tabforest){
-                
+
                 hz <- vector("list",1)
                 for(i in 1:length(hl)){
                     if(hl[i] < nrow(tabletext)){
@@ -588,7 +591,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                         names(hz)[i] <- hl[i]+2
                     }
                 }
-                
+
                 tabletext2 <- tabletext
                 tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
                 if(is.null(xlab)) {
@@ -616,24 +619,24 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 ticks=gpar(cex=cex.note),
                 xlab=gpar(cex = cex.note))
                 )
-                
+
             }
-            
+
             PlotParam()
         }
         out <- tabletext
     }
-    
-    
+
+
     ################## binary #########################
     if(outcome.class=="binary"){
-        
+
         if(!rsp.cat)if(!all(data[,outcome.var]%in%c(0,1))){
             stop("rsp.cat is FALSE, all elements in outcome.var should be 0 or 1!")
         }
         if(rsp.cat)if(!all(unique(data[,outcome.var])%in%c(rsp.response,rsp.nonresponse)))
         stop("all unique values in outcome.var column should be included in rsp.response or rsp.nonresponse!")
-        
+
         outcome.var.ori <- outcome.var
         # generate response
         if(rsp.cat){
@@ -641,8 +644,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             data.bep$rspvar <- ifelse(data.bep[,outcome.var]%in%rsp.response,1,0)
             outcome.var <- 'rspvar'
         }
-        
-        
+
+
         res <- NULL
         if(nArms==2){
             if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
@@ -650,7 +653,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             placebo.code=placebo.code, active.code=active.code, outcome.class="binary", alpha=alpha,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
-            
+
             if(show.itt) {res <- rbind(
                 StatSummary(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
@@ -660,7 +663,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 ,res)
                 rownames(res)[1] <- itt.name
             }
-            
+
             ac <- Arms[2]
             # interaction p value: per arm? If originally cont., then use cont. in modeling
             # no stratification??
@@ -673,7 +676,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             stat <- L2-L1
             inter.p <- pchisq(stat, df=n2-n1, lower.tail=FALSE)
             if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
-            
+
             if(across.and.within){
                 res.ori <- res
                 data.bep.soc <- data.bep[which(data.bep[[trt]]==placebo.code),]
@@ -690,7 +693,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 covariate.var=Covariate.bep.soc,
                 strat.factor.var=Strat.fac.bep.soc)))
                 rownames(res.soc) <- paste0(placebo.code,":", names(bm.list.subonly))
-                
+
                 data.bep.active <- data.bep[which(data.bep[[trt]]==active.code),]
                 bm.list.active <- data.frame(bm.list)[which(data.bep[[trt]]==active.code),]
                 bm.list.active <- bm.list.active[setdiff(names(bm.list.active),c(itt.name, bep.name))]
@@ -704,13 +707,13 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 covariate.var=Covariate.bep.active,
                 strat.factor.var=Strat.fac.bep.active)))
                 rownames(res.active) <- paste0(active.code,":", names(bm.list.subonly))
-                
+
                 res <- rbind(res.ori, res.soc, res.active)
             }
-            
-            
+
+
         }
-        
+
         if(nArms==1){
             placebo.code <- ""
             active.code <- ""
@@ -721,7 +724,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             strat.factor.var=Strat.fac.bep)))
             inter.p <- NULL
         }
-        
+
         if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
         if(nArms==2 & across.and.within) code.v.ori <- rep(c(placebo.code, active.code),nrow(res.ori))
         if(nArms==1 | across.and.within) {
@@ -739,7 +742,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             code.v <- as.vector(code.l)
             if(across.and.within) code.v <- c(code.v.ori,code.v, code.v)
         }
-        
+
         tabletext <- rbind(c( "Subgroup","Group", "nRsp/N", "Rsp Rate", "deltaRR", "CI", "raw P"),
         cbind(as.vector(sapply(rownames(res),function(z)c(z, ""))),
         code.v,
@@ -749,7 +752,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         as.vector(t(cbind(rep("", nrow(res)), round(res[, 1], 2)))),
         as.vector(t(cbind(rep("", nrow(res)), paste(round(res[, 2], 2), round(res[, 3], 2), sep=" - ")))),
         as.vector(t(cbind(rep("", nrow(res)), round.signif(res[, 4], 2))))))
-        
+
         if(!only.stat){
             if (is.null(main)) {
                 main.text <- ifelse(nArms==1, "Within-arm Effect of Biomarker", "Across-arm Effect of Biomarker")
@@ -758,7 +761,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             } else {
                 main.text <- main
             }
-            
+
             if (is.null(sub)) {
                 sub1.text <- NULL
                 if(length(covariate) > 0)sub1.text <- paste("Results adjusted by ", paste(covariate, collapse=" , "), sep="")
@@ -773,19 +776,19 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             } else {
                 sub.text <- sub
             }
-            
+
             PlotParam(pdf.name, pdf.param, par.param)
-            
+
             if (is.null(clip)) {
                 xrange <- c(min(round(res[, 2], digits)), max(as.numeric(round(res[, 3], digits))))
                 mm <- max(abs(xrange))
                 clip <- c(-mm,mm)
             }
             if(is.null(xticks))xticks <- round(seq(clip[1],clip[2],length.out=5),digits)
-            
-            
+
+
             wid <- max(nchar(sapply(rownames(res), function(z)strsplit(z, "\n")[[1]][1])))/6
-            
+
             if(within.bin) ncut <- ncut+1
             hl <- 0
             if(show.itt) hl <- c(hl,max(hl)+2)
@@ -798,8 +801,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             if(greater.by.less) hl <- c(hl, max(hl)+ncut*4)
             if(across.and.within & !greater.by.less) hl <- c(hl, max(hl)+ncut*2, max(hl)+ncut*4)
             if(across.and.within & greater.by.less) hl <- c(hl, max(hl)+ncut*4, max(hl)+ncut*8)
-            
-            
+
+
             note <- ""
             if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
             if(!is.null(inter.p)) note <- paste0("* Unadj P = ", paste(round.signif(inter.p, 2),"(interaction)", collapse=" ; "))
@@ -833,7 +836,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 )
             }
             if(!tabforest){
-                
+
                 hz <- vector("list",1)
                 for(i in 1:length(hl)){
                     if(hl[i] < nrow(tabletext)){
@@ -841,7 +844,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                         names(hz)[i] <- hl[i]+2
                     }
                 }
-                
+
                 tabletext2 <- tabletext
                 tabletext2[seq(1,nrow(tabletext2),2),6] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),6],")")
                 if(is.null(xlab)) {
@@ -869,14 +872,14 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 ticks=gpar(cex=cex.note),
                 xlab=gpar(cex = cex.note))
                 )
-                
+
             }
-            
+
             PlotParam()
         }
         out <- tabletext
     }
-    
+
     if(outcome.class=="continuous")  {
         res <- NULL
         if(nArms==2){
@@ -886,7 +889,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             outcome.class="continuous", alpha=alpha,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
-            
+
             if(show.itt) {res <- rbind(
                 StatSummary(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
@@ -896,13 +899,13 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 ,res)
                 rownames(res)[1] <- itt.name
             }
-            
+
             ac <- Arms[2]
             # no stratification??
             fit1 <- lm(data[,outcome.var]~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac))
             inter.p <- coef(summary(fit1))[4,4]
             if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
-            
+
             if(across.and.within){
                 res.ori <- res
                 data.bep.soc <- data.bep[which(data.bep[[trt]]==placebo.code),]
@@ -919,7 +922,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 covariate.var=Covariate.bep.soc,
                 strat.factor.var=Strat.fac.bep.soc)))
                 rownames(res.soc) <- paste0(placebo.code,":", names(bm.list.subonly))
-                
+
                 data.bep.active <- data.bep[which(data.bep[[trt]]==active.code),]
                 bm.list.active <- data.frame(bm.list)[which(data.bep[[trt]]==active.code),]
                 bm.list.active <- bm.list.active[setdiff(names(bm.list.active),c(itt.name, bep.name))]
@@ -933,13 +936,13 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 covariate.var=Covariate.bep.active,
                 strat.factor.var=Strat.fac.bep.active)))
                 rownames(res.active) <- paste0(active.code,":", names(bm.list.subonly))
-                
+
                 res <- rbind(res.ori, res.soc, res.active)
             }
-            
-            
+
+
         }
-        
+
         if(nArms==1){
             placebo.code <- ""
             active.code <- ""
@@ -950,7 +953,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             strat.factor.var=Strat.fac.bep)))
             inter.p <- NULL
         }
-        
+
         if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
         if(nArms==2 & across.and.within) code.v.ori <- rep(c(placebo.code, active.code),nrow(res.ori))
         if(nArms==1 | across.and.within) {
@@ -968,7 +971,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             code.v <- as.vector(code.l)
             if(across.and.within) code.v <- c(code.v.ori,code.v, code.v)
         }
-        
+
         tabletext <- rbind(c( "Subgroup","Group", "Mean", "delta", "CI", "raw P"),
         cbind(as.vector(sapply(rownames(res),function(z)c(z, ""))),
         code.v,
@@ -976,7 +979,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         as.vector(t(cbind(rep("", nrow(res)), round(res[, 1], 2)))),
         as.vector(t(cbind(rep("", nrow(res)), paste(round(res[, 2], 2), round(res[, 3], 2), sep=" - ")))),
         as.vector(t(cbind(rep("", nrow(res)), round.signif(res[, 4], 2))))))
-        
+
         if(!only.stat){
             if (is.null(main)) {
                 main.text <- ifelse(nArms==1, "Within-arm Effect of Biomarker", "Across-arm Effect of Biomarker")
@@ -985,7 +988,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             } else {
                 main.text <- main
             }
-            
+
             if (is.null(sub)) {
                 sub1.text <- NULL
                 if(length(covariate) > 0)sub1.text <- paste("Results adjusted by ", paste(covariate, collapse=" , "), sep="")
@@ -1000,19 +1003,19 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             } else {
                 sub.text <- sub
             }
-            
+
             PlotParam(pdf.name, pdf.param, par.param)
-            
+
             if (is.null(clip)) {
                 xrange <- c(min(round(res[, 2], digits)), max(as.numeric(round(res[, 3], digits))))
                 mm <- max(abs(xrange))
                 clip <- c(-mm,mm)
             }
             if(is.null(xticks))xticks <- round(seq(clip[1],clip[2],length.out=5),digits)
-            
-            
+
+
             wid <- max(nchar(sapply(rownames(res), function(z)strsplit(z, "\n")[[1]][1])))/6
-            
+
             if(within.bin) ncut <- ncut+1
             hl <- 0
             if(show.itt) hl <- c(hl,max(hl)+2)
@@ -1025,8 +1028,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             if(greater.by.less) hl <- c(hl, max(hl)+ncut*4)
             if(across.and.within & !greater.by.less) hl <- c(hl, max(hl)+ncut*2, max(hl)+ncut*4)
             if(across.and.within & greater.by.less) hl <- c(hl, max(hl)+ncut*4, max(hl)+ncut*8)
-            
-            
+
+
             note <- ""
             if(length(cols)==nrow(tabletext)/2) cols <- rep(cols,each=2)
             if(!is.null(inter.p)) note <- paste0("* Unadj P = ", paste(round.signif(inter.p, 2), "interaction",collapse=" ; "))
@@ -1060,7 +1063,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 )
             }
             if(!tabforest){
-                
+
                 hz <- vector("list",1)
                 for(i in 1:length(hl)){
                     if(hl[i] < nrow(tabletext)){
@@ -1068,7 +1071,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                         names(hz)[i] <- hl[i]+2
                     }
                 }
-                
+
                 tabletext2 <- tabletext
                 tabletext2[seq(1,nrow(tabletext2),2),5] <- paste0("(",tabletext2[seq(1,nrow(tabletext2),2),5],")")
                 if(is.null(xlab)) {
@@ -1096,9 +1099,9 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 ticks=gpar(cex=cex.note),
                 xlab=gpar(cex = cex.note))
                 )
-                
+
             }
-            
+
             PlotParam()
         }
         out <- tabletext}
