@@ -51,6 +51,8 @@ StatSummary <- function(outcome.var,
                         return.fit=FALSE,
                         fit.para = list('prop.test.use.continuity.correction'=T)) {
 
+    stopifnot(class(data)=="data.frame")
+
     # If subgroup.var is not defined, use all input data
     if (is.null(subgroup.var)) {
         subgroup.var <- 1:length(treatment.var)
@@ -122,7 +124,7 @@ StatSummary <- function(outcome.var,
                 # (nCV+2)th row (last) is the 'slope' estimate and its associated quantities
                 # which corresponds to the treatment effect size
                 coef.1 <- summary(myfit)$coef
-                mytest <- coef.1[nrow(coef.1), ]            
+                mytest <- coef.1[nrow(coef.1), ]
                 mytest2 <- coef.1[1, ]
                 myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
             }
@@ -238,7 +240,7 @@ StatSummary <- function(outcome.var,
         Lower <- exp(mytest[1] - qnorm(1 - alpha/2) * mytest[3])
         Upper <- exp(mytest[1] + qnorm(1 - alpha/2) * mytest[3])
 
-        ret <- c(as.numeric(t(summary(survfit(Surv(Response[subgroup.var], Event[subgroup.var]) ~ treatment.var[subgroup.var], 
+        ret <- c(as.numeric(t(summary(survfit(Surv(Response[subgroup.var], Event[subgroup.var]) ~ treatment.var[subgroup.var],
 					      conf.type=surv.conf.type))$table[,c("events","n.start","median"),drop=FALSE])),
                  Effect.Size, Lower, Upper, mytest[5])
 
