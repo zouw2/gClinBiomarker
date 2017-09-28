@@ -33,4 +33,8 @@ host="github.roche.com/api/v3")
 
 ## gClinBiomarker overview:
 
-[embed]https://github.roche.com/lengn/gClinbiomarker_documents/blob/master/BiomarkersTools_overview.pdf[/embed]
+![screen shot 2017-09-28 at 1 44 01 pm](https://media.github.roche.com/user/48/files/431d398a-a453-11e7-8801-1c6915156185)
+![screen shot 2017-09-28 at 1 44 13 pm](https://media.github.roche.com/user/48/files/47cad168-a453-11e7-85f7-deee2f7604ab)
+![screen shot 2017-09-28 at 1 44 24 pm](https://media.github.roche.com/user/48/files/4ad58466-a453-11e7-80be-9af0c23fcedd)
+![screen shot 2017-09-28 at 1 44 34 pm](https://media.github.roche.com/user/48/files/507dd1a2-a453-11e7-8216-442f15bd500a)
+![screen shot 2017-09-28 at 1 44 43 pm](https://media.github.roche.com/user/48/files/53ab85e0-a453-11e7-825d-718f28d1fca3)
