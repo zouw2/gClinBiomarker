@@ -22,7 +22,7 @@ It will be ignored if fit or form is not null.}
 This function takes time to event outcome, and one categorical variable (parameter var). It generates log rank p value comparing different groups, and summary statistics
 }
 \note{
-This function takes time to event outcome, and one categorical variable (parameter var). 
+This function takes time to event outcome, and one categorical variable (parameter var).
 This function generates a table that contains number of patients, median time to event, and log rank test p value ( against first level in var)
 For more general time to event modeling, see function CoxTab() (e.g. continuous factor, multiple factors, stratification, hazard ratio estimation, etc)
 }
