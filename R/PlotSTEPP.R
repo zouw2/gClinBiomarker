@@ -132,6 +132,7 @@ PlotSTEPP <- function(data,
                      par.param = list(mar=c(4,4,3,2)),
                      csv.name = NULL) {
 
+  stopifnot(class(data)=="data.frame")
   outcome.class <- match.arg(outcome.class, c("survival", "binary", "continuous"))
   stopifnot(all(c(var, outcome.var, trt)%in%colnames(data)))
   if(any(is.na(data[[var]])))message("some NA in var column, will ignore NA entries")
