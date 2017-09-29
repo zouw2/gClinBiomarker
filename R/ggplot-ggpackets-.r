@@ -16,7 +16,7 @@ ggpacket <- setClass(
 #' Initialize new object by adding ggproto to list with name label
 setMethod("initialize", "ggpacket", function(.Object, ggproto_obj = NULL, label = NULL) {
   if (is.null(ggproto_obj)) return(.Object)
-  .Object <- .Object + setNames(list(ggproto_obj), label)
+  .Object <- .Object + setNames(list(ggproto_obj), list(label))
   .Object
 })
 
@@ -70,26 +70,52 @@ suppressMessages(setMethod("+", c("gg", "ggpacket"), function(e1, e2) e1 + e2@gg
 #' @return a call to the specified function with arguments subset for
 #' only those which match the specified prefix
 #'
+#' @examples
+#' # wrap layer calls in a ggpack to package them
+#' ggpack(geom_bar(na.rm = T))
+#'
+#' # or more explicitly define layer properties
+#' ggpack(geom_bar,        # layer function to bundle
+#'        'bar',           # name of layer - used for filter listed args
+#'        list(na.rm = T), # listed args, commonly as substitute(...())
+#'        color = NA)      # arguments to overwrite listed args
+#'
 #' @export
+#'
 ggpack <- function(`_call`, args_prefix = NULL, passed_args = NULL, ..., null.empty = FALSE) {
-  passthru_args <- modifyList(ggpack_filter_args(args_prefix, passed_args), list(...))
+  .dots <- list(...)
+
+  callfname <- deparse(as.list(match.call())$"_call")
+  if (grepl("geom_", callfname))
+    geom <- ggplot2:::find_subclass("Geom", gsub("^[^_]*_", "", callfname), parent.frame())
+  else if ("geom" %in% names(.dots)) {
+    name <- .dots["geom"]
+    geom <- ggplot2:::find_subclass("Geom", name, parent.frame())
+  } else if (paste0(args_prefix, "geom") %in% names(passed_args)) {
+    name <- passed_args[paste0(args_prefix, "geom")]
+    geom <- ggplot2:::find_subclass("Geom", name, parent.frame())
+  }
+
+  passthru_args <- modifyList(filter_args(args_prefix, passed_args), .dots)
   if (null.empty && length(passthru_args) == 0) return(ggpacket(NULL))
 
   # account for mismatched aesthetics when mapping being passed through
   # (code largely made to mirror ggplot2 layer.r's compute_aesthetics())
   if ('mapping' %in% names(passthru_args)) {
-    callfname <- deparse(as.list(match.call())$"_call")
-    if (grepl("geom_", callfname))
-      geom <- ggplot2:::find_subclass("Geom", gsub("^[^_]*_", "", callfname), parent.frame())
-    else if ("geom" %in% names(passthru_args))
-      geom <- ggplot2:::find_subclass("Geom", passthru_args$geom, parent.frame())
-    passthru_args$mapping <- ggpack_filter_aesthetics(geom, passthru_args$mapping)
+    passthru_args$mapping <- filter_aesthetics(geom, passthru_args$mapping)
+  } else if (any(names(passthru_args) %in% allowed_aesthetics(geom))) {
+    passthru_aes_idx <- names(passthru_args) %in% allowed_aesthetics(geom) &
+      sapply(passthru_args, aes_arg_is_uneval)
+    aes_string_args <- lapply(passthru_args[passthru_aes_idx], deparse)
+    passthru_args <- passthru_args[!passthru_aes_idx]
+    passthru_args$mapping <- do.call(aes_string, aes_string_args)
   }
 
-  if (all(class(`_call`) == "function")) ggpacket(do.call(`_call`, passthru_args), args_prefix)
-  else ggpacket(`_call`, args_prefix)
+  if (all(class(`_call`) == "function"))
+    ggpacket(do.call(`_call`, passthru_args), args_prefix)
+  else
+    ggpacket(`_call`, args_prefix)
 }
-
 
 #' Helper function for ggpack to filter arguments based on a prefix
 #'
@@ -99,34 +125,48 @@ ggpack <- function(`_call`, args_prefix = NULL, passed_args = NULL, ..., null.em
 #' @return a list of arguments that originally were prefaced by the
 #' specified prefix, now with that prefix removed.
 #'
-ggpack_filter_args <- function(prefix, args) {
+filter_args <- function(prefix, args) {
   if (is.null(prefix) || is.null(args)) return(args %||% list())
-  unnamed_args <- args[[prefix]] %||% list()
-  named_args <- args[grep(paste0('^', prefix, '.'), names(args))]
-  named_args <- setNames(named_args, gsub(paste0('^', prefix, '.(.*)$'), '\\1', names(named_args)))
+  unnamed_args <- args[which(names(args) %in% prefix)]
+  named_args <- args[grep(paste0('^',prefix,'.', collapse = '|'), names(args))]
+  named_args <- setNames(named_args, gsub(paste0('^(',paste0(prefix, collapse='|'),').(.*)$'), '\\2', names(named_args)))
   as.list(c(named_args, unnamed_args))
 }
 
 
-
-
-#' Helper function to filter aesthetic mappings based on geometry
+#' Get list of allowed aesthetics for a given geometry class
 #'
 #' @param geom a ggplot2 Geom object
-#' @param mapping a ggplot2 aesthetic mapping
 #'
-#' @return the mapping filtered by accepted aesthetics for the given Geom
+#' @return a character vector of the names of aesthetics permitted by this
+#' geometry object (including Americanized names and base R equivalent names
+#' also accepted by ggplot2)
 #'
-#' @export
-ggpack_flatten_aesthetics_to_group <- function(mapping, ...) {
-  .dots = list(...); if (length(.dots) == 0) return(mapping)
-  mapped_vars <- mapping[!(names(mapping) %in% c('x', 'y'))]
-  mapped_vals <- unique(unlist(mapped_vars, use.names=FALSE))
-  if (length(mapped_vals) > 0) mapping$group <- as.call(c(list(as.symbol("interaction")), mapped_vals))
-  mapping
+allowed_aesthetics <- function(geom) {
+  aes_names <- c('x', 'y', 'group', geom$required_aes, names(geom$default_aes))
+  add_base_eqv_aes(aes_names)
 }
 
 
+#' Add equivalent Americanized and base equivalent names to ggplot aesthetic
+#' list
+#'
+#' @param aes_names a character vector of aesthetic names
+#'
+#' @return a character vector of aesthetic names including any Americanized or
+#' base R equivalent argument names accepted by ggplot2.
+#'
+add_base_eqv_aes <- function(aes_names) {
+  base_eqv_idx <- unlist(ggplot2:::.base_to_ggplot) %in% aes_names
+  base_eqv <- names(ggplot2:::.base_to_ggplot[base_eqv_idx])
+  c(aes_names, base_eqv)
+}
+
+
+#' Determine if an argument is an unevaluated expression
+#' @param i the input object to be tests
+aes_arg_is_uneval <- function(i) { is.name(i) | is.call(i) | is.expression(i) }
+
 #' Helper function to filter aesthetic mappings based on geometry
 #'
 #' @param geom a ggplot2 Geom object
@@ -134,12 +174,30 @@ ggpack_flatten_aesthetics_to_group <- function(mapping, ...) {
 #'
 #' @return the mapping filtered by accepted aesthetics for the given Geom
 #'
-#' @export
-ggpack_filter_aesthetics <- function(geom, mapping) {
-  allowed_aes <- c('x', 'y', 'group', geom$required_aes, names(geom$default_aes))
+filter_aesthetics <- function(geom, mapping) {
+  allowed_aes <- allowed_aesthetics(geom)
   mapping_aes_names <- names(ggplot2:::rename_aes(mapping))
   disallowed_aes <- setdiff(mapping_aes_names, allowed_aes)
-  do.call(ggpack_remove_aesthetics, c(list(mapping), disallowed_aes))
+  do.call(remove_aesthetics, c(list(mapping), disallowed_aes))
+}
+
+
+#' Helper function to flatten specific aesthetics to group
+#'
+#' @param geom a ggplot2 Geom object
+#' @param mapping a ggplot2 aesthetic mapping
+#'
+#' @return the mapping filtered by accepted aesthetics for the given Geom
+#'
+flatten_aesthetics_to_group <- function(mapping, ...) {
+  .dots = list(...)
+  mapped_vars <- mapping[!(names(mapping) %in% c('x', 'y'))]
+  if (length(.dots) > 0)
+    mapped_vars <- mapped_vars[names(mapped_vars) %in% c(list('group'), .dots)]
+  mapped_vals <- unique(unlist(mapped_vars, use.names=FALSE))
+  if (length(mapped_vals) > 0)
+    mapping$group <- as.call(c(list(as.symbol("interaction")), mapped_vals))
+  mapping
 }
 
 
@@ -152,9 +210,8 @@ ggpack_filter_aesthetics <- function(geom, mapping) {
 #' and group mapping set as interaction terms of all non axial
 #' terms.
 #'
-#' @export
-ggpack_remove_aesthetics <- function(mapping, ...) {
-  mapping <- ggpack_flatten_aesthetics_to_group(mapping, ...)
+remove_aesthetics <- function(mapping, ...) {
+  mapping <- flatten_aesthetics_to_group(mapping, ...)
   mapping[!(names(mapping) %in% list(...))]
 }
 
@@ -167,14 +224,7 @@ ggpack_remove_aesthetics <- function(mapping, ...) {
 #' filtering for aesthetics in ggplot2:::.all_aesthetics()
 #'
 #' @export
-ggpack_aes_from_dots <- function(...) {
-  aes_args <- structure(substitute(...()), class = 'uneval')
-  aes_args <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]
-  do.call(ggplot2::aes, aes_args)
-}
-
-#' @export
-ggpack_split_aes_from_dots <- function(...) {
+split_aes_from_dots <- function(...) {
   aes_args     <- structure(substitute(...()), class = 'uneval')
   not_aes_args <- aes_args[!names(aes_args) %in% ggplot2:::.all_aesthetics]
   aes_args     <- aes_args[names(aes_args) %in% ggplot2:::.all_aesthetics]

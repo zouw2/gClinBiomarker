@@ -65,7 +65,7 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
                      plot.style = 'ribbons', ...) {
 
   if (is.null(mapping)) {
-    args <- ggpack_split_aes_from_dots(...)
+    args <- split_aes_from_dots(...)
     mapping <- args$aes; .dots <- args$not_aes
   } else .dots <- list(...)
 
@@ -82,8 +82,13 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
     mapping$y <- as.name(sprintf("%s.fitted", deparse(mapping$y)))
   }
 
-  # collapse linetype to group to account for ggpack overrides
-  mapping <- ggpack_flatten_aesthetics_to_group(mapping, 'linetype')
+  # collapse linetype to group to allow for ggpack overrides (errorbar color)
+  mapping <- flatten_aesthetics_to_group(mapping, 'linetype')
+
+  if (all(c('ymin', 'ymax', 'y') %in% names(mapping)))
+    .dots <- modifyList(.dots, list(
+      ggpk_ribbons.stat = 'identity',
+      ggpk_line_errorbar.stat = 'identity'))
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
   data %>% ggplot2:::ggplot() + mapping +

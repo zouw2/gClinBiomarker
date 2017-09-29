@@ -34,53 +34,69 @@
 #'
 #' @export
 #'
-ggpk_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
-                         fun.data = 'mean_se',
-                         fun.args = list(), ...) {
+ggpk_ribbons <- function(
+  mapping = NULL, data = NULL, show.counts = FALSE, fun.data = 'mean_se',
+  fun.args = list(), ...) {
 
-  .dots <- list(...)
   fun.data <- stat_summary_funs(fun.data, fun.args)
 
+  # prep dots arguments with default values, overwritten with uneval ellipses
+  .defaults = list(ggpk_ribbons.stat = 'summary')
+  .dots <- modifyList(.defaults, substitute(...()))
+
+  # add some conditional arguments to handle stat behavior
+  if (!('identity' %in% .dots[c('ggpk_ribbons.stat', 'label.stat')]))
+    .dots$label.fun.data <- last(fun.data)
+
+  if (!('identity' %in% .dots[c('ggpk_ribbons.stat', 'point.stat')]))
+    .dots$point.fun.data <- last(fun.data)
+
+  if (!('identity' %in% .dots[c('ggpk_ribbons.stat', 'line.stat')]))
+    .dots$line.fun.data <- last(fun.data)
+
   ## pack ## ribbon
-  # reduce through list of ribbon geoms and collect sum
-  Reduce(function(l, r) { l +
-    ggpack(ggplot2::stat_summary, 'ribbon', .dots,
-      geom = 'ribbon',
-      fun.data = r,
-      color = NA,
-      alpha = 0.85 / (length(fun.data) + 2) * (.dots$ribbon.alpha %||% 1))
-  }, fun.data, init = NULL) +
+  # use standard ribbon geom if ribbon.stat is 'identity'
+  (if ('identity' %in% .dots[c('ggpk_ribbons.stat', 'ribbon.stat')])
+    ggpack(ggplot2::geom_ribbon, c('ggpk_ribbons', 'ribbon'), .dots,
+           color = NA,
+           alpha = 0.85 / 3 * (.dots$ribbon.alpha %||% 1))
 
-  ## pack ## point
-  # plot point along stat y
-  ggpack(ggplot2::stat_summary, 'point', .dots,
-         geom = 'point',
-         fun.data = fun.data[[1]],
-         size = ggplot2::rel(3)) +
+    # reduce through list of ribbon geoms and collect sum
+    else
+      Reduce(function(l, r) { l +
+          ggpack(ggplot2::geom_ribbon, c('ggpk_ribbons', 'ribbon'), .dots,
+                 fun.data = r,
+                 color = NA,
+                 alpha = 0.85 / (length(fun.data) + 2) * (.dots$ribbon.alpha %||% 1))
+      }, fun.data, init = NULL) ) +
 
-  ## pack ## line
-  # plot line along stat y
-  ggpack(ggplot2::stat_summary, 'line', .dots,
-      geom = 'line',
-      fun.data = fun.data[[1]]) +
+    ## pack ## point
+    # plot point along stat y
+    ggpack(ggplot2::geom_point, c('ggpk_ribbons', 'point'), .dots) +
 
-  ## pack ## label
-  # add labels of group counts
-  if (isTRUE(show.counts) || show.counts == 'label') {
-    ggpack(ggplot2::stat_summary, 'label', .dots,
-      fun.data = last(fun.data),
-      direction = "y",
-      nudge_y = 0.1,
-      label.size = 0,
-      geom = ifelse(require(ggrepel, quietly = T), "label_repel" , "label"),
-      fill = 'white',
-      alpha = 0.85)
-  } else if (show.counts == 'table') {
-    ggpack(ggplot2::stat_summary, 'label', .dots,
-      fun.data = last(fun.data),
-      geom = 'text_table',
-      show.legend = FALSE)
-  } else NULL
+    ## pack ## line
+    # plot line along stat y
+    ggpack(ggplot2::geom_line, c('ggpk_ribbons', 'line'), .dots) +
+
+    ## pack ## label
+    # add labels of group counts
+    if (isTRUE(show.counts) || show.counts == 'label') {
+      if (require(ggrepel, quietly = TRUE))
+        ggpack(ggrepel::geom_label_repel, c('ggpk_ribbons', 'label'), .dots,
+               direction = "y",
+               nudge_y = 0.1,
+               label.size = 0,
+               fill = 'white',
+               alpha = 0.85)
+      else
+        ggpack(ggplot2::geom_label, c('ggpk_ribbons', 'label'), .dots,
+               label.size = 0,
+               fill = 'white',
+               alpha = 0.85)
+    } else if (show.counts == 'table') {
+      ggpack(geom_text_table, c('ggpk_ribbons', 'label'), .dots,
+             show.legend = FALSE)
+    } else NULL
 
 }
 

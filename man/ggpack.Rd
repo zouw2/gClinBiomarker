@@ -40,6 +40,17 @@ passed to the appropriate sub-function.
 This function should eventually be split out into a separate
 package for wrapping ggplot functions
 }
+\examples{
+# wrap layer calls in a ggpack to package them
+ggpack(geom_bar(na.rm = T))
+
+# or more explicitly define layer properties
+ggpack(geom_bar,        # layer function to bundle
+       'bar',           # name of layer - used for filter listed args
+       list(na.rm = T), # listed args, commonly as substitute(...())
+       color = NA)      # arguments to overwrite listed args
+
+}
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
