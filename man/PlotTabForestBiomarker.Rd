@@ -93,9 +93,9 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{cutoff.digits, digits}{cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display}
 
-\item{placebo.code}{name of the control arm of the treatment variable}
+\item{placebo.code}{name of the control arm of the treatment variable. If you want to specify placebo code using this parameter, both placebo.code and active.code need to be provided.}
 
-\item{active.code}{of the treatment/experimental arm of the treatment variable}
+\item{active.code}{of the treatment/experimental arm of the treatment variable. If you want to specify active code using this parameter, both placebo.code and active.code need to be provided.}
 
 \item{rsp.cat}{whether the response outcome variable is coded as binary (1 as responder and 0 as non-responder),
 If rsp.cat is TRUE, responder categories
