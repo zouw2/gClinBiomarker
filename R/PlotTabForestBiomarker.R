@@ -47,8 +47,8 @@
 #' to define the biomarker evaluable population.
 #' @param covariate a vector specifying the covariate variables to be adjusted in the model. Default is set to NULL, meaning no adjustment.
 #' @param strata name of the stratification variables. Default is set to NULL, meaning no stratification.
-#' @param placebo.code name of the control arm of the treatment variable
-#' @param active.code of the treatment/experimental arm of the treatment variable
+#' @param placebo.code name of the control arm of the treatment variable. If you want to specify placebo code using this parameter, both placebo.code and active.code need to be provided.
+#' @param active.code of the treatment/experimental arm of the treatment variable. If you want to specify active code using this parameter, both placebo.code and active.code need to be provided.
 #' @param var.code ordered levels of the biomarker variable. This will be ignored for continuous biomarker.
 #' If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function
 #' @param rsp.cat whether the response outcome variable is coded as binary (1 as responder and 0 as non-responder),
