@@ -88,8 +88,13 @@ This function generates bar plots to compare response outcome summarization (e.g
 }
 \examples{
 data(input)
-PlotRspBar (data, rsp="Response", binary=FALSE,
-rsp.levels=c("NE","PD","NON CR/PD","SD","PR","CR"),trt="Arm", compare.var=TRUE,var="Sex")
+PlotRspBar (input, outcome.var="Response",
+           binary=TRUE,
+           rsp.response=c("CR","PR"),
+           rsp.nonresponse=c("SD", "PD","NON CR/PD","NE",NA),
+           trt="Arm",
+           compare.var=TRUE,
+           var="KRAS.mutant")
 
 }
 \author{
