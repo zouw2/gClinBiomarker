@@ -28,6 +28,7 @@
 #' @param pdf.name name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
+#' @param ... other arguments passed on to the individual functions, like hist(), boxplot(), etc.
 #'
 #' @return If only a biomarker variable is given, it will crete a density plot for a numeric variable or bar plot for a categorical variable.
 #' If only a vactor of clinical variables is provided, it will create a density plot for each numeric variable and a bar plot for each categorical variable.
@@ -38,6 +39,7 @@
 #' @examples
 #' data(input)
 #' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
+#' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, breaks=5)
 #' PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE))
 #' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3, 2)))
 #' PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), col=rgb(0, 0, 1, 0.2), par.param=list(mfrow=c(3,2)))
@@ -66,7 +68,7 @@ PlotProperty <- function(data,
                          las=1,
                          pdf.name=NULL,
                          pdf.param=list(width=6, height=4.5),
-                         par.param=list(mar=c(4,4,3,2))) {
+                         par.param=list(mar=c(4,4,3,2)), ...) {
 
     if (all(c(show.biomarker.uni, show.clinical.uni, show.association)==FALSE)) {
         stop("show.biomarker.uni, show.clinical.uni, show.association cannot all be FALSE!")
@@ -190,7 +192,7 @@ PlotProperty <- function(data,
                     xlab <- paste(vars[i], ifelse(log2[i] == TRUE, "(log2 scale)", ""))
                 }
 
-                hist(V, prob=T, main=paste(main, vars[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+                hist(V, prob=T, main=paste(main, vars[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2), ...)
 
                 xlab <- old.xlab
 
@@ -209,7 +211,7 @@ PlotProperty <- function(data,
                     }
                 }
                 freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[i], sep=" "), las=las)
+                barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, vars[i], sep=" "), las=las, ...)
             }
         }
 
@@ -248,7 +250,7 @@ PlotProperty <- function(data,
                     xlab <- paste(biomarker.var, ifelse(log2[j] == TRUE, "(log2 scale)", ""))
                 }
 
-                hist(V, prob=T, main=paste(main, biomarker.var, sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+                hist(V, prob=T, main=paste(main, biomarker.var, sep=" "), xlab=xlab, col="grey", ylim=c(0, y2), ...)
 
                 xlab <- old.xlab
 
@@ -289,7 +291,7 @@ PlotProperty <- function(data,
                             xlab <- paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", ""))
                         }
 
-                        hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+                        hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2), ...)
 
                         xlab <- old.xlab
 
@@ -304,7 +306,7 @@ PlotProperty <- function(data,
                     if(show.association==TRUE){
                         plot(x, y, ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")),
                              xlab=paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", "")),
-                             main=paste(biomarker.var, "by", var[i]), col=col)
+                             main=paste(biomarker.var, "by", var[i]), col=col, ...)
                         grid(nx=NULL, ny=NULL)
 
                         if(lowess.line) {
@@ -330,7 +332,7 @@ PlotProperty <- function(data,
                             }
                         }
                         freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las)
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las, ...)
                     }
 
                     if(show.association==TRUE){
@@ -346,7 +348,7 @@ PlotProperty <- function(data,
                         bx <- boxplot(as.formula(paste("yy ~ factor(", var[i], ")")), data=data,
                                       main=paste(biomarker.var, "by", var[i]),
                                       border=border, ylim=ylim, outline=F, axes=F,
-                                      ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")))
+                                      ylab=paste(biomarker.var, add.lab, ifelse(log2[1] == TRUE, "(log2 scale)", "")), ...)
                         points(xx, yy, col=col)
 
                         for (v in 1:length(bx$names)) {
@@ -390,7 +392,7 @@ PlotProperty <- function(data,
                     }
                 }
                 freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las)
+                barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, biomarker.var, sep=" "), las=las, ...)
             }
 
             for (i in 1:length(var)) {
@@ -427,7 +429,7 @@ PlotProperty <- function(data,
                             xlab <- paste(var[i], ifelse(log2[j] == TRUE, "(log2 scale)", ""))
                         }
 
-                        hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2))
+                        hist(V, prob=T, main=paste(main, var[i], sep=" "), xlab=xlab, col="grey", ylim=c(0, y2), ...)
 
                         xlab <- old.xlab
 
@@ -456,7 +458,7 @@ PlotProperty <- function(data,
                         bx <- boxplot(as.formula(paste("yy ~ factor(", biomarker.var, ")")), data=data,
                                       main=paste(var[i], "by", biomarker.var),
                                       border=border, ylim=ylim, outline=F, axes=F,
-                                      ylab=paste(var[i], add.lab, ifelse(log2[j] == TRUE, "(log2 scale)", "")))
+                                      ylab=paste(var[i], add.lab, ifelse(log2[j] == TRUE, "(log2 scale)", "")), ...)
                         points(xx, yy, col=col)
 
                         for (v in 1:length(bx$names)) {
@@ -506,7 +508,7 @@ PlotProperty <- function(data,
                             }
                         }
                         freqs <- paste("(", round(100*tab/sum(tab), 2), "%)", sep="")
-                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las)
+                        barplot(tab, names.arg=paste(names(tab), freqs), main=paste(main, var[i], sep=" "), las=las, ...)
                     }
 
                     if (show.association == TRUE) {
@@ -521,7 +523,7 @@ PlotProperty <- function(data,
                         freqs <- paste("(", round(100*tab[1, ]/sum(tab[1, ]), 2), "%)", sep="")
                         barplot(tab, names.arg=paste(names(tab[1, ]), freqs),
                                 main=paste(main, biomarker.var, "by", var[i], sep=" "),
-                                beside=TRUE, las=las)
+                                beside=TRUE, las=las, ...)
                         legend("topleft", legend = names(tab[, 1]), fill=c("black", "grey"), cex=0.8)
                     }
                 }

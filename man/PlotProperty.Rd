@@ -12,7 +12,7 @@ PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
   show.biomarker.uni = TRUE, show.clinical.uni = FALSE,
   show.association = TRUE, f = 0.3, las = 1, pdf.name = NULL,
   pdf.param = list(width = 6, height = 4.5), par.param = list(mar = c(4, 4,
-  3, 2)))
+  3, 2)), ...)
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -61,6 +61,8 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{pdf.param}{a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.}
 
 \item{par.param}{a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.}
+
+\item{...}{other arguments passed on to the individual functions, like hist(), boxplot(), etc.}
 }
 \value{
 If only a biomarker variable is given, it will crete a density plot for a numeric variable or bar plot for a categorical variable.
@@ -75,6 +77,7 @@ Plot biomarker or clinical variables properties.
 \examples{
 data(input)
 PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
+PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE, breaks=5)
 PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", var="OS", var.class="numeric", log2=c(TRUE, FALSE))
 PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Arm","OS"), var.class=c("categorical", "numeric"), par.param=list(mfrow=c(3, 2)))
 PlotProperty(data=input, biomarker.var="KRAS.mutant", biomarker.class="categorical", var=c("Country", "Age"), var.class=c("categorical", "numeric"), col=rgb(0, 0, 1, 0.2), par.param=list(mfrow=c(3,2)))
