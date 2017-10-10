@@ -51,7 +51,6 @@ StatSummary <- function(outcome.var,
                         return.fit=FALSE,
                         fit.para = list('prop.test.use.continuity.correction'=T)) {
 
-    stopifnot(class(data)=="data.frame")
 
     # If subgroup.var is not defined, use all input data
     if (is.null(subgroup.var)) {
