@@ -12,7 +12,7 @@ Documentations could be found under the "article" tab of the project page. Two d
 
 pdf version of these two documents can be found [here](https://github.roche.com/Rpackages/gClinBiomarker/tree/master/inst/doc).
 
-gClinBiomarker also provide a set of Rmarkdown templates that allow you to generate biomarker analysis report by "one click". The R markdown templates can be found at [here]https://github.roche.com/lengn/gClinbiomarker_documents, along with some slide decks.
+gClinBiomarker also provide a set of Rmarkdown templates that allow you to generate biomarker analysis report by "one click". The R markdown templates can be found at [here](https://github.roche.com/lengn/gClinbiomarker_documents), along with some slide decks.
 
 To install this package from R, use `install_github()` function from the **devtools** package
 
