@@ -2,6 +2,10 @@
 title: "gClinBiomarker Vignette"
 author: "Ning Leng, Alexey Pronin, Christina Rabe, Doug Kelkhoff, Kwame Okrah"
 date: '`r Sys.Date()`'
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), '/../inst/doc/gClinbiomarker_vig_v1.pdf')) })
 output: 
   pdf_document:
     toc: true

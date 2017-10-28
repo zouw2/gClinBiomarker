@@ -2,6 +2,10 @@
 title: "gClinBiomarker: example use cases"
 author: "Ning Leng, Alexey Pronin, Doug Kelkhoff"
 date: '`r Sys.Date()`'
+knit: (function(inputFile, encoding) { 
+      rmarkdown::render(inputFile,
+                        encoding=encoding, 
+                        output_file=file.path(dirname(inputFile), '/../inst/doc/gClinbiomarker_example_use_case.pdf')) })
 output: 
   pdf_document:
     toc: true
