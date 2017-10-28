@@ -2,6 +2,9 @@ Package: gClinBiomarker
 Title: gClinBiomarker: an R package for clinical biomarker analyses
 Version: 0.1
 Date: 2017-9-5
+Authors@R: c(person("Ning Leng", role = "aut"), person("Alexey Pronin",  role = "aut"),
+    person("Doug Kelkhoff",  role = "aut"), person("Christina Rabe",  role = "aut"),
+    person("Kwame Okrah",  role = "aut"))
 Author: Ning Leng <leng.ning@gene.com>,
     Alexey Pronin <pronin.alexey@gene.com>,
     Doug Kelkhoff <kelkhoff.douglas@gene.com>,
