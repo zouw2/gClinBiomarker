@@ -1022,24 +1022,24 @@ CoxTab(data=sample.data,tte="OS", cens="OS.event",  var=c('Sex',"Country","Age")
 
 ```
 
-# StatSummary()
+# SummaryTwoGroups()
 
 ## Contunuous outcome
 ###  Create summary statistics
 ```{r}
-StatSummary(outcome.var = input$OS, treatment.var = input$Arm, 
+SummaryTwoGroups(outcome.var = input$OS, treatment.var = input$Arm, 
             placebo.code = "CTRL", active.code = "TRT", 
             outcome.class = "continuous")
 ```
 ### Add a covariate variable
 ```{r}
-StatSummary(outcome.var = input$OS, treatment.var = input$Arm, 
+SummaryTwoGroups(outcome.var = input$OS, treatment.var = input$Arm, 
             placebo.code = "CTRL", active.code = "TRT", 
             outcome.class = "continuous", covariate.var = input$Sex)
 ```
 ### Add return.fit = TRUE to return a table of summary statistics
 ```{r}
-StatSummary(outcome.var = input$OS, treatment.var = input$Arm, 
+SummaryTwoGroups(outcome.var = input$OS, treatment.var = input$Arm, 
             placebo.code = "CTRL", active.code = "TRT", 
             outcome.class = "continuous", covariate.var = input$Sex, 
             return.fit = TRUE)
@@ -1048,7 +1048,7 @@ StatSummary(outcome.var = input$OS, treatment.var = input$Arm,
 ##  Binary outcome
 ### Create summary statistics
 ```{r}
-StatSummary(outcome.var = input$OS.event, treatment.var = input$Arm, 
+SummaryTwoGroups(outcome.var = input$OS.event, treatment.var = input$Arm, 
             placebo.code = "CTRL", active.code = "TRT", 
             outcome.class = "binary")
 ```
@@ -1056,20 +1056,20 @@ StatSummary(outcome.var = input$OS.event, treatment.var = input$Arm,
 ## Survival variable 
 ### Create summary statistics
 ```{r}
-StatSummary(outcome.var = input[, c("OS", "OS.event")], 
+SummaryTwoGroups(outcome.var = input[, c("OS", "OS.event")], 
             treatment.var = input$Arm, placebo.code = "CTRL", 
             active.code = "TRT", outcome.class = "survival")
 ```
 ### Add a covariate variable
 ```{r}
-StatSummary(outcome.var = input[, c("OS", "OS.event")], 
+SummaryTwoGroups(outcome.var = input[, c("OS", "OS.event")], 
             treatment.var = input$Arm, placebo.code = "CTRL", 
             active.code = "TRT", outcome.class = "survival", 
             covariate.var = input$Sex)
 ```
 ### Add a stratification variable
 ```{r}
-StatSummary(outcome.var = input[, c("OS", "OS.event")], 
+SummaryTwoGroups(outcome.var = input[, c("OS", "OS.event")], 
             treatment.var = input$Arm, placebo.code = "CTRL", 
             active.code = "TRT", outcome.class = "survival", 
             covariate.var = input$Sex, strat.factor.var = input$Age)
