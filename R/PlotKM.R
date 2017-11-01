@@ -326,9 +326,12 @@ PlotKM <- function(data, tte, cens,
             }
         }
     }
-    PlotParam()
+
+    if (length(all_labels()) == 0) {
+        PlotParam()
+    }
+
     out <- ""
     if(return.data)out <- data
     out
-
 }
