@@ -388,14 +388,14 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
     if(outcome.class=="survival"){
         res <- NULL
         if(nArms==2){
-            if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+            if(!is.null(var)) res <- t(sapply(bm.list,function(jj)SummaryTwoGroups(outcome.var=data.bep[,outcome.var],
             subgroup.var=jj, treatment.var=data.bep[,trt],
             placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,surv.conf.type=surv.conf.type,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
 
             if(show.itt) {res <- rbind(
-                StatSummary(outcome.var=data[,outcome.var],
+                SummaryTwoGroups(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
                 placebo.code=placebo.code, active.code=active.code, outcome.class="survival", alpha=alpha,
 		surv.conf.type=surv.conf.type,
@@ -428,7 +428,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 else Covariate.bep.soc <- data.bep.soc[, covariate]
                 if(is.null(strata))Strat.fac.bep.soc <- NULL
                 else Strat.fac.bep.soc <- data.bep.soc[, strata]
-                res.soc <- t(sapply(bm.list.soc,function(jj)StatSummary(outcome.var=data.bep.soc[,outcome.var],
+                res.soc <- t(sapply(bm.list.soc,function(jj)SummaryTwoGroups(outcome.var=data.bep.soc[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.soc[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
 		surv.conf.type=surv.conf.type,
@@ -443,7 +443,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 else Covariate.bep.active <- data.bep.active[, covariate]
                 if(is.null(strata))Strat.fac.bep.active <- NULL
                 else Strat.fac.bep.active <- data.bep.active[, strata]
-                res.active <- t(sapply(bm.list.active,function(jj)StatSummary(outcome.var=data.bep.active[,outcome.var],
+                res.active <- t(sapply(bm.list.active,function(jj)SummaryTwoGroups(outcome.var=data.bep.active[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.active[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
 		surv.conf.type=surv.conf.type,
@@ -460,7 +460,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         if(nArms==1){
             placebo.code <- ""
             active.code <- ""
-            res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+            res <- t(sapply(bm.list,function(jj)SummaryTwoGroups(outcome.var=data.bep[,outcome.var],
             subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
             placebo.code="FALSE", active.code="TRUE", outcome.class="survival", alpha=alpha,
 	    surv.conf.type=surv.conf.type,
@@ -648,14 +648,14 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
 
         res <- NULL
         if(nArms==2){
-            if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+            if(!is.null(var)) res <- t(sapply(bm.list,function(jj)SummaryTwoGroups(outcome.var=data.bep[,outcome.var],
             subgroup.var=jj, treatment.var=data.bep[,trt],
             placebo.code=placebo.code, active.code=active.code, outcome.class="binary", alpha=alpha,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
 
             if(show.itt) {res <- rbind(
-                StatSummary(outcome.var=data[,outcome.var],
+                SummaryTwoGroups(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
                 placebo.code=placebo.code, active.code=active.code, outcome.class="binary", alpha=alpha,
                 covariate.var=Covariate,
@@ -687,7 +687,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 else Covariate.bep.soc <- data.bep.soc[, covariate]
                 if(is.null(strata))Strat.fac.bep.soc <- NULL
                 else Strat.fac.bep.soc <- data.bep.soc[, strata]
-                res.soc <- t(sapply(bm.list.soc,function(jj)StatSummary(outcome.var=data.bep.soc[,outcome.var],
+                res.soc <- t(sapply(bm.list.soc,function(jj)SummaryTwoGroups(outcome.var=data.bep.soc[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.soc[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="binary", alpha=alpha,
                 covariate.var=Covariate.bep.soc,
@@ -701,7 +701,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 else Covariate.bep.active <- data.bep.active[, covariate]
                 if(is.null(strata))Strat.fac.bep.active <- NULL
                 else Strat.fac.bep.active <- data.bep.active[, strata]
-                res.active <- t(sapply(bm.list.active,function(jj)StatSummary(outcome.var=data.bep.active[,outcome.var],
+                res.active <- t(sapply(bm.list.active,function(jj)SummaryTwoGroups(outcome.var=data.bep.active[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.active[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="binary", alpha=alpha,
                 covariate.var=Covariate.bep.active,
@@ -717,7 +717,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         if(nArms==1){
             placebo.code <- ""
             active.code <- ""
-            res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+            res <- t(sapply(bm.list,function(jj)SummaryTwoGroups(outcome.var=data.bep[,outcome.var],
             subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
             placebo.code="FALSE", active.code="TRUE", outcome.class="binary", alpha=alpha,
             covariate.var=Covariate.bep,
@@ -883,7 +883,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
     if(outcome.class=="continuous")  {
         res <- NULL
         if(nArms==2){
-            if(!is.null(var)) res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+            if(!is.null(var)) res <- t(sapply(bm.list,function(jj)SummaryTwoGroups(outcome.var=data.bep[,outcome.var],
             subgroup.var=jj, treatment.var=data.bep[,trt],
             placebo.code=placebo.code, active.code=active.code,
             outcome.class="continuous", alpha=alpha,
@@ -891,7 +891,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             strat.factor.var=Strat.fac.bep)))
 
             if(show.itt) {res <- rbind(
-                StatSummary(outcome.var=data[,outcome.var],
+                SummaryTwoGroups(outcome.var=data[,outcome.var],
                 subgroup.var=rep(T, length(data[[1]])), treatment.var=data[,trt],
                 placebo.code=placebo.code, active.code=active.code, outcome.class="continuous", alpha=alpha,
                 covariate.var=Covariate,
@@ -916,7 +916,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 else Covariate.bep.soc <- data.bep.soc[, covariate]
                 if(is.null(strata))Strat.fac.bep.soc <- NULL
                 else Strat.fac.bep.soc <- data.bep.soc[, strata]
-                res.soc <- t(sapply(bm.list.soc,function(jj)StatSummary(outcome.var=data.bep.soc[,outcome.var],
+                res.soc <- t(sapply(bm.list.soc,function(jj)SummaryTwoGroups(outcome.var=data.bep.soc[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.soc[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
                 covariate.var=Covariate.bep.soc,
@@ -930,7 +930,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 else Covariate.bep.active <- data.bep.active[, covariate]
                 if(is.null(strata))Strat.fac.bep.active <- NULL
                 else Strat.fac.bep.active <- data.bep.active[, strata]
-                res.active <- t(sapply(bm.list.active,function(jj)StatSummary(outcome.var=data.bep.active[,outcome.var],
+                res.active <- t(sapply(bm.list.active,function(jj)SummaryTwoGroups(outcome.var=data.bep.active[,outcome.var],
                 subgroup.var=rep(T,length(data.bep.active[[1]])), treatment.var=jj,
                 placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
                 covariate.var=Covariate.bep.active,
@@ -946,7 +946,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         if(nArms==1){
             placebo.code <- ""
             active.code <- ""
-            res <- t(sapply(bm.list,function(jj)StatSummary(outcome.var=data.bep[,outcome.var],
+            res <- t(sapply(bm.list,function(jj)SummaryTwoGroups(outcome.var=data.bep[,outcome.var],
             subgroup.var=rep(T,length(data.bep[[1]])), treatment.var=jj,
             placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
             covariate.var=Covariate.bep,
