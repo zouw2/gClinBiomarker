@@ -366,6 +366,7 @@ BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",
 
 	if(is.null(args) || !"ylim" %in% names(args))
 	{
+
 		args$ylim <- range( c(c(bp$stats), bp$out), na.rm=TRUE )            # NAs have to be removed for 'ylim'
 	}
 
@@ -554,11 +555,18 @@ BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",
 			abline(v=vline, lwd=vl.lwd, lty=vl.lty, col=vl.col)
 	}
 
+	if (is.na(Means[1])) {
+	    Means <- Means[2:length(Means)]
+	}
+
 	if(horizontal)
 		points(Means, 1:length(bp$n), pch=mean.pch, col=mean.col, cex=mean.cex, lwd=mean.lwd)
 	else
 		points(1:length(bp$n), Means, pch=mean.pch, col=mean.col, cex=mean.cex, lwd=mean.lwd)
-
 	suppressWarnings(par(old.par))
+	dif <- nrow(obj) - sum(bp$n)
+	if (dif > 0) {
+	    message("Number of samples removed due to missing Y: ", dif)
+	}
 	invisible(bp)
 }
