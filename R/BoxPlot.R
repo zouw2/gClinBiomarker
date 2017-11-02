@@ -555,7 +555,7 @@ BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",
 			abline(v=vline, lwd=vl.lwd, lty=vl.lty, col=vl.col)
 	}
 
-	if (is.na(Means[1])) {
+	if (is.na(Means[1]) & names(Means[1]) == "") {
 	    Means <- Means[2:length(Means)]
 	}
 
