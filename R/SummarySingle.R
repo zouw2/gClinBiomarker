@@ -167,7 +167,7 @@ SummarySingle <- function (data, var,
         subgroup.name <- subgroup.l
       }
   }
-  if(is.null(subgroup)) subgroup <- subgroup.name <-  ""
+  if(is.null(subgroup)) subgroup <- subgroup.name <-  " "
   # output matrix (trt by population)
   res <- matrix(ncol = sum(1, length(trt.lev) * length(subgroup)), 
                 nrow = 0)
