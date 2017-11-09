@@ -7,7 +7,8 @@ as an argument}
 \usage{
 ggpk_line_errorbar(mapping = NULL, data = NULL, show.counts = FALSE,
   fun.data = "mean_se", fun.args = list(),
-  position = ggplot2::position_dodge(width = ggplot2::rel(0.5)), ...)
+  position = ggplot2::position_dodge(width = ggplot2::rel(0.5)),
+  label = "ggpk_line_errorbar", ...)
 }
 \arguments{
 \item{mapping}{a ggplot aesthetic mapping}

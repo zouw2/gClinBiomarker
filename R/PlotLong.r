@@ -1,5 +1,5 @@
-#' Wrapper for fitting model and adjusting to predicted values and
-#' passing newly fitted model to ggplot geom_stat_ribbon
+#' Wrapper for fitting model and adjusting to predicted values and passing newly
+#' fitted model to ggplot geom_stat_ribbon
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #'
@@ -10,11 +10,11 @@
 #' @param model.args additional model parameters to pass to model
 #' @param facet.fun function to use for ggplot faceting in ggplot2::facet_grid
 #' @param ... additional arguments are handled in one of two ways. First,
-#' arguments which can be used as any of ggplot's default aesthetics will be
-#' pulled from ... args. Second, remaining arguments are passed to underlying
-#' ggplot components by prefixing value with ggplot call name. ("ribbons",
-#' "line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
-#' `ribbons.color = 'red'`)
+#'   arguments which can be used as any of ggplot's default aesthetics will be
+#'   pulled from ... args. Second, remaining arguments are passed to underlying
+#'   ggplot components by prefixing value with ggplot call name. ("ribbons",
+#'   "line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
+#'   `ribbons.color = 'red'`)
 #'
 #' @return a ggplot object
 #'
@@ -50,6 +50,7 @@
 #'          color = hemisphere, fill = hemisphere,
 #'          formula = temperature ~ ozone,
 #'          model.per = ~ hemisphere, fun.data = 'deciles',
+#'          plot.style = 'errorbars',
 #'          show.counts = 'table',
 #'          label.data = . %>% filter(month %in% c(1, 6, 12)),
 #'          label.hjust = 'inward',
@@ -69,6 +70,12 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
     mapping <- args$aes; .dots <- args$not_aes
   } else .dots <- list(...)
 
+  # collapse linetype to group to allow for ggpack overrides (errorbar color)
+  mapping <- flatten_aesthetics_to_group(mapping, 'linetype')
+  if (all(c('ymin', 'ymax') %in% names(mapping)))
+    .dots <- modifyList(.dots, list(plotlong.stat = 'identity'))
+
+  # accommodate model fitting
   if (!is.null(model.formula))  {
     # ensure model variables reflect plotted variables
     if (deparse(mapping$y) != model.formula[[2]])
@@ -80,32 +87,18 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
 
     # change aesthetic y to be fitted values
     mapping$y <- as.name(sprintf("%s.fitted", deparse(mapping$y)))
+    .dots$ylab <- .dots$ylab %||% paste("Adjusted", deparse(model.formula[[2]]))
   }
 
-  # collapse linetype to group to allow for ggpack overrides (errorbar color)
-  mapping <- flatten_aesthetics_to_group(mapping, 'linetype')
-
-  if (all(c('ymin', 'ymax', 'y') %in% names(mapping)))
-    .dots <- modifyList(.dots, list(
-      ggpk_ribbons.stat = 'identity',
-      ggpk_line_errorbar.stat = 'identity'))
+  # choose our plotting functions
+  if (plot.style == 'ribbons')        ggcall.plot   <- ggpk_ribbons
+  else if (plot.style == 'errorbars') ggcall.plot   <- ggpk_line_errorbar
+  if (is.null(facet.fun))             ggcall.facets <- ggplot2::facet_null()
+  else ggcall.facets <- ggpack(ggplot2::facet_grid, 'facet', .dots, facets = facet.fun)
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
   data %>% ggplot2:::ggplot() + mapping +
-
-    # plot with specified styling
-    (if      (plot.style == 'ribbons')   do.call(ggpk_ribbons, .dots)
-     else if (plot.style == 'errorbars') do.call(ggpk_line_errorbar, .dots)) +
-
-    # handle optional facetting
-    (if (is.null(facet.fun)) ggplot2::facet_null()
-     else ggpack(ggplot2::facet_grid, 'facet', .dots, facets = facet.fun)) +
-
-    # adjust label to accommodate model fitting if a model was used
-    (if (is.null(model.formula)) NULL
-     else ylab(paste("Adjusted", deparse(model.formula[[2]])))) +
-
-    # catch plot labels
-    do.call(ggpack.decorators, .dots)
-
+    do.call(ggcall.plot, c(.dots, list(id = 'plotlong'))) +
+    ggcall.facets +
+    do.call(ggpk_decorators, .dots)
 }

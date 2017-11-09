@@ -4,12 +4,15 @@
 \alias{filter_args}
 \title{Helper function for ggpack to filter arguments based on a prefix}
 \usage{
-filter_args(prefix, args)
+filter_args(prefix, args, sep = "\\\\.")
 }
 \arguments{
 \item{prefix}{a string specifying the prefix to be used to filter args}
 
 \item{args}{a list of arguments to be subset by the prefix match}
+
+\item{sep}{a regex joining string between prefix and args.
+Defaults to \code{"\\\\."}.}
 }
 \value{
 a list of arguments that originally were prefaced by the

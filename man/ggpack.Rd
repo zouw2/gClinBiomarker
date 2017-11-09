@@ -9,20 +9,20 @@ a call to a custom ggplot template may allow for arguments
 seperately. These arguments are parsed appropriately and
 passed to the appropriate sub-function.}
 \usage{
-ggpack(`_call`, args_prefix = NULL, passed_args = NULL, ...,
+ggpack(`_call` = NULL, ..., prefix = NULL, args = NULL,
   null.empty = FALSE)
 }
 \arguments{
-\item{args_prefix}{the prefix string to subset arguments by}
-
-\item{passed_args}{arguments to subset}
+\item{_call}{the function to call}
 
 \item{...}{additional arguments to use when calling the provided
 function}
 
-\item{null.empty}{return NULL if no arguments are received}
+\item{prefix}{the prefix string to subset arguments by}
 
-\item{_geom}{the function to call}
+\item{args}{arguments to subset}
+
+\item{null.empty}{return NULL if no arguments are received}
 }
 \value{
 a call to the specified function with arguments subset for
@@ -36,19 +36,20 @@ a call to a custom ggplot template may allow for arguments
 seperately. These arguments are parsed appropriately and
 passed to the appropriate sub-function.
 }
-\note{
-This function should eventually be split out into a separate
-package for wrapping ggplot functions
-}
 \examples{
+library(ggplot2)
+
 # wrap layer calls in a ggpack to package them
-ggpack(geom_bar(na.rm = T))
+ggpack(geom_bar(na.rm = TRUE))
 
 # or more explicitly define layer properties
-ggpack(geom_bar,        # layer function to bundle
-       'bar',           # name of layer - used for filter listed args
-       list(na.rm = T), # listed args, commonly as substitute(...())
-       color = NA)      # arguments to overwrite listed args
+ggpack(geom_bar,              # layer function to bundle
+  prefix = 'bar',             # name of layer - used for filter listed args
+  fill = 'red',               # ...'s before 'args' used as defaults
+  args = list(fill = 'blue'), # named 'args' param will overwrite prior ...'s
+  fill = 'green')             # ...'s after 'args' will overwrite any others
+
+
 
 }
 \author{

@@ -24,6 +24,7 @@ Imports:
     lsmeans,
     coin,
     graphics,
-    knitr
+    knitr,
+    methods
 Suggests:
     testthat

@@ -33,21 +33,21 @@
 #'
 #' @examples
 #' data(input)
-#' StatSummary(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous")
+#' SummaryStats(outcome.var = input$OS, treatment.var = input$Arm, placebo.code = "CTRL", active.code = "TRT", outcome.class = "continuous")
 #'
 #' @export
 
-StatSummary <- function(outcome.var,
-                        subgroup.var=NULL,
-                        treatment.var,
-                        placebo.code,
-                        active.code,
-                        outcome.class,
-                        alpha=0.05,
-                        covariate.var=NULL,
-                        strat.factor.var=NULL,
-                        return.fit=FALSE,
-                        fit.para = list('prop.test.use.continuity.correction'=T)) {
+SummaryStats <- function(outcome.var,
+                         subgroup.var=NULL,
+                         treatment.var,
+                         placebo.code,
+                         active.code,
+                         outcome.class,
+                         alpha=0.05,
+                         covariate.var=NULL,
+                         strat.factor.var=NULL,
+                         return.fit=FALSE,
+                         fit.para = list('prop.test.use.continuity.correction'=T)) {
 
     # If subgroup.var is not defined, use all input data
     if (is.null(subgroup.var)) {
@@ -120,7 +120,7 @@ StatSummary <- function(outcome.var,
                 # (nCV+2)th row (last) is the 'slope' estimate and its associated quantities
                 # which corresponds to the treatment effect size
                 coef.1 <- summary(myfit)$coef
-                mytest <- coef.1[nrow(coef.1), ]            
+                mytest <- coef.1[nrow(coef.1), ]
                 mytest2 <- coef.1[1, ]
                 myCI <- confint(myfit, level = 1-alpha)[nrow(coef.1), ]
             }

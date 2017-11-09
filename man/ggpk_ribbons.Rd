@@ -6,7 +6,7 @@
 as an argument}
 \usage{
 ggpk_ribbons(mapping = NULL, data = NULL, show.counts = FALSE,
-  fun.data = "mean_se", fun.args = list(), ...)
+  fun.data = "mean_se", fun.args = list(), label = "ggpk_ribbons", ...)
 }
 \arguments{
 \item{mapping}{a ggplot aesthetic mapping}

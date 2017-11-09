@@ -12,19 +12,19 @@
 #' @return a data frame with new columns based on model fit
 #'
 #' @importFrom broom augment
+#' @importFrom dplyr rename rename_ group_by group_by_
 #'
 #' @export
 #'
 augment_predict <- function(.data, model, model.per = NULL, ...) {
-
-  .dots <- ggpack_filter_args('model', list(...))
+  .dots <- filter_args('model', list(...))
   fy <- deparse(.dots$formula[[2]]) # get formula independent variable
 
   .data %>%
-    group_by_(.dots = all.vars(model.per)) %>%
-    do(augment(do.call(model, c(list(data=.), .dots)), .)) %>%
+    dplyr::group_by_(.dots = all.vars(model.per)) %>%
+    do(broom::augment(do.call(model, c(list(data=.), .dots)), .)) %>%
     # rename model outputs (".fitted") to instead begin with var ("y.fitted")
-    rename_(.dots = setNames(names(.), gsub("^\\.", paste0(fy, "."), names(.))))
+    dplyr::rename_(.dots = setNames(names(.), gsub("^\\.", paste0(fy, "."), names(.))))
 }
 
 

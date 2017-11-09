@@ -4,7 +4,7 @@
 \alias{sas.lsmeans}
 \title{Compute LSMEANS to mirror SAS functionality}
 \usage{
-sas.lsmeans(model.obj, specs, mode = "kenward-roger", as.data.frame = FALSE,
+sas.lsmeans(model.obj, specs, data = NULL, mode = "kenward-roger",
   quietly = FALSE, verbose = FALSE, ...)
 }
 \arguments{
@@ -14,11 +14,11 @@ sas.lsmeans(model.obj, specs, mode = "kenward-roger", as.data.frame = FALSE,
 
 \item{mode}{mode to be passed to lsmeans()}
 
-\item{as.data.frame}{whether to return a lsm.list object or a data.frame}
-
 \item{quietly}{whether to hide message informing of changes to default functionality}
 
 \item{...}{additional arguments to be passed to lsmeans}
+
+\item{as.data.frame}{whether to return a lsm.list object or a data.frame}
 }
 \description{
 Compute LSMEANS to mirror SAS functionality

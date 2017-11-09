@@ -4,14 +4,18 @@
 \alias{split_aes_from_dots}
 \title{Helper function to cull aesthetic mapping from parameter inputs in ellipses}
 \usage{
-split_aes_from_dots(...)
+split_aes_from_dots(..., geom = NULL)
 }
 \arguments{
 \item{...}{ellipses containing aesthetics mapping}
+
+\item{geom}{if specified, a ggplot2 Geom object can be passed to filter
+aesthetics for only a specified Geom.}
 }
 \value{
-the ellipses arguments passed through a ggplot2::aes() call after
-filtering for aesthetics in ggplot2:::.all_aesthetics()
+a list containing two fields: 'aes' which contains the aesthetic
+mappings within the arguments passed and 'not_aes' which contains a list of
+all other arguments
 }
 \description{
 Helper function to cull aesthetic mapping from parameter inputs in ellipses

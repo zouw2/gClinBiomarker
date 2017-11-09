@@ -9,10 +9,13 @@ flatten_aesthetics_to_group(mapping, ...)
 \arguments{
 \item{mapping}{a ggplot2 aesthetic mapping}
 
-\item{geom}{a ggplot2 Geom object}
+\item{...}{aesthetic handles to flatten into the group aesthetic as
+interaciton terms}
 }
 \value{
-the mapping filtered by accepted aesthetics for the given Geom
+the mapping aesthetics with specified aesthetics filtered out and
+instead stored as interaction terms in the group aesthetics with any
+preexisting group aesthetics
 }
 \description{
 Helper function to flatten specific aesthetics to group

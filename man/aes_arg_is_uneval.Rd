@@ -7,7 +7,10 @@
 aes_arg_is_uneval(i)
 }
 \arguments{
-\item{i}{the input object to be tests}
+\item{i}{the input object to be tested}
+}
+\value{
+TRUE if the value is of type 'name', 'call' or 'expression'
 }
 \description{
 Determine if an argument is an unevaluated expression
