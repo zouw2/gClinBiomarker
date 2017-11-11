@@ -94,7 +94,8 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
   if (plot.style == 'ribbons')        ggcall.plot   <- ggpk_ribbons
   else if (plot.style == 'errorbars') ggcall.plot   <- ggpk_line_errorbar
   if (is.null(facet.fun))             ggcall.facets <- ggplot2::facet_null()
-  else ggcall.facets <- ggpack(ggplot2::facet_grid, 'facet', .dots, facets = facet.fun)
+  else ggcall.facets <- ggpack(ggplot2::facet_grid, id = 'facet',
+                               dots = .dots, facets = facet.fun)
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
   data %>% ggplot2:::ggplot() + mapping +

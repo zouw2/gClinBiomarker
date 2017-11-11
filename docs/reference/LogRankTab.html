@@ -104,6 +104,11 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>data</th>
+      <td><p>Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.</p></td>
+    </tr>
+    <tr>
       <th>var</th>
       <td><p>a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.

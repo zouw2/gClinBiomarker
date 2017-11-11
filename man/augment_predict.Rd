@@ -27,4 +27,3 @@ Adds prediction outputs to data based on model and formula
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-

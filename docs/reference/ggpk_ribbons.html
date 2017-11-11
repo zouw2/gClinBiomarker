@@ -101,7 +101,7 @@ as an argument</p>
     
 
     <pre class="usage"><span class='fu'>ggpk_ribbons</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.counts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>fun.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
+  <span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>"mean_se"</span>, <span class='kw'>fun.args</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"ggpk_ribbons"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -128,7 +128,7 @@ draw a collection of layers</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>When specifying arguments for wrapped ggplot geometries, prefix
+    <p>When specifying arguments for wrapped ggplot geometries, id
 the parameter with geometry specifiers: "ribbon" for ribbon geometry
 "line" for central line geometry, or "label" for count labels. e.g.
 <code>ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)</code></p>
@@ -146,9 +146,9 @@ the parameter with geometry specifiers: "ribbon" for ribbon geometry
   <span class='co'># plotting</span>
   <span class='fu'>ggplot</span>() +
     <span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>date</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>temperature</span>) +
-    <span class='fu'>ggpk_stat_ribbon</span>(<span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>'deciles'</span>) +
+    <span class='fu'>ggpk_ribbons</span>(<span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>'deciles'</span>) +
     <span class='fu'>facet_grid</span>(<span class='no'>hemisphere</span> ~ <span class='no'>.</span>) +
-    <span class='fu'>labs</span>(<span class='kw'>title</span><span class='kw'>=</span><span class='st'>"Temperature by Hemisphere"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): could not find function "ggpk_stat_ribbon"</span></div><div class='input'>
+    <span class='fu'>labs</span>(<span class='kw'>title</span><span class='kw'>=</span><span class='st'>"Temperature by Hemisphere"</span>)</div><div class='img'><img src='ggpk_ribbons-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

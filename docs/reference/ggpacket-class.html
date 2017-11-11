@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A simple S4 class to contain wrapped ggplots — ggpacket-class • gClinBiomarker</title>
+<title>A class for wrapping ggplot layers. — ggpacket-class • gClinBiomarker</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -90,28 +90,63 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A simple S4 class to contain wrapped ggplots</h1>
+    <h1>A class for wrapping ggplot layers.</h1>
     </div>
 
     
-    <p>A simple S4 class to contain wrapped ggplots</p>
+    <p>ggplot ggproto objects can not be added together as they
+are and must be made reusable by first adding to a list.
+This class aggregates ggproto objects into a list and handles
+adding into a ggplot construction.</p>
     
 
         
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p>eventually this class could be used to handle pass
-through of geom-specific parameters. For now it just collects
-a list with cleaner syntax for adding ggproto objects.</p>
+    
+    <dl class='dl-horizontal'>
+<dt><code>ggcalls</code></dt><dd><p>a list of ggproto layer objects</p></dd>
+</dl>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+
+<span class='co'># a ggpacket can be created as an object by not passing arguments</span>
+<span class='co'># to the ggpack function. Any ggproto layers or ggpack'd ggpacket</span>
+<span class='co'># layers can be added directly</span>
+<span class='no'>bar_error_counts</span> <span class='kw'>&lt;-</span> <span class='fu'>ggpacket</span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></span>(<span class='kw'>fun.y</span> <span class='kw'>=</span> <span class='no'>mean</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>'bar'</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></span>(<span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='no'>mean_se</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></span>(<span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>d</span>) <span class='fu'>c</span>(
+                 <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>d</span>) + <span class='fu'>sd</span>(<span class='no'>d</span>)/<span class='fu'>sqrt</span>(<span class='fu'>length</span>(<span class='no'>d</span>)),
+                 <span class='kw'>label</span> <span class='kw'>=</span> <span class='fu'>length</span>(<span class='no'>d</span>)),
+               <span class='kw'>vjust</span> <span class='kw'>=</span> -<span class='fl'>1</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>'text'</span>)
+
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mtcars</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>gear</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mpg</span>)) +
+  <span class='no'>bar_error_counts</span></div><div class='img'><img src='ggpacket-class-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='co'># easier functionalization of subcomponents of a ggplot</span>
+<span class='no'>custom_errorbars</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>error_function</span>, <span class='no'>...</span>) {
+  <span class='fu'><a href='ggpack.html'>ggpack</a></span>(<span class='no'>stat_summary</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>'bar'</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'>substitute</span>(<span class='fu'>...</span>()),
+         <span class='kw'>fun.y</span> <span class='kw'>=</span> <span class='no'>mean</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>'bar'</span>) +
+  <span class='fu'><a href='ggpack.html'>ggpack</a></span>(<span class='no'>stat_summary</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>'errorbar'</span>, <span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'>substitute</span>(<span class='fu'>...</span>()),
+         <span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='no'>error_function</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>geom</span> <span class='kw'>=</span> <span class='st'>"errorbar"</span>)
+}
+
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mtcars</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>gear</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mpg</span>)) +
+  <span class='fu'>custom_errorbars</span>(<span class='no'>mean_se</span>, <span class='kw'>bar.fill</span> <span class='kw'>=</span> <span class='no'>gear</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></span>(<span class='no'>.</span> ~ <span class='no'>am</span>, <span class='kw'>scales</span> <span class='kw'>=</span> <span class='st'>'free'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: prefix, args</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: prefix, args</span></div><div class='img'><img src='ggpacket-class-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#note">Note</a></li>
-          </ul>
+      <li><a href="#slots">Slots</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
     <h2>Author</h2>
     

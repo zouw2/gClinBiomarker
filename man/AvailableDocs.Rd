@@ -12,4 +12,3 @@ Show available documents.
 \author{
 Kwame Okrah \email{okrah.kwame@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}
 }
-

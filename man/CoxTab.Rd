@@ -10,6 +10,9 @@ CoxTab(data = NULL, tte = NULL, cens = NULL, var = NULL,
   bep.indicator = 1)
 }
 \arguments{
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+biomarker variables, treatment indicator, etc.). One patient per row.}
+
 \item{var}{a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
 It will be ignored if fit or form is not null.}
@@ -39,6 +42,8 @@ If fit is not NULL, all other parameters will be ignored}
 \item{additive}{Whether an additive model should be used. If additive=FALSE, separate cox PH models will be fitted to each elements in var
 (stratification factor will be incorpriated for each model).
 If additive = FALSE, User can only use 'var' to speficy variables of interest (cannot specify the model via parameter 'form')}
+
+\item{digits}{digits for rounding}
 }
 \description{
 This function summarizes outputs from cox proportional model of one or multiple variables.
@@ -60,4 +65,3 @@ CoxTab(data=sample.data,tte="OS", cens="OS.event",  form="Age+Sex*Arm+Country")
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
-

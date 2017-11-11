@@ -61,4 +61,3 @@ SummaryTwoGroups(outcome.var = input$OS, treatment.var = input$Arm, placebo.code
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 }
-

@@ -6,12 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A helper function to wrap ggplot calls, allowing for passing of a
-shared list of arguments prefixed by a string. For example,
-a call to a custom ggplot template may allow for arguments
-'line.color' and 'bar.color' to specify the line and bar colors
-seperately. These arguments are parsed appropriately and
-passed to the appropriate sub-function. — ggpack • gClinBiomarker</title>
+<title>Handling of argument passing to ggplots — ggpack • gClinBiomarker</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,63 +90,86 @@ passed to the appropriate sub-function. — ggpack • gClinBiomarker</title>
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A helper function to wrap ggplot calls, allowing for passing of a
-shared list of arguments prefixed by a string. For example,
-a call to a custom ggplot template may allow for arguments
-'line.color' and 'bar.color' to specify the line and bar colors
-seperately. These arguments are parsed appropriately and
-passed to the appropriate sub-function.</h1>
+    <h1>Handling of argument passing to ggplots</h1>
     </div>
 
     
-    <p>A helper function to wrap ggplot calls, allowing for passing of a
-shared list of arguments prefixed by a string. For example,
-a call to a custom ggplot template may allow for arguments
-'line.color' and 'bar.color' to specify the line and bar colors
-seperately. These arguments are parsed appropriately and
+    <p>A helper function to wrap ggplot calls, allowing for passing of a shared list
+of arguments prefixed by an id string. For example, a call to a custom ggplot
+template may allow for arguments 'line.color' and 'bar.color' to specify the
+line and bar colors seperately. These arguments are parsed appropriately and
 passed to the appropriate sub-function.</p>
     
 
-    <pre class="usage"><span class='fu'>ggpack</span>(<span class='no'>`_call`</span>, <span class='kw'>args_prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>passed_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>,
-  <span class='kw'>null.empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ggpack</span>(<span class='kw'>`_call`</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dots</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>null.empty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>args_prefix</th>
-      <td><p>the prefix string to subset arguments by</p></td>
-    </tr>
-    <tr>
-      <th>passed_args</th>
-      <td><p>arguments to subset</p></td>
+      <th>_call</th>
+      <td><p>the function to call</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments to use when calling the provided
-function</p></td>
+      <td><p>additional arguments to use when calling the provided function</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>the prefix string to subset arguments by</p></td>
+    </tr>
+    <tr>
+      <th>dots</th>
+      <td><p>arguments to subset</p></td>
     </tr>
     <tr>
       <th>null.empty</th>
       <td><p>return NULL if no arguments are received</p></td>
     </tr>
-    <tr>
-      <th>_geom</th>
-      <td><p>the function to call</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a call to the specified function with arguments subset for
-only those which match the specified prefix</p>
+    <p>a call to the specified function with arguments subset for only those
+  which match the specified prefix</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This function should eventually be split out into a separate
-package for wrapping ggplot functions</p>
+    <p>Use `substitute(...())` when collecting parent function ellipses args
+  to pass into `ggpack()` to accommodate unevaluated symbols.</p>
+<p>Ellipses arguments and the arguments passed through the `dots` args
+  will overwrite previous arguments of the same name.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+
+<span class='co'># wrap layer calls in a ggpack to package them</span>
+<span class='fu'>ggpack</span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_bar'>geom_bar</a></span>(<span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))</div><div class='output co'>#&gt; ggpacket
+#&gt; A container for multiple ggplot ggproto objects
+#&gt; 
+#&gt; Errors preventing standalone plotting: </div><div class='output co'>#&gt; <span class='message'>Not all layers have been passed sufficient data</span></div><div class='output co'>#&gt; 
+#&gt; [[1]] 
+#&gt; geom_bar: width = NULL, na.rm = TRUE
+#&gt; stat_count: width = NULL, na.rm = TRUE
+#&gt; position_stack 
+#&gt; </div><div class='input'>
+<span class='co'># or more explicitly define layer properties</span>
+<span class='fu'>ggpack</span>(<span class='no'>geom_bar</span>,              <span class='co'># layer function to bundle</span>
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>'bar'</span>,                 <span class='co'># name of layer - used for filter listed args</span>
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>'red'</span>,               <span class='co'># ...'s before 'args' used as defaults</span>
+  <span class='kw'>dots</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>'blue'</span>), <span class='co'># named 'args' param will overwrite prior ...'s</span>
+  <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>'green'</span>)             <span class='co'># ...'s after 'args' will overwrite any others</span></div><div class='output co'>#&gt; ggpacket
+#&gt; A container for multiple ggplot ggproto objects
+#&gt; 
+#&gt; Errors preventing standalone plotting: </div><div class='output co'>#&gt; <span class='message'>Not all layers have been passed sufficient data</span></div><div class='output co'>#&gt; 
+#&gt; [[1]] bar
+#&gt; mapping:  
+#&gt; geom_bar: width = NULL, na.rm = FALSE
+#&gt; stat_count: width = NULL, na.rm = FALSE
+#&gt; position_stack 
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -161,7 +179,9 @@ package for wrapping ggplot functions</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#note">Note</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
     <h2>Author</h2>
     

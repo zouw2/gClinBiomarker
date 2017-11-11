@@ -68,7 +68,7 @@
       <h1>gClinBiomarker: example use cases</h1>
                         <h4 class="author">Ning Leng, Alexey Pronin, Doug Kelkhoff</h4>
             
-            <h4 class="date">2017-10-28</h4>
+            <h4 class="date">2017-11-11</h4>
           </div>
 
     
@@ -78,12 +78,10 @@
 <h1 class="hasAnchor">
 <a href="#loading-packages-and-data" class="anchor"></a>Loading packages and data</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
-<span class="kw">library</span>(devtools)</code></pre></div>
-<pre><code>## Warning: package 'devtools' was built under R version 3.3.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>,  <span class="dt">host=</span><span class="st">"https://github.roche.com/api/v3"</span>)
-<span class="kw">library</span>(gClinBiomarker)</code></pre></div>
-<pre><code>## Warning: package 'survival' was built under R version 3.3.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(devtools)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>,  <span class="dt">host=</span><span class="st">"https://github.roche.com/api/v3"</span>)
+<span class="kw">library</span>(gClinBiomarker)
+<span class="kw">library</span>(ggplot2)
 <span class="kw">data</span>(input)
 sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </div>
@@ -146,7 +144,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">All(CTRL)</th>
 <th align="left">BEP(CTRL)</th>
 <th align="left">All(TRT)</th>
@@ -154,77 +152,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">N</td>
+<td>N</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td align="left">Mean</td>
+<td>Mean</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 <td align="left">54.03</td>
 <td align="left">54.42</td>
 </tr>
 <tr class="even">
-<td align="left">Median</td>
+<td>Median</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 <td align="left">54</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td align="left">Min-Max</td>
+<td>Min-Max</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 <td align="left">30…89</td>
 <td align="left">33…89</td>
 </tr>
 <tr class="even">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Sex</td>
+<td>Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Total</td>
+<td>Total</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td align="left">F</td>
+<td>F</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 <td align="left">184 (50%)</td>
 <td align="left">90 (51.14%)</td>
 </tr>
 <tr class="odd">
-<td align="left">M</td>
+<td>M</td>
 <td align="left">93 (51.1%)</td>
 <td align="left">42 (51.85%)</td>
 <td align="left">184 (50%)</td>
@@ -242,7 +240,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">BEP_1(CTRL)</th>
 <th align="left">BEP_0(CTRL)</th>
 <th align="left">BEP_1(TRT)</th>
@@ -250,77 +248,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">N</td>
+<td>N</td>
 <td align="left">81</td>
 <td align="left">101</td>
 <td align="left">176</td>
 <td align="left">192</td>
 </tr>
 <tr class="odd">
-<td align="left">Mean</td>
+<td>Mean</td>
 <td align="left">53.1</td>
 <td align="left">52.09</td>
 <td align="left">54.42</td>
 <td align="left">53.67</td>
 </tr>
 <tr class="even">
-<td align="left">Median</td>
+<td>Median</td>
 <td align="left">52</td>
 <td align="left">50</td>
 <td align="left">54</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td align="left">Min-Max</td>
+<td>Min-Max</td>
 <td align="left">32…85</td>
 <td align="left">27…82</td>
 <td align="left">33…89</td>
 <td align="left">30…79</td>
 </tr>
 <tr class="even">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Sex</td>
+<td>Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Total</td>
+<td>Total</td>
 <td align="left">81</td>
 <td align="left">101</td>
 <td align="left">176</td>
 <td align="left">192</td>
 </tr>
 <tr class="odd">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td align="left">F</td>
+<td>F</td>
 <td align="left">39 (48.15%)</td>
 <td align="left">50 (49.5%)</td>
 <td align="left">90 (51.14%)</td>
 <td align="left">94 (48.96%)</td>
 </tr>
 <tr class="odd">
-<td align="left">M</td>
+<td>M</td>
 <td align="left">42 (51.85%)</td>
 <td align="left">51 (50.5%)</td>
 <td align="left">86 (48.86%)</td>
@@ -338,7 +336,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">All(CTRL)</th>
 <th align="left">BEP(CTRL)</th>
 <th align="left">pvalue(CTRL)</th>
@@ -348,7 +346,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -357,7 +355,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">N</td>
+<td>N</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">0.5</td>
@@ -366,7 +364,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">0.69</td>
 </tr>
 <tr class="odd">
-<td align="left">Mean</td>
+<td>Mean</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 <td align="left"></td>
@@ -375,7 +373,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Median</td>
+<td>Median</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 <td align="left"></td>
@@ -384,7 +382,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Min-Max</td>
+<td>Min-Max</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 <td align="left"></td>
@@ -393,7 +391,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left"></td>
@@ -402,7 +400,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">Sex</td>
+<td>Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -411,7 +409,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Total</td>
+<td>Total</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">0.88</td>
@@ -420,7 +418,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">0.75</td>
 </tr>
 <tr class="odd">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left"></td>
@@ -429,7 +427,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">F</td>
+<td>F</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 <td align="left"></td>
@@ -438,7 +436,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">M</td>
+<td>M</td>
 <td align="left">93 (51.1%)</td>
 <td align="left">42 (51.85%)</td>
 <td align="left"></td>
@@ -458,7 +456,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">All(TRT)</th>
 <th align="left">BEP(TRT)</th>
 <th align="left">All(CTRL)</th>
@@ -466,77 +464,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">N</td>
+<td>N</td>
 <td align="left">368</td>
 <td align="left">176</td>
 <td align="left">182</td>
 <td align="left">81</td>
 </tr>
 <tr class="odd">
-<td align="left">Mean</td>
+<td>Mean</td>
 <td align="left">54.03</td>
 <td align="left">54.42</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 </tr>
 <tr class="even">
-<td align="left">Median</td>
+<td>Median</td>
 <td align="left">54</td>
 <td align="left">54</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 </tr>
 <tr class="odd">
-<td align="left">Min-Max</td>
+<td>Min-Max</td>
 <td align="left">30…89</td>
 <td align="left">33…89</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 </tr>
 <tr class="even">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Sex</td>
+<td>Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Total</td>
+<td>Total</td>
 <td align="left">368</td>
 <td align="left">176</td>
 <td align="left">182</td>
 <td align="left">81</td>
 </tr>
 <tr class="odd">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td align="left">F</td>
+<td>F</td>
 <td align="left">184 (50%)</td>
 <td align="left">90 (51.14%)</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 </tr>
 <tr class="odd">
-<td align="left">M</td>
+<td>M</td>
 <td align="left">184 (50%)</td>
 <td align="left">86 (48.86%)</td>
 <td align="left">93 (51.1%)</td>
@@ -554,63 +552,63 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">All</th>
 <th align="left">BEP</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">N</td>
+<td>N</td>
 <td align="left">550</td>
 <td align="left">257</td>
 </tr>
 <tr class="odd">
-<td align="left">Mean</td>
+<td>Mean</td>
 <td align="left">53.53</td>
 <td align="left">54</td>
 </tr>
 <tr class="even">
-<td align="left">Median</td>
+<td>Median</td>
 <td align="left">53</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td align="left">Min-Max</td>
+<td>Min-Max</td>
 <td align="left">27…89</td>
 <td align="left">32…89</td>
 </tr>
 <tr class="even">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Sex</td>
+<td>Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Total</td>
+<td>Total</td>
 <td align="left">550</td>
 <td align="left">257</td>
 </tr>
 <tr class="odd">
-<td align="left">NA’s</td>
+<td>NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td align="left">F</td>
+<td>F</td>
 <td align="left">273 (49.64%)</td>
 <td align="left">129 (50.19%)</td>
 </tr>
 <tr class="odd">
-<td align="left">M</td>
+<td>M</td>
 <td align="left">277 (50.36%)</td>
 <td align="left">128 (49.81%)</td>
 </tr>
@@ -2142,7 +2140,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2152,7 +2150,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Sex (M/F)</td>
+<td>Sex (M/F)</td>
 <td align="left">0.72</td>
 <td align="left">0.48</td>
 <td align="left">1.08</td>
@@ -2161,7 +2159,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">273</td>
 </tr>
 <tr class="even">
-<td align="left">Country (USA/Other)</td>
+<td>Country (USA/Other)</td>
 <td align="left">0.65</td>
 <td align="left">0.36</td>
 <td align="left">1.2</td>
@@ -2170,7 +2168,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="odd">
-<td align="left">Country (Western Europe/Other)</td>
+<td>Country (Western Europe/Other)</td>
 <td align="left">0.77</td>
 <td align="left">0.5</td>
 <td align="left">1.2</td>
@@ -2179,7 +2177,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="even">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left">1.01</td>
 <td align="left">0.99</td>
 <td align="left">1.03</td>
@@ -2195,7 +2193,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2205,7 +2203,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Sex (M/F)</td>
+<td>Sex (M/F)</td>
 <td align="left">0.72</td>
 <td align="left">0.48</td>
 <td align="left">1.08</td>
@@ -2214,7 +2212,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">273</td>
 </tr>
 <tr class="even">
-<td align="left">Country (USA/Other)</td>
+<td>Country (USA/Other)</td>
 <td align="left">0.65</td>
 <td align="left">0.36</td>
 <td align="left">1.2</td>
@@ -2223,7 +2221,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="odd">
-<td align="left">Country (Western Europe/Other)</td>
+<td>Country (Western Europe/Other)</td>
 <td align="left">0.77</td>
 <td align="left">0.5</td>
 <td align="left">1.2</td>
@@ -2232,7 +2230,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="even">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left">1.01</td>
 <td align="left">0.99</td>
 <td align="left">1.03</td>
@@ -2252,7 +2250,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2262,7 +2260,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Sex (M/F)</td>
+<td>Sex (M/F)</td>
 <td align="left">0.85</td>
 <td align="left">0.42</td>
 <td align="left">1.73</td>
@@ -2271,7 +2269,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">129</td>
 </tr>
 <tr class="even">
-<td align="left">Country (USA/Other)</td>
+<td>Country (USA/Other)</td>
 <td align="left">1.17</td>
 <td align="left">0.4</td>
 <td align="left">3.38</td>
@@ -2280,7 +2278,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="odd">
-<td align="left">Country (Western Europe/Other)</td>
+<td>Country (Western Europe/Other)</td>
 <td align="left">1.11</td>
 <td align="left">0.44</td>
 <td align="left">2.83</td>
@@ -2289,7 +2287,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="even">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left">1.01</td>
 <td align="left">0.98</td>
 <td align="left">1.04</td>
@@ -2310,7 +2308,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2320,7 +2318,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Sex (F/M)</td>
+<td>Sex (F/M)</td>
 <td align="left">1.12</td>
 <td align="left">0.68</td>
 <td align="left">1.85</td>
@@ -2329,7 +2327,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">128</td>
 </tr>
 <tr class="even">
-<td align="left">Country (USA/Other)</td>
+<td>Country (USA/Other)</td>
 <td align="left">1.17</td>
 <td align="left">0.4</td>
 <td align="left">3.38</td>
@@ -2338,7 +2336,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="odd">
-<td align="left">Country (Western Europe/Other)</td>
+<td>Country (Western Europe/Other)</td>
 <td align="left">1.11</td>
 <td align="left">0.44</td>
 <td align="left">2.83</td>
@@ -2347,7 +2345,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="even">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left">1.01</td>
 <td align="left">0.98</td>
 <td align="left">1.04</td>
@@ -2367,7 +2365,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left"></th>
+<th></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2377,7 +2375,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">Sex (M/F)</td>
+<td>Sex (M/F)</td>
 <td align="left">0.71</td>
 <td align="left">0.48</td>
 <td align="left">1.07</td>
@@ -2386,7 +2384,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">273</td>
 </tr>
 <tr class="even">
-<td align="left">Country (USA/Other)</td>
+<td>Country (USA/Other)</td>
 <td align="left">0.67</td>
 <td align="left">0.37</td>
 <td align="left">1.22</td>
@@ -2395,7 +2393,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="odd">
-<td align="left">Country (Western Europe/Other)</td>
+<td>Country (Western Europe/Other)</td>
 <td align="left">0.77</td>
 <td align="left">0.5</td>
 <td align="left">1.2</td>
@@ -2404,7 +2402,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="even">
-<td align="left">Age</td>
+<td>Age</td>
 <td align="left">1.01</td>
 <td align="left">0.99</td>
 <td align="left">1.02</td>
@@ -2416,16 +2414,16 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </table>
 </div>
 </div>
-<div id="statsummary" class="section level1">
+<div id="summarytwogroups" class="section level1">
 <h1 class="hasAnchor">
-<a href="#statsummary" class="anchor"></a>StatSummary()</h1>
+<a href="#summarytwogroups" class="anchor"></a>SummaryTwoGroups()</h1>
 <div id="contunuous-outcome" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contunuous-outcome" class="anchor"></a>Contunuous outcome</h2>
 <div id="create-summary-statistics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-summary-statistics" class="anchor"></a>Create summary statistics</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input$OS, <span class="dt">treatment.var =</span> input$Arm, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input$OS, <span class="dt">treatment.var =</span> input$Arm, 
             <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, <span class="dt">active.code =</span> <span class="st">"TRT"</span>, 
             <span class="dt">outcome.class =</span> <span class="st">"continuous"</span>)</code></pre></div>
 <pre><code>##  Effect.Size        Lower        Upper            P Mean.Placebo 
@@ -2436,7 +2434,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div id="add-a-covariate-variable" class="section level3">
 <h3 class="hasAnchor">
 <a href="#add-a-covariate-variable" class="anchor"></a>Add a covariate variable</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input$OS, <span class="dt">treatment.var =</span> input$Arm, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input$OS, <span class="dt">treatment.var =</span> input$Arm, 
             <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, <span class="dt">active.code =</span> <span class="st">"TRT"</span>, 
             <span class="dt">outcome.class =</span> <span class="st">"continuous"</span>, <span class="dt">covariate.var =</span> input$Sex)</code></pre></div>
 <pre><code>##  Effect.Size        Lower        Upper            P Mean.Placebo 
@@ -2447,7 +2445,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div id="add-return-fit-true-to-return-a-table-of-summary-statistics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#add-return-fit-true-to-return-a-table-of-summary-statistics" class="anchor"></a>Add return.fit = TRUE to return a table of summary statistics</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input$OS, <span class="dt">treatment.var =</span> input$Arm, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input$OS, <span class="dt">treatment.var =</span> input$Arm, 
             <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, <span class="dt">active.code =</span> <span class="st">"TRT"</span>, 
             <span class="dt">outcome.class =</span> <span class="st">"continuous"</span>, <span class="dt">covariate.var =</span> input$Sex, 
             <span class="dt">return.fit =</span> <span class="ot">TRUE</span>)</code></pre></div>
@@ -2476,7 +2474,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div id="create-summary-statistics-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-summary-statistics-1" class="anchor"></a>Create summary statistics</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input$OS.event, <span class="dt">treatment.var =</span> input$Arm, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input$OS.event, <span class="dt">treatment.var =</span> input$Arm, 
             <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, <span class="dt">active.code =</span> <span class="st">"TRT"</span>, 
             <span class="dt">outcome.class =</span> <span class="st">"binary"</span>)</code></pre></div>
 <pre><code>##  Effect.Size        Lower        Upper            P  Rsp.Placebo 
@@ -2491,7 +2489,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div id="create-summary-statistics-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-summary-statistics-2" class="anchor"></a>Create summary statistics</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input[, <span class="kw">c</span>(<span class="st">"OS"</span>, <span class="st">"OS.event"</span>)], 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input[, <span class="kw">c</span>(<span class="st">"OS"</span>, <span class="st">"OS.event"</span>)], 
             <span class="dt">treatment.var =</span> input$Arm, <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, 
             <span class="dt">active.code =</span> <span class="st">"TRT"</span>, <span class="dt">outcome.class =</span> <span class="st">"survival"</span>)</code></pre></div>
 <pre><code>## CTRL.events      CTRL.n    CTRL.MST  TRT.events       TRT.n     TRT.MST 
@@ -2502,7 +2500,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div id="add-a-covariate-variable-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#add-a-covariate-variable-1" class="anchor"></a>Add a covariate variable</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input[, <span class="kw">c</span>(<span class="st">"OS"</span>, <span class="st">"OS.event"</span>)], 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input[, <span class="kw">c</span>(<span class="st">"OS"</span>, <span class="st">"OS.event"</span>)], 
             <span class="dt">treatment.var =</span> input$Arm, <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, 
             <span class="dt">active.code =</span> <span class="st">"TRT"</span>, <span class="dt">outcome.class =</span> <span class="st">"survival"</span>, 
             <span class="dt">covariate.var =</span> input$Sex)</code></pre></div>
@@ -2514,7 +2512,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div id="add-a-stratification-variable" class="section level3">
 <h3 class="hasAnchor">
 <a href="#add-a-stratification-variable" class="anchor"></a>Add a stratification variable</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/StatSummary.html">StatSummary</a></span>(<span class="dt">outcome.var =</span> input[, <span class="kw">c</span>(<span class="st">"OS"</span>, <span class="st">"OS.event"</span>)], 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/SummaryTwoGroups.html">SummaryTwoGroups</a></span>(<span class="dt">outcome.var =</span> input[, <span class="kw">c</span>(<span class="st">"OS"</span>, <span class="st">"OS.event"</span>)], 
             <span class="dt">treatment.var =</span> input$Arm, <span class="dt">placebo.code =</span> <span class="st">"CTRL"</span>, 
             <span class="dt">active.code =</span> <span class="st">"TRT"</span>, <span class="dt">outcome.class =</span> <span class="st">"survival"</span>, 
             <span class="dt">covariate.var =</span> input$Sex, <span class="dt">strat.factor.var =</span> input$Age)</code></pre></div>
@@ -2533,62 +2531,62 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
   )</code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
-<td align="left"></td>
+<td></td>
 <td align="left">CTRL</td>
 <td align="left">TRT</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
+<td></td>
 <td align="left">N=182</td>
 <td align="left">N=368</td>
 </tr>
 <tr class="odd">
-<td align="left">Patients with event</td>
+<td>Patients with event</td>
 <td align="left">120 (65.9%)</td>
 <td align="left">202 (54.9%)</td>
 </tr>
 <tr class="even">
-<td align="left">Patients without event</td>
+<td>Patients without event</td>
 <td align="left">62 (34.1%)</td>
 <td align="left">166 (45.1%)</td>
 </tr>
 <tr class="odd">
-<td align="left">Time to event (month)</td>
+<td>Time to event (month)</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">Median (KM)</td>
+<td>Median (KM)</td>
 <td align="left">3.25</td>
 <td align="left">5.82</td>
 </tr>
 <tr class="odd">
-<td align="left">95% CI Median</td>
+<td>95% CI Median</td>
 <td align="left">(2.83;4.14)</td>
 <td align="left">(5.49;6.8)</td>
 </tr>
 <tr class="even">
-<td align="left">25% and 75%-ile</td>
+<td>25% and 75%-ile</td>
 <td align="left">1.61;6.47</td>
 <td align="left">2.89;11.73</td>
 </tr>
 <tr class="odd">
-<td align="left">Range (inc. cens.)</td>
+<td>Range (inc. cens.)</td>
 <td align="left">0.03 to 12.32</td>
 <td align="left">0.03 to 13.8</td>
 </tr>
 <tr class="even">
-<td align="left">p-value (Log-Rank Test)</td>
+<td>p-value (Log-Rank Test)</td>
 <td align="left"></td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td align="left">Hazard Ratio</td>
+<td>Hazard Ratio</td>
 <td align="left"></td>
 <td align="left">0.54</td>
 </tr>
 <tr class="even">
-<td align="left">95% CI</td>
+<td>95% CI</td>
 <td align="left"></td>
 <td align="left">(0.43;0.67)</td>
 </tr>
@@ -2605,18 +2603,18 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                             <span class="dt">grp=</span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dv">50</span>, <span class="ot">TRUE</span>), <span class="dt">sex=</span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">2</span>, <span class="dv">50</span>, <span class="ot">TRUE</span>))
 <span class="kw">head</span>(example)</code></pre></div>
 <pre><code>##           y time grp sex
-## 1  9.470459   t2   1   2
-## 2 12.091590   t2   3   1
-## 3 10.676188   t2   2   1
-## 4  9.708847   t2   3   1
-## 5  9.159212   t2   1   1
-## 6  9.045192   t2   2   2</code></pre>
+## 1 10.227676   t2   3   2
+## 2 10.061047   t2   2   1
+## 3 10.148332   t2   1   2
+## 4 11.495127   t2   1   2
+## 5 11.076623   t2   1   2
+## 6  8.202188   t2   2   2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(example)</code></pre></div>
 <pre><code>## 'data.frame':    50 obs. of  4 variables:
-##  $ y   : num  9.47 12.09 10.68 9.71 9.16 ...
+##  $ y   : num  10.2 10.1 10.1 11.5 11.1 ...
 ##  $ time: Factor w/ 4 levels "t1","t2","t3",..: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ grp : int  1 3 2 3 1 2 2 3 1 1 ...
-##  $ sex : int  2 1 1 1 1 2 2 1 2 1 ...</code></pre>
+##  $ grp : int  3 2 1 1 1 2 3 1 3 2 ...
+##  $ sex : int  2 1 2 2 2 2 2 1 2 2 ...</code></pre>
 </div>
 <div id="specify-data-as-named-list" class="section level2">
 <h2 class="hasAnchor">
@@ -2653,24 +2651,28 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <h2 class="hasAnchor">
 <a href="#plot-values-y-according-to-time-time-factor-levels-are-automatically-ordered-as-e-g-function-sort-does" class="anchor"></a>Plot values ‘y’ according to time ‘time’ (factor levels are automatically ordered as e.g. function sort does)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">sc.pch=</span><span class="dv">16</span>)</code></pre></div>
+<pre><code>## Number of samples removed due to missing Y: 1</code></pre>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-101-1.png" width="672"></p>
 </div>
 <div id="now-as-box-percentile-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#now-as-box-percentile-plot" class="anchor"></a>Now as box-percentile plot</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">sc.pch=</span><span class="dv">16</span>, <span class="dt">box.type=</span><span class="st">"bp"</span>)</code></pre></div>
+<pre><code>## Number of samples removed due to missing Y: 1</code></pre>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-102-1.png" width="672"></p>
 </div>
 <div id="with-custom-main-title" class="section level2">
 <h2 class="hasAnchor">
 <a href="#with-custom-main-title" class="anchor"></a>With custom main title</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">sc.pch=</span><span class="dv">16</span>, <span class="dt">box.type=</span><span class="st">"bp"</span>, <span class="dt">Title=</span><span class="kw">list</span>(<span class="dt">main=</span><span class="st">"Custom Main Title"</span>))</code></pre></div>
+<pre><code>## Number of samples removed due to missing Y: 1</code></pre>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-103-1.png" width="672"></p>
 </div>
 <div id="the-same-plot-with-trend-line-connects-either-means-or-medians-and-y-axis-label" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-same-plot-with-trend-line-connects-either-means-or-medians-and-y-axis-label" class="anchor"></a>The same plot with trend line (connects either means or medians) and Y-axis label</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">trend=</span><span class="st">"median"</span>, <span class="dt">ylab=</span><span class="st">"Y-Axis Label"</span>)</code></pre></div>
+<pre><code>## Number of samples removed due to missing Y: 1</code></pre>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-104-1.png" width="672"></p>
 </div>
 <div id="use-an-addition-grouping-variable-to-color-points-in-the-stripchart" class="section level2">
@@ -2678,6 +2680,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#use-an-addition-grouping-variable-to-color-points-in-the-stripchart" class="anchor"></a>Use an addition grouping variable to color points in the stripchart</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">trend=</span><span class="st">"median"</span>, <span class="dt">ylab=</span><span class="st">"Y-Axis Label"</span>,
            <span class="dt">sc.col=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>)[example$grp] )</code></pre></div>
+<pre><code>## Number of samples removed due to missing Y: 1</code></pre>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-105-1.png" width="672"></p>
 </div>
 <div id="use-yet-another-grouping-factor-for-plotting-symbols-in-the-stripchart" class="section level2">
@@ -2685,9 +2688,9 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#use-yet-another-grouping-factor-for-plotting-symbols-in-the-stripchart" class="anchor"></a>Use yet another grouping factor for plotting symbols in the stripchart</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">trend=</span><span class="st">"median"</span>, <span class="dt">ylab=</span><span class="st">"Y-Axis Label"</span>,
            <span class="dt">sc.col=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>)[example$grp],
-             <span class="dt">sc.pch=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>)[example$sex] )
- 
-<span class="kw">legend</span>(<span class="st">"bottomright"</span>, <span class="dt">fill=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"white"</span>, <span class="st">"white"</span>), 
+             <span class="dt">sc.pch=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>)[example$sex] )</code></pre></div>
+<pre><code>## Number of samples removed due to missing Y: 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">legend</span>(<span class="st">"bottomright"</span>, <span class="dt">fill=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"white"</span>, <span class="st">"white"</span>), 
            <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">"Stage I"</span>, <span class="st">"Stage II"</span>, <span class="st">"Stage III"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>), 
            <span class="dt">pch=</span><span class="kw">c</span>(-<span class="dv">1</span>, -<span class="dv">1</span>, -<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>), <span class="dt">border=</span><span class="ot">NA</span>)</code></pre></div>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-106-1.png" width="672"></p>
@@ -2857,7 +2860,6 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
 <h3 class="hasAnchor">
 <a href="#sample-counts-as-table-above-plot" class="anchor"></a>Sample counts as table above plot</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.3.2</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -2874,7 +2876,6 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
          <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
          <span class="dt">labs.caption =</span> <span class="st">'Ribbons represent Tukey hinges and whiskers'</span>)</code></pre></div>
-<pre><code>## Warning: package 'bindrcpp' was built under R version 3.3.2</code></pre>
 <p><img src="gClinbiomarker_example_use_case_files/figure-html/unnamed-chunk-126-1.png" width="672"></p>
 </div>
 </div>
@@ -3011,7 +3012,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
       </ul>
 </li>
       <li>
-<a href="#statsummary">StatSummary()</a><ul class="nav nav-pills nav-stacked">
+<a href="#summarytwogroups">SummaryTwoGroups()</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#contunuous-outcome">Contunuous outcome</a></li>
       <li><a href="#binary-outcome">Binary outcome</a></li>
       <li><a href="#survival-variable">Survival variable</a></li>

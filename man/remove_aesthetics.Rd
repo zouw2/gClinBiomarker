@@ -19,4 +19,3 @@ terms.
 \description{
 Helper function to filter out aesthetics from mappings
 }
-

@@ -79,4 +79,3 @@ PlotLong(nasa.data \%>\% mutate(hemisphere=ifelse(lat > 0, "North", "South")),
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
-

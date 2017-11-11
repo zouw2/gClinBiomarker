@@ -29,4 +29,3 @@ colors as desired by simply clicking at the corresponding tiles.
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}
 }
-
