@@ -13,7 +13,7 @@ BoxPlot(..., obj, form = NULL, var = NULL, box.type = "b",
   Xlabel = list(text = "", side = 1, line = 2.5, font = 1, cex = 1),
   Title = list(line = 2.5), Grid = NULL, transf = NULL, trend = NULL,
   trend.lty = 1L, trend.lwd = 1, trend.col = "blue", threshold = 5L,
-  border = "black", mean.pch = 3L, mean.cex = 1.5, mean.col = "yellow",
+  border = "black", mean.pch = 3L, mean.cex = 1.5, mean.col = "salmon",
   mean.lwd = 2L, vline = NULL, vl.lwd = 1L, vl.lty = 1L,
   vl.col = "black", Box = TRUE)
 }
@@ -242,3 +242,4 @@ legend(x="topright", pch=c(0, 15), legend=c("event", "no event"), box.lty=0, col
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}, Vinzent Rolny \email{vinzent.rolny@roche.com}, christina Rabe \email{rabe.christina@gene.com}
 }
+

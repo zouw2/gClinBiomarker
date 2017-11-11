@@ -13,28 +13,30 @@ PlotTabForestMulti(data, outcome.class = c("survival", "binary",
   covariate = NULL, strata = NULL, rsp.cat = TRUE,
   rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
   "NE", NA), quantile.type = 2, placebo.code = NULL, active.code = NULL,
-  var.code = NULL, tabforest = FALSE, alpha = 0.05, main = NULL,
-  sub = NULL, clip = NULL, xlab = NULL, cex.headings = 1.1,
-  cex.note = 1, cols = "darkgreen", pdf.name = NULL,
-  pdf.param = list(width = 6, height = 4.5), par.param = list(cex = 1.2,
-  cex.main = 1.5, cex.sub = 1, cex.axis = 1))
+  var.code = NULL, tabforest = FALSE, alpha = 0.05,
+  surv.conf.type = "plain", main = NULL, sub = NULL, clip = NULL,
+  xlab = NULL, cex.headings = 1.1, cex.note = 1, cols = "darkgreen",
+  only.stat = FALSE, pdf.name = NULL, pdf.param = list(width = 6, height =
+  4.5), par.param = list(cex = 1.2, cex.main = 1.5, cex.sub = 1, cex.axis =
+  1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
-\item{outcome.class}{type of the outcome variable. Default is \code{c("survival", "binary", "continuous")}}
+\item{outcome.class}{type of the outcome variable. Default is \code{c("survival", "binary", "continuous")}. Continuous is not available now}
 
 \item{outcome.var}{name of the outcome varible. If the outcome.class is binary or coutinuous, only one value should be provided.
 If the outcome.class is survival, two values should be provided - name of the 'time to event' variable and 'censorship' variable
- For the censoring variable, 1 indicates event and 0 indicates censoring}
+ For the censoring variable, 1 indicates event and 0 indicates censoring. In all cases but when outcome.class=binary and rsp.cat=TRUE,
+ patients with missing outcome variable (NA) will be excluded from BEP.}
 
 \item{trt}{name of the treatment variable. If this is NULL, within-arm analysis will be performed}
 
 \item{var}{name of the biomarker variable. only one variable should be specified.}
 
 \item{var.class}{class of the variable. valid categories are "numeric", "categorical". If the class is continuous,
-user needs to specify percentile.cutoff to dichotomize the continuous measure into subgroups}
+user needs to specify percentile.cutoff or numerical.cutoff to dichotomize the continuous measure into subgroups}
 
 \item{var.name}{display name for the biomarker variable}
 
@@ -46,31 +48,27 @@ cutoff value. If this is TRUE, in 2-arm study, across-arm HR within biomarker hi
 In single arm study HR of biomarker high vs low will be calculated.}
 
 \item{less}{whether calculate summary statistics within the subgroup whose biomarker value is less than the cutoff value.
-greater and less can both be TRUE. If compare across subgroups (compare.subgroup=TRUE), both greater and less will be set as TRUE}
+greater and less can both be TRUE}
 
 \item{within.bin}{whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 greater and less will be set as FALSE.}
 
-\item{compare.bep.itt}{whether want to generate two groups of results to compare the summary statistics
-in ITT vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
-parameters bep, bep.name, itt.name, bep.indicator will be ignored}
-
 \item{compare.subgroup}{whether want to generate multiple groups of results to compare the summary statistics
 in each subgroup defined by parameter subgroup}
 
-\item{show.itt}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in itt}
+\item{show.itt}{whether calculate summary statistics using all patients in full population (e.g. ITT). This will be ignored in 1arm case}
 
-\item{show.bep}{when performing subgroup comparison (compare.subgroup=TRUE), whether also calculate summary statistics using all patients in BEP (biomarker evaluable population).
-BEP is defined by variable bep}
+\item{show.bep}{whether calculate summary statistics using all patients in BEP (biomarker evaluable population). This will be ignored in 1arm case}
 
 \item{subgroup}{The column which defines subgroups. If compare.subgroup is TRUE, the program will generate forest plot of the vars within each subgroup}
 
-\item{bep}{name of the column which indicates biomarker evaluable population.}
+\item{bep}{name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.}
 
 \item{bep.name}{preferred display name of the biomarker evaluable population.
 If it is NULL, bep will be used.}
 
-\item{itt.name}{preferred display name of full population
+\item{itt.name}{preferred display name of the full population (e.g. ITT).
 If it is NULL, "All" will be used.}
 
 \item{bep.indicator}{In the subpopulation column, which value is used
@@ -93,9 +91,9 @@ At the same time rsp.response and rsp.nonresponse will be ignored.}
 
 \item{quantile.type}{an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.}
 
-\item{placebo.code}{name of the control arm of the treatment variable}
+\item{placebo.code}{name of the control arm of the treatment variable. If you want to specify placebo code using this parameter, both placebo.code and active.code need to be provided.}
 
-\item{active.code}{of the treatment/experimental arm of the treatment variable}
+\item{active.code}{of the treatment/experimental arm of the treatment variable. If you want to specify active code using this parameter, both placebo.code and active.code need to be provided.}
 
 \item{var.code}{ordered levels of the biomarker variable. This will be ignored for continuous biomarker.
 If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function}
@@ -105,7 +103,9 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{alpha}{type I error rate. Default is 0.05.}
 
-\item{main}{main title of the forest plot. Default is "Association of biomarker effect within treatment arms".}
+\item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
+
+\item{main}{main title (prefix of title) of the forest plot. Default is "Association of biomarker effect within treatment arms".}
 
 \item{sub}{sub title under the forest plot. Default is NULL.}
 
@@ -118,6 +118,8 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \item{cex.note}{amount of magnification of the note. Default is 1.}
 
 \item{cols}{Color of the 'effect size' displayed in the forest plot.}
+
+\item{only.stat}{if it is TRUE, only summary statistics will be generated. No figure will be generated}
 
 \item{pdf.name}{name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "Forestplot.pdf".}
 
@@ -143,3 +145,4 @@ PlotTabForestMulti(data=input,
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
+

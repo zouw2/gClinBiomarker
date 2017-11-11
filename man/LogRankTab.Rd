@@ -4,17 +4,17 @@
 \alias{LogRankTab}
 \title{Log rank test p value and other summary statistics for subgroup analysis}
 \usage{
-LogRankTab(data, tte, cens, var, time.unit = "month", fillname = "")
+LogRankTab(data, tte, cens, var, time.unit = "month",
+  surv.conf.type = "plain", fillname = "")
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
-biomarker variables, treatment indicator, etc.). One patient per row.}
-
 \item{var}{a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
 It will be ignored if fit or form is not null.}
 
 \item{time.unit}{Default is month.}
+
+\item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
 
 \item{fillname}{(character) variable specifying the content for the cell that located in row one and column one, the default value for fillname is NULL.}
 }
@@ -22,7 +22,7 @@ It will be ignored if fit or form is not null.}
 This function takes time to event outcome, and one categorical variable (parameter var). It generates log rank p value comparing different groups, and summary statistics
 }
 \note{
-This function takes time to event outcome, and one categorical variable (parameter var). 
+This function takes time to event outcome, and one categorical variable (parameter var).
 This function generates a table that contains number of patients, median time to event, and log rank test p value ( against first level in var)
 For more general time to event modeling, see function CoxTab() (e.g. continuous factor, multiple factors, stratification, hazard ratio estimation, etc)
 }
@@ -33,3 +33,4 @@ LogRankTab(data=input,tte="PFS", cens="PFS.event",var="Arm")
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
+

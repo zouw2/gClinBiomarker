@@ -14,10 +14,10 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   tabforest = FALSE, quantile.type = 2, digits = 2, cutoff.digits = 2,
   placebo.code = NULL, active.code = NULL, rsp.cat = TRUE,
   rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
-  "NE", NA), var.code = NULL, alpha = 0.05, main = NULL,
-  main.prefix = NULL, sub = NULL, clip = NULL, xticks = NULL,
-  xticks.digits = 1, xlab = NULL, cex.headings = 1.1, cex.note = 0.8,
-  cols = NULL, only.stat = FALSE, pdf.name = NULL,
+  "NE", NA), var.code = NULL, surv.conf.type = "plain", alpha = 0.05,
+  main = NULL, main.prefix = NULL, sub = NULL, clip = NULL,
+  xticks = NULL, xticks.digits = 1, xlab = NULL, cex.headings = 1.1,
+  cex.note = 0.8, cols = NULL, only.stat = FALSE, pdf.name = NULL,
   pdf.param = list(width = 12, height = 4.5), par.param = list(cex = 1,
   cex.main = 1, cex.sub = 1, cex.axis = 1))
 }
@@ -93,9 +93,9 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 
 \item{cutoff.digits, digits}{cutoff.digits:number of digits for rounding when calculating cutoff. will only be used when percentile.cutoff is specified. digits: number of digits for the summary statistics display}
 
-\item{placebo.code}{name of the control arm of the treatment variable}
+\item{placebo.code}{name of the control arm of the treatment variable. If you want to specify placebo code using this parameter, both placebo.code and active.code need to be provided.}
 
-\item{active.code}{of the treatment/experimental arm of the treatment variable}
+\item{active.code}{of the treatment/experimental arm of the treatment variable. If you want to specify active code using this parameter, both placebo.code and active.code need to be provided.}
 
 \item{rsp.cat}{whether the response outcome variable is coded as binary (1 as responder and 0 as non-responder),
 If rsp.cat is TRUE, responder categories
@@ -110,6 +110,8 @@ At the same time rsp.response and rsp.nonresponse will be ignored.}
 
 \item{var.code}{ordered levels of the biomarker variable. This will be ignored for continuous biomarker.
 If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function}
+
+\item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
 
 \item{alpha}{type I error rate. Default is 0.05.}
 
@@ -154,3 +156,4 @@ PlotTabForestBiomarker(data=input,
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 }
+

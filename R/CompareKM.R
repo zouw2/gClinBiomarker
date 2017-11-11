@@ -7,6 +7,7 @@
 #' @param tte column name that indicates the time to event variable
 #' @param cens column name that indicates the censoring variable associated to tte
 #' @param col.itt,col.bep,col.ci Color for itt curve, bep curve and confidence interval curve (CI)
+#' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit
 #' @param shaded.ci Whether add background shade to disply CI
 #' @param pdf.name name of output pdf file. If it is NULL (default), the plots will be displayed but not saved as pdf
 #' @param pdf.param A list of parameters that define pdf graphics device. See \code{\link{pdf}}.
@@ -35,6 +36,7 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
 		      bep.name="Biomarker Evaluable", itt.name="All",
 		      col.itt="palegreen4", col.bep="lightpink2", col.ci="lightcyan",shaded.ci=TRUE,
 		      xlim=NULL, xat=NULL, ylab=paste(tte,"Survival Probability"), xlab="Time", main="",
+		      surv.conf.type="plain",
                       pdf.name = NULL, pdf.param=list(height=5), par.param=list(mar=c(4,4,3,2)),...){
 
   if(is.null(xlim)){ xlim <- c(0, max(data[,tte], na.rm=TRUE)) + c(0, 0.1*max(data[,tte], na.rm=TRUE)) }
@@ -57,7 +59,7 @@ CompareKM <- function(data, tte, cens, trt=NULL, bep, bep.indicator=1,
     if(!is.null(trt))tmp <- data[which(data[,trt] == lev[i]),]
     if(is.null(trt))tmp <- data
 
-    sf <- survfit(as.formula(paste("Surv(",tte,",",cens,")~1")), data=tmp, conf.type="log")
+    sf <- survfit(as.formula(paste("Surv(",tte,",",cens,")~1")), data=tmp, conf.type=surv.conf.type)
     plot(sf, col=col.itt, ylab=ylab, xlab=xlab, xlim=xlim, axes=FALSE, mark.time=FALSE,...)
     axis(2)
     if(!is.null(xat)){axis(1, at=xat, labels=xat)}

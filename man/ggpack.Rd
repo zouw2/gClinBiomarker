@@ -52,3 +52,4 @@ ggpack(geom_bar,              # layer function to bundle
 \author{
 Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 }
+

@@ -200,7 +200,7 @@ BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",
 		Xlabel=list(text="", side=1, line=2.5, font=1, cex=1),
 		Title=list(line=2.5), Grid=NULL, transf=NULL,
 		trend=NULL, trend.lty=1L, trend.lwd=1, trend.col="blue", threshold=5L,
-		border="black", mean.pch=3L, mean.cex=1.5, mean.col="yellow", mean.lwd=2L,
+		border="black", mean.pch=3L, mean.cex=1.5, mean.col="salmon", mean.lwd=2L,
 		vline=NULL, vl.lwd=1L, vl.lty=1L, vl.col="black", Box=TRUE )
 {
 	box.type <- match.arg(tolower(box.type), c("b", "bp"))
@@ -366,6 +366,7 @@ BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",
 
 	if(is.null(args) || !"ylim" %in% names(args))
 	{
+
 		args$ylim <- range( c(c(bp$stats), bp$out), na.rm=TRUE )            # NAs have to be removed for 'ylim'
 	}
 
@@ -554,11 +555,18 @@ BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",
 			abline(v=vline, lwd=vl.lwd, lty=vl.lty, col=vl.col)
 	}
 
+	if (is.na(Means[1]) & names(Means[1]) == "") {
+	    Means <- Means[2:length(Means)]
+	}
+
 	if(horizontal)
 		points(Means, 1:length(bp$n), pch=mean.pch, col=mean.col, cex=mean.cex, lwd=mean.lwd)
 	else
 		points(1:length(bp$n), Means, pch=mean.pch, col=mean.col, cex=mean.cex, lwd=mean.lwd)
-
 	suppressWarnings(par(old.par))
+	dif <- nrow(obj) - sum(bp$n)
+	if (dif > 0) {
+	    message("Number of samples removed due to missing Y: ", dif)
+	}
 	invisible(bp)
 }

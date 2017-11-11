@@ -17,3 +17,4 @@ the mapping filtered by accepted aesthetics for the given Geom
 \description{
 Helper function to filter aesthetic mappings based on geometry
 }
+

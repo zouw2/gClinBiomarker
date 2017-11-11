@@ -48,3 +48,4 @@ PlotDens(data=input, var="KRAS.exprs", log2=TRUE)
 \author{
 Alexey Pronin \email{pronin.alexey@gene.com}, Ning Leng \email{leng.ning@gene.com}, and previous team members (see DESCRIPTION)
 }
+

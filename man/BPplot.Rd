@@ -52,9 +52,10 @@ package \code{Hmisc}. This R-code is changed and augmented to implement an formu
 add box-percentile plots to an existing plot. It is assumed that \code{form} is a simple formula object, 
 e.g. \code{y~grp:time} with just simple interactions or even simpler with just a single grouping factor, e.g. \code{y~grp}.
 }
-\seealso{
-\link{BoxPlot}, function \code{bpplot} in package \code{Hmisc}
-}
 \author{
 Andre Schuetzenmeister (using source-code of function \code{bpplot} from package \code{Hmisc})
 }
+\seealso{
+\link{BoxPlot}, function \code{bpplot} in package \code{Hmisc}
+}
+
