@@ -45,10 +45,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/gClinbiomarker_example_use_case.html">gClinBiomarker: example use cases</a>
+      <a href="articles/example-use-cases.html">gClinBiomarker: Example Use Cases</a>
     </li>
     <li>
-      <a href="articles/gClinbiomarker_vig_v1.html">gClinBiomarker Vignette</a>
+      <a href="articles/package-overview.html">gClinBiomarker Package Overivew</a>
     </li>
   </ul>
 </li>
@@ -67,30 +67,146 @@
     <div id="gclinbiomarker" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#gclinbiomarker" class="anchor"></a>gClinBiomarker</h1></div>
+
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
 <p>gClinBiomarker is an R package that contains functions to perform baseline and longitutinal biomarker analyses</p>
 <p>Source code: <a href="https://github.roche.com/Rpackages/gClinBiomarker" class="uri">https://github.roche.com/Rpackages/gClinBiomarker</a></p>
 <p>Project page: <a href="https://pages.github.roche.com/Rpackages/gClinBiomarker/" class="uri">https://pages.github.roche.com/Rpackages/gClinBiomarker/</a></p>
-<p>Documentations could be found under the “article” tab of the project page. Two documents are provided:</p>
-<ul>
-<li>A user vignette demonstrates how gClinBiomarker package may help in your biomarker analysis</li>
-<li>An exapmle use case document which contains more detailed use cases</li>
-</ul>
+<p>Documentations could be found under the “article” tab of the project page. Two documents are provided: - A user vignette demonstrates how gClinBiomarker package may help in your biomarker analysis - An exapmle use case document which contains more detailed use cases</p>
 <p>pdf version of these two documents can be found <a href="https://github.roche.com/Rpackages/gClinBiomarker/tree/master/inst/doc">here</a>.</p>
 <p>gClinBiomarker also provide a set of Rmarkdown templates that allow you to generate biomarker analysis report by “one click”. The R markdown templates can be found at <a href="https://github.roche.com/lengn/gClinbiomarker_documents">here</a>, along with some slide decks.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2 class="hasAnchor">
+<a href="#getting-started" class="anchor"></a>Getting Started</h2>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
 <p>To install this package from R, use <code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github()</a></code> function from the <strong>devtools</strong> package</p>
 <p>In R, type:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## install.packages("devtools")
 <span class="kw">library</span>(devtools)
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>,
-<span class="dt">host=</span><span class="st">"https://github.roche.com/api/v3"</span>)</code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>, <span class="dt">host=</span><span class="st">"https://github.roche.com/api/v3"</span>)</code></pre></div>
 <p>Note that on bce (r.bas.roche.com), the default R is from an older version. To install, type</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>,
-<span class="dt">host=</span><span class="st">"github.roche.com/api/v3"</span>)</code></pre></div>
-<div id="gclinbiomarker-overview" class="section level2">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>, <span class="dt">host=</span><span class="st">"github.roche.com/api/v3"</span>)</code></pre></div>
+</div>
+<div id="getting-the-documentation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#getting-the-documentation" class="anchor"></a>Getting the Documentation</h3>
+<p>Use the command <code>vignette(package = 'gClinBiomarker')</code> to view a list of avaialble vignettes for the <code>gClinBiomarker</code> package.</p>
+</div>
+</div>
+<div id="overview-of-biomarker-analysis" class="section level2">
 <h2 class="hasAnchor">
-<a href="#gclinbiomarker-overview" class="anchor"></a>gClinBiomarker overview:</h2>
-<p><img src="https://media.github.roche.com/user/48/files/431d398a-a453-11e7-8801-1c6915156185" alt="screen shot 2017-09-28 at 1 44 01 pm"><img src="https://media.github.roche.com/user/48/files/47cad168-a453-11e7-85f7-deee2f7604ab" alt="screen shot 2017-09-28 at 1 44 13 pm"><img src="https://media.github.roche.com/user/48/files/4ad58466-a453-11e7-80be-9af0c23fcedd" alt="screen shot 2017-09-28 at 1 44 24 pm"><img src="https://media.github.roche.com/user/48/files/507dd1a2-a453-11e7-8216-442f15bd500a" alt="screen shot 2017-09-28 at 1 44 34 pm"><img src="https://media.github.roche.com/user/48/files/53ab85e0-a453-11e7-825d-718f28d1fca3" alt="screen shot 2017-09-28 at 1 44 43 pm"></p>
+<a href="#overview-of-biomarker-analysis" class="anchor"></a>Overview of Biomarker Analysis</h2>
+<div id="supported-endpoint-and-biomarker-types" class="section level3">
+<h3 class="hasAnchor">
+<a href="#supported-endpoint-and-biomarker-types" class="anchor"></a>Supported endpoint and biomarker types</h3>
+<ul>
+<li>Diagnostic: temperature, bacterial tests; origin of cancer tissue</li>
+<li>Early Detection: genetic testing (e.g. newborn screening for cystic fibrosis)</li>
+<li>
+<strong>Prognostic</strong>: Mammaprint: 70-gene panel to split breast cancer patients to high metastases (regardless of therapy)</li>
+<li>Identify patients with unmet medical need</li>
+<li>
+<strong>Predictive</strong>: Herceptin in Her2+ breast cancer (therapeutic benefit in Her2+ selected patients)</li>
+<li>Identify patients with better treatment benefit</li>
+<li>
+<strong>Monitoring</strong>: Blood oxygen (heart and lung diseases), immune markers (after transplantation), HbA1c (diabetes)</li>
+<li>Surrogate endpoint</li>
+<li>Biological Understanding: Look at multiple genes/mutations unsupervisedly</li>
+</ul>
+</div>
+</div>
+<div id="gclinbiomarker-analysis-and-workflows" class="section level2">
+<h2 class="hasAnchor">
+<a href="#gclinbiomarker-analysis-and-workflows" class="anchor"></a>gClinBiomarker Analysis and Workflows</h2>
+<div id="supported-endpoint-and-biomarker-types-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#supported-endpoint-and-biomarker-types-1" class="anchor"></a>Supported endpoint and biomarker types</h3>
+<div id="endpoints" class="section level4">
+<h4 class="hasAnchor">
+<a href="#endpoints" class="anchor"></a>Endpoints</h4>
+<ul>
+<li>Time-to-event</li>
+<li>Binary</li>
+<li>Continuous</li>
+<li>Longitudinal</li>
+</ul>
+</div>
+<div id="biomarkers" class="section level4">
+<h4 class="hasAnchor">
+<a href="#biomarkers" class="anchor"></a>Biomarkers</h4>
+<ul>
+<li>Continuous</li>
+<li>Ordinal</li>
+<li>Categorical</li>
+<li>Longitudinal</li>
+</ul>
+</div>
+<div id="analysis" class="section level4">
+<h4 class="hasAnchor">
+<a href="#analysis" class="anchor"></a>Analysis</h4>
+<ul>
+<li>2-arm study: predictive and prognostic biomarker analysis</li>
+<li>1-arm study: prognostic biomarker analysis</li>
+</ul>
+</div>
+</div>
+<div id="workflow" class="section level3">
+<h3 class="hasAnchor">
+<a href="#workflow" class="anchor"></a>Workflow</h3>
+<div id="step-1" class="section level4">
+<h4 class="hasAnchor">
+<a href="#step-1" class="anchor"></a>Step 1:</h4>
+<blockquote>
+<p>Is your biomarker population your full patient population? Take a look at these functions:</p>
+</blockquote>
+<ul>
+<li><code><a href="reference/SummaryVars.html">SummaryVars()</a></code></li>
+<li><code><a href="reference/CompareKM.html">CompareKM()</a></code></li>
+<li><code><a href="reference/PlotRspBar.html">PlotRspBar()</a></code></li>
+</ul>
+</div>
+<div id="step-2" class="section level4">
+<h4 class="hasAnchor">
+<a href="#step-2" class="anchor"></a>Step 2:</h4>
+<blockquote>
+<p>Is your biomarker response a dynamic range? Does it have a skewed distribution? Is it correlated with clinical variables?</p>
+</blockquote>
+<ul>
+<li><code><a href="reference/PlotProperty.html">PlotProperty()</a></code></li>
+<li><code><a href="reference/PlotTabForestMulti.html">PlotTabForestMulti()</a></code></li>
+</ul>
+</div>
+<div id="step-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#step-3" class="anchor"></a>Step 3:</h4>
+<blockquote>
+<p>Is your biomarker response associated with a clinical outcome? Is it prognostic or predictive? Is there an optimal biomarker cutoff with a consistent trend?</p>
+</blockquote>
+<ul>
+<li><code><a href="reference/PlotTabForestBiomarker.html">PlotTabForestBiomarker()</a></code></li>
+<li><code><a href="reference/PlotSTEPP.html">PlotSTEPP()</a></code></li>
+</ul>
+</div>
+<div id="step-4" class="section level4">
+<h4 class="hasAnchor">
+<a href="#step-4" class="anchor"></a>Step 4:</h4>
+<blockquote>
+<p>Estimate the clinical benefit within a biomarker subgroup.</p>
+</blockquote>
+<ul>
+<li><code><a href="reference/PlotKM.html">PlotKM()</a></code></li>
+<li><code><a href="reference/PlotLong.html">PlotLong()</a></code></li>
+<li><code><a href="reference/PlotRspBar.html">PlotRspBar()</a></code></li>
+<li><code>CoxTab</code></li>
+<li><code><a href="reference/LogRankTab.html">LogRankTab()</a></code></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
   </div>
@@ -105,6 +221,11 @@
 <li>Doug Kelkhoff <br><small class="roles"> Author </small> </li>
 <li>Christina Rabe <br><small class="roles"> Author </small> </li>
 <li>Kwame Okrah <br><small class="roles"> Author </small> </li>
+</ul>
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href=""><img src="https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square" alt="Build Status"></a></li>
+<li><a href=""><img src="https://img.shields.io/badge/coverage-0%25-red.svg?style=flat-square" alt="Code Coverage"></a></li>
 </ul>
 </div>
 </div>

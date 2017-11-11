@@ -1,4 +1,4 @@
-numericcontext("SummaryVars")
+context("SummaryVars")
 
 test_that("Size of data", {
     data(input)

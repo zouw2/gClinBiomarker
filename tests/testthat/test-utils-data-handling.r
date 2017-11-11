@@ -14,7 +14,7 @@ test_that('augment_predict: test that deprecation warning suppression is still n
 test_that('augment_predict produces dataframe of model fit terms', {
   expect_equal(
     augment_predict(mtcars, model = lm, model.formula = mpg ~ carb + am + hp + wt),
-    broom::augment(lm(mpg ~ carb + am + hp + wt, mtcars), mtcars)
+    suppressWarnings(broom::augment(lm(mpg ~ carb + am + hp + wt, mtcars), mtcars))
   )
 })
 

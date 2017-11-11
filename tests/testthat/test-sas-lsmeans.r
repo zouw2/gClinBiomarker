@@ -61,7 +61,7 @@ test_that('append_weights returns weights of "proportional" when no levels produ
 
 test_that('append_weights calculates weights over factor variables in specs', {
   lsmeans_args <- list(
-    lm(mpg ~ carb + wt + hp + vs + am, data = mtcars),
+    lm(mpg ~ carb + wt + hp + vs + am, data = test_mtcars),
     data = test_mtcars,
     specs = pairwise ~ vs + am
   )
@@ -74,7 +74,7 @@ test_that('append_weights calculates weights over factor variables in specs', {
 
 test_that('append_weights shows output for verbose output', {
   lsmeans_args <- list(
-    lm(mpg ~ carb + wt + hp + vs + am, data = mtcars),
+    lm(mpg ~ carb + wt + hp + vs + am, data = test_mtcars),
     data = test_mtcars,
     specs = pairwise ~ vs + am
   )
@@ -244,6 +244,6 @@ context("sas.lsmeans()")
 
 test_that('sas.lsmeans runs', {
   model <- lm(mpg ~ carb + cyl + wt + am, data = test_mtcars)
-  expect_silent(sas.lsmeans(model, ~ carb + cyl))
+  expect_silent(sas.lsmeans(model, ~ carb + cyl, quietly = T))
 })
 
