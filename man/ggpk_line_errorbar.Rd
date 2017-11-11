@@ -8,7 +8,7 @@ as an argument}
 ggpk_line_errorbar(mapping = NULL, data = NULL, show.counts = FALSE,
   fun.data = "mean_se", fun.args = list(),
   position = ggplot2::position_dodge(width = ggplot2::rel(0.5)),
-  label = "ggpk_line_errorbar", ...)
+  id = "ggpk_line_errorbar", ...)
 }
 \arguments{
 \item{mapping}{a ggplot aesthetic mapping}
@@ -44,7 +44,7 @@ nasa \%>\% as_tibble \%>\%
   # plotting
   ggplot() +
     aes(x=date, y=temperature) +
-    ggpk_stat_line_errorbar(fun.data = 'deciles') +
+    ggpk_line_errorbar(fun.data = 'deciles') +
     facet_grid(hemisphere ~ .) +
     labs(title="Temperature by Hemisphere")
 

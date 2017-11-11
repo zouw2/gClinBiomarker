@@ -2,39 +2,38 @@
 % Please edit documentation in R/ggplot-ggpackets-.r
 \name{ggpack}
 \alias{ggpack}
-\title{A helper function to wrap ggplot calls, allowing for passing of a
-shared list of arguments prefixed by a string. For example,
-a call to a custom ggplot template may allow for arguments
-'line.color' and 'bar.color' to specify the line and bar colors
-seperately. These arguments are parsed appropriately and
-passed to the appropriate sub-function.}
+\title{Handling of argument passing to ggplots}
 \usage{
-ggpack(`_call` = NULL, ..., prefix = NULL, args = NULL,
-  null.empty = FALSE)
+ggpack(`_call` = NULL, ..., id = NULL, dots = NULL, null.empty = FALSE)
 }
 \arguments{
 \item{_call}{the function to call}
 
-\item{...}{additional arguments to use when calling the provided
-function}
+\item{...}{additional arguments to use when calling the provided function}
 
-\item{prefix}{the prefix string to subset arguments by}
+\item{id}{the prefix string to subset arguments by}
 
-\item{args}{arguments to subset}
+\item{dots}{arguments to subset}
 
 \item{null.empty}{return NULL if no arguments are received}
 }
 \value{
-a call to the specified function with arguments subset for
-only those which match the specified prefix
+a call to the specified function with arguments subset for only those
+  which match the specified prefix
 }
 \description{
-A helper function to wrap ggplot calls, allowing for passing of a
-shared list of arguments prefixed by a string. For example,
-a call to a custom ggplot template may allow for arguments
-'line.color' and 'bar.color' to specify the line and bar colors
-seperately. These arguments are parsed appropriately and
+A helper function to wrap ggplot calls, allowing for passing of a shared list
+of arguments prefixed by an id string. For example, a call to a custom ggplot
+template may allow for arguments 'line.color' and 'bar.color' to specify the
+line and bar colors seperately. These arguments are parsed appropriately and
 passed to the appropriate sub-function.
+}
+\note{
+Use `substitute(...())` when collecting parent function ellipses args
+  to pass into `ggpack()` to accommodate unevaluated symbols.
+
+Ellipses arguments and the arguments passed through the `dots` args
+  will overwrite previous arguments of the same name.
 }
 \examples{
 library(ggplot2)
@@ -44,12 +43,10 @@ ggpack(geom_bar(na.rm = TRUE))
 
 # or more explicitly define layer properties
 ggpack(geom_bar,              # layer function to bundle
-  prefix = 'bar',             # name of layer - used for filter listed args
+  id = 'bar',                 # name of layer - used for filter listed args
   fill = 'red',               # ...'s before 'args' used as defaults
-  args = list(fill = 'blue'), # named 'args' param will overwrite prior ...'s
+  dots = list(fill = 'blue'), # named 'args' param will overwrite prior ...'s
   fill = 'green')             # ...'s after 'args' will overwrite any others
-
-
 
 }
 \author{

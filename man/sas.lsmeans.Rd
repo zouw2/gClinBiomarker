@@ -5,7 +5,7 @@
 \title{Compute LSMEANS to mirror SAS functionality}
 \usage{
 sas.lsmeans(model.obj, specs, data = NULL, mode = "kenward-roger",
-  quietly = FALSE, verbose = FALSE, ...)
+  quietly = FALSE, verbose = FALSE, confidence.level = NULL, ...)
 }
 \arguments{
 \item{model.obj}{A model object on which to calculate lsmeans}
@@ -14,7 +14,8 @@ sas.lsmeans(model.obj, specs, data = NULL, mode = "kenward-roger",
 
 \item{mode}{mode to be passed to lsmeans()}
 
-\item{quietly}{whether to hide message informing of changes to default functionality}
+\item{quietly}{whether to hide message informing of changes to default
+functionality}
 
 \item{...}{additional arguments to be passed to lsmeans}
 
@@ -25,17 +26,25 @@ Compute LSMEANS to mirror SAS functionality
 }
 \examples{
 library(dplyr) # for \%>\% operator
+library(nlme)  # for gls
 
 # create model on which to calculate lsmeans
-gls(mpg ~ hp + carb + wt,
-    data = mtcars \%>\%
-             mutate(carb = as.factor(carb)), # make sure contrast is factor
-    na.action = na.exclude) \%>\%
+model <- gls(mpg ~ hp + carb + wt,
+  data = mtcars, na.action = na.exclude)
 
 # call lsmeans, specifying factors over which means should be calculated
-sas.lsmeans(~ carb)
+sas.lsm <- sas.lsmeans(model, ~ carb, data = mtcars, confidence.level = 0.9, verb = T)
+
+# update the confidence level used
+# NOTE: if you're examining confidence intervals, it's much faster to udpate
+# rather than re-run the model and means
+sas.lsm <- update(sas.lsm, level = 0.95)
+
+# using the means as a dataframe
+as.data.frame(sas.lsm)
 
 }
 \author{
-Doug Kelkhoff \email{kelkhoff.douglas@gene.com}, Christina Rabe \email{rabe.christina@gene.com}
+Doug Kelkhoff \email{kelkhoff.douglas@gene.com}, Christina Rabe
+  \email{rabe.christina@gene.com}
 }

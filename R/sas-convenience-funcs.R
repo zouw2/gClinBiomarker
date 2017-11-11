@@ -17,19 +17,27 @@
 #'
 #' @examples
 #' library(dplyr) # for %>% operator
+#' library(nlme)  # for gls
 #'
 #' # create model on which to calculate lsmeans
-#' gls(mpg ~ hp + carb + wt,
-#'     data = mtcars %>%
-#'              mutate(carb = as.factor(carb)), # make sure contrast is factor
-#'     na.action = na.exclude) %>%
+#' model <- gls(mpg ~ hp + carb + wt,
+#'   data = mtcars, na.action = na.exclude)
 #'
 #' # call lsmeans, specifying factors over which means should be calculated
-#' sas.lsmeans(~ carb)
+#' sas.lsm <- sas.lsmeans(model, ~ carb, data = mtcars, confidence.level = 0.9, verb = T)
+#'
+#' # update the confidence level used
+#' # NOTE: if you're examining confidence intervals, it's much faster to udpate
+#' # rather than re-run the model and means
+#' sas.lsm <- update(sas.lsm, level = 0.95)
+#'
+#' # using the means as a dataframe
+#' as.data.frame(sas.lsm)
 #'
 #' @export
+#' @importFrom dplyr "%>%" filter_at vars all_vars mutate_at
 sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
-  quietly = FALSE, verbose = FALSE, ...) {
+    quietly = FALSE, verbose = FALSE, confidence.level = NULL, ...) {
 
   if (!quietly) message(paste(
     "To mirror SAS functionality:",
@@ -44,24 +52,24 @@ sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
     sep = "\n"))
 
   model.call <- as.list(model.obj$call)
-  model      <- append_split_terms(as.formula(get_model_terms(model.obj)))
+  model      <- append_split_terms(as.formula(get_model_formula(model.obj)))
   model.env  <- attr(model$terms, ".Environment")
 
   # prevent model that doesn't store model construction without explicit data
   if (is.null(data) && identical(model.env, environment()))
     stop(paste(
       "\nModel environment was not found within model object. ",
-      "To resolve, pass source data to sas.lsmeans as well.", sep = "\n"))
+      "To resolve, provide value for data to sas.lsmeans() as well.", sep = "\n"))
 
   specs         <- clean_lsmeans_specs(specs) # ~ x | y => pairwise ~ x | y
   specs.pred    <- get_lsmeans_specs_predictors(specs) # c('x', 'y')
   specs.pred.nf <- Map(class, Filter(Negate(is.factor), data[specs.pred]))
 
   # filter dataset down to complete cases, coerce spec vars to factor
-  if (is.null(data)) data <- eval(substitute(model.call$data), envir=model.env)
+  if (is.null(data)) data <- eval(model.call$data, envir=model.env)
   cleaned_data <- data %>%
-    dplyr::filter_at(vars(unlist(model$vars)), all_vars(!is.na(.))) %>%
-    dplyr::mutate_at(.vars = as.character(names(specs.pred.nf)), .funs = as.factor)
+    dplyr::filter_at(dplyr::vars(model$vars), dplyr::all_vars(!is.na(.))) %>%
+    dplyr::mutate_at(as.character(names(specs.pred.nf)), as.factor)
 
   if (!quietly & nrow(data) != nrow(cleaned_data)) message(sprintf(
     "%d records with incomplete data removed in model fit. (%1.2f%%)\n",
@@ -76,15 +84,12 @@ sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
   model.call$data <- cleaned_data
   sas.model.obj <- do.call(as.character(model.call[[1]]), model.call[-1])
 
-  # split non-grouping model covariates into numeric and non-numeric lists
-  non.spec.vars <- setdiff(all.vars(model$terms), c(specs.pred, model$resp))
-  covs.f <- names(Filter(Negate(is.numeric), data[non.spec.vars]))
-  covs.n <- names(Filter(       is.numeric , data[non.spec.vars]))
-
+  non.spec.vars <- setdiff(model$covs, specs.pred)
   lsmeans_args <- modifyList(
     list(object = sas.model.obj, specs = specs, mode = mode, data = cleaned_data,
-         at = cleaned_data %>% sas_lsmeans_at(covs.n)),
-    list(...)) %>% append_weights_as_freq(covs.f, data = data, verbose = verbose)
+         at = cleaned_data %>% numeric_means(non.spec.vars, verbose = verbose)
+         ) %>% append_weights(data = data, verbose = verbose),
+    list(...))
 
   if (verbose) {
     message('Running lsmeans::lsmeans() with parameters: ')
@@ -93,147 +98,272 @@ sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
   }
 
   lsmlist <- do.call(lsmeans::lsmeans, lsmeans_args)
-  lsmlist$lsmeans@grid %<>%
-    coerce_vars(specs.pred.nf, suffix = '.lsmeans.factor', verbose = verbose) %>%
+  lsmlist$lsmeans@grid <-
+    coerce_from_factor(lsmlist$lsmeans@grid, specs.pred.nf,
+      suffix = '.lsmeans.factor', verbose = verbose) %>%
     copy_variable_attributes(data)
   lsmlist$unary.vars.gdf <- summarize_unary_vars(data, specs.pred)
+  if (!is.null(confidence.level)) lsmlist <- update(lsmlist, level = confidence.level)
   lsmlist
 }
 
-sas_lsmeans_at <- function(data, means.at) {
+
+#' List means over numeric variables
+#'
+#' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
+#'
+#' @param data A dataframe upon which means will be calculated
+#' @param potential_vars A character vector of potential variable names to
+#'   consider
+#'
+#' @return A named list with names as the numeric subset of the variable names
+#'   specified in potential_vars and values of the means
+#'
+#' @importFrom dplyr summarize_at funs "%>%"
+numeric_means <- function(data, potential_vars = names(data), verbose = FALSE) {
+  numeric_vars <- names(Filter(is.numeric, data[potential_vars]))
+
+  if (verbose && length(sd <- setdiff(potential_vars, numeric_vars)) > 0)
+    message('While calculating "at" means, some variables omitted due to ',
+            'non-numeric class: \n', paste(sd, collapse = ", "), '\n')
+
   data %>%
-    dplyr::summarise_at(as.character(means.at), dplyr::funs(mean)) %>%
+    dplyr::summarize_at(as.character(numeric_vars), dplyr::funs(mean)) %>%
     as.list
 }
 
-coerce_vars <- function(data, class_list, preserve = TRUE, suffix = '.old', verbose = FALSE) {
+
+#' Append argument list with calculated weights as frequency
+#'
+#' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
+#'
+#' @description lsmeans expects accepts a weights argument to specify the
+#'   denominator for mean calculations. This function will calculate these
+#'   weights from the frequency of the lsmeans levels from a new dataset.
+#'
+#'   Arguments with which lsmeans is to be called are passed to this function
+#'   which will call \code{lsmeanss()} with \code{weights = 'show.levels'} in
+#'   order to determine the levels over which weights are calculated. It will
+#'   then use the passed \code{data} to evaluate frequencies for those weights.
+#'
+#' @param lsmeans_args arguments with which lsmeans will be called
+#' @param data a dataset over which the weights should be calculated as level
+#'   frequencies.
+#' @param verbose whether additional information should be printed to console
+#'
+#' @return The same arguments passed through \code{lsmeans_args} with the
+#'   weights parameter specified by the frequencies of occurence in the
+#'   \code{data} variable, or the \code{lsmeans_args$data} list item if no data
+#'   was included (default behavior of \code{lsmeans}).
+#'
+#' @importFrom lsmeans lsmeans
+#' @importFrom utils modifyList
+#' @importFrom dplyr left_join group_by summarize ungroup pull "%>%"
+append_weights <- function(lsmeans_args, data = NULL, verbose = FALSE) {
+  levels_args <- utils::modifyList(lsmeans_args, list(weights = 'show.levels'))
+  levels <- sink_to_temp(do.call(lsmeans::lsmeans, levels_args))
+
+  # even with 'show.levels', when no groups are defined lsmeans returns lsmobj
+  if (any(class(levels) %in% c('lsm.list', 'lsmobj')) || is.null(names(levels)))
+    return(utils::modifyList(lsmeans_args, list(weights = 'proportional')))
+
+  if (verbose) message(sprintf('Calculating weights over levels: %s',
+    paste(names(levels), collapse = ', ')))
+
+  level_weights <- dplyr::left_join(levels,
+      (data %||% lsmeans_args$data) %>%
+        dplyr::group_by(.dots=names(levels)) %>%
+        dplyr::summarize(wgt=n()) %>% dplyr::ungroup(),
+      by = names(levels))
+
+  if (verbose) message(print_to_string(level_weights), '\n')
+
+  lsmeans_args$weights <- level_weights %>% dplyr::pull(wgt)
+  lsmeans_args
+}
+
+
+#' Coerce dataframe variables to new type
+#'
+#' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
+#'
+#' @description Coerce many variables to new classes based on a named list of
+#'   variable names with values of the character string of their target class.
+#'
+#' @param data the dataframe whose variables should be coerced to a new class
+#' @param class_list a named list of classes to be coerced to from class factor,
+#'   with the list names being the variable names (e.g. \code{list(vs =
+#'   'character', carb = 'numeric')}). Classes are all coerced using the
+#'   function \code{as.<class>(levels(<var>)[<var>])}.
+#' @param preserve whether original factor variables should be preserved
+#' @param suffix a suffix to add to preserved variable names
+#' @param verbose whether additional information should be printed to console
+#'
+#' @return the original dataframe with variables coerced to the target class and
+#'   optionally preserved copies of the original variables.
+#'
+#' @importFrom dplyr mutate_ "%>%"
+#' @importFrom stats setNames
+coerce_from_factor <- function(data, class_list, preserve = TRUE,
+    suffix = '.old', verbose = FALSE) {
+
   if (length(class_list) == 0) return(data)
 
   if (verbose) message(
-    sprintf('Coercing variables according to: %s\n\n',
-    print_to_string(class_list)))
+    'Coercing variables according to: ', print_to_string(class_list), '\n')
 
   data %>%
     dplyr::mutate_(.dots =
       if (!preserve) list()
-      else setNames(names(class_list), paste0(names(class_list), suffix))) %>%
+      else stats::setNames(names(class_list), paste0(names(class_list), suffix))
+    ) %>%
     dplyr::mutate_(.dots =
       Map(function(n, c) sprintf("as.%s(levels(%s)[%s])", c, n, n),
       names(class_list), class_list))
 }
 
-copy_variable_attributes <- function(obj, attr_src_obj) {
-  for (n in intersect(names(obj), names(attr_src_obj)))
-    attributes(obj[[n]]) <- attributes(attr_src_obj[[n]])
-  obj
-}
 
-summarize_unary_vars <- function(data, ..., .dots = c()) {
-  groups <- c(unlist(list(...)), .dots)
-  data %>%
-    dplyr::group_by_(.dots = groups) %>%
-    dplyr::select(c(
-      groups,
-      dplyr::summarise_all(., funs(n_distinct)) %>%
-        dplyr::select_if(funs(all(. == 1))) %>%
-        names
-    )) %>% dplyr::slice(1)
-}
-
-append_weights_as_freq <- function(lsmeans_args, ..., data = NULL, verbose = FALSE) {
-  if ('weights' %in% names(lsmeans_args)) return(lsmeans_args)
-  factor_vars <- unlist(list(...))
-
-  levels_args <- modifyList(lsmeans_args, list(weights = 'show.levels'))
-  levels <- sink_to_temp(do.call(lsmeans, levels_args))
-
-  if (is.null(names(levels)) || length(factor_vars) < 1)
-    return(modifyList(lsmeans_args, list(weights = 'proportional')))
-
-  if (verbose) message(sprintf('Calculating weights over levels: %s',
-    paste(names(levels), collapse = ', ')))
-
-  level_weights <- dplyr::left_join(
-      levels,
-      broom::tidy(table((data %||% lsmeans_args$data)[names(levels)], dnn=names(levels))),
-      by = names(levels))
-
-  if (verbose) message(print_to_string(level_weights), '\n')
-
-  lsmeans_args$weights <- level_weights %>% dplyr::pull(Freq)
-  lsmeans_args
-}
-
-get_model_terms <- function(model.obj) {
-  # return formula if model took an argument named with one of the following
-  possible.names <- c('model', 'terms', 'formula')
-
+#' Get model formula from a model object
+#'
+#' @description Search within a model object for model formula information and
+#'   derive the formula If the model object contains a named element matching
+#'   any name in the \code{params} parameter, that item will be returned,
+#'   presumably containing the environment information in which it was
+#'   instantiated.
+#'
+#'   If the model object doesn't store this information, the model call will be
+#'   inspected to search for the formula argument used and derive formula from a
+#'   new formula produced from this input. As a last resort, it will take the
+#'   first passed argument and try to coerce it to a formula. A formula derived
+#'   in this way will be created in the local function environment and will not
+#'   be able to be used to evaluate the symbols stored within them.
+#'
+#' @param model.obj the model object with which to derive the formula
+#' @param params model attributes or parameters to consider for deriving formula
+#'
+#' @return A formula object or item which may be coerced to a formula
+#'
+get_model_formula <- function(model.obj, params = c('terms', 'model', 'formula')) {
   # search in the model object itself (WILL contain model env)
-  mdl.ind <- first(na.omit(c(NA, match(possible.names, names(model.obj[-1])))))
-  if(!is.na(mdl.ind))
-    return(model.obj[[mdl.ind+1]])
+  mdl.ind <- first(na.omit(c(NA, match(params, names(model.obj[-1])))))
+  if(!is.na(mdl.ind)) return(model.obj[[mdl.ind+1]])
 
   # pull from model call (will NOT contain model env)
   model.call  <- as.list(model.obj$call)
   if (length(model.call) <= 1)
     stop('Model object does not contain any arguments. Cannot discern model formula')
-  mdl.ind <- first(na.omit(c(NA, match(possible.names, names(model.call[-1])))))
-  if (!is.na(mdl.ind))
-    return(model.call[[mdl.ind+1]])
+  mdl.ind <- first(na.omit(c(NA, match(params, names(model.call[-1])))))
+  if (!is.na(mdl.ind)) return(model.call[[mdl.ind+1]])
 
   # try to cast the first argument to formula (will NOT contain model env)
   tryCatch({ as.formula(model.call[[2]]); model.call[[2]] },
     error = function(e) {
-      warning("Attempted to coerce first argument to formula but failed.")
-      e
+      stop("Attempted to coerce first argument to formula but failed.")
     })
 }
 
+
+#' Wrap a formula in a helper list splitting response and predictor terms
+#'
+#' @param t the formula or \code{terms()} object to construct from
+#'
+#' @return a list with four elements, "terms" containing formula terms, "resp"
+#'   containing a vector of reponse variable names, "covs" containing predictor
+#'   covariate variable names and "vars" containing both response and covariate
+#'   variable names.
+#'
+#' @importFrom stats terms
 append_split_terms <- function(t) {
-  m <- list(terms = terms(t))
+  m <- list(terms = stats::terms(t))
   if (attr(m$terms, 'response')) {
     m$resp <- all.vars(m$terms[[2]])
     m$covs <- all.vars(m$terms[[3]])
   } else m$covs <- all.vars(m$terms[[2]])
-  m$vars <- as.list(c(m$resp, m$covs))
+  m$vars <- c(m$resp, m$covs)
   m
 }
 
+
+#' Helper function to clean one-sided formulas for lsmeans
+#'
+#' @description The \code{lsmeans::lsmeans()} function broke a golden rule: they
+#'   return a different class of data based on unrelated parameters. In this
+#'   case, if the \code{specs} parameter is a one-sided formula it returns a
+#'   \code{lsmobj} whereas if it's two-sided for a list, it returns a
+#'   \code{lsm.list}. This makes it quite hard to work with reliably. To address
+#'   this, this helper function cleans the inputs before handing them off to
+#'   \code{specs} to make a one sided formula (like \code{~ x + y}) into an
+#'   acceptable two-sided formula (like \code{pairwise ~ x + y}), allowing
+#'   lsmeans to be used and always producing a single class of output.
+#'
+#' @param specs the specs input to process
+#'
+#' @return a two-sided formula with the LHS being 'pairwise' if the input is a
+#'   formula, otherwise return original input
+#'
 clean_lsmeans_specs <- function(specs) {
   if (inherits(specs, 'formula') && !attr(terms(specs), 'response'))
     as.formula(paste('pairwise ~', as.character(specs)[[2]]))
   else specs
 }
 
+
+#' Return predictors from specs input
+#'
+#' @description \code{lsmeans::lsmeans()} accepts a bunch of different variable
+#'   types to its \code{specs} parameter. This function handles that variety of
+#'   variable types to figure out what variables were specified.
+#'
+#' @param specs a specs parameter to be passed to \code{lsmeans::lsmeans()}
+#'
+#' @return a character vector of the variables from the specs object
+#'
+#' @importFrom stats delete.response terms
 get_lsmeans_specs_predictors <- function(specs) {
   if (inherits(specs, "formula"))
-    all.vars(delete.response(terms(specs)))
+    all.vars(stats::delete.response(stats::terms(specs)))
   else if (class(specs) == 'character') specs
   else if (class(specs) == 'list')
     stop('Passing list as specs is currently unsupported in sas.lsmeans. Please file an issue if this is functionality you require.')
   else stop('Unable to parse variables from provided specs')
 }
 
+
 #' @method as.data.frame lsm.list
 #' @export
-as.data.frame.lsm.list <- function(lsm) {
-  if ('unary.vars.gdf' %in% names(lsm)) {
+#' @importFrom dplyr left_join "%>%"
+as.data.frame.lsm.list <- function(x, row.names, optional, ...) {
+  if ('unary.vars.gdf' %in% names(x)) {
     dplyr::left_join(
-      as.data.frame(lsm$lsmeans),
-      lsm$unary.vars.gdf %>% dplyr::ungroup(),
-      by = attr(lsm$unary.vars.gdf, 'vars'))
+      as.data.frame(x$lsmeans),
+      x$unary.vars.gdf %>% dplyr::ungroup(),
+      by = attr(x$unary.vars.gdf, 'vars'))
   } else
-    as.data.frame(lsm$lsmeans)
+    as.data.frame(x$lsmeans)
 }
+
 
 #' @method as.data.frame lsmobj
 #' @export
-as.data.frame.lsmobj <- function(lsmo) {
-  as.data.frame(summary(lsmo)) %>%
-    left_join(lsmo@grid %>% select(c(names(lsmo@levels), '.wgt.')),
-              by = names(lsmo@levels))
+#' @importFrom dplyr left_join select "%>%"
+as.data.frame.lsmobj <- function(x, row.names, optional, ...) {
+  as.data.frame(summary(x)) %>%
+    dplyr::left_join(
+      x@grid %>% dplyr::select(c(names(x@levels), '.wgt.')),
+      by = names(x@levels))
 }
+
+
+#' @method update lsm.list
+#' @export
+#' @import lsmeans
+update.lsm.list <- function(object, ..., silent = FALSE) {
+  object$lsmeans <- lsmeans:::update.ref.grid(object$lsmeans, ...)
+  object
+}
+
 
 #' @method tidy lsm.list
 #' @export
-tidy.lsm.list <- function(lsm) { broom::tidy(lsm@lsmeans) }
+#' @importFrom broom tidy
+tidy.lsm.list <- function(lsm, ...) { broom::tidy(lsm@lsmeans) }

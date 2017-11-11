@@ -2,8 +2,8 @@
 % Please edit documentation in R/PlotLong.r
 \name{PlotLong}
 \alias{PlotLong}
-\title{Wrapper for fitting model and adjusting to predicted values and
-passing newly fitted model to ggplot geom_stat_ribbon}
+\title{Wrapper for fitting model and adjusting to predicted values and passing newly
+fitted model to ggplot geom_stat_ribbon}
 \usage{
 PlotLong(data, mapping = NULL, model = lm, model.per = NULL,
   model.formula = NULL, facet.fun = NULL, plot.style = "ribbons", ...)
@@ -32,8 +32,8 @@ ggplot components by prefixing value with ggplot call name. ("ribbons",
 a ggplot object
 }
 \description{
-Wrapper for fitting model and adjusting to predicted values and
-passing newly fitted model to ggplot geom_stat_ribbon
+Wrapper for fitting model and adjusting to predicted values and passing newly
+fitted model to ggplot geom_stat_ribbon
 }
 \examples{
 # load data
@@ -67,6 +67,7 @@ PlotLong(nasa.data \%>\% mutate(hemisphere=ifelse(lat > 0, "North", "South")),
          color = hemisphere, fill = hemisphere,
          formula = temperature ~ ozone,
          model.per = ~ hemisphere, fun.data = 'deciles',
+         plot.style = 'errorbars',
          show.counts = 'table',
          label.data = . \%>\% filter(month \%in\% c(1, 6, 12)),
          label.hjust = 'inward',

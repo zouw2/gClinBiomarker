@@ -6,7 +6,7 @@
 as an argument}
 \usage{
 ggpk_ribbons(mapping = NULL, data = NULL, show.counts = FALSE,
-  fun.data = "mean_se", fun.args = list(), label = "ggpk_ribbons", ...)
+  fun.data = "mean_se", fun.args = list(), id = "ggpk_ribbons", ...)
 }
 \arguments{
 \item{mapping}{a ggplot aesthetic mapping}
@@ -25,7 +25,7 @@ ggplot wrapper for plotting ribbon, taking a stats string or function set
 as an argument
 }
 \note{
-When specifying arguments for wrapped ggplot geometries, prefix
+When specifying arguments for wrapped ggplot geometries, id
 the parameter with geometry specifiers: "ribbon" for ribbon geometry
 "line" for central line geometry, or "label" for count labels. e.g.
 \code{ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)}
@@ -42,7 +42,7 @@ nasa \%>\% as_tibble \%>\%
   # plotting
   ggplot() +
     aes(x=date, y=temperature) +
-    ggpk_stat_ribbon(fun.data = 'deciles') +
+    ggpk_ribbons(fun.data = 'deciles') +
     facet_grid(hemisphere ~ .) +
     labs(title="Temperature by Hemisphere")
 

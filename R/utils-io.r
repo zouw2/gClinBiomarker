@@ -3,8 +3,9 @@ sink_to_temp <- function(expr) {
   eval.parent(expr)
 }
 
+#' @importFrom utils capture.output
 print_to_string <- function(expr, condense = FALSE) {
-  out <- capture.output(print(eval.parent(expr)))
+  out <- utils::capture.output(print(eval.parent(expr)))
   if (condense) out <- Filter(nzchar, out)
   paste(out, collapse = '\n')
 }
