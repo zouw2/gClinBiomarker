@@ -86,7 +86,7 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
         c(list(data, model, model.per, model.formula=model.formula), .dots))
 
     # change aesthetic y to be fitted values
-    mapping$y <- as.name(sprintf("%s.fitted", deparse(mapping$y)))
+    mapping$y <- as.name(".fitted")
     .dots$ylab <- .dots$ylab %||% paste("Adjusted", deparse(model.formula[[2]]))
   }
 
