@@ -158,7 +158,7 @@ numeric_means <- function(data, potential_vars = names(data), verbose = FALSE) {
 #'
 #' @importFrom lsmeans lsmeans
 #' @importFrom utils modifyList
-#' @importFrom dplyr left_join group_by summarize ungroup pull "%>%"
+#' @importFrom dplyr left_join mutate_at group_by summarize ungroup pull "%>%"
 append_weights <- function(lsmeans_args, data = NULL, verbose = FALSE) {
   levels_args <- utils::modifyList(lsmeans_args, list(weights = 'show.levels'))
   levels <- sink_to_temp(do.call(lsmeans::lsmeans, levels_args))
@@ -172,6 +172,7 @@ append_weights <- function(lsmeans_args, data = NULL, verbose = FALSE) {
 
   level_weights <- dplyr::left_join(levels,
       (data %||% lsmeans_args$data) %>%
+        dplyr::mutate_at(vars(names(levels)), as.factor) %>%
         dplyr::group_by(.dots=names(levels)) %>%
         dplyr::summarize(wgt=n()) %>% dplyr::ungroup(),
       by = names(levels))
