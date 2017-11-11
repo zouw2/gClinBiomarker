@@ -7,6 +7,11 @@
 \usage{
 \S4method{+}{ggpacket,ANY}(e1, e2)
 }
+\arguments{
+\item{e1}{ggpacket object to collect additional terms}
+
+\item{e2}{anything which would be added to a ggplot::gg call for evaluation}
+}
 \description{
 Primitive methods for adding ggpackets to various ggplot objects
 }

@@ -7,6 +7,9 @@
 \usage{
 \S4method{show}{ggpacket}(object)
 }
+\arguments{
+\item{object}{the ggpacket object to show}
+}
 \description{
 Overload show method to print ggpacket
 }

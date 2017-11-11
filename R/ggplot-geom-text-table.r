@@ -1,15 +1,15 @@
 #' @export
 geom_text_table <- function(mapping = NULL, data = NULL, stat = "identity",
-                            position = "identity", location = 'top', ..., parse = FALSE,
+                            position = "identity", ..., parse = FALSE,
                             nudge_x = 0, nudge_y = 0, check_overlap = FALSE, na.rm = FALSE,
-                            show.legend = NA, inherit.aes = TRUE, subset) {
+                            show.legend = NA, inherit.aes = TRUE, subset = NULL, location = 'top') {
 
   if (!missing(nudge_x) || !missing(nudge_y)) {
     if (!missing(position)) stop("Specify either `position` or `nudge_x`/`nudge_y`", call. = FALSE)
     position <- position_nudge(nudge_x, nudge_y)
   }
 
-  layer(data = subset %||% data, mapping = mapping, stat = StatTextDodge, geom = GeomTextTable,
+  layer(data = subset %||% data, mapping = mapping, stat = stat, geom = GeomTextTable,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(parse = parse, check_overlap = check_overlap,
                   na.rm = na.rm, location = location, ...))
@@ -28,6 +28,8 @@ GeomTextTable <- ggplot2:::ggproto("GeomTextTable", ggplot2:::Geom,
                 (max(data$ymax %||% data$y) - min(data$ymin %||% data$y)) * 1.2
     data
   },
+
+  extra_params = c("na.rm", "location"),
 
   default_aes = ggplot2::aes(
     colour = "black", size = 3.88, angle = 0, hjust = 0.5,

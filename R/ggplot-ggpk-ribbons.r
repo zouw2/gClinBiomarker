@@ -3,7 +3,7 @@
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #'
-#' @note When specifying arguments for wrapped ggplot geometries, prefix
+#' @note When specifying arguments for wrapped ggplot geometries, id
 #' the parameter with geometry specifiers: "ribbon" for ribbon geometry
 #' "line" for central line geometry, or "label" for count labels. e.g.
 #' \code{ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)}
@@ -28,59 +28,69 @@
 #'   # plotting
 #'   ggplot() +
 #'     aes(x=date, y=temperature) +
-#'     ggpk_stat_ribbon(fun.data = 'deciles') +
+#'     ggpk_ribbons(fun.data = 'deciles') +
 #'     facet_grid(hemisphere ~ .) +
 #'     labs(title="Temperature by Hemisphere")
 #'
 #' @export
 #'
-ggpk_ribbons <- function(mapping = NULL, data = NULL, show.counts = FALSE,
-                         fun.data = 'mean_se',
-                         fun.args = list(), ...) {
+ggpk_ribbons <- function(
+  mapping = NULL, data = NULL, show.counts = FALSE, fun.data = 'mean_se',
+  fun.args = list(), id = 'ggpk_ribbons', ...) {
 
-  .dots <- list(...)
   fun.data <- stat_summary_funs(fun.data, fun.args)
+  dots <- substitute(...())
+
+  # add some conditional arguments to handle stat behavior
+  if (!('identity' %in%  dots[c(paste0(id, '.stat'), 'label.stat')]))
+     dots$label.fun.data <- last(fun.data)
+  if (!('identity' %in%  dots[c(paste0(id, '.stat'), 'point.stat')]))
+     dots$point.fun.data <- last(fun.data)
+  if (!('identity' %in%  dots[c(paste0(id, '.stat'), 'line.stat')]))
+     dots$line.fun.data <- last(fun.data)
 
   ## pack ## ribbon
-  # reduce through list of ribbon geoms and collect sum
-  Reduce(function(l, r) { l +
-    ggpack(ggplot2::stat_summary, 'ribbon', .dots,
-      geom = 'ribbon',
-      fun.data = r,
-      color = NA,
-      alpha = 0.85 / (length(fun.data) + 2) * (.dots$ribbon.alpha %||% 1))
-  }, fun.data, init = NULL) +
+  # use standard ribbon geom if ribbon.stat is 'identity'
+  (if ('identity' %in%  dots[c(paste0(id, '.stat'), 'ribbon.stat')])
+    ggpack(ggplot2::geom_ribbon, id = c(id, 'ribbon'),
+           stat = 'summary', dots =  dots, color = NA,
+           alpha = 0.85 / 3 * ( dots$ribbon.alpha %||% 1))
 
-  ## pack ## point
-  # plot point along stat y
-  ggpack(ggplot2::stat_summary, 'point', .dots,
-         geom = 'point',
-         fun.data = fun.data[[1]],
-         size = ggplot2::rel(3)) +
+    # reduce through list of ribbon geoms and collect sum
+    else
+      Reduce(function(l, r) { l +
+          ggpack(ggplot2::geom_ribbon, id = c(id, 'ribbon'),
+            stat = 'summary', dots =  dots, fun.data = r, color = NA,
+            alpha = 0.85 / (length(fun.data) + 2) * ( dots$ribbon.alpha %||% 1))
+      }, fun.data, init = NULL) ) +
 
-  ## pack ## line
-  # plot line along stat y
-  ggpack(ggplot2::stat_summary, 'line', .dots,
-      geom = 'line',
-      fun.data = fun.data[[1]]) +
+    ## pack ## point
+    # plot point along stat y
+    ggpack(ggplot2::geom_point, id = c(id, 'point'),
+           stat = 'summary', dots =  dots) +
 
-  ## pack ## label
-  # add labels of group counts
-  if (isTRUE(show.counts) || show.counts == 'label') {
-    ggpack(ggplot2::stat_summary, 'label', .dots,
-      fun.data = last(fun.data),
-      direction = "y",
-      nudge_y = 0.1,
-      label.size = 0,
-      geom = ifelse(require(ggrepel, quietly = T), "label_repel" , "label"),
-      fill = 'white',
-      alpha = 0.85)
-  } else if (show.counts == 'table') {
-    ggpack(ggplot2::stat_summary, 'label', .dots,
-      fun.data = last(fun.data),
-      geom = 'text_table',
-      show.legend = FALSE)
-  } else NULL
+    ## pack ## line
+    # plot line along stat y
+    ggpack(ggplot2::geom_line, id = c(id, 'line'),
+           stat = 'summary', dots =  dots) +
+
+    ## pack ## label
+    # add labels of group counts
+    if (isTRUE(show.counts) || show.counts == 'label') {
+      if (require(ggrepel, quietly = TRUE))
+        ggpack(ggrepel::geom_label_repel, id = c(id, 'label'),
+          stat = 'summary', dots =  dots, direction = "y",
+          nudge_y = 0.1, label.size = 0, fill = 'white', alpha = 0.85)
+
+      else
+        ggpack(ggplot2::geom_label, id = c(id, 'label'),
+          stat = 'summary', dots =  dots, label.size = 0,
+          fill = 'white',alpha = 0.85)
+
+    } else if (show.counts == 'table') {
+      ggpack(geom_text_table, id = c(id, 'label'),
+          stat = 'summary', dots =  dots, show.legend = FALSE)
+    } else NULL
 
 }
 

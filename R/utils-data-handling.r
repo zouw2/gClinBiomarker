@@ -12,45 +12,68 @@
 #' @return a data frame with new columns based on model fit
 #'
 #' @importFrom broom augment
+#' @importFrom dplyr rename rename_ group_by group_by_
 #'
 #' @export
-#'
+#' @importFrom dplyr group_by_ rename
+#' @importFrom broom augment
+#' @importFrom stats setNames
 augment_predict <- function(.data, model, model.per = NULL, ...) {
-
-  .dots <- ggpack_filter_args('model', list(...))
-  fy <- deparse(.dots$formula[[2]]) # get formula independent variable
-
-  .data %>%
-    group_by_(.dots = all.vars(model.per)) %>%
-    do(augment(do.call(model, c(list(data=.), .dots)), .)) %>%
-    # rename model outputs (".fitted") to instead begin with var ("y.fitted")
-    rename_(.dots = setNames(names(.), gsub("^\\.", paste0(fy, "."), names(.))))
+  .dots <- filter_args('model', list(...))
+  withCallingHandlers({
+    .data %>%
+      dplyr::group_by_(.dots = model.per) %>%
+      do(broom::augment(do.call(model, c(list(data=.), .dots)), .))
+  }, warning = function(w) {
+    if (grep('Deprecated.*purrr::possibly()', conditionMessage(w)))
+      invokeRestart('muffleWarning')
+  })
 }
 
 
-
-#' Filter only specific columns, leaving the rest of the dataframe intact
-#'
-#' Useful for filtering down to a single datapoint in long data formats, for
-#' instance when selecting baseline values when visitation date is a specific
-#' code.
+#' Copy attributes of dataframe variables from a source dataframe
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #'
-#' @param .tbl a dataframe or tibble to be sent to mutate
-#' @param .cols a dplyr::vars() column selection similar to `dplyr::select()` or
-#'              numeric indices of columns to select
-#' @param ... filtering functions to filter column data
+#' @description particularly useful for copying variable label attributes, which
+#'   are often not preserved during data transformation operations.
 #'
-#' @return a dataframe with the specified columns filtered by the specified conditions
+#' @param obj target dataframe
+#' @param attr_src_obj source dataframe
 #'
-#' @export
+#' @return the target dataframe with attributes copied from the source dataframe
+#'   for each variable.
 #'
-na_if_at <- function(.tbl, .cols, ...) {
-  cols <- dplyr:::select_colwise_names(.tbl, .cols)
-  f <- lazyeval::lazy_dots(...)
-  f <- Reduce(function(l,r) lazyeval::interp(lazyeval::lazy(llz & rlz), llz=l, rlz=r), f)
-  f <- funs_(lazyeval::interp(lazyeval::lazy(ifelse(c, ., NA)), c=f))
-  vars <- dplyr:::colwise_(.tbl, f, cols)
-  mutate_(.tbl, .dots = vars)
+copy_variable_attributes <- function(obj, attr_src_obj) {
+  for (n in intersect(names(obj), names(attr_src_obj)))
+    attributes(obj[[n]]) <- attributes(attr_src_obj[[n]])
+  obj
+}
+
+
+#' Produce summary table of unary value of specified levels
+#'
+#' @description Given a dataframe and set of grouping variables, a dataset will
+#'   be returned with all groups summarized containing only variables with one
+#'   unique value per group, with a value of that single unique value.
+#'
+#' @param data the dataframe to summarized
+#' @param ... character vectors or strings containing variable names to group
+#'   over
+#' @param .dots a character vector ccontaining variables names to group over
+#'
+#' @return a dataframe with a single value per group combination with only
+#'   variables with a unique value per group.
+#'
+#' @importFrom dplyr group_by select summarize_all select_if slice funs "%>%"
+summarize_unary_vars <- function(data, ..., .dots = c()) {
+  groups <- c(unlist(list(...)), .dots)
+  data %>%
+    dplyr::group_by(.dots = groups) %>%
+    dplyr::select(c(
+      groups,
+      dplyr::summarize_all(., dplyr::funs(n_distinct)) %>%
+        dplyr::select_if(dplyr::funs(all(. == 1))) %>%
+        names
+    )) %>% dplyr::slice(1)
 }
