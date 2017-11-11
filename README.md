@@ -44,21 +44,6 @@ install_github("RPackages/gClinBiomarker", host="github.roche.com/api/v3")
 
 Use the command `vignette(package = 'gClinBiomarker')` to view a list of avaialble vignettes for the `gClinBiomarker` package.
 
-Overview of Biomarker Analysis
-------------------------------
-
-### Supported endpoint and biomarker types
-
--   Diagnostic: temperature, bacterial tests; origin of cancer tissue
--   Early Detection: genetic testing (e.g. newborn screening for cystic fibrosis)
--   **Prognostic**: Mammaprint: 70-gene panel to split breast cancer patients to high metastases (regardless of therapy)
--   Identify patients with unmet medical need
--   **Predictive**: Herceptin in Her2+ breast cancer (therapeutic benefit in Her2+ selected patients)
--   Identify patients with better treatment benefit
--   **Monitoring**: Blood oxygen (heart and lung diseases), immune markers (after transplantation), HbA1c (diabetes)
--   Surrogate endpoint
--   Biological Understanding: Look at multiple genes/mutations unsupervisedly
-
 gClinBiomarker Analysis and Workflows
 -------------------------------------
 
@@ -89,30 +74,22 @@ gClinBiomarker Analysis and Workflows
 
 Is your biomarker population your full patient population? Take a look at these functions:
 
--   `SummaryVars()`
--   `CompareKM()`
--   `PlotRspBar()`
+`SummaryVars()`, `CompareKM()`, `PlotRspBar()`
 
 #### Step 2:
 
 Is your biomarker response a dynamic range? Does it have a skewed distribution? Is it correlated with clinical variables?
 
--   `PlotProperty()`
--   `PlotTabForestMulti()`
+`PlotProperty()`, `PlotTabForestMulti()`
 
 #### Step 3:
 
 Is your biomarker response associated with a clinical outcome? Is it prognostic or predictive? Is there an optimal biomarker cutoff with a consistent trend?
 
--   `PlotTabForestBiomarker()`
--   `PlotSTEPP()`
+`PlotTabForestBiomarker()`, `PlotSTEPP()`
 
 #### Step 4:
 
 Estimate the clinical benefit within a biomarker subgroup.
 
--   `PlotKM()`
--   `PlotLong()`
--   `PlotRspBar()`
--   `CoxTab`
--   `LogRankTab()`
+`PlotKM()`, `PlotLong()`, `PlotRspBar()`, `CoxTab`, `LogRankTab()`
