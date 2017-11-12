@@ -53,7 +53,7 @@ fitted model to ggplot geom_stat_ribbon — PlotLong • gClinBiomarker</title>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -157,7 +157,7 @@ ggplot components by prefixing value with ggplot call name. ("ribbons",
 <span class='co'># include linear adjustment accounting for amount of ozone</span>
 <span class='fu'>PlotLong</span>(<span class='no'>nasa.data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>month</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temperature</span>,
          <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>temperature</span> ~ <span class='no'>ozone</span>, <span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>'deciles'</span>,
-         <span class='kw'>show.counts</span> <span class='kw'>=</span> <span class='no'>T</span>)</div><div class='img'><img src='PlotLong-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+         <span class='kw'>show.counts</span> <span class='kw'>=</span> <span class='no'>T</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: there is no package called ‘ggrepel’</span></div><div class='img'><img src='PlotLong-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># adjusting by independent models for the northern and southern hemispheres</span>
 <span class='fu'>library</span>(<span class='no'>dplyr</span>) <span class='co'># needed for %&gt;%</span>
 <span class='fu'>PlotLong</span>(<span class='no'>nasa.data</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>hemi</span><span class='kw'>=</span><span class='fu'>ifelse</span>(<span class='no'>lat</span><span class='kw'>&gt;</span><span class='fl'>0</span>, <span class='st'>"North"</span>, <span class='st'>"South"</span>)),

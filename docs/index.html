@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-vignette">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
+  <a href="/index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -63,8 +63,13 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
-    <div id="gclinbiomarker" class="section level1">
+  <div class="col-md-9">
+    
+
+    
+    
+<div class="contents">
+<div id="gclinbiomarker" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#gclinbiomarker" class="anchor"></a>gClinBiomarker</h1></div>
 
@@ -95,37 +100,15 @@
 <div id="getting-the-documentation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#getting-the-documentation" class="anchor"></a>Getting the Documentation</h3>
-<p>Use the command <code>vignette(package = 'gClinBiomarker')</code> to view a list of avaialble vignettes for the <code>gClinBiomarker</code> package.</p>
-</div>
-</div>
-<div id="overview-of-biomarker-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview-of-biomarker-analysis" class="anchor"></a>Overview of Biomarker Analysis</h2>
-<div id="supported-endpoint-and-biomarker-types" class="section level3">
-<h3 class="hasAnchor">
-<a href="#supported-endpoint-and-biomarker-types" class="anchor"></a>Supported endpoint and biomarker types</h3>
-<ul>
-<li>Diagnostic: temperature, bacterial tests; origin of cancer tissue</li>
-<li>Early Detection: genetic testing (e.g. newborn screening for cystic fibrosis)</li>
-<li>
-<strong>Prognostic</strong>: Mammaprint: 70-gene panel to split breast cancer patients to high metastases (regardless of therapy)</li>
-<li>Identify patients with unmet medical need</li>
-<li>
-<strong>Predictive</strong>: Herceptin in Her2+ breast cancer (therapeutic benefit in Her2+ selected patients)</li>
-<li>Identify patients with better treatment benefit</li>
-<li>
-<strong>Monitoring</strong>: Blood oxygen (heart and lung diseases), immune markers (after transplantation), HbA1c (diabetes)</li>
-<li>Surrogate endpoint</li>
-<li>Biological Understanding: Look at multiple genes/mutations unsupervisedly</li>
-</ul>
+<p>Use the command <code>vignette(package = 'gClinBiomarker')</code> to view a list of avaialble vignettes for the <code>gClinBiomarker</code> package. Then use the command <code>vignette(&lt;vignett_name&gt;)</code> to view the relevant documentation.</p>
 </div>
 </div>
 <div id="gclinbiomarker-analysis-and-workflows" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gclinbiomarker-analysis-and-workflows" class="anchor"></a>gClinBiomarker Analysis and Workflows</h2>
-<div id="supported-endpoint-and-biomarker-types-1" class="section level3">
+<div id="supported-endpoint-and-biomarker-types" class="section level3">
 <h3 class="hasAnchor">
-<a href="#supported-endpoint-and-biomarker-types-1" class="anchor"></a>Supported endpoint and biomarker types</h3>
+<a href="#supported-endpoint-and-biomarker-types" class="anchor"></a>Supported endpoint and biomarker types</h3>
 <div id="endpoints" class="section level4">
 <h4 class="hasAnchor">
 <a href="#endpoints" class="anchor"></a>Endpoints</h4>
@@ -161,58 +144,36 @@
 <div id="step-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-1" class="anchor"></a>Step 1:</h4>
-<blockquote>
 <p>Is your biomarker population your full patient population? Take a look at these functions:</p>
-</blockquote>
-<ul>
-<li><code><a href="reference/SummaryVars.html">SummaryVars()</a></code></li>
-<li><code><a href="reference/CompareKM.html">CompareKM()</a></code></li>
-<li><code><a href="reference/PlotRspBar.html">PlotRspBar()</a></code></li>
-</ul>
+<p><code><a href="reference/SummaryVars.html">SummaryVars()</a></code>, <code><a href="reference/CompareKM.html">CompareKM()</a></code>, <code><a href="reference/PlotRspBar.html">PlotRspBar()</a></code></p>
 </div>
 <div id="step-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-2" class="anchor"></a>Step 2:</h4>
-<blockquote>
 <p>Is your biomarker response a dynamic range? Does it have a skewed distribution? Is it correlated with clinical variables?</p>
-</blockquote>
-<ul>
-<li><code><a href="reference/PlotProperty.html">PlotProperty()</a></code></li>
-<li><code><a href="reference/PlotTabForestMulti.html">PlotTabForestMulti()</a></code></li>
-</ul>
+<p><code><a href="reference/PlotProperty.html">PlotProperty()</a></code>, <code><a href="reference/PlotTabForestMulti.html">PlotTabForestMulti()</a></code></p>
 </div>
 <div id="step-3" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-3" class="anchor"></a>Step 3:</h4>
-<blockquote>
 <p>Is your biomarker response associated with a clinical outcome? Is it prognostic or predictive? Is there an optimal biomarker cutoff with a consistent trend?</p>
-</blockquote>
-<ul>
-<li><code><a href="reference/PlotTabForestBiomarker.html">PlotTabForestBiomarker()</a></code></li>
-<li><code><a href="reference/PlotSTEPP.html">PlotSTEPP()</a></code></li>
-</ul>
+<p><code><a href="reference/PlotTabForestBiomarker.html">PlotTabForestBiomarker()</a></code>, <code><a href="reference/PlotSTEPP.html">PlotSTEPP()</a></code></p>
 </div>
 <div id="step-4" class="section level4">
 <h4 class="hasAnchor">
 <a href="#step-4" class="anchor"></a>Step 4:</h4>
-<blockquote>
 <p>Estimate the clinical benefit within a biomarker subgroup.</p>
-</blockquote>
-<ul>
-<li><code><a href="reference/PlotKM.html">PlotKM()</a></code></li>
-<li><code><a href="reference/PlotLong.html">PlotLong()</a></code></li>
-<li><code><a href="reference/PlotRspBar.html">PlotRspBar()</a></code></li>
-<li><code>CoxTab</code></li>
-<li><code><a href="reference/LogRankTab.html">LogRankTab()</a></code></li>
-</ul>
+<p><code><a href="reference/PlotKM.html">PlotKM()</a></code>, <code><a href="reference/PlotLong.html">PlotLong()</a></code>, <code><a href="reference/PlotRspBar.html">PlotRspBar()</a></code>, <code><a href="reference/CoxTab.html">CoxTab()</a></code>, <code><a href="reference/LogRankTab.html">LogRankTab()</a></code></p>
+</div>
 </div>
 </div>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
-    <h2>License</h2>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>License</h2>
 <p><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
@@ -225,9 +186,10 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href=""><img src="https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square" alt="Build Status"></a></li>
-<li><a href=""><img src="https://img.shields.io/badge/coverage-0%25-red.svg?style=flat-square" alt="Code Coverage"></a></li>
+<li><a href=""><img src="https://img.shields.io/badge/coverage-19.7%25-red.svg?style=flat-square" alt="Code Coverage"></a></li>
 </ul>
 </div>
+
 </div>
 
 

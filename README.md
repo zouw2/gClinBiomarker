@@ -2,7 +2,7 @@
 gClinBiomarker
 ==============
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)]() [![Code Coverage](https://img.shields.io/badge/coverage-0%25-red.svg?style=flat-square)]()
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)]() [![Code Coverage](https://img.shields.io/badge/coverage-19.7%25-red.svg?style=flat-square)]()
 
 Overview
 --------
@@ -42,7 +42,7 @@ install_github("RPackages/gClinBiomarker", host="github.roche.com/api/v3")
 
 ### Getting the Documentation
 
-Use the command `vignette(package = 'gClinBiomarker')` to view a list of avaialble vignettes for the `gClinBiomarker` package.
+Use the command `vignette(package = 'gClinBiomarker')` to view a list of avaialble vignettes for the `gClinBiomarker` package. Then use the command `vignette(<vignett_name>)` to view the relevant documentation.
 
 gClinBiomarker Analysis and Workflows
 -------------------------------------
@@ -92,4 +92,4 @@ Is your biomarker response associated with a clinical outcome? Is it prognostic 
 
 Estimate the clinical benefit within a biomarker subgroup.
 
-`PlotKM()`, `PlotLong()`, `PlotRspBar()`, `CoxTab`, `LogRankTab()`
+`PlotKM()`, `PlotLong()`, `PlotRspBar()`, `CoxTab()`, `LogRankTab()`
