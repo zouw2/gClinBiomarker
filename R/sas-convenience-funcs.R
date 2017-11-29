@@ -351,7 +351,8 @@ as.data.frame.lsmobj <- function(x, row.names, optional, ...) {
   as.data.frame(summary(x)) %>%
     dplyr::left_join(
       x@grid %>% dplyr::select(c(names(x@levels), '.wgt.')),
-      by = names(x@levels))
+      by = names(x@levels),
+      suffix = c('.lsmeans', ''))
 }
 
 
