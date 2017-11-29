@@ -338,7 +338,8 @@ as.data.frame.lsm.list <- function(x, row.names, optional, ...) {
     dplyr::left_join(
       as.data.frame(x$lsmeans),
       x$unary.vars.gdf %>% dplyr::ungroup(),
-      by = attr(x$unary.vars.gdf, 'vars'))
+      by = attr(x$unary.vars.gdf, 'vars'),
+      suffix = c('.lsmeans', ''))
   } else
     as.data.frame(x$lsmeans)
 }
@@ -351,8 +352,7 @@ as.data.frame.lsmobj <- function(x, row.names, optional, ...) {
   as.data.frame(summary(x)) %>%
     dplyr::left_join(
       x@grid %>% dplyr::select(c(names(x@levels), '.wgt.')),
-      by = names(x@levels),
-      suffix = c('.lsmeans', ''))
+      by = names(x@levels))
 }
 
 
