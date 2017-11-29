@@ -2,7 +2,7 @@ context("CoxTab")
 
 test_that("Hazard Ratio", {
     data(input)
-    res <- CoxTab(data=sample.data,
+    res <- CoxTab(data=input,
                   tte="OS",
                   cens="OS.event",
                   var=c('Sex',"Country","Age"))
