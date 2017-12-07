@@ -258,7 +258,7 @@ PlotSTEPP <- function(data,
         UL <- round(UL, bm.digits)
 
         if (LL == 0 & UL == 0) {
-            stop("Please increase the number of digits bm.digits!")
+            stop("No enough unique values, please consider to reduce number of windows (increase window.width) or increase number of digits when rounding (bm.digits)")
         }
 
         sdata[i, c("BMV.LL", "BMV.UL")] <- c(LL, UL)
