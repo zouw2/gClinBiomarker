@@ -124,18 +124,18 @@ PlotKM <- function(data, tte, cens,
                     qt2 <- round(quantile(data[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
                     if(equal.in.high){
                         if(percentile.cutoff[i]!=1){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")
                         }
                         if(percentile.cutoff[i]==1){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
                         }
                     }
                     if(!equal.in.high){
                         if(percentile.cutoff[i]!=0){
-                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
                         }
                         if(percentile.cutoff[i]==0){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
                         }
                     }
 
@@ -150,15 +150,15 @@ PlotKM <- function(data, tte, cens,
                     if(i==length(numerical.cutoff)) qt2 <- qt2 + 10^(-cutoff.digits)
                     if(equal.in.high){
                         if(numerical.cutoff[i]!=max(data[[var]]))
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]  <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],")")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]  <- paste0(var.name,"[",numerical.cutoff[i-1]," - ",numerical.cutoff[i],")")
                         if(numerical.cutoff[i]==max(data[[var]]))
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1]," - ",numerical.cutoff[i],"]")
                     }
                     if(!equal.in.high){
                         if(numerical.cutoff[i]!=min(data[[var]]))
-                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",numerical.cutoff[i-1]," - ",numerical.cutoff[i],"]")
                         if(numerical.cutoff[i]==min(data[[var]]))
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1],"-",numerical.cutoff[i],"]")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",numerical.cutoff[i-1]," - ",numerical.cutoff[i],"]")
                     }
                 }}
             var <- paste0(var,"_groups")
