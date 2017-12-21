@@ -293,17 +293,19 @@ PlotKM <- function(data, tte, cens,
 
     mtext(xlab,side=1, line=2)
 
-    if(plot.legend & nlev > 1){
-        if(!is.null(legend.loc))legend(legend.loc,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
-        if(is.null(legend.loc))legend(x=legend.x, y=legend.y,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
 
-    }
     axis(1,at=seq(0,xlim[2],nrisk.interval),seq(0,xlim[2],nrisk.interval))
     if(y.percentage==FALSE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0, col="gray")
     if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0, col="gray")
 
 
     if(plot.grid) abline(h=grids, col="gray",lty=3)
+                                      
+    if(plot.legend & nlev > 1){
+        if(!is.null(legend.loc))legend(legend.loc,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
+        if(is.null(legend.loc))legend(x=legend.x, y=legend.y,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
+    }                                  
+    
     if(plot.nrisk){
         for(i in 1:nlev){
             mtext(side=1, at=xlim[1]-1.2, line=i+3,text=levels(strat.vec)[i],col=col[i],adj=1,cex=cex.nrisk*3/4)
