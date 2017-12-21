@@ -299,8 +299,8 @@ PlotKM <- function(data, tte, cens,
 
     }
     axis(1,at=seq(0,xlim[2],nrisk.interval),seq(0,xlim[2],nrisk.interval))
-    if(y.percentage==FALSE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0)
-    if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0)
+    if(y.percentage==FALSE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1),las=2); abline(h=0, col="gray")
+    if(y.percentage==TRUE)axis(2,at=seq(ylim[1],ylim[2],0.1), seq(ylim[1],ylim[2],0.1)*100,las=2); abline(h=0, col="gray")
 
 
     if(plot.grid) abline(h=grids, col="gray",lty=3)
