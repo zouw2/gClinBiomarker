@@ -15,18 +15,36 @@ PlotLong(data, mapping = NULL, model = lm, model.per = NULL,
 
 \item{model}{model function to use for fitting; defaults to lm}
 
+\item{model.per}{grouping variables by which to isolate individual models}
+
+\item{model.formula}{model formula to use for model fitting}
+
 \item{facet.fun}{function to use for ggplot faceting in ggplot2::facet_grid}
 
-\item{...}{additional arguments are handled in one of two ways. First,
-arguments which can be used as any of ggplot's default aesthetics will be
-pulled from ... args. Second, remaining arguments are passed to underlying
-ggplot components by prefixing value with ggplot call name. ("ribbons",
-"line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
-`ribbons.color = 'red'`)}
+\item{plot.style}{one of 'errorbars' or 'ribbons'}
 
-\item{formula}{formula to use for adjusting values}
-
-\item{model.args}{additional model parameters to pass to model}
+\item{...}{Additional arguments allow for an assortion of additional
+functionality.
+\itemize{
+\item{"Aesthetics"}{
+First, arguments which can be used as any of ggplot's
+default aesthetics will be pulled from \code{...} args.
+}.
+\item{"ggplot layers"}{
+Arguments are passed to underlying ggplot components by prefixing value
+with ggplot call name. ("ribbons", "line", "text", "facet", "xlab", "ylab",
+"labs" or "theme" - e.g. \code{ribbons.color = 'red')}).
+}
+\item{"Model fitting"}{
+Arguments with prefixes of "model" will be passed to the model function if
+one is provided.
+}
+\item{"ggpackets"}{
+Additional arguments passed to
+\code{\link[gClinBiomarker]{ggpk_ribbons}} or
+\code{\link[gClinBiomarker]{ggpk_line_errorbar}}.
+}
+}}
 }
 \value{
 a ggplot object

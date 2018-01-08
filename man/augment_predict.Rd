@@ -11,12 +11,11 @@ augment_predict(.data, model, model.per = NULL, ...)
 
 \item{model}{model function to use (e.g `lm`)}
 
-\item{model.per}{a formula representing all terms to group data by to
-fit individual models (e.g. `~ am + vs`)}
+\item{model.per}{a formula representing all terms to group data by to fit
+individual models (e.g. \code{~ am + vs})}
 
-\item{fomula}{formula to use for model fitting (e.g `mpg ~ gear + wt`)}
-
-\item{model.args}{list of additional arguments to use in model fitting}
+\item{...}{additional arguments to be passed to the model function, prefixed
+with 'model' (eg. \code{model.singular.ok = FALSE})}
 }
 \value{
 a data frame with new columns based on model fit

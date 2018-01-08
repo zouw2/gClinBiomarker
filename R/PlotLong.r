@@ -5,16 +5,33 @@
 #'
 #' @param data data to use for model fitting and plotting
 #' @param mapping ggplot aesthetic mapping to use for plotting
-#' @param formula formula to use for adjusting values
 #' @param model model function to use for fitting; defaults to lm
-#' @param model.args additional model parameters to pass to model
+#' @param model.per grouping variables by which to isolate individual models
+#' @param model.formula model formula to use for model fitting
 #' @param facet.fun function to use for ggplot faceting in ggplot2::facet_grid
-#' @param ... additional arguments are handled in one of two ways. First,
-#'   arguments which can be used as any of ggplot's default aesthetics will be
-#'   pulled from ... args. Second, remaining arguments are passed to underlying
-#'   ggplot components by prefixing value with ggplot call name. ("ribbons",
-#'   "line", "text", "facet", "xlab", "ylab", "labs" or "theme" - e.g.
-#'   `ribbons.color = 'red'`)
+#' @param plot.style one of 'errorbars' or 'ribbons'
+#' @param ... Additional arguments allow for an assortion of additional
+#'   functionality.
+#'   \itemize{
+#'   \item{"Aesthetics"}{
+#'   First, arguments which can be used as any of ggplot's
+#'   default aesthetics will be pulled from \code{...} args.
+#'   }.
+#'   \item{"ggplot layers"}{
+#'   Arguments are passed to underlying ggplot components by prefixing value
+#'   with ggplot call name. ("ribbons", "line", "text", "facet", "xlab", "ylab",
+#'   "labs" or "theme" - e.g. \code{ribbons.color = 'red')}).
+#'   }
+#'   \item{"Model fitting"}{
+#'   Arguments with prefixes of "model" will be passed to the model function if
+#'   one is provided.
+#'   }
+#'   \item{"ggpackets"}{
+#'   Additional arguments passed to
+#'   \code{\link[gClinBiomarker]{ggpk_ribbons}} or
+#'   \code{\link[gClinBiomarker]{ggpk_line_errorbar}}.
+#'   }
+#'   }
 #'
 #' @return a ggplot object
 #'
@@ -62,8 +79,7 @@
 #'
 #' @import ggplot2 dplyr
 PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
-                     model.formula = NULL, facet.fun = NULL,
-                     plot.style = 'ribbons', ...) {
+    model.formula = NULL, facet.fun = NULL, plot.style = 'ribbons', ...) {
 
   if (is.null(mapping)) {
     args <- split_aes_from_dots(...)
@@ -91,11 +107,14 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
   }
 
   # choose our plotting functions
-  if (plot.style == 'ribbons')        ggcall.plot   <- ggpk_ribbons
-  else if (plot.style == 'errorbars') ggcall.plot   <- ggpk_line_errorbar
-  if (is.null(facet.fun))             ggcall.facets <- ggplot2::facet_null()
-  else ggcall.facets <- ggpack(ggplot2::facet_grid, id = 'facet',
-                               dots = .dots, facets = facet.fun)
+  if (plot.style == 'ribbons') ggcall.plot <- ggpk_ribbons
+  else if (plot.style == 'errorbars') ggcall.plot <- ggpk_line_errorbar
+
+  # choose facetting functions
+  if (is.null(facet.fun)) ggcall.facets <- ggplot2::facet_null()
+  else
+    ggcall.facets <- ggpack(ggplot2::facet_grid, id = 'facet',
+        dots = .dots, facets = facet.fun)
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
   data %>% ggplot2:::ggplot() + mapping +
