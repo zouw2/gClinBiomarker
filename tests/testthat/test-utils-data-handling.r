@@ -1,15 +1,15 @@
 context('utils-data-handling: augment_predict')
 
-test_that('augment_predict: test that deprecation warning suppression is still necessary', {
-  # There's some code in augment_predict to suppress current deprecation
-  # warnings in the broom package. This test will fail when those deprecations
-  # are resolved in broom. When that happens, the deprecation warning
-  # suppression code should be removed from augment_predict.
-  expect_warning(
-    broom::augment(lm(mpg ~ carb + am + hp + wt, mtcars), mtcars),
-    'Deprecated.*purrr::possibly()'
-  )
-})
+# test_that('augment_predict: test that deprecation warning suppression is still necessary', {
+#   # There's some code in augment_predict to suppress current deprecation
+#   # warnings in the broom package. This test will fail when those deprecations
+#   # are resolved in broom. When that happens, the deprecation warning
+#   # suppression code should be removed from augment_predict.
+#   expect_warning(
+#     broom::augment(lm(mpg ~ carb + am + hp + wt, mtcars), mtcars),
+#     'Deprecated.*purrr::possibly()'
+#   )
+# })
 
 test_that('augment_predict produces dataframe of model fit terms', {
   expect_equal(

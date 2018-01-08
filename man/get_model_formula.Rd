@@ -9,7 +9,7 @@ get_model_formula(model.obj, params = c("terms", "model", "formula"))
 \arguments{
 \item{model.obj}{the model object with which to derive the formula}
 
-\item{params}{model attributes or parameters to consider for deriving formula}
+\item{params}{model attributes or parameters to consder for deriving formula}
 }
 \value{
 A formula object or item which may be coerced to a formula

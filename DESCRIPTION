@@ -36,7 +36,7 @@ Imports:
     haven,
     utils,
     stats,
-    lsmeans,
+    emmeans,
     coin,
     graphics,
     knitr,

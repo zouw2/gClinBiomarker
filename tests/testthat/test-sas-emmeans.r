@@ -7,7 +7,7 @@ test_mtcars$cyl <- as.factor(test_mtcars$cyl)
 
 
 
-context("sas.lsmeans() helper functions: numeric_means")
+context("sas.emmeans() helper functions: numeric_means")
 
 test_that('numeric_means returns a list', {
   expect_equal(class(numeric_means(mtcars)), 'list')
@@ -44,55 +44,55 @@ test_that('numeric_means verbose info is printed when variables omitted', {
 
 
 
-context("sas.lsmeans() helper functions: append_weights")
+context("sas.emmeans() helper functions: append_weights")
 
 test_that('append_weights returns weights of "proportional" when no levels produced', {
-  lsmeans_args <- list(
+  emmeans_args <- list(
     lm(mpg ~ carb + wt + hp, data = mtcars),
     data = mtcars,
     specs = ~ carb
   )
 
   expect_equal(
-    append_weights(lsmeans_args, data = mtcars)$weights,
+    append_weights(emmeans_args, data = mtcars)$weights,
     'proportional'
   )
 })
 
 test_that('append_weights calculates weights over factor variables in specs', {
-  lsmeans_args <- list(
+  emmeans_args <- list(
     lm(mpg ~ carb + wt + hp + vs + am, data = test_mtcars),
     data = test_mtcars,
     specs = pairwise ~ vs + am
   )
 
   expect_equal(
-    append_weights(lsmeans_args)$weights,
+    append_weights(emmeans_args)$weights,
     as.data.frame(table(mtcars$carb))$Freq
   )
 })
 
 test_that('append_weights shows output for verbose output', {
-  lsmeans_args <- list(
+  emmeans_args <- list(
     lm(mpg ~ carb + wt + hp + vs + am, data = test_mtcars),
     data = test_mtcars,
     specs = pairwise ~ vs + am
   )
 
   expect_message(
-    append_weights(lsmeans_args, verbose = TRUE),
+    append_weights(emmeans_args, verbose = TRUE),
     ': carb'
   )
 
   expect_message(
-    append_weights(lsmeans_args, verbose = TRUE),
+    append_weights(emmeans_args, verbose = TRUE),
     'wgt'
   )
 })
 
 
 
-context("sas.lsmeans() helper functions: coerce_from_factor")
+context("sas.emmeans() helper functions: coerce_from_factor")
 
 coerce_list <- list(carb = 'character', cyl = 'numeric')
 
@@ -135,7 +135,7 @@ test_that('coerce_from_factor with no class list retains data', {
 
 
 
-context("sas.lsmeans() helper functions: get_model_formula")
+context("sas.emmeans() helper functions: get_model_formula")
 
 test_func <- function(model) {
   mydata <- mtcars
@@ -175,7 +175,7 @@ test_that('get_model_formula fails appropriately when invalid calls are passed',
 
 
 
-context("sas.lsmeans() helper functions: append_split_terms")
+context("sas.emmeans() helper functions: append_split_terms")
 
 test_that('append_split_terms have appropriate list elements', {
   t <- append_split_terms(a ~ b + c + d)
@@ -191,25 +191,25 @@ test_that('append_split_terms have appropriate list elements', {
 
 
 
-context("sas.lsmeans() helper functions: clean_lsmeans_specs")
+context("sas.emmeans() helper functions: clean_emmeans_specs")
 
-test_that('clean_lsmeans_specs appropriately adds response var', {
+test_that('clean_emmeans_specs appropriately adds response var', {
   f <- ~ a + b
-  expect_true(attr(terms(clean_lsmeans_specs(f)), 'response') == 1)
-  expect_true(terms(clean_lsmeans_specs(f))[[2]] == 'pairwise')
+  expect_true(attr(terms(clean_emmeans_specs(f)), 'response') == 1)
+  expect_true(terms(clean_emmeans_specs(f))[[2]] == 'pairwise')
 
   non_formula <- list(pairwise = c('a', 'b'))
-  expect_equal(clean_lsmeans_specs(non_formula), non_formula)
+  expect_equal(clean_emmeans_specs(non_formula), non_formula)
 })
 
 
 
-context("sas.lsmeans() helper functions: get_lsmeans_specs_predictors")
+context("sas.emmeans() helper functions: get_emmeans_specs_predictors")
 
 test_that('specs as formula omits response variable', {
   specs <- a ~ b + c
   expect_equal(
-    get_lsmeans_specs_predictors(specs),
+    get_emmeans_specs_predictors(specs),
     c('b', 'c')
   )
 })
@@ -217,7 +217,7 @@ test_that('specs as formula omits response variable', {
 test_that('specs as character returns all', {
   specs <- c('a', 'b', 'c')
   expect_equal(
-    get_lsmeans_specs_predictors(specs),
+    get_emmeans_specs_predictors(specs),
     c('a', 'b', 'c')
   )
 })
@@ -225,7 +225,7 @@ test_that('specs as character returns all', {
 test_that('specs as list notifies of lack of support', {
   specs <- list(pairwise = c('a', 'b'), contrasts = c('c', 'd'))
   expect_error(
-    get_lsmeans_specs_predictors(specs),
+    get_emmeans_specs_predictors(specs),
     'Passing list.*unsupported'
   )
 })
@@ -233,17 +233,16 @@ test_that('specs as list notifies of lack of support', {
 test_that('specs as any other class throws error', {
   specs <- as.data.frame(list(a = c(1, 2), b = c(3, 4)))
   expect_error(
-    get_lsmeans_specs_predictors(specs),
+    get_emmeans_specs_predictors(specs),
     'Unable to parse'
   )
 })
 
 
 
-context("sas.lsmeans()")
+context("sas.emmeans()")
 
-test_that('sas.lsmeans runs', {
+test_that('sas.emmeans runs', {
   model <- lm(mpg ~ carb + cyl + wt + am, data = test_mtcars)
-  expect_silent(sas.lsmeans(model, ~ carb + cyl, quietly = T))
+  expect_silent(sas.emmeans(model, ~ carb + cyl, quietly = T))
 })
-

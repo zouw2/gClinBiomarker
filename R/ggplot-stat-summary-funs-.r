@@ -1,12 +1,14 @@
-#' helper function to interpret strings and functions passed to geom_stat_ribbons
+#' helper function to interpret strings and functions passed to
+#' geom_stat_ribbons
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #'
-#' @param format either a function returning a named list of stat transformations or
-#'               a string matching to one of 'mean_se', 'median_iqr', 'tukey_hinges',
-#'               'tukey_whiskers' or 'quantile_contour', or a list of strings from
-#'               this group. The y calculation of the first function in the list
-#'               returned is used for placing labels.
+#' @param format either a function returning a named list of stat
+#'   transformations or a string matching to one of 'mean_se', 'median_iqr',
+#'   'tukey_hinges', 'tukey_whiskers' or 'quantile_contour', or a list of
+#'   strings from this group. The y calculation of the first function in the
+#'   list returned is used for placing labels.
+#' @param args additional arguments to pass to target function
 #'
 #' @return a list of functions to apply to pass to fun.data in stat_summary
 #'

@@ -4,10 +4,10 @@
 #'
 #' @param .data data to use for model fitting
 #' @param model model function to use (e.g `lm`)
-#' @param fomula formula to use for model fitting (e.g `mpg ~ gear + wt`)
-#' @param model.args list of additional arguments to use in model fitting
-#' @param model.per a formula representing all terms to group data by to
-#' fit individual models (e.g. `~ am + vs`)
+#' @param model.per a formula representing all terms to group data by to fit
+#'   individual models (e.g. \code{~ am + vs})
+#' @param ... additional arguments to be passed to the model function, prefixed
+#'   with 'model' (eg. \code{model.singular.ok = FALSE})
 #'
 #' @return a data frame with new columns based on model fit
 #'
@@ -20,14 +20,16 @@
 #' @importFrom stats setNames
 augment_predict <- function(.data, model, model.per = NULL, ...) {
   .dots <- filter_args('model', list(...))
-  withCallingHandlers({
+  ## Temporarily commenting out warning suppression in broom::augment
+  ## Likely can be deleted permenantly after a quick test
+  # withCallingHandlers({
     .data %>%
       dplyr::group_by_(.dots = model.per) %>%
       do(broom::augment(do.call(model, c(list(data=.), .dots)), .))
-  }, warning = function(w) {
-    if (grep('Deprecated.*purrr::possibly()', conditionMessage(w)))
-      invokeRestart('muffleWarning')
-  })
+  # }, warning = function(w) {
+  #   if (grep('Deprecated.*purrr::possibly()', conditionMessage(w)))
+  #     invokeRestart('muffleWarning')
+  # })
 }
 
 

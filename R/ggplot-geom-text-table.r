@@ -1,20 +1,29 @@
+#' Geom to display text as a table overlayed upon the plot
+#'
+#' @inheritParams ggplot2::geom_text
+#' @param location placement location of the text table.
+#'
+#' @return a ggplot2 ggproto object
+#'
 #' @export
 geom_text_table <- function(mapping = NULL, data = NULL, stat = "identity",
-                            position = "identity", ..., parse = FALSE,
-                            nudge_x = 0, nudge_y = 0, check_overlap = FALSE, na.rm = FALSE,
-                            show.legend = NA, inherit.aes = TRUE, subset = NULL, location = 'top') {
+    position = "identity", ..., parse = FALSE, nudge_x = 0, nudge_y = 0,
+    check_overlap = FALSE, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE,
+    location = 'top') {
 
   if (!missing(nudge_x) || !missing(nudge_y)) {
     if (!missing(position)) stop("Specify either `position` or `nudge_x`/`nudge_y`", call. = FALSE)
     position <- position_nudge(nudge_x, nudge_y)
   }
 
-  layer(data = subset %||% data, mapping = mapping, stat = stat, geom = GeomTextTable,
+  layer(data = data, mapping = mapping, stat = stat, geom = GeomTextTable,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(parse = parse, check_overlap = check_overlap,
                   na.rm = na.rm, location = location, ...))
 }
 
+#' A ggplot2 Geom object to add a table of text values to a plot
+#'
 #' @export
 GeomTextTable <- ggplot2:::ggproto("GeomTextTable", ggplot2:::Geom,
   required_aes = c("x", "y", "label"),

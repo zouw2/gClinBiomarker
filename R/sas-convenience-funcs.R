@@ -1,17 +1,22 @@
-#' Compute LSMEANS to mirror SAS functionality
+#' Compute emmeans to mirror SAS emmeans functionality
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}, Christina Rabe
 #'   \email{rabe.christina@gene.com}
 #'
-#' @param model.obj A model object on which to calculate lsmeans
-#' @param specs specs to be passed to lsmeans()
-#' @param mode mode to be passed to lsmeans()
-#' @param as.data.frame whether to return a lsm.list object or a data.frame
+#' @param model.obj A model object on which to calculate emmeans
+#' @param specs specs to be passed to emmeans()
+#' @param data specified data to be used for model fitting. (defaults to data
+#'   bound to model, though this can not always been inferred from the model
+#'   object and scope of function call)
+#' @param mode mode to be passed to emmeans()
 #' @param quietly whether to hide message informing of changes to default
 #'   functionality
-#' @param ... additional arguments to be passed to lsmeans
+#' @param verbose whether all debug information should be printed to console
+#' @param confidence.level the confidence interval to use for upper and lower
+#'   confidence level outputs
+#' @param ... additional arguments to be passed to emmeans
 #'
-#' @importFrom lsmeans lsmeans
+#' @importFrom emmeans emmeans
 #' @importFrom broom tidy
 #' @import dplyr
 #'
@@ -19,24 +24,24 @@
 #' library(dplyr) # for %>% operator
 #' library(nlme)  # for gls
 #'
-#' # create model on which to calculate lsmeans
+#' # create model on which to calculate emmeans
 #' model <- gls(mpg ~ hp + carb + wt,
 #'   data = mtcars, na.action = na.exclude)
 #'
-#' # call lsmeans, specifying factors over which means should be calculated
-#' sas.lsm <- sas.lsmeans(model, ~ carb, data = mtcars, confidence.level = 0.9, verb = T)
+#' # call emmeans, specifying factors over which means should be calculated
+#' sas.emm <- sas.emmeans(model, ~ carb, data = mtcars, confidence.level = 0.9)
 #'
 #' # update the confidence level used
 #' # NOTE: if you're examining confidence intervals, it's much faster to udpate
 #' # rather than re-run the model and means
-#' sas.lsm <- update(sas.lsm, level = 0.95)
+#' sas.emm <- update(sas.emm, level = 0.95)
 #'
 #' # using the means as a dataframe
-#' as.data.frame(sas.lsm)
+#' as.data.frame(sas.emm)
 #'
 #' @export
 #' @importFrom dplyr "%>%" filter_at vars all_vars mutate_at
-sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
+sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
     quietly = FALSE, verbose = FALSE, confidence.level = NULL, ...) {
 
   if (!quietly) message(paste(
@@ -45,7 +50,7 @@ sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
     " 2. data used for initial model fit...",
     "   a. is filtered for only complete cases in the response variable",
     "   b. will have any numeric variables in specs converted to categorical",
-    " 3. grouping variables for lsmeans converted to factor.",
+    " 3. grouping variables for emmeans converted to factor.",
     "      (creating a new factor column where necessary)",
     " 4. continuous means calculated using rows where response is not NA.",
     " 5. categorical level weights from all rows of dataset\n",
@@ -59,10 +64,10 @@ sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
   if (is.null(data) && identical(model.env, environment()))
     stop(paste(
       "\nModel environment was not found within model object. ",
-      "To resolve, provide value for data to sas.lsmeans() as well.", sep = "\n"))
+      "To resolve, provide value for data to sas.emmeans() as well.", sep = "\n"))
 
-  specs         <- clean_lsmeans_specs(specs) # ~ x | y => pairwise ~ x | y
-  specs.pred    <- get_lsmeans_specs_predictors(specs) # c('x', 'y')
+  specs         <- clean_emmeans_specs(specs) # ~ x | y => pairwise ~ x | y
+  specs.pred    <- get_emmeans_specs_predictors(specs) # c('x', 'y')
   specs.pred.nf <- Map(class, Filter(Negate(is.factor), data[specs.pred]))
 
   # filter dataset down to complete cases, coerce spec vars to factor
@@ -85,26 +90,26 @@ sas.lsmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
   sas.model.obj <- do.call(as.character(model.call[[1]]), model.call[-1])
 
   non.spec.vars <- setdiff(model$covs, specs.pred)
-  lsmeans_args <- modifyList(
+  emmeans_args <- modifyList(
     list(object = sas.model.obj, specs = specs, mode = mode, data = cleaned_data,
          at = cleaned_data %>% numeric_means(non.spec.vars, verbose = verbose)
          ) %>% append_weights(data = data, verbose = verbose),
     list(...))
 
   if (verbose) {
-    message('Running lsmeans::lsmeans() with parameters: ')
-    message(print_to_string(list(object = summary(lsmeans_args$object))))
-    message(print_to_string(lsmeans_args[setdiff(names(lsmeans_args), 'object')]))
+    message('Running emmeans::emmeans() with parameters: ')
+    message(print_to_string(list(object = summary(emmeans_args$object))))
+    message(print_to_string(emmeans_args[setdiff(names(emmeans_args), 'object')]))
   }
 
-  lsmlist <- do.call(lsmeans::lsmeans, lsmeans_args)
-  lsmlist$lsmeans@grid <-
-    coerce_from_factor(lsmlist$lsmeans@grid, specs.pred.nf,
-      suffix = '.lsmeans.factor', verbose = verbose) %>%
+  emmlist <- do.call(emmeans::emmeans, emmeans_args)
+  emmlist$emmeans@grid <-
+    coerce_from_factor(emmlist$emmeans@grid, specs.pred.nf,
+      suffix = '.emmeans.factor', verbose = verbose) %>%
     copy_variable_attributes(data)
-  lsmlist$unary.vars.gdf <- summarize_unary_vars(data, specs.pred)
-  if (!is.null(confidence.level)) lsmlist <- update(lsmlist, level = confidence.level)
-  lsmlist
+  emmlist$emmeans@misc$unary.vars.gdf <- summarize_unary_vars(data, specs.pred)
+  if (!is.null(confidence.level)) emmlist <- update(emmlist, level = confidence.level)
+  emmlist
 }
 
 
@@ -137,41 +142,41 @@ numeric_means <- function(data, potential_vars = names(data), verbose = FALSE) {
 #'
 #' @author Doug Kelkhoff \email{kelkhoff.douglas@gene.com}
 #'
-#' @description lsmeans expects accepts a weights argument to specify the
+#' @description emmeans expects accepts a weights argument to specify the
 #'   denominator for mean calculations. This function will calculate these
-#'   weights from the frequency of the lsmeans levels from a new dataset.
+#'   weights from the frequency of the emmeans levels from a new dataset.
 #'
-#'   Arguments with which lsmeans is to be called are passed to this function
-#'   which will call \code{lsmeanss()} with \code{weights = 'show.levels'} in
+#'   Arguments with which emmeans is to be called are passed to this function
+#'   which will call \code{emmeanss()} with \code{weights = 'show.levels'} in
 #'   order to determine the levels over which weights are calculated. It will
 #'   then use the passed \code{data} to evaluate frequencies for those weights.
 #'
-#' @param lsmeans_args arguments with which lsmeans will be called
+#' @param emmeans_args arguments with which emmeans will be called
 #' @param data a dataset over which the weights should be calculated as level
 #'   frequencies.
 #' @param verbose whether additional information should be printed to console
 #'
-#' @return The same arguments passed through \code{lsmeans_args} with the
+#' @return The same arguments passed through \code{emmeans_args} with the
 #'   weights parameter specified by the frequencies of occurence in the
-#'   \code{data} variable, or the \code{lsmeans_args$data} list item if no data
-#'   was included (default behavior of \code{lsmeans}).
+#'   \code{data} variable, or the \code{emmeans_args$data} list item if no data
+#'   was included (default behavior of \code{emmeans}).
 #'
-#' @importFrom lsmeans lsmeans
+#' @importFrom emmeans emmeans
 #' @importFrom utils modifyList
 #' @importFrom dplyr left_join mutate_at group_by summarize ungroup pull "%>%"
-append_weights <- function(lsmeans_args, data = NULL, verbose = FALSE) {
-  levels_args <- utils::modifyList(lsmeans_args, list(weights = 'show.levels'))
-  levels <- sink_to_temp(do.call(lsmeans::lsmeans, levels_args))
+append_weights <- function(emmeans_args, data = NULL, verbose = FALSE) {
+  levels_args <- utils::modifyList(emmeans_args, list(weights = 'show.levels'))
+  levels <- sink_to_temp(do.call(emmeans::emmeans, levels_args))
 
-  # even with 'show.levels', when no groups are defined lsmeans returns lsmobj
-  if (any(class(levels) %in% c('lsm.list', 'lsmobj')) || is.null(names(levels)))
-    return(utils::modifyList(lsmeans_args, list(weights = 'proportional')))
+  # even with 'show.levels', when no groups are defined emmeans returns emm_list
+  if (any(class(levels) %in% c('emm_list', 'emmGrid')) || is.null(names(levels)))
+    return(utils::modifyList(emmeans_args, list(weights = 'proportional')))
 
   if (verbose) message(sprintf('Calculating weights over levels: %s',
     paste(names(levels), collapse = ', ')))
 
   level_weights <- dplyr::left_join(levels,
-      (data %||% lsmeans_args$data) %>%
+      (data %||% emmeans_args$data) %>%
         dplyr::mutate_at(vars(names(levels)), as.factor) %>%
         dplyr::group_by(.dots=names(levels)) %>%
         dplyr::summarize(wgt=n()) %>% dplyr::ungroup(),
@@ -179,8 +184,8 @@ append_weights <- function(lsmeans_args, data = NULL, verbose = FALSE) {
 
   if (verbose) message(print_to_string(level_weights), '\n')
 
-  lsmeans_args$weights <- level_weights %>% dplyr::pull(wgt)
-  lsmeans_args
+  emmeans_args$weights <- level_weights %>% dplyr::pull(wgt)
+  emmeans_args
 }
 
 
@@ -240,7 +245,7 @@ coerce_from_factor <- function(data, class_list, preserve = TRUE,
 #'   be able to be used to evaluate the symbols stored within them.
 #'
 #' @param model.obj the model object with which to derive the formula
-#' @param params model attributes or parameters to consider for deriving formula
+#' @param params model attributes or parameters to consder for deriving formula
 #'
 #' @return A formula object or item which may be coerced to a formula
 #'
@@ -285,24 +290,24 @@ append_split_terms <- function(t) {
 }
 
 
-#' Helper function to clean one-sided formulas for lsmeans
+#' Helper function to clean one-sided formulas for emmeans
 #'
-#' @description The \code{lsmeans::lsmeans()} function broke a golden rule: they
+#' @description The \code{emmeans::emmeans()} function broke a golden rule: they
 #'   return a different class of data based on unrelated parameters. In this
 #'   case, if the \code{specs} parameter is a one-sided formula it returns a
-#'   \code{lsmobj} whereas if it's two-sided for a list, it returns a
-#'   \code{lsm.list}. This makes it quite hard to work with reliably. To address
+#'   \code{emmGrid} whereas if it's two-sided for a list, it returns a
+#'   \code{emm_list}. This makes it quite hard to work with reliably. To address
 #'   this, this helper function cleans the inputs before handing them off to
 #'   \code{specs} to make a one sided formula (like \code{~ x + y}) into an
 #'   acceptable two-sided formula (like \code{pairwise ~ x + y}), allowing
-#'   lsmeans to be used and always producing a single class of output.
+#'   emmeans to be used and always producing a single class of output.
 #'
 #' @param specs the specs input to process
 #'
 #' @return a two-sided formula with the LHS being 'pairwise' if the input is a
 #'   formula, otherwise return original input
 #'
-clean_lsmeans_specs <- function(specs) {
+clean_emmeans_specs <- function(specs) {
   if (inherits(specs, 'formula') && !attr(terms(specs), 'response'))
     as.formula(paste('pairwise ~', as.character(specs)[[2]]))
   else specs
@@ -311,44 +316,44 @@ clean_lsmeans_specs <- function(specs) {
 
 #' Return predictors from specs input
 #'
-#' @description \code{lsmeans::lsmeans()} accepts a bunch of different variable
+#' @description \code{emmeans::emmeans()} accepts a bunch of different variable
 #'   types to its \code{specs} parameter. This function handles that variety of
 #'   variable types to figure out what variables were specified.
 #'
-#' @param specs a specs parameter to be passed to \code{lsmeans::lsmeans()}
+#' @param specs a specs parameter to be passed to \code{emmeans::emmeans()}
 #'
 #' @return a character vector of the variables from the specs object
 #'
 #' @importFrom stats delete.response terms
-get_lsmeans_specs_predictors <- function(specs) {
+get_emmeans_specs_predictors <- function(specs) {
   if (inherits(specs, "formula"))
     all.vars(stats::delete.response(stats::terms(specs)))
   else if (class(specs) == 'character') specs
   else if (class(specs) == 'list')
-    stop('Passing list as specs is currently unsupported in sas.lsmeans. Please file an issue if this is functionality you require.')
+    stop('Passing list as specs is currently unsupported in sas.emmeans. Please file an issue if this is functionality you require.')
   else stop('Unable to parse variables from provided specs')
 }
 
 
-#' @method as.data.frame lsm.list
+#' @method as.data.frame emm_list
 #' @export
 #' @importFrom dplyr left_join "%>%"
-as.data.frame.lsm.list <- function(x, row.names, optional, ...) {
-  if ('unary.vars.gdf' %in% names(x)) {
+as.data.frame.emm_list <- function(x, row.names, optional, ...) {
+  if ('emeans' %in% names(x) && 'unary.vars.gdf' %in% names(x$emmeans@misc)) {
     dplyr::left_join(
-      as.data.frame(x$lsmeans),
-      x$unary.vars.gdf %>% dplyr::ungroup(),
-      by = attr(x$unary.vars.gdf, 'vars'),
-      suffix = c('.lsmeans', ''))
+      as.data.frame(x$emmeans),
+      x$emmeans@misc$unary.vars.gdf %>% dplyr::ungroup(),
+      by = attr(x$emmeans@misc$unary.vars.gdf, 'vars'),
+      suffix = c('.emmeans', ''))
   } else
-    as.data.frame(x$lsmeans)
+    as.data.frame(x$emmeans)
 }
 
 
-#' @method as.data.frame lsmobj
+#' @method as.data.frame emmGrid
 #' @export
 #' @importFrom dplyr left_join select "%>%"
-as.data.frame.lsmobj <- function(x, row.names, optional, ...) {
+as.data.frame.emmGrid <- function(x, row.names, optional, ...) {
   as.data.frame(summary(x)) %>%
     dplyr::left_join(
       x@grid %>% dplyr::select(c(names(x@levels), '.wgt.')),
@@ -356,16 +361,16 @@ as.data.frame.lsmobj <- function(x, row.names, optional, ...) {
 }
 
 
-#' @method update lsm.list
+#' @method update emm_list
 #' @export
-#' @import lsmeans
-update.lsm.list <- function(object, ..., silent = FALSE) {
-  object$lsmeans <- lsmeans:::update.ref.grid(object$lsmeans, ...)
+#' @import emmeans
+update.emm_list <- function(object, ..., silent = FALSE) {
+  object$emmeans <- emmeans:::update.emmGrid(object$emmeans, ...)
   object
 }
 
 
-#' @method tidy lsm.list
+#' @method tidy emm_list
 #' @export
 #' @importFrom broom tidy
-tidy.lsm.list <- function(lsm, ...) { broom::tidy(lsm@lsmeans) }
+tidy.emm_list <- function(emm, ...) { broom::tidy(emm@emmeans) }
