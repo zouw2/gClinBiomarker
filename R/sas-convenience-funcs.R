@@ -42,7 +42,8 @@
 #'
 #' # to improve performance (by avoiding a model refit), you can build the model
 #' # inline with the sas.emmeans call
-#' sas.emmeans(gls(mpg ~ hp + carb + wt, data = mtcars, na.action = na.exclude), ~ carb)
+#' f <- 'mpg ~ hp + carb + wt'
+#' sas.emmeans(gls(as.formula(f), data = mtcars, na.action = na.exclude), ~ carb)
 #'
 #' @export
 #' @importFrom dplyr "%>%" filter_at vars all_vars mutate_at
@@ -64,6 +65,7 @@ sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
 
   if (is.call(q <- as.list(match.call(expand.dots = TRUE)[-1])$model.obj)) {
     model.call <- as.list(match.call(eval(q[[1]], envir), q, expand.dots = TRUE))
+    model.call[-1] <- lapply(model.call[-1], eval, envir)
     model      <- append_split_terms(as.formula(get_model_formula(model.call)))
     model.env  <- envir
   } else {
