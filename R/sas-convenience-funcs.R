@@ -25,7 +25,7 @@
 #' library(nlme)  # for gls
 #'
 #' # create model on which to calculate emmeans
-#' model <- gls(mpg ~ hp + carb + wt,
+#' model <- gls(mpg ~ hp + carb + wt + carb * am,
 #'   data = mtcars, na.action = na.exclude)
 #'
 #' # call emmeans, specifying factors over which means should be calculated
@@ -42,8 +42,7 @@
 #'
 #' # to improve performance (by avoiding a model refit), you can build the model
 #' # inline with the sas.emmeans call
-#' f <- 'mpg ~ hp + carb + wt'
-#' sas.emmeans(gls(as.formula(f), data = mtcars, na.action = na.exclude), ~ carb)
+#' sas.emmeans(gls(mpg ~ hp + carb + wt, data = mtcars, na.action = na.exclude), ~ carb)
 #'
 #' @export
 #' @importFrom dplyr "%>%" filter_at vars all_vars mutate_at
