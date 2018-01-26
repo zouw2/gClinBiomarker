@@ -56,9 +56,16 @@ sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
     " 5. categorical level weights from all rows of dataset\n",
     sep = "\n"))
 
-  model.call <- as.list(model.obj$call)
-  model      <- append_split_terms(as.formula(get_model_formula(model.obj)))
-  model.env  <- attr(model$terms, ".Environment")
+  if (is.call(q <- as.list(match.call(expand.dots = TRUE)[-1])$model.obj)) {
+    model.call <- as.list(match.call(eval(q[[1]], envir), q, expand.dots = TRUE))
+    model.call[-1] <- lapply(model.call[-1], eval, envir)
+    model      <- append_split_terms(as.formula(get_model_formula(model.call)))
+    model.env  <- envir
+  } else {
+    model.call <- as.list(model.obj$call)
+    model      <- append_split_terms(as.formula(get_model_formula(model.obj)))
+    model.env  <- attr(model$terms, ".Environment")
+  }
 
   # prevent model that doesn't store model construction without explicit data
   if (is.null(data) && identical(model.env, environment()))
