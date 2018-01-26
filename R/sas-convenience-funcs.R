@@ -25,7 +25,7 @@
 #' library(nlme)  # for gls
 #'
 #' # create model on which to calculate emmeans
-#' model <- gls(mpg ~ hp + carb + wt + carb * am,
+#' model <- gls(mpg ~ hp + carb + wt,
 #'   data = mtcars, na.action = na.exclude)
 #'
 #' # call emmeans, specifying factors over which means should be calculated
