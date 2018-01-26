@@ -39,16 +39,10 @@
 #' # using the means as a dataframe
 #' as.data.frame(sas.emm)
 #'
-#'
-#' # to improve performance (by avoiding a model refit), you can build the model
-#' # inline with the sas.emmeans call
-#' sas.emmeans(gls(mpg ~ hp + carb + wt, data = mtcars, na.action = na.exclude), ~ carb)
-#'
 #' @export
 #' @importFrom dplyr "%>%" filter_at vars all_vars mutate_at
 sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
-    quietly = FALSE, verbose = FALSE, confidence.level = NULL, ...,
-    envir = parent.frame()) {
+    quietly = FALSE, verbose = FALSE, confidence.level = NULL, ...) {
 
   if (!quietly) message(paste(
     "To mirror SAS functionality:",
@@ -79,13 +73,12 @@ sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
       "\nModel environment was not found within model object. ",
       "To resolve, provide value for data to sas.emmeans() as well.", sep = "\n"))
 
-  # filter dataset down to complete cases, coerce spec vars to factor
-  if (is.null(data)) data <- eval(model.call$data, envir=model.env)
-
   specs         <- clean_emmeans_specs(specs) # ~ x | y => pairwise ~ x | y
   specs.pred    <- get_emmeans_specs_predictors(specs) # c('x', 'y')
   specs.pred.nf <- Map(class, Filter(Negate(is.factor), data[specs.pred]))
 
+  # filter dataset down to complete cases, coerce spec vars to factor
+  if (is.null(data)) data <- eval(model.call$data, envir=model.env)
   cleaned_data <- data %>%
     dplyr::filter_at(dplyr::vars(model$vars), dplyr::all_vars(!is.na(.))) %>%
     dplyr::mutate_at(as.character(names(specs.pred.nf)), as.factor)
@@ -258,23 +251,18 @@ coerce_from_factor <- function(data, class_list, preserve = TRUE,
 #'   in this way will be created in the local function environment and will not
 #'   be able to be used to evaluate the symbols stored within them.
 #'
-#' @param object the model object with which to derive the formula
+#' @param model.obj the model object with which to derive the formula
 #' @param params model attributes or parameters to consder for deriving formula
 #'
 #' @return A formula object or item which may be coerced to a formula
 #'
-get_model_formula <- function(object, params = c('terms', 'model', 'formula')) {
-  if (!is.call(object)) {
-    # search in the model object itself (WILL contain model env)
-    mdl.ind <- first(na.omit(c(NA, match(params, names(object[-1])))))
-    if(!is.na(mdl.ind)) return(object[[mdl.ind+1]])
+get_model_formula <- function(model.obj, params = c('terms', 'model', 'formula')) {
+  # search in the model object itself (WILL contain model env)
+  mdl.ind <- first(na.omit(c(NA, match(params, names(model.obj[-1])))))
+  if(!is.na(mdl.ind)) return(model.obj[[mdl.ind+1]])
 
-    # pull from model call (will NOT contain model env)
-    model.call <- as.list(object$call)
-  } else {
-    model.call <- object
-  }
-
+  # pull from model call (will NOT contain model env)
+  model.call  <- as.list(model.obj$call)
   if (length(model.call) <= 1)
     stop('Model object does not contain any arguments. Cannot discern model formula')
   mdl.ind <- first(na.omit(c(NA, match(params, names(model.call[-1])))))
