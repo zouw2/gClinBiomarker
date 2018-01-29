@@ -6,8 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ggplot wrapper for plotting ribbon, taking a stats string or function set
-as an argument — ggpk_ribbons • gClinBiomarker</title>
+<title>ggplot wrapper for plotting ribbon, taking a stats string or function set as
+an argument — ggpk_ribbons • gClinBiomarker</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -53,7 +53,7 @@ as an argument — ggpk_ribbons • gClinBiomarker</title>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -91,13 +91,13 @@ as an argument — ggpk_ribbons • gClinBiomarker</title>
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>ggplot wrapper for plotting ribbon, taking a stats string or function set
-as an argument</h1>
+    <h1>ggplot wrapper for plotting ribbon, taking a stats string or function set as
+an argument</h1>
     </div>
 
     
-    <p>ggplot wrapper for plotting ribbon, taking a stats string or function set
-as an argument</p>
+    <p>ggplot wrapper for plotting ribbon, taking a stats string or function set as
+an argument</p>
     
 
     <pre class="usage"><span class='fu'>ggpk_ribbons</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>show.counts</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -119,19 +119,58 @@ as an argument</p>
       <td><p>True, False, "label" or "table" to display either as
 labels at each datapoint or as a table at the top of the plot</p></td>
     </tr>
+    <tr>
+      <th>fun.data</th>
+      <td><p>argument to be passed to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></code>
+calls</p></td>
+    </tr>
+    <tr>
+      <th>fun.args</th>
+      <td><p>list of argumnets to be passed to
+<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/stat_summary'>stat_summary</a></code> calls</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p><code>ggpackets</code> id to indentify arguments which should be passed
+to all <code>ggpk_ribbons</code> ggplot2 layers. Defaults to
+<code>'ggpk_ribbons'</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments prefixed with the following <code>id</code>s will be parsed
+and passed to the following calls:</p><ul>
+<li><p><strong>ggpk_ribbons</strong>, <strong>ribbon</strong> ids: Passed to call to
+  <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>geom_ribbon</a></code>. <code>color</code> and <code>alpha</code> fixed.</p></li>
+<li><p><strong>ggpk_ribbons</strong>, <strong>ribbon</strong> ids: Passed to call to
+  <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_ribbon'>geom_ribbon</a></code>. <code>fun.data</code>, <code>color</code> and
+  <code>alpha</code> fixed.</p></li>
+<li><p><strong>ggpk_ribbons</strong>, <strong>point</strong> ids: Passed to call to
+  <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></code>.</p></li>
+<li><p><strong>ggpk_ribbons</strong>, <strong>line</strong> ids: Passed to call to
+  <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></code>.</p></li>
+<li><p><strong>ggpk_ribbons</strong>, <strong>label</strong> ids: Passed to call to
+  <code><a href='http://www.rdocumentation.org/packages/ggrepel/topics/geom_text_repel'>geom_label_repel</a></code>. <code>direction</code>,
+  <code>nudge_y</code>, <code>label.size</code>, <code>fill</code> and <code>alpha</code> fixed.</p></li>
+<li><p><strong>ggpk_ribbons</strong>, <strong>label</strong> ids: Passed to call to
+  <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>geom_label</a></code>. <code>label.size</code>, <code>fill</code> and
+  <code>alpha</code> fixed.</p></li>
+<li><p><strong>ggpk_ribbons</strong>, <strong>label</strong> ids: Passed to call to
+  <code><a href='geom_text_table.html'>geom_text_table</a></code>. <code>show.legend</code> fixed.</p></li>
+</ul></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a ggpacket object that can be added to any ggplot to
-draw a collection of layers</p>
+    <p>a ggpacket object that can be added to any ggplot to draw a
+  collection of layers</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>When specifying arguments for wrapped ggplot geometries, id
-the parameter with geometry specifiers: "ribbon" for ribbon geometry
-"line" for central line geometry, or "label" for count labels. e.g.
-<code>ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)</code></p>
+    <p>When specifying arguments for wrapped ggplot geometries, id the
+  parameter with geometry specifiers: "ribbon" for ribbon geometry "line" for
+  central line geometry, or "label" for count labels. e.g.
+  <code>ggpk_stat_ribbon(ribbon.alpha = 0.8, line.alpha = 0.6)</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

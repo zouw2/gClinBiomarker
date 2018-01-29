@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -68,7 +68,7 @@
       <h1>gClinBiomarker: Example Use Cases</h1>
                         <h4 class="author">Ning Leng, Alexey Pronin, Doug Kelkhoff</h4>
             
-            <h4 class="date">2017-11-11</h4>
+            <h4 class="date">2018-01-29</h4>
           </div>
 
     
@@ -78,13 +78,14 @@
 <h1 class="hasAnchor">
 <a href="#loading-packages-and-data" class="anchor"></a>Loading packages and data</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!<span class="kw">require</span>(gClinBiomarker)) { 
-  <span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"RPackages/gClinBiomarker"</span>,  <span class="dt">host=</span><span class="st">"https://github.roche.com/api/v3"</span>)
+  <span class="kw">install_github</span>(<span class="st">"RPackages/gClinBiomarker"</span>,  <span class="dt">host=</span><span class="st">"https://github.roche.com/api/v3"</span>)
   <span class="kw">library</span>(gClinBiomarker)
-}
-
-<span class="kw">library</span>(knitr)
-<span class="kw">library</span>(devtools)
-<span class="kw">library</span>(ggplot2)
+}</code></pre></div>
+<pre><code>## Warning: package 'survival' was built under R version 3.3.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
+<span class="kw">library</span>(devtools)</code></pre></div>
+<pre><code>## Warning: package 'devtools' was built under R version 3.3.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">data</span>(input)
 sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </div>
@@ -147,7 +148,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">All(CTRL)</th>
 <th align="left">BEP(CTRL)</th>
 <th align="left">All(TRT)</th>
@@ -155,77 +156,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 <td align="left">54.03</td>
 <td align="left">54.42</td>
 </tr>
 <tr class="even">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 <td align="left">54</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 <td align="left">30…89</td>
 <td align="left">33…89</td>
 </tr>
 <tr class="even">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 <td align="left">184 (50%)</td>
 <td align="left">90 (51.14%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">93 (51.1%)</td>
 <td align="left">42 (51.85%)</td>
 <td align="left">184 (50%)</td>
@@ -243,7 +244,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">BEP_1(CTRL)</th>
 <th align="left">BEP_0(CTRL)</th>
 <th align="left">BEP_1(TRT)</th>
@@ -251,77 +252,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">81</td>
 <td align="left">101</td>
 <td align="left">176</td>
 <td align="left">192</td>
 </tr>
 <tr class="odd">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">53.1</td>
 <td align="left">52.09</td>
 <td align="left">54.42</td>
 <td align="left">53.67</td>
 </tr>
 <tr class="even">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">52</td>
 <td align="left">50</td>
 <td align="left">54</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">32…85</td>
 <td align="left">27…82</td>
 <td align="left">33…89</td>
 <td align="left">30…79</td>
 </tr>
 <tr class="even">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">81</td>
 <td align="left">101</td>
 <td align="left">176</td>
 <td align="left">192</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">39 (48.15%)</td>
 <td align="left">50 (49.5%)</td>
 <td align="left">90 (51.14%)</td>
 <td align="left">94 (48.96%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">42 (51.85%)</td>
 <td align="left">51 (50.5%)</td>
 <td align="left">86 (48.86%)</td>
@@ -339,7 +340,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">All(CTRL)</th>
 <th align="left">BEP(CTRL)</th>
 <th align="left">pvalue(CTRL)</th>
@@ -349,7 +350,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -358,7 +359,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">0.5</td>
@@ -367,7 +368,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">0.69</td>
 </tr>
 <tr class="odd">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 <td align="left"></td>
@@ -376,7 +377,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 <td align="left"></td>
@@ -385,7 +386,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 <td align="left"></td>
@@ -394,7 +395,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left"></td>
@@ -403,7 +404,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -412,7 +413,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">0.88</td>
@@ -421,7 +422,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">0.75</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left"></td>
@@ -430,7 +431,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 <td align="left"></td>
@@ -439,7 +440,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">93 (51.1%)</td>
 <td align="left">42 (51.85%)</td>
 <td align="left"></td>
@@ -459,7 +460,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">All(TRT)</th>
 <th align="left">BEP(TRT)</th>
 <th align="left">All(CTRL)</th>
@@ -467,77 +468,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">368</td>
 <td align="left">176</td>
 <td align="left">182</td>
 <td align="left">81</td>
 </tr>
 <tr class="odd">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">54.03</td>
 <td align="left">54.42</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 </tr>
 <tr class="even">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">54</td>
 <td align="left">54</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 </tr>
 <tr class="odd">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">30…89</td>
 <td align="left">33…89</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 </tr>
 <tr class="even">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">368</td>
 <td align="left">176</td>
 <td align="left">182</td>
 <td align="left">81</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">184 (50%)</td>
 <td align="left">90 (51.14%)</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">184 (50%)</td>
 <td align="left">86 (48.86%)</td>
 <td align="left">93 (51.1%)</td>
@@ -555,63 +556,63 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">All</th>
 <th align="left">BEP</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">550</td>
 <td align="left">257</td>
 </tr>
 <tr class="odd">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">53.53</td>
 <td align="left">54</td>
 </tr>
 <tr class="even">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">53</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">27…89</td>
 <td align="left">32…89</td>
 </tr>
 <tr class="even">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">550</td>
 <td align="left">257</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">273 (49.64%)</td>
 <td align="left">129 (50.19%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">277 (50.36%)</td>
 <td align="left">128 (49.81%)</td>
 </tr>
@@ -2143,7 +2144,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2153,7 +2154,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.72</td>
 <td align="left">0.48</td>
 <td align="left">1.08</td>
@@ -2162,7 +2163,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">273</td>
 </tr>
 <tr class="even">
-<td>Country (USA/Other)</td>
+<td align="left">Country (USA/Other)</td>
 <td align="left">0.65</td>
 <td align="left">0.36</td>
 <td align="left">1.2</td>
@@ -2171,7 +2172,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="odd">
-<td>Country (Western Europe/Other)</td>
+<td align="left">Country (Western Europe/Other)</td>
 <td align="left">0.77</td>
 <td align="left">0.5</td>
 <td align="left">1.2</td>
@@ -2180,7 +2181,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="even">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left">1.01</td>
 <td align="left">0.99</td>
 <td align="left">1.03</td>
@@ -2196,7 +2197,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2206,7 +2207,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.72</td>
 <td align="left">0.48</td>
 <td align="left">1.08</td>
@@ -2215,7 +2216,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">273</td>
 </tr>
 <tr class="even">
-<td>Country (USA/Other)</td>
+<td align="left">Country (USA/Other)</td>
 <td align="left">0.65</td>
 <td align="left">0.36</td>
 <td align="left">1.2</td>
@@ -2224,7 +2225,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="odd">
-<td>Country (Western Europe/Other)</td>
+<td align="left">Country (Western Europe/Other)</td>
 <td align="left">0.77</td>
 <td align="left">0.5</td>
 <td align="left">1.2</td>
@@ -2233,7 +2234,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="even">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left">1.01</td>
 <td align="left">0.99</td>
 <td align="left">1.03</td>
@@ -2253,7 +2254,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2263,7 +2264,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.85</td>
 <td align="left">0.42</td>
 <td align="left">1.73</td>
@@ -2272,7 +2273,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">129</td>
 </tr>
 <tr class="even">
-<td>Country (USA/Other)</td>
+<td align="left">Country (USA/Other)</td>
 <td align="left">1.17</td>
 <td align="left">0.4</td>
 <td align="left">3.38</td>
@@ -2281,7 +2282,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="odd">
-<td>Country (Western Europe/Other)</td>
+<td align="left">Country (Western Europe/Other)</td>
 <td align="left">1.11</td>
 <td align="left">0.44</td>
 <td align="left">2.83</td>
@@ -2290,7 +2291,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="even">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left">1.01</td>
 <td align="left">0.98</td>
 <td align="left">1.04</td>
@@ -2311,7 +2312,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2321,7 +2322,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (F/M)</td>
+<td align="left">Sex (F/M)</td>
 <td align="left">1.12</td>
 <td align="left">0.68</td>
 <td align="left">1.85</td>
@@ -2330,7 +2331,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">128</td>
 </tr>
 <tr class="even">
-<td>Country (USA/Other)</td>
+<td align="left">Country (USA/Other)</td>
 <td align="left">1.17</td>
 <td align="left">0.4</td>
 <td align="left">3.38</td>
@@ -2339,7 +2340,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="odd">
-<td>Country (Western Europe/Other)</td>
+<td align="left">Country (Western Europe/Other)</td>
 <td align="left">1.11</td>
 <td align="left">0.44</td>
 <td align="left">2.83</td>
@@ -2348,7 +2349,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">57</td>
 </tr>
 <tr class="even">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left">1.01</td>
 <td align="left">0.98</td>
 <td align="left">1.04</td>
@@ -2368,7 +2369,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -2378,7 +2379,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.71</td>
 <td align="left">0.48</td>
 <td align="left">1.07</td>
@@ -2387,7 +2388,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">273</td>
 </tr>
 <tr class="even">
-<td>Country (USA/Other)</td>
+<td align="left">Country (USA/Other)</td>
 <td align="left">0.67</td>
 <td align="left">0.37</td>
 <td align="left">1.22</td>
@@ -2396,7 +2397,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="odd">
-<td>Country (Western Europe/Other)</td>
+<td align="left">Country (Western Europe/Other)</td>
 <td align="left">0.77</td>
 <td align="left">0.5</td>
 <td align="left">1.2</td>
@@ -2405,7 +2406,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <td align="left">198</td>
 </tr>
 <tr class="even">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left">1.01</td>
 <td align="left">0.99</td>
 <td align="left">1.02</td>
@@ -2534,62 +2535,62 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
   )</code></pre></div>
 <table class="table"><tbody>
 <tr class="odd">
-<td></td>
+<td align="left"></td>
 <td align="left">CTRL</td>
 <td align="left">TRT</td>
 </tr>
 <tr class="even">
-<td></td>
+<td align="left"></td>
 <td align="left">N=182</td>
 <td align="left">N=368</td>
 </tr>
 <tr class="odd">
-<td>Patients with event</td>
+<td align="left">Patients with event</td>
 <td align="left">120 (65.9%)</td>
 <td align="left">202 (54.9%)</td>
 </tr>
 <tr class="even">
-<td>Patients without event</td>
+<td align="left">Patients without event</td>
 <td align="left">62 (34.1%)</td>
 <td align="left">166 (45.1%)</td>
 </tr>
 <tr class="odd">
-<td>Time to event (month)</td>
+<td align="left">Time to event (month)</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Median (KM)</td>
+<td align="left">Median (KM)</td>
 <td align="left">3.25</td>
 <td align="left">5.82</td>
 </tr>
 <tr class="odd">
-<td>95% CI Median</td>
+<td align="left">95% CI Median</td>
 <td align="left">(2.83;4.14)</td>
 <td align="left">(5.49;6.8)</td>
 </tr>
 <tr class="even">
-<td>25% and 75%-ile</td>
+<td align="left">25% and 75%-ile</td>
 <td align="left">1.61;6.47</td>
 <td align="left">2.89;11.73</td>
 </tr>
 <tr class="odd">
-<td>Range (inc. cens.)</td>
+<td align="left">Range (inc. cens.)</td>
 <td align="left">0.03 to 12.32</td>
 <td align="left">0.03 to 13.8</td>
 </tr>
 <tr class="even">
-<td>p-value (Log-Rank Test)</td>
+<td align="left">p-value (Log-Rank Test)</td>
 <td align="left"></td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td>Hazard Ratio</td>
+<td align="left">Hazard Ratio</td>
 <td align="left"></td>
 <td align="left">0.54</td>
 </tr>
 <tr class="even">
-<td>95% CI</td>
+<td align="left">95% CI</td>
 <td align="left"></td>
 <td align="left">(0.43;0.67)</td>
 </tr>
@@ -2606,18 +2607,18 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                             <span class="dt">grp=</span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dv">50</span>, <span class="ot">TRUE</span>), <span class="dt">sex=</span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">2</span>, <span class="dv">50</span>, <span class="ot">TRUE</span>))
 <span class="kw">head</span>(example)</code></pre></div>
 <pre><code>##           y time grp sex
-## 1  9.660436   t2   1   2
-## 2 10.284260   t2   3   2
-## 3  8.136950   t2   1   2
-## 4 10.372688   t2   3   2
-## 5  9.806844   t2   1   2
-## 6 11.118067   t2   1   1</code></pre>
+## 1 11.214814   t2   1   1
+## 2  7.789789   t2   1   1
+## 3 10.259882   t2   2   1
+## 4 10.826278   t2   3   2
+## 5  8.977937   t2   2   1
+## 6  9.925401   t2   3   2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(example)</code></pre></div>
 <pre><code>## 'data.frame':    50 obs. of  4 variables:
-##  $ y   : num  9.66 10.28 8.14 10.37 9.81 ...
+##  $ y   : num  11.21 7.79 10.26 10.83 8.98 ...
 ##  $ time: Factor w/ 4 levels "t1","t2","t3",..: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ grp : int  1 3 1 3 1 1 1 1 3 1 ...
-##  $ sex : int  2 2 2 2 2 1 1 1 1 2 ...</code></pre>
+##  $ grp : int  1 1 2 3 2 3 2 1 3 3 ...
+##  $ sex : int  1 1 1 2 1 2 2 2 2 2 ...</code></pre>
 </div>
 <div id="specify-data-as-named-list" class="section level2">
 <h2 class="hasAnchor">
@@ -2863,6 +2864,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
 <h3 class="hasAnchor">
 <a href="#sample-counts-as-table-above-plot" class="anchor"></a>Sample counts as table above plot</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.3.2</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -2879,6 +2881,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
          <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
          <span class="dt">labs.caption =</span> <span class="st">'Ribbons represent Tukey hinges and whiskers'</span>)</code></pre></div>
+<pre><code>## Warning: package 'bindrcpp' was built under R version 3.3.2</code></pre>
 <p><img src="example-use-cases_files/figure-html/unnamed-chunk-126-1.png" width="672"></p>
 </div>
 </div>

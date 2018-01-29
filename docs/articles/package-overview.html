@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -68,7 +68,7 @@
       <h1>gClinBiomarker Package Overivew</h1>
                         <h4 class="author">Ning Leng, Alexey Pronin, Christina Rabe, Doug Kelkhoff, Kwame Okrah</h4>
             
-            <h4 class="date">2017-11-11</h4>
+            <h4 class="date">2018-01-29</h4>
           </div>
 
     
@@ -180,6 +180,7 @@
 <li>Response: best overall overall response (clinical outcome, ordinal)</li>
 <li>BEP: Biomarker evaluable population indicator. 1: in biomarker evaluable population, 2: not in. (When evaluable multiple biomarkers, we may want to take the same set of patients for all evaluations. Then the can be defined as the patients who have valid measurement for all biomarkers. In this example data set, the BEP is defined as patients who have CD8 IHC data, KRAS mutation data, and KRAS expression data. If only one biomarker is of interest, BEP could be defined as patients who have valid measure for this biomarker. A BEP column is required to perform certain analyses (e.g. selection bias examination of BEP).)</li>
 </ul>
+\newpage
 </div>
 </div>
 <div id="biomarker-workflow" class="section level1">
@@ -200,18 +201,18 @@
 <p>Function  can be used to perform selection bias checking of clinical variables. For example, if Age and Sex are two key clinical variables, we can perform the selection bias checking by:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw"><a href="../reference/SummaryVars.html">SummaryVars</a></span>(<span class="dt">data=</span>input, <span class="dt">trt=</span><span class="st">'Arm'</span>, <span class="dt">subgroup=</span><span class="st">'BEP'</span>, <span class="dt">var=</span><span class="kw">c</span>(<span class="st">'Sex'</span>,<span class="st">'Age'</span>), 
        <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">'categorical'</span>,<span class="st">'numeric'</span>))</code></pre></div>
-<pre><code>##         All(CTRL)    BEP(CTRL)     All(TRT)    BEP(TRT)     
-## Sex     ""           ""            ""          ""           
-## Total   "182"        "81"          "368"       "176"        
-## NA's    "0"          "0"           "0"         "0"          
-## F       "89 (48.9%)" "39 (48.15%)" "184 (50%)" "90 (51.14%)"
-## M       "93 (51.1%)" "42 (51.85%)" "184 (50%)" "86 (48.86%)"
-## Age     ""           ""            ""          ""           
-## N       "182"        "81"          "368"       "176"        
-## Mean    "52.54"      "53.1"        "54.03"     "54.42"      
-## Median  "51.5"       "52"          "54"        "54"         
-## Min-Max "27...85"    "32...85"     "30...89"   "33...89"    
-## NA's    "0"          "0"           "0"         "0"</code></pre>
+<pre><code>##                All(CTRL)    BEP(CTRL)     All(TRT)    BEP(TRT)     
+## Sex            ""           ""            ""          ""           
+## Total (non-NA) "182"        "81"          "368"       "176"        
+## NA's           "0"          "0"           "0"         "0"          
+## F              "89 (48.9%)" "39 (48.15%)" "184 (50%)" "90 (51.14%)"
+## M              "93 (51.1%)" "42 (51.85%)" "184 (50%)" "86 (48.86%)"
+## Age            ""           ""            ""          ""           
+## N              "182"        "81"          "368"       "176"        
+## Mean           "52.54"      "53.1"        "54.03"     "54.42"      
+## Median         "51.5"       "52"          "54"        "54"         
+## Min-Max        "27...85"    "32...85"     "30...89"   "33...89"    
+## NA's           "0"          "0"           "0"         "0"</code></pre>
 <p> function from knitr package may be used in Rmarkdown file for better table display:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">kable</span>(
   <span class="kw"><a href="../reference/SummaryVars.html">SummaryVars</a></span>(<span class="dt">data=</span>input, <span class="dt">trt=</span><span class="st">'Arm'</span>, <span class="dt">subgroup=</span><span class="st">'BEP'</span>, <span class="dt">var=</span><span class="kw">c</span>(<span class="st">'Sex'</span>,<span class="st">'Age'</span>), 
@@ -219,7 +220,7 @@
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">All(CTRL)</th>
 <th align="left">BEP(CTRL)</th>
 <th align="left">All(TRT)</th>
@@ -227,77 +228,77 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">89 (48.9%)</td>
 <td align="left">39 (48.15%)</td>
 <td align="left">184 (50%)</td>
 <td align="left">90 (51.14%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">93 (51.1%)</td>
 <td align="left">42 (51.85%)</td>
 <td align="left">184 (50%)</td>
 <td align="left">86 (48.86%)</td>
 </tr>
 <tr class="even">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">182</td>
 <td align="left">81</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="even">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">52.54</td>
 <td align="left">53.1</td>
 <td align="left">54.03</td>
 <td align="left">54.42</td>
 </tr>
 <tr class="odd">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">51.5</td>
 <td align="left">52</td>
 <td align="left">54</td>
 <td align="left">54</td>
 </tr>
 <tr class="even">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">27…85</td>
 <td align="left">32…85</td>
 <td align="left">30…89</td>
 <td align="left">33…89</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
@@ -344,7 +345,7 @@
 <table class="table">
 <caption>full population, unadjusted</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -353,7 +354,7 @@
 <th align="left">n.ref</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>Arm (TRT/CTRL)</td>
+<td align="left">Arm (TRT/CTRL)</td>
 <td align="left">0.54</td>
 <td align="left">0.43</td>
 <td align="left">0.67</td>
@@ -370,7 +371,7 @@
 <table class="table">
 <caption>full population, adjusted for Sex, Weight</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -380,7 +381,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Arm (TRT/CTRL)</td>
+<td align="left">Arm (TRT/CTRL)</td>
 <td align="left">0.53</td>
 <td align="left">0.42</td>
 <td align="left">0.67</td>
@@ -389,7 +390,7 @@
 <td align="left">182</td>
 </tr>
 <tr class="even">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.9</td>
 <td align="left">0.72</td>
 <td align="left">1.12</td>
@@ -398,7 +399,7 @@
 <td align="left">273</td>
 </tr>
 <tr class="odd">
-<td>Weight</td>
+<td align="left">Weight</td>
 <td align="left">1</td>
 <td align="left">0.99</td>
 <td align="left">1</td>
@@ -416,7 +417,7 @@
 <table class="table">
 <caption>BEP, unadjusted</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -425,7 +426,7 @@
 <th align="left">n.ref</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>Arm (TRT/CTRL)</td>
+<td align="left">Arm (TRT/CTRL)</td>
 <td align="left">0.49</td>
 <td align="left">0.36</td>
 <td align="left">0.69</td>
@@ -442,7 +443,7 @@
 <table class="table">
 <caption>BEP, adjusted for Sex, Weight</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -452,7 +453,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Arm (TRT/CTRL)</td>
+<td align="left">Arm (TRT/CTRL)</td>
 <td align="left">0.48</td>
 <td align="left">0.34</td>
 <td align="left">0.67</td>
@@ -461,7 +462,7 @@
 <td align="left">81</td>
 </tr>
 <tr class="even">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.78</td>
 <td align="left">0.56</td>
 <td align="left">1.08</td>
@@ -470,7 +471,7 @@
 <td align="left">129</td>
 </tr>
 <tr class="odd">
-<td>Weight</td>
+<td align="left">Weight</td>
 <td align="left">0.99</td>
 <td align="left">0.98</td>
 <td align="left">1</td>
@@ -646,7 +647,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">exprs_&gt;=100(CTRL)</th>
 <th align="left">exprs_&lt;100(CTRL)</th>
 <th align="left">exprs_&gt;=100(TRT)</th>
@@ -654,35 +655,35 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">28</td>
 <td align="left">53</td>
 <td align="left">71</td>
 <td align="left">105</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">15 (53.57%)</td>
 <td align="left">24 (45.28%)</td>
 <td align="left">36 (50.7%)</td>
 <td align="left">54 (51.43%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">13 (46.43%)</td>
 <td align="left">29 (54.72%)</td>
 <td align="left">35 (49.3%)</td>
@@ -703,7 +704,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
                    )</code></pre></div>
 <p><img src="package-overview_files/figure-html/unnamed-chunk-18-1.png" width="960"></p>
 <p>In this case, no treatment effect difference is observed between the Female vs. Male subgroups (as well as weight high &amp; low).</p>
-
+\newpage
 </div>
 </div>
 </div>
@@ -725,63 +726,63 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">All</th>
 <th align="left">BEP</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Age</td>
+<td align="left">Age</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>N</td>
+<td align="left">N</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td>Mean</td>
+<td align="left">Mean</td>
 <td align="left">54.03</td>
 <td align="left">54.42</td>
 </tr>
 <tr class="even">
-<td>Median</td>
+<td align="left">Median</td>
 <td align="left">54</td>
 <td align="left">54</td>
 </tr>
 <tr class="odd">
-<td>Min-Max</td>
+<td align="left">Min-Max</td>
 <td align="left">30…89</td>
 <td align="left">33…89</td>
 </tr>
 <tr class="even">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">368</td>
 <td align="left">176</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">184 (50%)</td>
 <td align="left">90 (51.14%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">184 (50%)</td>
 <td align="left">86 (48.86%)</td>
 </tr>
@@ -816,7 +817,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <table class="table">
 <caption>the full population, model of Sex, Weight</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -826,7 +827,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.91</td>
 <td align="left">0.69</td>
 <td align="left">1.2</td>
@@ -835,7 +836,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="left">184</td>
 </tr>
 <tr class="even">
-<td>Weight</td>
+<td align="left">Weight</td>
 <td align="left">1</td>
 <td align="left">0.99</td>
 <td align="left">1</td>
@@ -853,7 +854,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <table class="table">
 <caption>BEP, model of Sex, Weight</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">HR</th>
 <th align="left">CI.low</th>
 <th align="left">CI.high</th>
@@ -863,7 +864,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex (M/F)</td>
+<td align="left">Sex (M/F)</td>
 <td align="left">0.7</td>
 <td align="left">0.46</td>
 <td align="left">1.06</td>
@@ -872,7 +873,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="left">90</td>
 </tr>
 <tr class="even">
-<td>Weight</td>
+<td align="left">Weight</td>
 <td align="left">0.99</td>
 <td align="left">0.97</td>
 <td align="left">1</td>
@@ -965,38 +966,39 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 )</code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="left">exprs_&gt;=100</th>
 <th align="left">exprs_&lt;100</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Sex</td>
+<td align="left">Sex</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td>Total</td>
+<td align="left">Total (non-NA)</td>
 <td align="left">71</td>
 <td align="left">105</td>
 </tr>
 <tr class="odd">
-<td>NA’s</td>
+<td align="left">NA’s</td>
 <td align="left">0</td>
 <td align="left">0</td>
 </tr>
 <tr class="even">
-<td>F</td>
+<td align="left">F</td>
 <td align="left">36 (50.7%)</td>
 <td align="left">54 (51.43%)</td>
 </tr>
 <tr class="odd">
-<td>M</td>
+<td align="left">M</td>
 <td align="left">35 (49.3%)</td>
 <td align="left">51 (48.57%)</td>
 </tr>
 </tbody>
 </table>
+\newpage
 </div>
 </div>
 </div>
@@ -1033,7 +1035,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <pre><code>## only 1 arm; show.itt is set to FALSE</code></pre>
 <pre><code>## only 1 arm; show.bep is set to FALSE</code></pre>
 <p><img src="package-overview_files/figure-html/unnamed-chunk-31-1.png" width="864"></p>
-
+\newpage
 </div>
 </div>
 <div id="categorical-outcome-e-g-response" class="section level2">
@@ -1054,7 +1056,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <table class="table">
 <caption>count</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">CR</th>
 <th align="right">PR</th>
 <th align="right">SD</th>
@@ -1064,7 +1066,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Full:CTRL</td>
+<td align="left">Full:CTRL</td>
 <td align="right">0</td>
 <td align="right">14</td>
 <td align="right">64</td>
@@ -1073,7 +1075,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">1</td>
 </tr>
 <tr class="even">
-<td>Full:TRT</td>
+<td align="left">Full:TRT</td>
 <td align="right">6</td>
 <td align="right">90</td>
 <td align="right">145</td>
@@ -1082,7 +1084,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">1</td>
 </tr>
 <tr class="odd">
-<td>Full:All</td>
+<td align="left">Full:All</td>
 <td align="right">6</td>
 <td align="right">104</td>
 <td align="right">209</td>
@@ -1091,7 +1093,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">2</td>
 </tr>
 <tr class="even">
-<td>BEP:CTRL</td>
+<td align="left">BEP:CTRL</td>
 <td align="right">0</td>
 <td align="right">10</td>
 <td align="right">30</td>
@@ -1100,7 +1102,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td>BEP:TRT</td>
+<td align="left">BEP:TRT</td>
 <td align="right">4</td>
 <td align="right">41</td>
 <td align="right">72</td>
@@ -1109,7 +1111,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td>BEP:All</td>
+<td align="left">BEP:All</td>
 <td align="right">4</td>
 <td align="right">51</td>
 <td align="right">102</td>
@@ -1123,7 +1125,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <table class="table">
 <caption>percentage</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">CR</th>
 <th align="right">PR</th>
 <th align="right">SD</th>
@@ -1133,7 +1135,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Full:CTRL</td>
+<td align="left">Full:CTRL</td>
 <td align="right">0.00</td>
 <td align="right">0.09</td>
 <td align="right">0.40</td>
@@ -1142,7 +1144,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0.01</td>
 </tr>
 <tr class="even">
-<td>Full:TRT</td>
+<td align="left">Full:TRT</td>
 <td align="right">0.02</td>
 <td align="right">0.25</td>
 <td align="right">0.40</td>
@@ -1151,7 +1153,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0.00</td>
 </tr>
 <tr class="odd">
-<td>Full:All</td>
+<td align="left">Full:All</td>
 <td align="right">0.01</td>
 <td align="right">0.20</td>
 <td align="right">0.40</td>
@@ -1160,7 +1162,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0.00</td>
 </tr>
 <tr class="even">
-<td>BEP:CTRL</td>
+<td align="left">BEP:CTRL</td>
 <td align="right">0.00</td>
 <td align="right">0.13</td>
 <td align="right">0.39</td>
@@ -1169,7 +1171,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0.00</td>
 </tr>
 <tr class="odd">
-<td>BEP:TRT</td>
+<td align="left">BEP:TRT</td>
 <td align="right">0.02</td>
 <td align="right">0.23</td>
 <td align="right">0.41</td>
@@ -1178,7 +1180,7 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <td align="right">0.00</td>
 </tr>
 <tr class="even">
-<td>BEP:All</td>
+<td align="left">BEP:All</td>
 <td align="right">0.02</td>
 <td align="right">0.20</td>
 <td align="right">0.40</td>
@@ -1206,38 +1208,38 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <table class="table">
 <caption>count</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">Rsp</th>
 <th align="right">non-Rsp</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Full:CTRL</td>
+<td align="left">Full:CTRL</td>
 <td align="right">14</td>
 <td align="right">145</td>
 </tr>
 <tr class="even">
-<td>Full:TRT</td>
+<td align="left">Full:TRT</td>
 <td align="right">96</td>
 <td align="right">269</td>
 </tr>
 <tr class="odd">
-<td>Full:All</td>
+<td align="left">Full:All</td>
 <td align="right">110</td>
 <td align="right">414</td>
 </tr>
 <tr class="even">
-<td>BEP:CTRL</td>
+<td align="left">BEP:CTRL</td>
 <td align="right">10</td>
 <td align="right">67</td>
 </tr>
 <tr class="odd">
-<td>BEP:TRT</td>
+<td align="left">BEP:TRT</td>
 <td align="right">45</td>
 <td align="right">130</td>
 </tr>
 <tr class="even">
-<td>BEP:All</td>
+<td align="left">BEP:All</td>
 <td align="right">55</td>
 <td align="right">197</td>
 </tr>
@@ -1247,38 +1249,38 @@ res.subgroups.bi &lt;-<span class="st"> </span><span class="kw"><a href="../refe
 <table class="table">
 <caption>percentage</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">Rsp</th>
 <th align="right">non-Rsp</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Full:CTRL</td>
+<td align="left">Full:CTRL</td>
 <td align="right">0.09</td>
 <td align="right">0.91</td>
 </tr>
 <tr class="even">
-<td>Full:TRT</td>
+<td align="left">Full:TRT</td>
 <td align="right">0.26</td>
 <td align="right">0.74</td>
 </tr>
 <tr class="odd">
-<td>Full:All</td>
+<td align="left">Full:All</td>
 <td align="right">0.21</td>
 <td align="right">0.79</td>
 </tr>
 <tr class="even">
-<td>BEP:CTRL</td>
+<td align="left">BEP:CTRL</td>
 <td align="right">0.13</td>
 <td align="right">0.87</td>
 </tr>
 <tr class="odd">
-<td>BEP:TRT</td>
+<td align="left">BEP:TRT</td>
 <td align="right">0.26</td>
 <td align="right">0.74</td>
 </tr>
 <tr class="even">
-<td>BEP:All</td>
+<td align="left">BEP:All</td>
 <td align="right">0.22</td>
 <td align="right">0.78</td>
 </tr>
@@ -1647,6 +1649,7 @@ Rsp.out<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw"
 <a href="#including-sample-counts" class="anchor"></a>Including sample counts</h4>
 <p>The <code>PlotLong</code> function also accepts inputs to the argument <code>show.counts</code>, accepting either “label” or “table”. This is used to represent sample number in each timepoint, for each grouping. For this and the followign plots, we’ll do some preprocessing for which we’ll use the <code>dplyr</code> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)</code></pre></div>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.3.2</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -1671,6 +1674,7 @@ longbmkr %&gt;%
              <span class="dt">ylab =</span> <span class="st">'Endpoint'</span>,
              <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
              <span class="dt">labs.caption =</span> <span class="st">'*ribbons represent mean value ± standard error of the mean.'</span>)</code></pre></div>
+<pre><code>## Warning: package 'bindrcpp' was built under R version 3.3.2</code></pre>
 <p><img src="package-overview_files/figure-html/unnamed-chunk-53-1.png" width="672"></p>
 </div>
 <div id="specifying-a-function-for-adjustment" class="section level4">
@@ -1695,6 +1699,11 @@ longbmkr %&gt;%
              <span class="dt">ylab =</span> <span class="st">'Endpoint'</span>,
              <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
              <span class="dt">labs.caption =</span> <span class="st">'*ribbons represent mean value ± standard error of the mean.'</span>)</code></pre></div>
+<pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
+<pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
+<pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
+<pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
+<pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
 <p><img src="package-overview_files/figure-html/unnamed-chunk-54-1.png" width="672"></p>
 </div>
 </div>

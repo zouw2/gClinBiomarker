@@ -196,7 +196,7 @@ SummarySingle <- function (data, var,
 
       if (var.class%in%c("categorical","ordered.factor") ){
         res.subgroup <- data.frame(1)
-          res.subgroup$Total <- Na
+          res.subgroup$"Total (non-NA)" <- Na
           res.subgroup$"NA's" <- Nna
           for (k in Lev) {
             res.subgroup[, k] <- length(which(subgroup.mat[, var] ==  k))

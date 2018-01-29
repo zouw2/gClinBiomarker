@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -94,23 +94,23 @@
     </div>
 
     
-    <p>lsmeans expects accepts a weights argument to specify the
+    <p>emmeans expects accepts a weights argument to specify the
   denominator for mean calculations. This function will calculate these
-  weights from the frequency of the lsmeans levels from a new dataset.</p>
-<p>Arguments with which lsmeans is to be called are passed to this function
-  which will call <code>lsmeanss()</code> with <code>weights = 'show.levels'</code> in
+  weights from the frequency of the emmeans levels from a new dataset.</p>
+<p>Arguments with which emmeans is to be called are passed to this function
+  which will call <code>emmeanss()</code> with <code>weights = 'show.levels'</code> in
   order to determine the levels over which weights are calculated. It will
   then use the passed <code>data</code> to evaluate frequencies for those weights.</p>
     
 
-    <pre class="usage"><span class='fu'>append_weights</span>(<span class='no'>lsmeans_args</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>append_weights</span>(<span class='no'>emmeans_args</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>lsmeans_args</th>
-      <td><p>arguments with which lsmeans will be called</p></td>
+      <th>emmeans_args</th>
+      <td><p>arguments with which emmeans will be called</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -125,10 +125,10 @@ frequencies.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The same arguments passed through <code>lsmeans_args</code> with the
+    <p>The same arguments passed through <code>emmeans_args</code> with the
   weights parameter specified by the frequencies of occurence in the
-  <code>data</code> variable, or the <code>lsmeans_args$data</code> list item if no data
-  was included (default behavior of <code>lsmeans</code>).</p>
+  <code>data</code> variable, or the <code>emmeans_args$data</code> list item if no data
+  was included (default behavior of <code>emmeans</code>).</p>
     
 
   </div>
