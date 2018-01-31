@@ -138,7 +138,9 @@ pdf.param=list(width=12, height=4.5),
 par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
 
     stopifnot(class(data) == "data.frame")
-
+    percentile.footnote <- NULL
+  
+ 
     outcome.class <- match.arg(outcome.class, c("survival", "binary","continuous"))
     if(outcome.class=="binary") {
         covariate <- strata <- NULL

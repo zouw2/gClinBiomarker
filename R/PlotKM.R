@@ -94,7 +94,12 @@ PlotKM <- function(data, tte, cens,
     if(!is.null(bep))data <- data[which(data[,bep]==bep.indicator),]
 
     var.store <- var
-
+    percentile.footnote <- NULL
+    if(!is.null(numerical.cutoff)) {
+      percentile.cutoff <- NULL
+      message("numerical cutoff specified")
+    }
+    
     ll <- c(trt,var,varlist)
     if(length(ll)>1){
         whichNA <- sapply(data[ll],function(i)which(is.na(i)))
@@ -115,7 +120,8 @@ PlotKM <- function(data, tte, cens,
             if(class(data[,var])%in%c("character","factor"))var.class <- "categorical"
         }
         data$bm.tmp <- rep(NA, length(data[[1]]))
-
+        
+        
         if(var.class=="numeric"){
             if(!is.null(percentile.cutoff)){
                 percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
@@ -124,19 +130,27 @@ PlotKM <- function(data, tte, cens,
                     qt2 <- round(quantile(data[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
                     if(equal.in.high){
                         if(percentile.cutoff[i]!=1){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%)")
+                            if(i==2)percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i-1]*100,"%: ",qt1,". ")
+                            percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i]*100,"%: ",qt2,". ")
                         }
                         if(percentile.cutoff[i]==1){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
+                            if(i==2)percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i-1]*100,"%: ",qt1,". ")
+                            percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i]*100,"%: ",qt2,". ")
                         }
                     }
                     if(!equal.in.high){
                         if(percentile.cutoff[i]!=0){
-                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
-                        }
+                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
+                            if(i==2)percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i-1]*100,"%: ",qt1,". ")
+                            percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i]*100,"%: ",qt2,". ")
+                            }
                         if(percentile.cutoff[i]==0){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")
-                        }
+                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
+                            if(i==2)percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i-1]*100,"%: ",qt1,". ")
+                            percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i]*100,"%: ",qt2,". ")
+                            }
                     }
 
                 }}
@@ -222,7 +236,7 @@ PlotKM <- function(data, tte, cens,
 
     if(is.null(par.param$mar))par.param$mar <- c(12,9,3,2)
 
-    col.v <- c("blue","red","darkgreen","brown","darkgrey","skyblue","purple","cyan","pink","oragne")
+    col.v <- c("blue","red","darkgreen","brown","darkgrey","skyblue","purple","cyan","pink","orange")
     strat.vec <- data[,var]
     nlev <- nlevels(strat.vec)
     if(n.subs<=1){
@@ -306,12 +320,14 @@ PlotKM <- function(data, tte, cens,
         if(is.null(legend.loc))legend(x=legend.x, y=legend.y,paste0(var.labels,", MST ", round(meds,digits)), lwd=2, col=col, lty=lty, bg="white")
     }                                  
     
+    i <- 1
     if(plot.nrisk){
         for(i in 1:nlev){
             mtext(side=1, at=xlim[1]-1.2, line=i+3,text=levels(strat.vec)[i],col=col[i],adj=1,cex=cex.nrisk*3/4)
             mtext(side=1, at=time.pt, line=i+3,text=n.risk[i,],col=col[i],cex=cex.nrisk)
         }
     }
+    if(!is.null(percentile.footnote))mtext(side=1, at=xlim[1]-1.2, line=i+6,text=percentile.footnote,cex=0.8)
 
     if(plot.median){
         lines(c(0,max(meds, na.rm=T)),c(.5,.5), col="gray", lty=2)

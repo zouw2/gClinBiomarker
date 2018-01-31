@@ -2,7 +2,7 @@
 gClinBiomarker
 ==============
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)]() [![Code Coverage](https://img.shields.io/badge/coverage-19.7%25-red.svg?style=flat-square)]()
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)]() [![Code Coverage](https://img.shields.io/badge/coverage-0%25-red.svg?style=flat-square)]()
 
 Overview
 --------
