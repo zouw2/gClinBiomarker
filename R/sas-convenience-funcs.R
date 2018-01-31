@@ -56,6 +56,7 @@ sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
     " 5. categorical level weights from all rows of dataset\n",
     sep = "\n"))
 
+  envir <- parent.frame()
   if (is.call(q <- as.list(match.call(expand.dots = TRUE)[-1])$model.obj)) {
     model.call <- as.list(match.call(eval(q[[1]], envir), q, expand.dots = TRUE))
     model.call[-1] <- lapply(model.call[-1], eval, envir)
@@ -73,12 +74,14 @@ sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
       "\nModel environment was not found within model object. ",
       "To resolve, provide value for data to sas.emmeans() as well.", sep = "\n"))
 
+  # filter dataset down to complete cases, coerce spec vars to factor
+  if (is.null(data)) data <- eval(model.call$data, envir=model.env)
+
   specs         <- clean_emmeans_specs(specs) # ~ x | y => pairwise ~ x | y
   specs.pred    <- get_emmeans_specs_predictors(specs) # c('x', 'y')
   specs.pred.nf <- Map(class, Filter(Negate(is.factor), data[specs.pred]))
 
-  # filter dataset down to complete cases, coerce spec vars to factor
-  if (is.null(data)) data <- eval(model.call$data, envir=model.env)
+  # convert non-factor variables to factor
   cleaned_data <- data %>%
     dplyr::filter_at(dplyr::vars(model$vars), dplyr::all_vars(!is.na(.))) %>%
     dplyr::mutate_at(as.character(names(specs.pred.nf)), as.factor)
