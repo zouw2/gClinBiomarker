@@ -5,7 +5,7 @@
 #' @author Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #'
 #' @param tte column name that indicates the time to event variable
-#' @param cens column name that indicates the censoring variable associated to tte
+#' @param cens column name that indicates the censoring variable associated to tte. 1 indicates event and 0 indicates censoring
 #' @param col.itt,col.bep,col.ci Color for itt curve, bep curve and confidence interval curve (CI)
 #' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit
 #' @param shaded.ci Whether add background shade to disply CI
