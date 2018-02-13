@@ -32,8 +32,8 @@ stat_summary_funs <- function(format, args) {
 
     median_iqr = function(d) c(
       y = median(d),
-      ymin = median(d) - IQR(d),
-      ymax = median(d) + IQR(d),
+      ymin = as.numeric(quantile(d, 0.25)),
+      ymax = as.numeric(quantile(d, 0.75)),
       label = length(d)),
 
     tukey_hinges = function(d) c(
