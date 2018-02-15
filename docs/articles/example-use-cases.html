@@ -68,7 +68,7 @@
       <h1>gClinBiomarker: Example Use Cases</h1>
                         <h4 class="author">Ning Leng, Alexey Pronin, Doug Kelkhoff</h4>
             
-            <h4 class="date">2018-01-29</h4>
+            <h4 class="date">2018-02-15</h4>
           </div>
 
     
@@ -619,6 +619,103 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 </tbody>
 </table>
 </div>
+<div id="alternative-bep-indicator" class="section level2">
+<h2 class="hasAnchor">
+<a href="#alternative-bep-indicator" class="anchor"></a>Alternative BEP indicator</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample.data$BEP2 &lt;-<span class="st"> </span><span class="kw">ifelse</span>(sample.data$BEP==<span class="dv">1</span>,<span class="st">"Yes"</span>,<span class="st">"No"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>(
+<span class="kw"><a href="../reference/SummaryVars.html">SummaryVars</a></span>(<span class="dt">data=</span>sample.data,<span class="dt">trt=</span><span class="st">'Arm'</span>, <span class="dt">subgroup=</span><span class="st">'BEP2'</span>, <span class="dt">var=</span><span class="kw">c</span>(<span class="st">'Age'</span>,<span class="st">'Sex'</span>), 
+       <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"numeric"</span>,<span class="st">"categorical"</span>), <span class="dt">subgroup.indicator=</span><span class="st">"Yes"</span>)
+)</code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="left">All(CTRL)</th>
+<th align="left">BEP2(CTRL)</th>
+<th align="left">All(TRT)</th>
+<th align="left">BEP2(TRT)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Age</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">N</td>
+<td align="left">182</td>
+<td align="left">81</td>
+<td align="left">368</td>
+<td align="left">176</td>
+</tr>
+<tr class="odd">
+<td align="left">Mean</td>
+<td align="left">52.54</td>
+<td align="left">53.1</td>
+<td align="left">54.03</td>
+<td align="left">54.42</td>
+</tr>
+<tr class="even">
+<td align="left">Median</td>
+<td align="left">51.5</td>
+<td align="left">52</td>
+<td align="left">54</td>
+<td align="left">54</td>
+</tr>
+<tr class="odd">
+<td align="left">Min-Max</td>
+<td align="left">27…85</td>
+<td align="left">32…85</td>
+<td align="left">30…89</td>
+<td align="left">33…89</td>
+</tr>
+<tr class="even">
+<td align="left">NA’s</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Sex</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Total (non-NA)</td>
+<td align="left">182</td>
+<td align="left">81</td>
+<td align="left">368</td>
+<td align="left">176</td>
+</tr>
+<tr class="odd">
+<td align="left">NA’s</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="left">89 (48.9%)</td>
+<td align="left">39 (48.15%)</td>
+<td align="left">184 (50%)</td>
+<td align="left">90 (51.14%)</td>
+</tr>
+<tr class="odd">
+<td align="left">M</td>
+<td align="left">93 (51.1%)</td>
+<td align="left">42 (51.85%)</td>
+<td align="left">184 (50%)</td>
+<td align="left">86 (48.86%)</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="plotproperty-plot-biomarker-clinical-covariate-property-and-their-association" class="section level1">
 <h1 class="hasAnchor">
@@ -627,7 +724,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <h2 class="hasAnchor">
 <a href="#numeric-biomarker-variable--no-clinical-variables--log-transformation-" class="anchor"></a>Numeric biomarker variable. No clinical variables. Log transformation.</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotProperty.html">PlotProperty</a></span>(<span class="dt">data=</span>input, <span class="dt">biomarker.var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">biomarker.class=</span><span class="st">"numeric"</span>, <span class="dt">log2=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-7-1.png" width="960"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
 </div>
 <div id="no-biomarker-variable--two-numeric-clinical-variables--log-transformation-for-one-varible-" class="section level2">
 <h2 class="hasAnchor">
@@ -635,7 +732,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotProperty.html">PlotProperty</a></span>(<span class="dt">data=</span>input, <span class="dt">biomarker.var=</span><span class="ot">NULL</span>, <span class="dt">biomarker.class=</span><span class="ot">NULL</span>,
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Weight"</span>,<span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"numeric"</span>, <span class="st">"numeric"</span>),
              <span class="dt">log2=</span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>), <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-9-1.png" width="960"></p>
 </div>
 <div id="numeric-biomarker-variable--two-clinical-categorical-variables--log-transformation-for-numeric-variable-" class="section level2">
 <h2 class="hasAnchor">
@@ -644,7 +741,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"ECOG"</span>, <span class="st">"Country"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"categorical"</span>),
              <span class="dt">log2=</span><span class="ot">TRUE</span>, <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>),
              <span class="dt">show.clinical.uni=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-9-1.png" width="1152"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-10-1.png" width="1152"></p>
 </div>
 <div id="numeric-biomarker-variable--two-clinical-variables-one-is-categorocal-second-is-numeric--log-transformation-for-biomarker-numeric-variable-" class="section level2">
 <h2 class="hasAnchor">
@@ -653,7 +750,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Sex"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">log2=</span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>), <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.4</span>),
              <span class="dt">show.clinical.uni=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-11-1.png" width="960"></p>
 </div>
 <div id="categorical-biomarker-variable--categorical-clinical-variable-" class="section level2">
 <h2 class="hasAnchor">
@@ -662,7 +759,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="st">"Country"</span>, <span class="dt">var.class=</span><span class="st">"categorical"</span>, 
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>),
              <span class="dt">show.clinical.uni=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-11-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-12-1.png" width="1344"></p>
 </div>
 <div id="categorial-biomarker-variable--categorical-and-numeric-clinical-variables--no-log-transformation-" class="section level2">
 <h2 class="hasAnchor">
@@ -671,7 +768,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Country"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>),
              <span class="dt">show.clinical.uni=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-12-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-13-1.png" width="1344"></p>
 </div>
 <div id="categorial-biomarker-variable--categorical-and-numeric-clinical-variables--no-log-transformation--dont-plot-biomarker-variable-but-plot-clinical-variables-and-association-between-biomarker-and-clinical-variables-" class="section level2">
 <h2 class="hasAnchor">
@@ -680,7 +777,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Country"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>), <span class="dt">show.biomarker.uni =</span> <span class="ot">FALSE</span>,
              <span class="dt">show.clinical.uni=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-13-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-14-1.png" width="1344"></p>
 </div>
 <div id="categorial-biomarker-variable--categorical-and-numeric-clinical-variables--no-log-transformation--dont-plot-clinical-variables-but-plot-biomarker-variable-and-association-between-biomarker-and-clinical-variables-" class="section level2">
 <h2 class="hasAnchor">
@@ -688,7 +785,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotProperty.html">PlotProperty</a></span>(<span class="dt">data=</span>input, <span class="dt">biomarker.var=</span><span class="st">"KRAS.mutant"</span>, <span class="dt">biomarker.class=</span><span class="st">"categorical"</span>,
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Country"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-14-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-15-1.png" width="1344"></p>
 </div>
 <div id="categorial-biomarker-variable--categorical-and-numeric-clinical-variables--no-log-transformation--dont-plot-association-between-variables-but-plot-biomarker-and-clinical-variables-" class="section level2">
 <h2 class="hasAnchor">
@@ -697,7 +794,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Country"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>), <span class="dt">show.association =</span> <span class="ot">FALSE</span>,
              <span class="dt">show.clinical.uni=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-15-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-16-1.png" width="1344"></p>
 </div>
 <div id="categorial-biomarker-variable--categorical-and-numeric-clinical-variables--no-log-transformation--plot-only-association-between-variables-" class="section level2">
 <h2 class="hasAnchor">
@@ -706,7 +803,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Country"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.2</span>), 
              <span class="dt">show.biomarker.uni =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-16-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-17-1.png" width="1344"></p>
 </div>
 <div id="categorial-biomarker-variable--categorical-and-numeric-clinical-variables--no-log-transformation--plot-only-clinical-variables-" class="section level2">
 <h2 class="hasAnchor">
@@ -716,12 +813,12 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">cex.axis=</span><span class="fl">1.1</span>),
              <span class="dt">show.biomarker.uni =</span> <span class="ot">FALSE</span>, <span class="dt">show.association =</span> <span class="ot">FALSE</span>, 
              <span class="dt">show.clinical.uni =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-17-1.png" width="1344"> ## Categorial biomarker variable. Categorical and numeric clinical variables. No log transformation. Plot only biomarker variable.</p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-18-1.png" width="1344"> ## Categorial biomarker variable. Categorical and numeric clinical variables. No log transformation. Plot only biomarker variable.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotProperty.html">PlotProperty</a></span>(<span class="dt">data=</span>input, <span class="dt">biomarker.var=</span><span class="st">"KRAS.mutant"</span>, <span class="dt">biomarker.class=</span><span class="st">"categorical"</span>,
              <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Country"</span>, <span class="st">"Age"</span>), <span class="dt">var.class=</span><span class="kw">c</span>(<span class="st">"categorical"</span>, <span class="st">"numeric"</span>),
              <span class="dt">par.param =</span> <span class="kw">list</span>(<span class="dt">cex.axis=</span><span class="fl">1.2</span>),
              <span class="dt">show.association =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-18-1.png" width="1344"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-19-1.png" width="1344"></p>
 </div>
 </div>
 <div id="plotrspbar-compare-response-outcome-across-different-population" class="section level1">
@@ -733,7 +830,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotRspBar.html">PlotRspBar</a></span> (input, <span class="dt">outcome.var=</span><span class="st">"Response"</span>,
             <span class="dt">rsp.levels=</span><span class="kw">c</span>(<span class="st">"CR"</span>, <span class="st">"PR"</span>,<span class="st">"SD"</span>,<span class="st">"NON CR/PD"</span>, <span class="st">"PD"</span>,<span class="st">"NE"</span>))</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-19-1.png" width="384"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-20-1.png" width="384"></p>
 </div>
 <div id="plot-response-of-one-population-binarize-outcome-classify-classes-to-responder-vs-non-responder" class="section level2">
 <h2 class="hasAnchor">
@@ -743,7 +840,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">rsp.response =</span> <span class="kw">c</span>(<span class="st">"CR"</span>,<span class="st">"PR"</span>),
             <span class="dt">rsp.nonresponse =</span> <span class="kw">c</span>(<span class="st">"SD"</span>, <span class="st">"PD"</span>,<span class="st">"NON CR/PD"</span>,<span class="st">"NE"</span>,<span class="ot">NA</span>))</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-20-1.png" width="384"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-21-1.png" width="384"></p>
 </div>
 <div id="change-color" class="section level2">
 <h2 class="hasAnchor">
@@ -754,7 +851,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">rsp.nonresponse =</span> <span class="kw">c</span>(<span class="st">"SD"</span>, <span class="st">"PD"</span>,<span class="st">"NON CR/PD"</span>,<span class="st">"NE"</span>,<span class="ot">NA</span>),
             <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"green"</span>,<span class="st">"orange"</span>))</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-21-1.png" width="384"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-22-1.png" width="384"></p>
 </div>
 <div id="plot-horizontally" class="section level2">
 <h2 class="hasAnchor">
@@ -765,7 +862,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">rsp.nonresponse =</span> <span class="kw">c</span>(<span class="st">"SD"</span>, <span class="st">"PD"</span>,<span class="st">"NON CR/PD"</span>,<span class="st">"NE"</span>,<span class="ot">NA</span>),
             <span class="dt">horiz=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 </div>
 <div id="by-arm" class="section level2">
 <h2 class="hasAnchor">
@@ -775,14 +872,14 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">rsp.levels=</span><span class="kw">c</span>(<span class="st">"CR"</span>, <span class="st">"PR"</span>,<span class="st">"SD"</span>,<span class="st">"NON CR/PD"</span>, <span class="st">"PD"</span>,<span class="st">"NE"</span>),
             <span class="dt">trt=</span><span class="st">"Arm"</span>)</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotRspBar.html">PlotRspBar</a></span> (input, <span class="dt">outcome.var=</span><span class="st">"Response"</span>, 
             <span class="dt">binary=</span><span class="ot">TRUE</span>,
             <span class="dt">rsp.response =</span> <span class="kw">c</span>(<span class="st">"CR"</span>,<span class="st">"PR"</span>),
             <span class="dt">rsp.nonresponse =</span> <span class="kw">c</span>(<span class="st">"SD"</span>, <span class="st">"PD"</span>,<span class="st">"NON CR/PD"</span>,<span class="st">"NE"</span>,<span class="ot">NA</span>),
             <span class="dt">trt=</span><span class="st">"Arm"</span>)</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-23-2.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-24-2.png" width="672"></p>
 </div>
 <div id="compare-full-population-vs-bep" class="section level2">
 <h2 class="hasAnchor">
@@ -793,7 +890,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">rsp.nonresponse =</span> <span class="kw">c</span>(<span class="st">"SD"</span>, <span class="st">"PD"</span>,<span class="st">"NON CR/PD"</span>,<span class="st">"NE"</span>,<span class="ot">NA</span>),
             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">compare.bep=</span><span class="ot">TRUE</span>,<span class="dt">bep=</span><span class="st">"BEP"</span>)</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
 </div>
 <div id="compare-subgroups" class="section level2">
 <h2 class="hasAnchor">
@@ -804,7 +901,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">rsp.nonresponse =</span> <span class="kw">c</span>(<span class="st">"SD"</span>, <span class="st">"PD"</span>,<span class="st">"NON CR/PD"</span>,<span class="st">"NE"</span>,<span class="ot">NA</span>),
             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">compare.var=</span><span class="ot">TRUE</span>,<span class="dt">var=</span><span class="st">"KRAS.mutant"</span>)</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 </div>
 <div id="plot-count-instead-of-percentage" class="section level2">
 <h2 class="hasAnchor">
@@ -815,7 +912,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
             <span class="dt">trt=</span><span class="st">"Arm"</span>, 
             <span class="dt">compare.var=</span><span class="ot">TRUE</span>,<span class="dt">var=</span><span class="st">"Sex"</span>, <span class="dt">plot.count =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## entries with missing outcome.var are removed! 524 entries left</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 </div>
 <div id="plotkm-plot-km-curves-for-subpopulations" class="section level1">
@@ -826,7 +923,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#without-subgroup" class="anchor"></a>Without subgroup</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS ITT"</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="without-subgroup-bep" class="section level2">
@@ -834,7 +931,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#without-subgroup-bep" class="anchor"></a>Without subgroup, BEP</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">bep=</span><span class="st">"BEP"</span>,
              <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, <span class="dt">main=</span><span class="st">"PFS BEP"</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt" class="section level2">
@@ -842,7 +939,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#by-trt" class="anchor"></a>By TRT</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS ITT by treatment"</span>, <span class="dt">trt=</span><span class="st">"Arm"</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-change-color-line-type" class="section level2">
@@ -851,7 +948,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS ITT by treatment"</span>, <span class="dt">trt=</span><span class="st">"Arm"</span>,
              <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"orange"</span>,<span class="st">"brown"</span>),<span class="dt">lty=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-31-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="mark-median-pfs-no-grid" class="section level2">
@@ -862,7 +959,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
        <span class="dt">trt=</span><span class="st">"Arm"</span>, 
        <span class="dt">plot.grid =</span> <span class="ot">FALSE</span>, 
        <span class="dt">plot.median=</span>T))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-31-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-32-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-kras-mutant-only" class="section level2">
@@ -871,12 +968,12 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"OS BEP by treatment, by KRAS mutation"</span>, 
               <span class="dt">var=</span><span class="st">"KRAS.mutant"</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-32-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-33-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"OS BEP by treatment, by KRAS mutation"</span>, 
               <span class="dt">var=</span><span class="st">"KRAS.mutant"</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"skyblue"</span>,<span class="st">"darkgray"</span>)))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-33-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-34-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-mutant" class="section level2">
@@ -886,7 +983,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">main=</span><span class="st">"OS BEP by treatment, by KRAS mutation"</span>, 
              <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.mutant"</span>))</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-34-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-35-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-mutant-change-color-and-line-type" class="section level2">
@@ -898,7 +995,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"orange"</span>,<span class="st">"orange"</span>,<span class="st">"brown"</span>,<span class="st">"brown"</span>),
              <span class="dt">lty=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>)))</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-35-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-36-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-expression-continuous-biomarker-cut-at-median" class="section level2">
@@ -906,11 +1003,11 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#by-trt-and-kras-expression-continuous-biomarker-cut-at-median" class="anchor"></a>By TRT and KRAS.expression (continuous biomarker, cut at median)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS BEP by treatment, by KRAS expression"</span>, 
-             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"continuous"</span>,
+             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"numeric"</span>,
              <span class="dt">percentile.cutoff=</span><span class="fl">0.5</span>,<span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18</span>))
              )</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-36-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-37-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-expression-continuous-biomarker-cut-at-a-numerical-cutoff" class="section level2">
@@ -918,11 +1015,11 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#by-trt-and-kras-expression-continuous-biomarker-cut-at-a-numerical-cutoff" class="anchor"></a>By TRT and KRAS.expression (continuous biomarker, cut at a numerical cutoff)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS BEP by treatment, by KRAS expression"</span>, 
-             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"continuous"</span>,
+             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"numeric"</span>,
              <span class="dt">numerical.cutoff=</span><span class="dv">100</span>)
              )</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-37-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-expression-continuous-biomarker-cut-at-a-numerical-cutoff--high-group-defined-as-greater-than-instead-of-greater-than-or-equal-to" class="section level2">
@@ -930,11 +1027,11 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#by-trt-and-kras-expression-continuous-biomarker-cut-at-a-numerical-cutoff--high-group-defined-as-greater-than-instead-of-greater-than-or-equal-to" class="anchor"></a>By TRT and KRAS.expression (continuous biomarker, cut at a numerical cutoff). High group defined as “greater than”, instead of “greater than or equal to”</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS BEP by treatment, by KRAS expression"</span>, 
-             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"continuous"</span>,
+             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"numeric"</span>,
              <span class="dt">numerical.cutoff=</span><span class="dv">100</span>, <span class="dt">equal.in.high =</span> F)
              )</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-expression-more-than-2-groups" class="section level2">
@@ -942,21 +1039,21 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <a href="#by-trt-and-kras-expression-more-than-2-groups" class="anchor"></a>By TRT and KRAS.expression , more than 2 groups</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>,  
              <span class="dt">main=</span><span class="st">"PFS BEP by treatment, by KRAS expression"</span>, 
-             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"continuous"</span>,
+             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"numeric"</span>,
              <span class="dt">numerical.cutoff=</span><span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">500</span>), <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">20</span>))
              )</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-39-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-40-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw"><a href="../reference/PlotKM.html">PlotKM</a></span>(<span class="dt">data=</span>sample.data, <span class="dt">tte=</span><span class="st">"PFS"</span>,<span class="dt">cen=</span><span class="st">"PFS.event"</span>, 
              <span class="dt">main=</span><span class="st">"PFS BEP by treatment, by KRAS expression"</span>, 
-             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"continuous"</span>,
+             <span class="dt">trt=</span><span class="st">"Arm"</span>, <span class="dt">var=</span><span class="st">"KRAS.exprs"</span>, <span class="dt">var.class=</span><span class="st">"numeric"</span>,
              <span class="dt">numerical.cutoff=</span><span class="kw">c</span>(<span class="dv">100</span>,<span class="dv">500</span>),
              <span class="dt">col=</span><span class="kw">c</span>(<span class="st">"green"</span>,<span class="st">"green"</span>,<span class="st">"green"</span>,<span class="st">"brown"</span>,<span class="st">"brown"</span>,<span class="st">"brown"</span>),
              <span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>))
              )</code></pre></div>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-40-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-41-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="more-flexibility-reorder-subgroups" class="section level2">
@@ -969,7 +1066,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">legend.loc=</span><span class="st">"left"</span>))</code></pre></div>
 <pre><code>## 'varlist' is specified, trt and var parameters will be ignored</code></pre>
 <pre><code>## entries who have NA in trt, var, or varlist are removed</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-41-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-42-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="by-trt-and-kras-mutant-reorder-and-rename" class="section level2">
@@ -981,7 +1078,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">varlist.labels=</span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">"trt"</span>,<span class="st">"ctrl"</span>),<span class="kw">c</span>(<span class="st">"wt"</span>,<span class="st">"mut"</span>)),
                <span class="dt">plot.median=</span>T,<span class="dt">legend.loc=</span><span class="st">"left"</span>))</code></pre></div>
 <pre><code>## 'varlist' is specified, trt and var parameters will be ignored</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-42-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-43-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 <div id="legend-location" class="section level2">
@@ -992,7 +1089,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
              <span class="dt">bep=</span><span class="st">"BEP"</span>, <span class="dt">legend.loc=</span><span class="ot">NULL</span>, <span class="dt">legend.x=</span><span class="dv">5</span>, <span class="dt">legend.y=</span>.<span class="dv">8</span>))</code></pre></div>
 <pre><code>## more than one elements in 'var', trt parameter will be ignored</code></pre>
 <pre><code>## 'varlist' is specified, trt and var parameters will be ignored</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-43-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-44-1.png" width="672"></p>
 <pre><code>## [1] ""</code></pre>
 </div>
 </div>
@@ -1010,7 +1107,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var=</span><span class="st">"KRAS.mutant"</span>, 
                                   <span class="dt">var.class=</span><span class="st">"categorical"</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-44-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-45-1.png" width="672"></p>
 <pre><code>##                                code.v                           
 ##  [1,] "Subgroup"               "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                    "CTRL"  "120 / 182" "3.25" ""    
@@ -1043,7 +1140,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var.class=</span><span class="st">"categorical"</span>,
                                   <span class="dt">tabforest =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-45-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-46-1.png" width="864"></p>
 <pre><code>##                                code.v                           
 ##  [1,] "Subgroup"               "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                    "CTRL"  "120 / 182" "3.25" ""    
@@ -1077,7 +1174,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var.class=</span><span class="st">"categorical"</span>,
                                   <span class="dt">bep =</span> <span class="st">'BEP'</span>, 
                                   <span class="dt">bep.indicator=</span><span class="dv">1</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-46-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-47-1.png" width="672"></p>
 <pre><code>##                                code.v                           
 ##  [1,] "Subgroup"               "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                    "CTRL"  "120 / 182" "3.25" ""    
@@ -1108,7 +1205,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">show.itt=</span><span class="ot">FALSE</span>, 
                                   <span class="dt">show.bep=</span><span class="ot">FALSE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-47-1.png" width="576"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-48-1.png" width="576"></p>
 <pre><code>##                            code.v                                        
 ## [1,] "Subgroup"            "Group" "Event/N"  "MST"  "HR"   "CI"         
 ## [2,] "KRAS mut(Mutant)"    "CTRL"  "26 / 34"  "3.22" ""     ""           
@@ -1138,7 +1235,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-48-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-49-1.png" width="864"></p>
 <pre><code>##                                   code.v                           
 ##  [1,] "Subgroup"                  "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                       "CTRL"  "120 / 182" "3.25" ""    
@@ -1179,7 +1276,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>,
                                   <span class="dt">bep =</span> <span class="st">'BEP'</span>, <span class="dt">bep.indicator=</span><span class="dv">1</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-49-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-50-1.png" width="864"></p>
 <pre><code>##                                  code.v                           
 ##  [1,] "Subgroup"                 "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                      "CTRL"  "120 / 182" "3.25" ""    
@@ -1220,7 +1317,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-50-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-51-1.png" width="864"></p>
 <pre><code>##                                   code.v                           
 ##  [1,] "Subgroup"                  "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                       "CTRL"  "120 / 182" "3.25" ""    
@@ -1270,7 +1367,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-51-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-52-1.png" width="864"></p>
 <pre><code>##                                   code.v                           
 ##  [1,] "Subgroup"                  "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                       "CTRL"  "120 / 182" "3.25" ""    
@@ -1323,7 +1420,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">TRUE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-52-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-53-1.png" width="864"></p>
 <pre><code>##                                             code.v                    
 ##  [1,] "Subgroup"                            "Group" "Event/N"   "MST" 
 ##  [2,] "All"                                 "CTRL"  "120 / 182" "3.25"
@@ -1368,7 +1465,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-53-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-54-1.png" width="864"></p>
 <pre><code>##                           code.v                                         
 ##  [1,] "Subgroup"          "Group" "Event/N"   "MST"  "HR"   "CI"         
 ##  [2,] "All"               "CTRL"  "120 / 182" "3.25" ""     ""           
@@ -1405,7 +1502,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>,
                                   <span class="dt">bep =</span> <span class="st">'BEP'</span>, <span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">covariate=</span><span class="st">"Age"</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-54-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-55-1.png" width="864"></p>
 <pre><code>##                           code.v                                         
 ##  [1,] "Subgroup"          "Group" "Event/N"   "MST"  "HR"   "CI"         
 ##  [2,] "All"               "CTRL"  "120 / 182" "3.25" ""     ""           
@@ -1442,7 +1539,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>,
                                   <span class="dt">bep =</span> <span class="st">'BEP'</span>, <span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">strata=</span><span class="st">"Sex"</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-55-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-56-1.png" width="864"></p>
 <pre><code>##                           code.v                                         
 ##  [1,] "Subgroup"          "Group" "Event/N"   "MST"  "HR"   "CI"         
 ##  [2,] "All"               "CTRL"  "120 / 182" "3.25" ""     ""           
@@ -1479,7 +1576,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">within.bin=</span><span class="ot">FALSE</span>,
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>,
                                   <span class="dt">bep =</span> <span class="st">'BEP'</span>, <span class="dt">bep.indicator=</span><span class="dv">1</span>,<span class="dt">covariate=</span><span class="st">"Age"</span>,<span class="dt">strata=</span><span class="st">"Sex"</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-56-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-57-1.png" width="864"></p>
 <pre><code>##                           code.v                                         
 ##  [1,] "Subgroup"          "Group" "Event/N"   "MST"  "HR"   "CI"         
 ##  [2,] "All"               "CTRL"  "120 / 182" "3.25" ""     ""           
@@ -1519,7 +1616,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
 <pre><code>## only 1 arm; show.itt is set to FALSE</code></pre>
 <pre><code>## only 1 arm; show.bep is set to FALSE</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-57-1.png" width="576"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-58-1.png" width="576"></p>
 <pre><code>##                          code.v                                           
 ## [1,] "Subgroup"          "Group"   "Event/N"   "MST"  "HR"   "CI"         
 ## [2,] "KRAS exprs(&gt;=50)"  "Less"    "82 / 120"  "5.39" ""     ""           
@@ -1552,7 +1649,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">placebo.code=</span><span class="st">'TRT'</span>,
                                   <span class="dt">active.code=</span><span class="st">'CTRL'</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-58-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-59-1.png" width="864"></p>
 <pre><code>##                                   code.v                           
 ##  [1,] "Subgroup"                  "Group" "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                       "TRT"   "202 / 368" "5.82" ""    
@@ -1594,7 +1691,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>,
                        <span class="dt">across.and.within =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-59-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-60-1.png" width="864"></p>
 <pre><code>##                                        code.v                             
 ##  [1,] "Subgroup"                       "Group"   "Event/N"   "MST"  "HR"  
 ##  [2,] "All"                            "CTRL"    "120 / 182" "3.25" ""    
@@ -1659,7 +1756,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var.class=</span><span class="st">"categorical"</span>)</code></pre></div>
 <pre><code>## Covariate adjustment and stratification are not supported for binary outcome</code></pre>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-60-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-61-1.png" width="672"></p>
 <pre><code>##                                code.v                                 
 ##  [1,] "Subgroup"               "Group" "nRsp/N"   "Rsp Rate" "deltaRR"
 ##  [2,] "All"                    "CTRL"  "14 / 182" "0.08"     ""       
@@ -1696,7 +1793,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">tabforest =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Covariate adjustment and stratification are not supported for binary outcome</code></pre>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-61-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-62-1.png" width="864"></p>
 <pre><code>##                                code.v                                 
 ##  [1,] "Subgroup"               "Group" "nRsp/N"   "Rsp Rate" "deltaRR"
 ##  [2,] "All"                    "CTRL"  "14 / 182" "0.08"     ""       
@@ -1729,7 +1826,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var.class=</span><span class="st">"categorical"</span>)</code></pre></div>
 <pre><code>## Stratification is not supported for continuous outcome</code></pre>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-62-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-63-1.png" width="672"></p>
 <pre><code>##                                code.v                               
 ##  [1,] "Subgroup"               "Group" "Mean"  "delta" "CI"         
 ##  [2,] "All"                    "CTRL"  "19.22" ""      ""           
@@ -1758,7 +1855,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var.class=</span><span class="st">"categorical"</span>,<span class="dt">tabforest=</span>T)</code></pre></div>
 <pre><code>## Stratification is not supported for continuous outcome</code></pre>
 <pre><code>## Some NAs in var column, will define the non NA entries as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-63-1.png" width="960"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-64-1.png" width="960"></p>
 <pre><code>##                                code.v                               
 ##  [1,] "Subgroup"               "Group" "Mean"  "delta" "CI"         
 ##  [2,] "All"                    "CTRL"  "19.22" ""      ""           
@@ -1795,7 +1892,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>,
                    <span class="dt">compare.bep.itt=</span><span class="ot">TRUE</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-64-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-65-1.png" width="864"></p>
 </div>
 <div id="arm-compare-subgroups-defined-by-biomarker" class="section level2">
 <h2 class="hasAnchor">
@@ -1808,7 +1905,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">compare.bep.itt=</span><span class="ot">FALSE</span>,
                    <span class="dt">compare.subgroup=</span><span class="ot">TRUE</span>, <span class="dt">subgroup=</span><span class="st">"KRAS.mutant"</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-65-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-66-1.png" width="864"></p>
 </div>
 <div id="arm-compare-subgroups-defined-by-biomarker-also-show-itt" class="section level2">
 <h2 class="hasAnchor">
@@ -1821,7 +1918,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">compare.bep.itt=</span><span class="ot">FALSE</span>,
                    <span class="dt">compare.subgroup=</span><span class="ot">TRUE</span>, <span class="dt">subgroup=</span><span class="st">"KRAS.mutant"</span>, <span class="dt">show.itt=</span><span class="ot">TRUE</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-66-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-67-1.png" width="864"></p>
 </div>
 <div id="arm-compare-subgroups-defined-by-biomarker-also-show-bep" class="section level2">
 <h2 class="hasAnchor">
@@ -1834,7 +1931,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">compare.bep.itt=</span><span class="ot">FALSE</span>,
                    <span class="dt">compare.subgroup=</span><span class="ot">TRUE</span>, <span class="dt">subgroup=</span><span class="st">"KRAS.mutant"</span>, <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-67-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-68-1.png" width="864"></p>
 <p>If bep column is not defined, the program will take the non NA entries in subgroups column as BEP</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotTabForestMulti.html">PlotTabForestMulti</a></span>(<span class="dt">data=</span>input,
                                   <span class="dt">outcome.class=</span><span class="st">"survival"</span>,
@@ -1844,7 +1941,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">compare.subgroup=</span><span class="ot">TRUE</span>, <span class="dt">subgroup=</span><span class="st">"KRAS.mutant"</span>, <span class="dt">show.itt=</span><span class="ot">TRUE</span>, <span class="dt">show.bep=</span><span class="ot">TRUE</span>
                    )</code></pre></div>
 <pre><code>## show.bep is TRUE but bep is not specified, will define the non NA entries in subgroup column as BEP</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-68-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-69-1.png" width="864"></p>
 </div>
 <div id="arm-compare-itt-vs-bep" class="section level2">
 <h2 class="hasAnchor">
@@ -1856,7 +1953,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Sex"</span>,<span class="st">"Age"</span>),
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">compare.bep.itt=</span><span class="ot">TRUE</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-69-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-70-1.png" width="864"></p>
 </div>
 <div id="arm-compare-subgroups-defined-by-biomarker-multiple-cutoffs-for-continuous-biomarker" class="section level2">
 <h2 class="hasAnchor">
@@ -1869,7 +1966,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">compare.bep.itt=</span><span class="ot">FALSE</span>,
                    <span class="dt">compare.subgroup=</span><span class="ot">TRUE</span>, <span class="dt">subgroup=</span><span class="st">"KRAS.mutant"</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-70-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-71-1.png" width="864"></p>
 </div>
 <div id="arm-compare-subgroups-defined-by-biomarker-multiple-cutoffs-for-continuous-biomarker-calculate-cutoff" class="section level2">
 <h2 class="hasAnchor">
@@ -1882,7 +1979,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    <span class="dt">bep=</span><span class="st">"BEP"</span>,<span class="dt">bep.indicator=</span><span class="dv">1</span>, <span class="dt">compare.bep.itt=</span><span class="ot">FALSE</span>,
                    <span class="dt">compare.subgroup=</span><span class="ot">TRUE</span>, <span class="dt">subgroup=</span><span class="st">"KRAS.mutant"</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-71-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-72-1.png" width="864"></p>
 </div>
 <div id="arm-compare-subgroups-defined-by-biomarker-multiple-cutoffs-for-continuous-biomarker-calculate-within-bin-statistics" class="section level2">
 <h2 class="hasAnchor">
@@ -1899,7 +1996,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 ## within.bin is TRUE, greater and less will be ignored
 ## within.bin is TRUE, greater and less will be ignored
 ## within.bin is TRUE, greater and less will be ignored</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-72-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-73-1.png" width="864"></p>
 </div>
 <div id="basic-forest-plot-without-comparison" class="section level2">
 <h2 class="hasAnchor">
@@ -1911,7 +2008,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                                   <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"Sex"</span>,<span class="st">"Age"</span>),
                    <span class="dt">compare.bep.itt=</span><span class="ot">FALSE</span>, <span class="dt">compare.subgroup=</span><span class="ot">FALSE</span>,<span class="dt">itt.name=</span><span class="st">""</span>
                    )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-73-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-74-1.png" width="864"></p>
 </div>
 <div id="response-outcome" class="section level2">
 <h2 class="hasAnchor">
@@ -1928,7 +2025,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    )</code></pre></div>
 <pre><code>## Covariate adjustment and stratification are not supported for binary outcome
 ## Covariate adjustment and stratification are not supported for binary outcome</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-74-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-75-1.png" width="864"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotTabForestMulti.html">PlotTabForestMulti</a></span>(<span class="dt">data=</span>input,
                                                                    <span class="dt">outcome.class=</span><span class="st">"binary"</span>,
                                   <span class="dt">outcome.var=</span><span class="kw">c</span>(<span class="st">"Response"</span>),
@@ -1942,7 +2039,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <pre><code>## Covariate adjustment and stratification are not supported for binary outcome
 ## Covariate adjustment and stratification are not supported for binary outcome</code></pre>
 <pre><code>## Warning in log(clip): NaNs produced</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-75-1.png" width="960"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-76-1.png" width="960"></p>
 </div>
 <div id="continuous-endpoint" class="section level2">
 <h2 class="hasAnchor">
@@ -1956,7 +2053,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    )</code></pre></div>
 <pre><code>## Stratification is not supported for continuous outcome
 ## Stratification is not supported for continuous outcome</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-76-1.png" width="864"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-77-1.png" width="864"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotTabForestMulti.html">PlotTabForestMulti</a></span>(<span class="dt">data=</span>input,
                  <span class="dt">outcome.class=</span><span class="st">"continuous"</span>,
                                   <span class="dt">outcome.var=</span><span class="kw">c</span>(<span class="st">"Lab_ontrt"</span>),
@@ -1966,7 +2063,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                    )</code></pre></div>
 <pre><code>## Stratification is not supported for continuous outcome
 ## Stratification is not supported for continuous outcome</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-77-1.png" width="960"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-78-1.png" width="960"></p>
 </div>
 </div>
 <div id="plotstepp-stepp-subpopulation-treatment-effect-pattern-plot-from-the-given-point-estimates-and-confidence-intervals-at-desired-percentiles-" class="section level1">
@@ -1986,7 +2083,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
           <span class="dt">pdf.name =</span> <span class="ot">NULL</span>
 ) </code></pre></div>
 <pre><code>## some NA in var column, will ignore NA entries</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-78-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-79-1.png" width="672"></p>
 <pre><code>##       Window Center Hazard Ratio  CI Lower  CI Upper BM Lower BM Upper
 ##  [1,]         0.125    1.0382905 0.6576013 1.6393629     1.42    23.26
 ##  [2,]         0.175    0.9116623 0.5769829 1.4404727     5.98    32.00
@@ -2037,7 +2134,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
           <span class="dt">pdf.name =</span> <span class="ot">NULL</span>
 )</code></pre></div>
 <pre><code>## some NA in var column, will ignore NA entries</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-79-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-80-1.png" width="672"></p>
 <pre><code>##       Window Center Mean Difference    CI Lower  CI Upper BM Lower
 ##  [1,]         0.125      0.18035575 -0.24729997 0.6080115     1.42
 ##  [2,]         0.175      0.34651479 -0.06475305 0.7577826     5.98
@@ -2087,7 +2184,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
           <span class="dt">pdf.name =</span> <span class="ot">NULL</span>
 )</code></pre></div>
 <pre><code>## some NA in var column, will ignore NA entries</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-80-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-81-1.png" width="672"></p>
 <pre><code>##       Window Center Proportion Difference    CI Lower     CI Upper
 ##  [1,]         0.125           0.096558637 -0.10936788 0.3024851571
 ##  [2,]         0.175           0.178408350 -0.02235039 0.3791670900
@@ -2607,77 +2704,77 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
                             <span class="dt">grp=</span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">3</span>, <span class="dv">50</span>, <span class="ot">TRUE</span>), <span class="dt">sex=</span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">2</span>, <span class="dv">50</span>, <span class="ot">TRUE</span>))
 <span class="kw">head</span>(example)</code></pre></div>
 <pre><code>##           y time grp sex
-## 1 11.214814   t2   1   1
-## 2  7.789789   t2   1   1
-## 3 10.259882   t2   2   1
-## 4 10.826278   t2   3   2
-## 5  8.977937   t2   2   1
-## 6  9.925401   t2   3   2</code></pre>
+## 1 10.602248   t2   2   1
+## 2  9.964090   t2   2   2
+## 3  9.489795   t2   1   1
+## 4 10.501476   t2   1   2
+## 5 10.233720   t2   3   1
+## 6  9.083231   t2   3   2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(example)</code></pre></div>
 <pre><code>## 'data.frame':    50 obs. of  4 variables:
-##  $ y   : num  11.21 7.79 10.26 10.83 8.98 ...
+##  $ y   : num  10.6 9.96 9.49 10.5 10.23 ...
 ##  $ time: Factor w/ 4 levels "t1","t2","t3",..: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ grp : int  1 1 2 3 2 3 2 1 3 3 ...
-##  $ sex : int  1 1 1 2 1 2 2 2 2 2 ...</code></pre>
+##  $ grp : int  2 2 1 1 3 3 2 1 2 2 ...
+##  $ sex : int  1 2 1 2 1 2 1 2 2 1 ...</code></pre>
 </div>
 <div id="specify-data-as-named-list" class="section level2">
 <h2 class="hasAnchor">
 <a href="#specify-data-as-named-list" class="anchor"></a>Specify data as named list</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(<span class="kw">list</span>(<span class="dt">a=</span><span class="kw">rnorm</span>(<span class="dv">50</span>,,<span class="dv">3</span>), <span class="dt">b=</span><span class="kw">rnorm</span>(<span class="dv">25</span>,<span class="dv">1</span>,<span class="dv">4</span>), <span class="dt">c=</span><span class="kw">rnorm</span>(<span class="dv">75</span>,<span class="dv">2</span>,<span class="dv">1</span>)))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-96-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-97-1.png" width="672"></p>
 </div>
 <div id="same-plot-now-horizontally-plotted" class="section level2">
 <h2 class="hasAnchor">
 <a href="#same-plot-now-horizontally-plotted" class="anchor"></a>Same plot, now horizontally plotted</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(<span class="kw">list</span>(<span class="dt">a=</span><span class="kw">rnorm</span>(<span class="dv">50</span>,,<span class="dv">3</span>), <span class="dt">b=</span><span class="kw">rnorm</span>(<span class="dv">25</span>,<span class="dv">1</span>,<span class="dv">4</span>), <span class="dt">c=</span><span class="kw">rnorm</span>(<span class="dv">75</span>,<span class="dv">2</span>,<span class="dv">1</span>)), <span class="dt">horizontal=</span><span class="ot">TRUE</span>,
              <span class="dt">Xaxis=</span><span class="kw">list</span>(<span class="dt">las=</span><span class="dv">2</span>, <span class="dt">hadj=</span><span class="dv">2</span>), <span class="dt">Xaxis2=</span><span class="kw">list</span>(<span class="dt">las=</span><span class="dv">2</span>, <span class="dt">hadj=</span>-.<span class="dv">25</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-97-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-98-1.png" width="672"></p>
 </div>
 <div id="specify-data-as-numeric-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#specify-data-as-numeric-matrix" class="anchor"></a>Specify data as numeric matrix</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(<span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">100</span>), <span class="dt">ncol=</span><span class="dv">4</span>, <span class="dt">dimnames=</span><span class="kw">list</span>(<span class="ot">NULL</span>, LETTERS[<span class="dv">1</span>:<span class="dv">4</span>])) )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-98-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-99-1.png" width="672"></p>
 </div>
 <div id="specify-data-as-numeric-unnamed-vectors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#specify-data-as-numeric-unnamed-vectors" class="anchor"></a>Specify data as numeric (unnamed) vectors</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(<span class="kw">rnorm</span>(<span class="dv">50</span>,,<span class="dv">3</span>), <span class="kw">rnorm</span>(<span class="dv">25</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="kw">rnorm</span>(<span class="dv">75</span>,<span class="dv">2</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-99-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-100-1.png" width="672"></p>
 </div>
 <div id="horizontally-plotted-no-axis-label-rotation-done-here" class="section level2">
 <h2 class="hasAnchor">
 <a href="#horizontally-plotted-no-axis-label-rotation-done-here" class="anchor"></a>… horizontally plotted (no axis-label rotation done here)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(<span class="kw">rnorm</span>(<span class="dv">50</span>,,<span class="dv">3</span>), <span class="kw">rnorm</span>(<span class="dv">25</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="kw">rnorm</span>(<span class="dv">75</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="dt">horizontal=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-100-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-101-1.png" width="672"></p>
 </div>
 <div id="plot-values-y-according-to-time-time-factor-levels-are-automatically-ordered-as-e-g-function-sort-does" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-values-y-according-to-time-time-factor-levels-are-automatically-ordered-as-e-g-function-sort-does" class="anchor"></a>Plot values ‘y’ according to time ‘time’ (factor levels are automatically ordered as e.g. function sort does)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">sc.pch=</span><span class="dv">16</span>)</code></pre></div>
 <pre><code>## Number of samples removed due to missing Y: 1</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-101-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-102-1.png" width="672"></p>
 </div>
 <div id="now-as-box-percentile-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#now-as-box-percentile-plot" class="anchor"></a>Now as box-percentile plot</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">sc.pch=</span><span class="dv">16</span>, <span class="dt">box.type=</span><span class="st">"bp"</span>)</code></pre></div>
 <pre><code>## Number of samples removed due to missing Y: 1</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-102-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-103-1.png" width="672"></p>
 </div>
 <div id="with-custom-main-title" class="section level2">
 <h2 class="hasAnchor">
 <a href="#with-custom-main-title" class="anchor"></a>With custom main title</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">sc.pch=</span><span class="dv">16</span>, <span class="dt">box.type=</span><span class="st">"bp"</span>, <span class="dt">Title=</span><span class="kw">list</span>(<span class="dt">main=</span><span class="st">"Custom Main Title"</span>))</code></pre></div>
 <pre><code>## Number of samples removed due to missing Y: 1</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-103-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-104-1.png" width="672"></p>
 </div>
 <div id="the-same-plot-with-trend-line-connects-either-means-or-medians-and-y-axis-label" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-same-plot-with-trend-line-connects-either-means-or-medians-and-y-axis-label" class="anchor"></a>The same plot with trend line (connects either means or medians) and Y-axis label</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">trend=</span><span class="st">"median"</span>, <span class="dt">ylab=</span><span class="st">"Y-Axis Label"</span>)</code></pre></div>
 <pre><code>## Number of samples removed due to missing Y: 1</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-104-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-105-1.png" width="672"></p>
 </div>
 <div id="use-an-addition-grouping-variable-to-color-points-in-the-stripchart" class="section level2">
 <h2 class="hasAnchor">
@@ -2685,7 +2782,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example, y~time, <span class="dt">trend=</span><span class="st">"median"</span>, <span class="dt">ylab=</span><span class="st">"Y-Axis Label"</span>,
            <span class="dt">sc.col=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>)[example$grp] )</code></pre></div>
 <pre><code>## Number of samples removed due to missing Y: 1</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-105-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-106-1.png" width="672"></p>
 </div>
 <div id="use-yet-another-grouping-factor-for-plotting-symbols-in-the-stripchart" class="section level2">
 <h2 class="hasAnchor">
@@ -2697,7 +2794,7 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">legend</span>(<span class="st">"bottomright"</span>, <span class="dt">fill=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"white"</span>, <span class="st">"white"</span>), 
            <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">"Stage I"</span>, <span class="st">"Stage II"</span>, <span class="st">"Stage III"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>), 
            <span class="dt">pch=</span><span class="kw">c</span>(-<span class="dv">1</span>, -<span class="dv">1</span>, -<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>), <span class="dt">border=</span><span class="ot">NA</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-106-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-107-1.png" width="672"></p>
 </div>
 <div id="generate-new-dataset-with-different-stucture" class="section level2">
 <h2 class="hasAnchor">
@@ -2708,40 +2805,40 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 <h2 class="hasAnchor">
 <a href="#boxplot-with-trend-lines-mean-and-grid-added-to-the-plot" class="anchor"></a>Boxplot with trend lines (mean) and grid added to the plot</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example2, <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"y1"</span>, <span class="st">"y2"</span>, <span class="st">"y3"</span>), <span class="dt">Grid=</span><span class="ot">TRUE</span>, <span class="dt">trend=</span><span class="st">"mean"</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-108-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-109-1.png" width="672"></p>
 </div>
 <div id="now-as-box-percentile-plot-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#now-as-box-percentile-plot-1" class="anchor"></a>Now as box-percentile plot</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(example2, <span class="dt">var=</span><span class="kw">c</span>(<span class="st">"y1"</span>, <span class="st">"y2"</span>, <span class="st">"y3"</span>), <span class="dt">box.type=</span><span class="st">"bp"</span>, <span class="dt">Grid=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-109-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-110-1.png" width="672"></p>
 </div>
 <div id="use-yet-another-way-to-specify-the-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-yet-another-way-to-specify-the-data" class="anchor"></a>Use yet another way to specify the data</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(<span class="kw">rnorm</span>(<span class="dv">1856</span>, <span class="dv">5</span>), <span class="kw">runif</span>(<span class="dv">1245</span>, <span class="dv">2</span>,<span class="dv">10</span>), <span class="kw">exp</span>(<span class="kw">rnorm</span>(<span class="dv">2311</span>)), <span class="dt">sc.col=</span><span class="kw"><a href="../reference/as.rgb.html">as.rgb</a></span>(<span class="st">"black"</span>, .<span class="dv">05</span>), 
             <span class="dt">box.type=</span><span class="st">"bp"</span>, <span class="dt">Xaxis=</span><span class="kw">list</span>(<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">"~N(5,1)"</span>, <span class="st">"~Unif(2,10)"</span>, <span class="st">"~exp(N(0,1))"</span>)), <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">15</span>))     </code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-110-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-111-1.png" width="672"></p>
 </div>
 <div id="specifying-data-as-numeric-matrix-and-using-a-trend-line-connecting-the-means" class="section level2">
 <h2 class="hasAnchor">
 <a href="#specifying-data-as-numeric-matrix-and-using-a-trend-line-connecting-the-means" class="anchor"></a>Specifying data as numeric matrix and using a trend-line connecting the means</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">10</span>,<span class="dv">45</span>), <span class="kw">rep</span>(<span class="dv">15</span>,<span class="dv">45</span>), <span class="kw">rep</span>(<span class="dv">35</span>,<span class="dv">45</span>))+<span class="kw">rnorm</span>(<span class="dv">135</span>), <span class="dt">ncol=</span><span class="dv">3</span>)
     <span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(mat, <span class="dt">trend=</span><span class="st">"mean"</span>, <span class="dt">trend.col=</span><span class="st">"red"</span>, <span class="dt">Ylabel=</span><span class="kw">list</span>(<span class="dt">text=</span><span class="st">"Example Measurements"</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-111-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-112-1.png" width="672"></p>
 </div>
 <div id="multiple-grouping-factors-can-be-specified-via-the-formula-interface-which-is-exemplified-using-the-mtcars-dataset-of-interest-is-miles-per-gallon-mgp-depending-on-number-of-gears-and-on-the-number-of-cylinders" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multiple-grouping-factors-can-be-specified-via-the-formula-interface-which-is-exemplified-using-the-mtcars-dataset-of-interest-is-miles-per-gallon-mgp-depending-on-number-of-gears-and-on-the-number-of-cylinders" class="anchor"></a>Multiple grouping factors can be specified via the formula interface which is exemplified using the mtcars dataset, of interest is miles per gallon (mgp) depending on number of gears and on the number of cylinders</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 <span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(mtcars, mpg~gear:cyl)  </code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-112-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-113-1.png" width="672"></p>
 </div>
 <div id="now-cyl-is-explicitly-nested-within-gear-which-changes-the-ordering-of-combined-grouping-factors-which-is-identical-to-using-formula-mpgcylgear-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#now-cyl-is-explicitly-nested-within-gear-which-changes-the-ordering-of-combined-grouping-factors-which-is-identical-to-using-formula-mpgcylgear-" class="anchor"></a>Now ‘cyl’ is explicitly nested within ‘gear’ which changes the ordering of combined grouping factors (which is identical to using formula ‘mpg~cyl:gear’).</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(mtcars, mpg~cyl %in%<span class="st"> </span>gear)     </code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-113-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-114-1.png" width="672"></p>
 </div>
 <div id="more-meaningful-group-labels-are-best-specified-using-custom-factor-level-names-increase-width-of-the-plot-window" class="section level2">
 <h2 class="hasAnchor">
@@ -2750,39 +2847,39 @@ sample.data &lt;-<span class="st"> </span>input</code></pre></div>
 dat$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$cyl, <span class="dt">levels=</span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">"4Cyl"</span>, <span class="st">"6Cyl"</span>, <span class="st">"8Cyl"</span>))
 dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, <span class="dt">levels=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">"3Gear"</span>, <span class="st">"4Gear"</span>, <span class="st">"5Gear"</span>)) 
 <span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(dat, mpg~cyl %in%<span class="st"> </span>gear)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-114-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-115-1.png" width="672"></p>
 </div>
 <div id="one-can-use-a-table-as-xaxis-label-representing-the-factor-level-combination-defining-sub-classes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#one-can-use-a-table-as-xaxis-label-representing-the-factor-level-combination-defining-sub-classes" class="anchor"></a>One can use a table as Xaxis label representing the factor-level combination defining sub-classes</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(dat, mpg~cyl:gear, <span class="dt">XaxisTab=</span><span class="kw">list</span>(),<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-115-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-116-1.png" width="672"></p>
 </div>
 <div id="with-the-original-factor-levels-and-as-horizontal-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#with-the-original-factor-levels-and-as-horizontal-plot" class="anchor"></a>With the original factor levels and as horizontal plot</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(mtcars, mpg~cyl:gear, <span class="dt">XaxisTab=</span><span class="kw">list</span>(), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">4</span>), 
              <span class="dt">horizontal=</span><span class="ot">TRUE</span>, <span class="dt">Ylabel=</span><span class="kw">list</span>(<span class="dt">text=</span><span class="st">"Y-axis label now appearing on X-axis"</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-116-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-117-1.png" width="672"></p>
 </div>
 <div id="using-smaller-bottom-margin-will-result-in-smaller-table-height" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-smaller-bottom-margin-will-result-in-smaller-table-height" class="anchor"></a>Using smaller bottom margin will result in smaller table height</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(dat, mpg~cyl:gear, <span class="dt">XaxisTab=</span><span class="kw">list</span>(<span class="dt">font=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">"darkblue"</span>, <span class="dt">cex=</span><span class="fl">1.25</span>), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-117-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-118-1.png" width="672"></p>
 </div>
 <div id="one-can-use-different-font-settings-for-rownames-and-cells-of-the-table" class="section level2">
 <h2 class="hasAnchor">
 <a href="#one-can-use-different-font-settings-for-rownames-and-cells-of-the-table" class="anchor"></a>One can use different font-settings for rownames and cells of the table</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(dat, mpg~cyl:gear, <span class="dt">XaxisTab=</span><span class="kw">list</span>(<span class="dt">Label=</span><span class="kw">list</span>(<span class="dt">font=</span><span class="dv">2</span>, <span class="dt">col=</span><span class="st">"darkblue"</span>, <span class="dt">cex=</span><span class="fl">1.25</span>), 
              <span class="dt">Text=</span><span class="kw">list</span>(<span class="dt">col=</span><span class="st">"red"</span>)), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-118-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-119-1.png" width="672"></p>
 </div>
 <div id="use-more-crossed-factors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-more-crossed-factors" class="anchor"></a>Use more crossed factors</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(dat, mpg~cyl:gear:vs, <span class="dt">XaxisTab=</span><span class="kw">list</span>(), <span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-119-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-120-1.png" width="672"></p>
 </div>
 <div id="alternatively-one-can-use-the-xaxis-argument-but-the-ordering-of-these-labels-is-not-checked-which-is-not-important-for-automatically-generated-group-labels-as-shown-in-the-previous-example" class="section level2">
 <h2 class="hasAnchor">
@@ -2790,7 +2887,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/BoxPlot.html">BoxPlot</a></span>(mtcars, mpg~cyl %in%<span class="st"> </span>gear, 
              <span class="dt">Xaxis=</span><span class="kw">list</span>(<span class="dt">labels=</span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">"4Cyl"</span>, <span class="st">"6Cyl"</span>, <span class="st">"8Cyl"</span>),<span class="dv">3</span>), 
                         <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">"3Gear"</span>,<span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"4Gear"</span>,<span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"5Gear"</span>,<span class="dv">3</span>)), <span class="dt">sep=</span><span class="st">"."</span>)))</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-120-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-121-1.png" width="672"></p>
 </div>
 <div id="the-same-plot-with-some-fancy-options" class="section level2">
 <h2 class="hasAnchor">
@@ -2802,7 +2899,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
            <span class="dt">Xlabel=</span><span class="kw">list</span>(<span class="dt">text=</span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">"4Cyl"</span>, <span class="st">"6Cyl"</span>, <span class="st">"8Cyl"</span>),<span class="dv">3</span>), <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">"3Gear"</span>,<span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"4Gear"</span>,<span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"5Gear"</span>,<span class="dv">3</span>))),
                        <span class="dt">at=</span><span class="dv">1</span>:<span class="dv">9</span>, <span class="dt">las=</span><span class="dv">2</span>, <span class="dt">adj=</span><span class="dv">1</span>, <span class="dt">line=</span><span class="fl">0.75</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">"blue"</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"red"</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"green"</span>, <span class="dv">3</span>))), 
            <span class="dt">mean.col=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">"cyan"</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"orange"</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"magenta"</span>, <span class="dv">3</span>)), <span class="dt">Box=</span><span class="ot">FALSE</span>, <span class="dt">trend=</span><span class="st">"mean"</span>,<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">2</span>) )</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-121-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-122-1.png" width="672"></p>
 </div>
 <div id="horizontal-fancy-plot" class="section level2">
 <h2 class="hasAnchor">
@@ -2815,7 +2912,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
         <span class="dt">XaxisTab=</span><span class="kw">list</span>(<span class="dt">Text=</span><span class="kw">list</span>(<span class="dt">col=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">"cyan"</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"orange"</span>, <span class="dv">3</span>), <span class="kw">rep</span>(<span class="st">"magenta"</span>, <span class="dv">3</span>)))) )
  
  <span class="kw">legend</span>(<span class="dt">x=</span><span class="st">"topright"</span>, <span class="dt">pch=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">15</span>), <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">"automatic"</span>, <span class="st">"manual"</span>), <span class="dt">box.lty=</span><span class="dv">0</span>, <span class="dt">col=</span><span class="st">"wheat4"</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-122-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-123-1.png" width="672"></p>
 </div>
 </div>
 <div id="longitudinal-analysis" class="section level1">
@@ -2833,7 +2930,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">xlab =</span> <span class="st">'Visitation Month'</span>,
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
          <span class="dt">labs.title =</span> <span class="st">'Mean ± SEM'</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-123-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-124-1.png" width="672"></p>
 </div>
 <div id="tukey-hinges-and-whiskers" class="section level3">
 <h3 class="hasAnchor">
@@ -2843,7 +2940,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">xlab =</span> <span class="st">'Visitation Month'</span>,
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
          <span class="dt">labs.title =</span> <span class="st">'Tukey Whiskers and Hinges'</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-124-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-125-1.png" width="672"></p>
 </div>
 </div>
 <div id="plotting-subpopulations" class="section level2">
@@ -2855,7 +2952,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
          <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
          <span class="dt">labs.caption =</span> <span class="st">'Ribbons represent Tukey hinges and whiskers'</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-125-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-126-1.png" width="672"></p>
 </div>
 <div id="including-sample-counts" class="section level2">
 <h2 class="hasAnchor">
@@ -2882,7 +2979,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
          <span class="dt">labs.caption =</span> <span class="st">'Ribbons represent Tukey hinges and whiskers'</span>)</code></pre></div>
 <pre><code>## Warning: package 'bindrcpp' was built under R version 3.3.2</code></pre>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-126-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-127-1.png" width="672"></p>
 </div>
 </div>
 <div id="plotting-deviations-as-errorbars" class="section level2">
@@ -2897,7 +2994,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
          <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
          <span class="dt">labs.caption =</span> <span class="st">'Ribbons represent Tukey hinges and whiskers'</span>)</code></pre></div>
-<p><img src="example-use-cases_files/figure-html/unnamed-chunk-127-1.png" width="672"></p>
+<p><img src="example-use-cases_files/figure-html/unnamed-chunk-128-1.png" width="672"></p>
 </div>
 </div>
 </div>
@@ -2917,6 +3014,7 @@ dat$gear &lt;-<span class="st"> </span><span class="kw">factor</span>(dat$gear, 
       <li><a href="#allow-testing">Allow testing</a></li>
       <li><a href="#reorder-trtctrl-arm-in-display">Reorder TRT/CTRL arm in display</a></li>
       <li><a href="#combine-trt-arms">Combine trt arms</a></li>
+      <li><a href="#alternative-bep-indicator">Alternative BEP indicator</a></li>
       </ul>
 </li>
       <li>

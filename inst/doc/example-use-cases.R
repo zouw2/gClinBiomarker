@@ -45,6 +45,13 @@ SummaryVars(data=sample.data, subgroup='BEP', var=c('Age','Sex'),
        var.class=c("numeric","categorical"))
 )
 
+## ------------------------------------------------------------------------
+sample.data$BEP2 <- ifelse(sample.data$BEP==1,"Yes","No")
+kable(
+SummaryVars(data=sample.data,trt='Arm', subgroup='BEP2', var=c('Age','Sex'), 
+       var.class=c("numeric","categorical"), subgroup.indicator="Yes")
+)
+
 ## ----include=TRUE,fig.width=10, fig.height=5-----------------------------
 PlotProperty(data=input, biomarker.var="KRAS.exprs", biomarker.class="numeric", log2=TRUE)
 
@@ -224,35 +231,35 @@ print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",
 ## ----include=TRUE,fig.width=7, fig.height=7------------------------------
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              percentile.cutoff=0.5,xlim=c(0,18))
              )
 
 ## ----include=TRUE,fig.width=7, fig.height=7------------------------------
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=100)
              )
 
 ## ----include=TRUE,fig.width=7, fig.height=7------------------------------
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=100, equal.in.high = F)
              )
 
 ## ----include=TRUE,fig.width=7, fig.height=7------------------------------
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",  
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=c(100,500), xlim=c(0, 20))
              )
 
 ## ----include=TRUE,fig.width=7, fig.height=7------------------------------
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=c(100,500),
              col=c("green","green","green","brown","brown","brown"),
              xlim=c(0,20))

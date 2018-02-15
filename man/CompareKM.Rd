@@ -18,7 +18,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{tte}{column name that indicates the time to event variable}
 
-\item{cens}{column name that indicates the censoring variable associated to tte}
+\item{cens}{column name that indicates the censoring variable associated to tte. 1 indicates event and 0 indicates censoring}
 
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}

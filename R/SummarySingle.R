@@ -17,7 +17,7 @@
 #' @param itt.name preferred display name of the full population (e.g. ITT).
 #' If it is NULL, "All" will be used.
 #' @param subgroup.indicator In the subpopulation column, which value is used
-#' to define the subpopulation (e.g. biomarker evaluable population). 
+#' to define the subpopulation (e.g. biomarker evaluable population). Default is 1. It can also be character or logical.
 #' Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.
 #' @param var.class class of the variable. possible categories are "numeric", "categorical" and
 #' "ordered.factor".  "ordered.factor" can be used to categorical variable with
@@ -81,6 +81,10 @@ SummarySingle <- function (data, var,
     message("test.subgroup=TRUE but subgroup is not specified. Reset test.subgroup as FALSE")
   }
   
+  if(test.subgroup & compare.subgroup==FALSE){
+	compare.subgroup <- T
+  	message("test.subgroup is TRUE but compare.subgroup is FALSE. Set compare.subgroup to TRUE")
+  }
   data[[var]][which(nchar(as.character(data[[var]]))==0)] <- NA
   possible.class <-c("categorical","numeric","ordered.factor")
   if(is.null(var.class)||!all(var.class%in%possible.class)){

@@ -55,7 +55,11 @@ SummaryVars <- function (data, var, var.name = NULL,
     message("test.subgroup=TRUE but subgroup is not specified. Reset test.subgroup as FALSE")
   }
 
- 
+  if(test.subgroup & compare.subgroup==FALSE){
+       compare.subgroup <- T
+       message("test.subgroup is TRUE but compare.subgroup is FALSE. Set compare.subgroup to TRUE")
+        }
+
   possible.class <-c("categorical","numeric","ordered.factor")
   if(!all(var.class%in%possible.class))stop(paste('var.class should be in', paste(possible.class,collapse=",")))
 

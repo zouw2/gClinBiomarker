@@ -32,7 +32,7 @@ If it is NULL, trt will be used.}
 If it is NULL, subgroup will be used.}
 
 \item{subgroup.indicator}{In the subpopulation column, which value is used
-to define the subpopulation (e.g. biomarker evaluable population). 
+to define the subpopulation (e.g. biomarker evaluable population). Default is 1. It can also be character or logical.
 Default is 1. The non-subpopulation enrties is not allowed to be specified as NA.}
 
 \item{compare.subgroup}{If it is TRUE,

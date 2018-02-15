@@ -1,13 +1,12 @@
 ---
-#knit: (function(inputFile, encoding) { 
-#      rmarkdown::render(inputFile,
-#                        encoding=encoding, 
-#                        output_file=file.path(dirname(inputFile), #'/../inst/doc/gClinbiomarker_example_use_case.pdf')) })
 title: "gClinBiomarker: Example Use Cases"
 author: "Ning Leng, Alexey Pronin, Doug Kelkhoff"
 date: '`r Sys.Date()`'
 output: 
   rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+  pdf_document:
     toc: true
     number_sections: true
 vignette: >
@@ -83,6 +82,17 @@ SummaryVars(data=sample.data, subgroup='BEP', var=c('Age','Sex'),
        var.class=c("numeric","categorical"))
 )
 ```
+
+## Alternative BEP indicator
+
+```{r}
+sample.data$BEP2 <- ifelse(sample.data$BEP==1,"Yes","No")
+kable(
+SummaryVars(data=sample.data,trt='Arm', subgroup='BEP2', var=c('Age','Sex'), 
+       var.class=c("numeric","categorical"), subgroup.indicator="Yes")
+)
+```
+
 
 
 
@@ -342,7 +352,7 @@ print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",
 ```{r  include=TRUE,fig.width=7, fig.height=7}
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              percentile.cutoff=0.5,xlim=c(0,18))
              )
 ```
@@ -353,7 +363,7 @@ print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",
 ```{r  include=TRUE,fig.width=7, fig.height=7}
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=100)
              )
 ```
@@ -364,7 +374,7 @@ print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",
 ```{r  include=TRUE,fig.width=7, fig.height=7}
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=100, equal.in.high = F)
              )
 ```
@@ -375,7 +385,7 @@ print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",
 ```{r  include=TRUE,fig.width=7, fig.height=7}
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",  
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=c(100,500), xlim=c(0, 20))
              )
 ```
@@ -383,7 +393,7 @@ print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event",
 ```{r  include=TRUE,fig.width=7, fig.height=7}
 print(PlotKM(data=sample.data, tte="PFS",cen="PFS.event", 
              main="PFS BEP by treatment, by KRAS expression", 
-             trt="Arm", var="KRAS.exprs", var.class="continuous",
+             trt="Arm", var="KRAS.exprs", var.class="numeric",
              numerical.cutoff=c(100,500),
              col=c("green","green","green","brown","brown","brown"),
              xlim=c(0,20))
