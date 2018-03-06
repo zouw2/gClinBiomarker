@@ -22,13 +22,14 @@
 #' @importFrom graphics plot axis mtext grid box polygon lines legend
 #' @importFrom survival survfit
 #'
-#' @inheritParams SummarySingle
-#'
+#' @inheritParams SummarySingle 
+#' @inheritParams PlotTabForestBiomarker
+#' 
 #'
 #' @examples
 #' data(input)
 #' sample.data <- input
-#' CompareKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT")
+#' CompareKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT", bep="BEP")
 #' @export
 #' @export
 

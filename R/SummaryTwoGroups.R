@@ -11,6 +11,7 @@
 #' @param outcome.var a vector specifying the outcome variable. For 'binary' outcome.var, it should be a vector of 1 or 0. In case of a 'survival' variable, this will be a matrix of two columns: 1) time to event 2) censorship.
 #' @param subgroup.var a vector of row index specifying the subgroup to be included for the analysis. If NULL (default), all data will be used.
 #' @param surv.conf.type confidence interval type. See conf.type in survfit. Default is "plain"
+#' @param ties Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.
 #' @param treatment.var the name of the treatment variable.
 #' @param placebo.code the name of the control group within the treatment variable.
 #' @param active.code the name of the treatment/experimental group within the treatment variable.
@@ -45,7 +46,7 @@ SummaryTwoGroups <- function(outcome.var,
                         active.code,
                         outcome.class,
                         alpha=0.05,
-			surv.conf.type="plain",
+			surv.conf.type="plain", ties="efron",
                         covariate.var=NULL,
                         strat.factor.var=NULL,
                         return.fit=FALSE,
@@ -140,7 +141,7 @@ SummaryTwoGroups <- function(outcome.var,
         Event <- outcome.var[, 2]
         ####### Unstratified analysis, not adjusting for any covariate(s)
         if ((missing(covariate.var)||is.null(covariate.var)) & (missing(strat.factor.var)||is.null(strat.factor.var))){
-            myfit <- coxph(Surv(Response[subgroup.var], Event[subgroup.var]) ~ treatment.var[subgroup.var])
+            myfit <- coxph(Surv(Response[subgroup.var], Event[subgroup.var]) ~ treatment.var[subgroup.var],ties=ties)
             coef.1 <- summary(myfit)$coef[1:5]
             mytest <- coef.1
         }
@@ -149,7 +150,7 @@ SummaryTwoGroups <- function(outcome.var,
             # One stratification variable
             if (is.vector(strat.factor.var) | is.factor(strat.factor.var)){
                 myfit <- coxph(Surv(Response[subgroup.var], Event[subgroup.var]) ~
-                                   treatment.var[subgroup.var] + strata(strat.factor.var[subgroup.var]))
+                                   treatment.var[subgroup.var] + strata(strat.factor.var[subgroup.var]),ties=ties)
                 coef.1 <- summary(myfit)$coef[1:5]
                 mytest <- coef.1
             }
@@ -170,7 +171,7 @@ SummaryTwoGroups <- function(outcome.var,
             # One covariate
             if (is.vector(covariate.var) | is.factor(covariate.var)){
                 myfit <- coxph(Surv(Response[subgroup.var], Event[subgroup.var]) ~
-                                   covariate.var[subgroup.var] + treatment.var[subgroup.var])
+                                   covariate.var[subgroup.var] + treatment.var[subgroup.var],ties=ties)
                 coef.1 <- summary(myfit)$coef
                 mytest <- coef.1[nrow(coef.1), 1:5]
             }
@@ -193,7 +194,7 @@ SummaryTwoGroups <- function(outcome.var,
                 (is.vector(strat.factor.var) | is.factor(strat.factor.var))){
                 myfit <- coxph(Surv(Response[subgroup.var], Event[subgroup.var]) ~
                                    covariate.var[subgroup.var] + treatment.var[subgroup.var] +
-                                   strata(strat.factor.var[subgroup.var]))
+                                   strata(strat.factor.var[subgroup.var]), ties=ties)
                 coef.1 <- summary(myfit)$coef
                 mytest <- coef.1[nrow(coef.1), 1:5]
             }

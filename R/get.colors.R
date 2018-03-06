@@ -18,7 +18,7 @@
 #'      get.colors()
 #'  }
 #'  
-#'  @export
+#' @export
 
 get.colors <- function(continuous=TRUE)
 {

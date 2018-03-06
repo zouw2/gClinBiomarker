@@ -5,11 +5,15 @@
 \title{Log rank test p value and other summary statistics for subgroup analysis}
 \usage{
 LogRankTab(data, tte, cens, var, time.unit = "month",
-  surv.conf.type = "plain", fillname = "")
+  surv.conf.type = "plain", ties = "efron", fillname = "")
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
 biomarker variables, treatment indicator, etc.). One patient per row.}
+
+\item{tte}{column name that indicates the time to event variable}
+
+\item{cens}{column name that indicates the censoring variable associated to tte. 1 indicates event and 0 indicates censoring}
 
 \item{var}{a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
@@ -18,6 +22,8 @@ It will be ignored if fit or form is not null.}
 \item{time.unit}{Default is month.}
 
 \item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
+
+\item{ties}{Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.}
 
 \item{fillname}{(character) variable specifying the content for the cell that located in row one and column one, the default value for fillname is NULL.}
 }

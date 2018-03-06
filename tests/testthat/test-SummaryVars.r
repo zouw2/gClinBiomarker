@@ -9,10 +9,10 @@ test_that("Size of data", {
                        var.class=c("numeric","categorical"))
 
     expect_equal(as.numeric(res["N", "All(CTRL)"]) + as.numeric(res["N", "All(TRT)"]), nrow(input))
-    expect_equal(as.numeric(res["Total", "All(CTRL)"]) + as.numeric(res["Total", "All(TRT)"]), nrow(input))
+    expect_equal(as.numeric(res["Total (non-NA)", "All(CTRL)"]) + as.numeric(res["Total (non-NA)", "All(TRT)"]), nrow(input))
 
-    expect_equal(as.numeric(res["Total", "All(CTRL)"]), as.numeric(res["N", "All(CTRL)"]))
-    expect_equal(as.numeric(res["Total", "BEP(CTRL)"]), as.numeric(res["N", "BEP(CTRL)"]))
-    expect_equal(as.numeric(res["Total", "All(TRT)"]), as.numeric(res["N", "All(TRT)"]))
-    expect_equal(as.numeric(res["Total", "BEP(TRT)"]), as.numeric(res["N", "BEP(TRT)"]))
+    expect_equal(as.numeric(res["Total (non-NA)", "All(CTRL)"]), as.numeric(res["N", "All(CTRL)"]))
+    expect_equal(as.numeric(res["Total (non-NA)", "BEP(CTRL)"]), as.numeric(res["N", "BEP(CTRL)"]))
+    expect_equal(as.numeric(res["Total (non-NA)", "All(TRT)"]), as.numeric(res["N", "All(TRT)"]))
+    expect_equal(as.numeric(res["Total (non-NA)", "BEP(TRT)"]), as.numeric(res["N", "BEP(TRT)"]))
 })

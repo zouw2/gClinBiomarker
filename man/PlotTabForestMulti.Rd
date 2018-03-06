@@ -14,11 +14,11 @@ PlotTabForestMulti(data, outcome.class = c("survival", "binary",
   rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
   "NE", NA), quantile.type = 2, placebo.code = NULL, active.code = NULL,
   var.code = NULL, tabforest = FALSE, alpha = 0.05,
-  surv.conf.type = "plain", main = NULL, sub = NULL, clip = NULL,
-  xlab = NULL, cex.headings = 1.1, cex.note = 1, cols = "darkgreen",
-  only.stat = FALSE, pdf.name = NULL, pdf.param = list(width = 6, height =
-  4.5), par.param = list(cex = 1.2, cex.main = 1.5, cex.sub = 1, cex.axis =
-  1))
+  surv.conf.type = "plain", ties = "efron", main = NULL, sub = NULL,
+  clip = NULL, xlab = NULL, cex.headings = 1.1, cex.note = 1,
+  cols = "darkgreen", only.stat = FALSE, pdf.name = NULL,
+  pdf.param = list(width = 6, height = 4.5), par.param = list(cex = 1.2,
+  cex.main = 1.5, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -53,8 +53,10 @@ greater and less can both be TRUE}
 \item{within.bin}{whether calculate summary statistics within bin (e.g. > cutoff1 and <= cutoff2). If within.bin is TRUE,
 greater and less will be set as FALSE.}
 
-\item{compare.subgroup}{whether want to generate multiple groups of results to compare the summary statistics
-in each subgroup defined by parameter subgroup}
+\item{compare.bep.itt}{whether want to compare BEP vs ITT}
+
+\item{compare.subgroup}{whether want to compare across multiple subgroups, 
+in each subgroup defined by parameter 'subgroup'. Alternative is to compare BEP vs ITT}
 
 \item{show.itt}{whether calculate summary statistics using all patients in full population (e.g. ITT). This will be ignored in 1arm case}
 
@@ -104,6 +106,8 @@ If it is TRUE, a table will be generated with forest plots incorpriated}
 \item{alpha}{type I error rate. Default is 0.05.}
 
 \item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
+
+\item{ties}{Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.}
 
 \item{main}{main title (prefix of title) of the forest plot. Default is "Association of biomarker effect within treatment arms".}
 

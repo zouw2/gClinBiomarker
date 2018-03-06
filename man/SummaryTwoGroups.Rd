@@ -6,9 +6,9 @@
 \usage{
 SummaryTwoGroups(outcome.var, subgroup.var = NULL, treatment.var,
   placebo.code, active.code, outcome.class, alpha = 0.05,
-  surv.conf.type = "plain", covariate.var = NULL, strat.factor.var = NULL,
-  return.fit = FALSE, fit.para = list(prop.test.use.continuity.correction =
-  T))
+  surv.conf.type = "plain", ties = "efron", covariate.var = NULL,
+  strat.factor.var = NULL, return.fit = FALSE,
+  fit.para = list(prop.test.use.continuity.correction = T))
 }
 \arguments{
 \item{outcome.var}{a vector specifying the outcome variable. For 'binary' outcome.var, it should be a vector of 1 or 0. In case of a 'survival' variable, this will be a matrix of two columns: 1) time to event 2) censorship.}
@@ -26,6 +26,8 @@ SummaryTwoGroups(outcome.var, subgroup.var = NULL, treatment.var,
 \item{alpha}{the confidence level (CI) for point estimate, i.e. 0.05 (default) for 95 percent CI.}
 
 \item{surv.conf.type}{confidence interval type. See conf.type in survfit. Default is "plain"}
+
+\item{ties}{Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.}
 
 \item{covariate.var}{a vector specifying the covariate variables. This can be added to adjust for in the analysis for survival and continuous outcome.var variable classes. Default is NULL.}
 

@@ -7,6 +7,7 @@
 #' @param fillname
 #' (character) variable specifying the content for the cell that located in row one and column one, the default value for fillname is NULL.
 #' @param time.unit Default is month.
+#' @param ties Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.
 #' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit
 #' @note This function takes time to event outcome, and one categorical variable (parameter var).
 #' This function generates a table that contains number of patients, median time to event, and log rank test p value ( against first level in var)
@@ -16,7 +17,7 @@
 #' data(input)
 #' LogRankTab(data=input,tte="PFS", cens="PFS.event",var="Arm")
 #' @export
-LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="plain",fillname=""){
+LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="plain",ties="efron", fillname=""){
     stopifnot(class(data)=="data.frame")
 
 	if(length(var)!=1) stop("only one element should be specified in parameter var!")
@@ -73,7 +74,7 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="
 					        logrank <- survdiff(as.formula(paste("Surv(",tte,",",cens,") ~ factor(",group,")")),data=data[which(data[,group]==lev[1]|data[,group]==lev[i]),])
 		          pval <- cbind(pval, round(1 - pchisq(logrank$chisq, length(logrank$n) - 1),4))
 			        #cox <- summary(coxph(as.formula(paste("Surv(",tte,",",cens,") ~ factor(",group,")")),data=data[which(data[,group]==lev[1]|data[,group]==lev[i]),], method="breslow"))
-			        cox <- summary(coxph(as.formula(paste("Surv(",tte,",",cens,") ~ factor(",group,")")),data=data[which(data[,group]==lev[1]|data[,group]==lev[i]),]))
+			        cox <- summary(coxph(as.formula(paste("Surv(",tte,",",cens,") ~ factor(",group,")")),data=data[which(data[,group]==lev[1]|data[,group]==lev[i]),],ties=ties))
 			        hr <- cbind(hr,round(cox$coefficients[,"exp(coef)"],2))
 				      hrci <- cbind(hrci, paste("(",round(cox$conf.int[,"lower .95"],2),";", round(cox$conf.int[,"upper .95"],2), ")",sep=""))
 				    }

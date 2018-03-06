@@ -13,6 +13,10 @@ CoxTab(data = NULL, tte = NULL, cens = NULL, var = NULL,
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
+\item{tte}{column name that indicates the time to event variable}
+
+\item{cens}{column name that indicates the censoring variable associated to tte. 1 indicates event and 0 indicates censoring}
+
 \item{var}{a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
 It will be ignored if fit or form is not null.}
@@ -44,6 +48,12 @@ If fit is not NULL, all other parameters will be ignored}
 If additive = FALSE, User can only use 'var' to speficy variables of interest (cannot specify the model via parameter 'form')}
 
 \item{digits}{digits for rounding}
+
+\item{bep}{name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.}
+
+\item{bep.indicator}{In the subpopulation column, which value is used
+to define the biomarker evaluable population.}
 }
 \description{
 This function summarizes outputs from cox proportional model of one or multiple variables.

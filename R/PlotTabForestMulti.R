@@ -7,10 +7,10 @@
 #'
 #' @author  Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)
 #'
-#' @param compare.subgroup whether want to generate multiple groups of results to compare the summary statistics
-#' in each subgroup defined by parameter subgroup
+#' @param compare.subgroup whether want to compare across multiple subgroups, 
+#' in each subgroup defined by parameter 'subgroup'. Alternative is to compare BEP vs ITT
 #' @param subgroup The column which defines subgroups. If compare.subgroup is TRUE, the program will generate forest plot of the vars within each subgroup
-
+#' @param compare.bep.itt whether want to compare BEP vs ITT
 #'
 #' @inheritParams PlotTabForestBiomarker
 #' @export
@@ -39,10 +39,9 @@ PlotTabForestMulti <- function(data,
                                   bep = NULL, bep.name = "BEP", itt.name="All",bep.indicator=1,
                                   covariate=NULL, #Sex
                                   strata=NULL, #Age
-
-                                rsp.cat = TRUE,
-                                rsp.response = c("CR","PR"),
-                                rsp.nonresponse = c("SD", "PD","NON CR/PD","NE",NA),
+                                  rsp.cat = TRUE,
+                                  rsp.response = c("CR","PR"),
+                                  rsp.nonresponse = c("SD", "PD","NON CR/PD","NE",NA),
                                   quantile.type=2,
                                   placebo.code=NULL,
                                   active.code=NULL,
@@ -50,6 +49,7 @@ PlotTabForestMulti <- function(data,
                                   tabforest=FALSE,
                                   alpha=0.05,
 				  surv.conf.type="plain",
+				  ties="efron",
                                   main=NULL,
                                   sub=NULL,
                                   clip=NULL,
@@ -146,7 +146,7 @@ PlotTabForestMulti <- function(data,
                                        rsp.nonresponse = rsp.nonresponse,
                                        covariate=covariate, 
                                        strata=strata,
-				       surv.conf.type=surv.conf.type,
+				       surv.conf.type=surv.conf.type, ties=ties,
                                        tabforest=tabforest,
                                        quantile.type=quantile.type,
                                        placebo.code=placebo.code,

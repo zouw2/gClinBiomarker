@@ -14,12 +14,12 @@ PlotTabForestBiomarker(data, outcome.class = c("survival", "binary"),
   tabforest = FALSE, quantile.type = 2, digits = 2, cutoff.digits = 2,
   placebo.code = NULL, active.code = NULL, rsp.cat = TRUE,
   rsp.response = c("CR", "PR"), rsp.nonresponse = c("SD", "PD", "NON CR/PD",
-  "NE", NA), var.code = NULL, surv.conf.type = "plain", alpha = 0.05,
-  main = NULL, main.prefix = NULL, sub = NULL, clip = NULL,
-  xticks = NULL, xticks.digits = 1, xlab = NULL, cex.headings = 1.1,
-  cex.note = 0.8, cols = NULL, only.stat = FALSE, pdf.name = NULL,
-  pdf.param = list(width = 12, height = 4.5), par.param = list(cex = 1,
-  cex.main = 1, cex.sub = 1, cex.axis = 1))
+  "NE", NA), var.code = NULL, surv.conf.type = "plain", ties = "efron",
+  alpha = 0.05, main = NULL, main.prefix = NULL, sub = NULL,
+  clip = NULL, xticks = NULL, xticks.digits = 1, xlab = NULL,
+  cex.headings = 1.1, cex.note = 0.8, cols = NULL, only.stat = FALSE,
+  pdf.name = NULL, pdf.param = list(width = 12, height = 4.5),
+  par.param = list(cex = 1, cex.main = 1, cex.sub = 1, cex.axis = 1))
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
@@ -112,6 +112,8 @@ At the same time rsp.response and rsp.nonresponse will be ignored.}
 If the biomarker is categorical and this is NULL, biomarker subgroups will be ordered by the order from factor() function}
 
 \item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit}
+
+\item{ties}{Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.}
 
 \item{alpha}{type I error rate. Default is 0.05.}
 

@@ -23,6 +23,15 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}
 
+\item{bep}{name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.}
+
+\item{bep.indicator}{In the subpopulation column, which value is used
+to define the biomarker evaluable population.}
+
+\item{bep.name}{preferred display name of the biomarker evaluable population.
+If it is NULL, bep will be used.}
+
 \item{itt.name}{preferred display name of the full population (e.g. ITT).
 If it is NULL, "All" will be used.}
 
@@ -53,7 +62,7 @@ This function generates KM curves to compare full population vs BEP, within each
 \examples{
 data(input)
 sample.data <- input
-CompareKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT")
+CompareKM(data=sample.data, tte="OS",cens="OS.event", main="OS ITT", bep="BEP")
 }
 \author{
 Ning Leng \email{leng.ning@gene.com}, Alexey Pronin \email{pronin.alexey@gene.com}, and previous team members (see DESCRIPTION)

@@ -58,7 +58,7 @@
 #' @param pdf.name name of output pdf file. If it's NULL (default), the plots will be displayed but not saved as pdf.
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=11, height=8.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
-
+#' @param ties Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.
 #' @note Patient data without corresponding biomarker data are automatically removed.
 #' For survival data, censorship variable is 1 if an event happened, 0 if censored.
 #'
@@ -108,6 +108,7 @@ PlotSTEPP <- function(data,
                      estimate.lty = 1,
                      estimate.lwd = 2,
 		     surv.conf.type="plain",
+		     ties="efron",
                      ci.color = "black",
                      ci.lty = 2,
                      ci.lwd = 1,
@@ -214,26 +215,26 @@ PlotSTEPP <- function(data,
     if (is.null(covariate) & is.null(strata)) {
         effect.ac <- SummaryTwoGroups(Outcome, 1:length(Biomarker), Treatment,
                                placebo.code, active.code, outcome.class,
-                               alpha, surv.conf.type=surv.conf.type,
-                               covariate = NULL,
+                               alpha, surv.conf.type=surv.conf.type, ties=ties,
+                               covariate.var = NULL,
                                strat.factor.var = NULL)["Effect.Size"]
     } else if (!is.null(covariate) & is.null(strata)) {
         effect.ac <- SummaryTwoGroups(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
-                                 alpha,surv.conf.type=surv.conf.type,
-                                 covariate = Covariate,
+                                 alpha,surv.conf.type=surv.conf.type, ties=ties,
+                                 covariate.var = Covariate,
                                  strat.factor.var = NULL)["Effect.Size"]
     } else if (is.null(covariate) & !is.null(strata)) {
         effect.ac <- SummaryTwoGroups(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
-                                 alpha,surv.conf.type=surv.conf.type,
-                                 covariate = NULL,
+                                 alpha,surv.conf.type=surv.conf.type, ties=ties,
+                                 covariate.var = NULL,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
     } else if (!is.null(covariate) & !is.null(strata)) {
         effect.ac <- SummaryTwoGroups(Outcome, 1:length(Biomarker), Treatment,
                                  placebo.code, active.code, outcome.class,
-                                 alpha,surv.conf.type=surv.conf.type,
-                                 covariate = Covariate,
+                                 alpha,surv.conf.type=surv.conf.type, ties=ties,
+                                 covariate.var = Covariate,
                                  strat.factor.var = Strat.factor)["Effect.Size"]
     }
     options(scipen=999)
@@ -291,28 +292,28 @@ PlotSTEPP <- function(data,
                 SummaryTwoGroups(Outcome, sindex, Treatment,
                             placebo.code, active.code,
                             outcome.class, alpha,
-                            covariate = NULL,
+                            covariate.var = NULL,
                             strat.factor.var = NULL)[c("Effect.Size", "Lower", "Upper")]
         } else if (!is.null(covariate) & is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 SummaryTwoGroups(Outcome, sindex, Treatment,
                             placebo.code, active.code,
-                            outcome.class, alpha,surv.conf.type=surv.conf.type,
-                            covariate = Covariate,
+                            outcome.class, alpha,surv.conf.type=surv.conf.type, ties=ties,
+                            covariate.var = Covariate,
                             strat.factor.var = NULL)[c("Effect.Size", "Lower", "Upper")]
         } else if (is.null(covariate) & !is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 SummaryTwoGroups(Outcome, sindex, Treatment,
                             placebo.code, active.code,
-                            outcome.class, alpha,surv.conf.type=surv.conf.type,
-                            covariate = NULL,
+                            outcome.class, alpha,surv.conf.type=surv.conf.type, ties=ties,
+                            covariate.var = NULL,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
         } else if (!is.null(covariate) & !is.null(strata)) {
             sdata[i, c("Effect.Size", "Lower", "Upper")] <-
                 SummaryTwoGroups(Outcome, sindex, Treatment,
                             placebo.code, active.code,
-                            outcome.class, alpha,surv.conf.type=surv.conf.type,
-                            covariate = Covariate,
+                            outcome.class, alpha,surv.conf.type=surv.conf.type, ties=ties,
+                            covariate.var = Covariate,
                             strat.factor.var = Strat.factor)[c("Effect.Size", "Lower", "Upper")]
         }
     } # end of for (i in 1:nbins)

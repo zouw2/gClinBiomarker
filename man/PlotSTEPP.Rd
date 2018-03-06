@@ -12,7 +12,8 @@ PlotSTEPP(data, outcome.var, outcome.class, trt = NULL, var,
   show.refline = TRUE, refline.color = "grey", show.refline.ac = TRUE,
   refline.color.ac = "lightblue", estimate.color = "blue",
   estimate.lty = 1, estimate.lwd = 2, surv.conf.type = "plain",
-  ci.color = "black", ci.lty = 2, ci.lwd = 1, ci.shade = TRUE,
+  ties = "efron", ci.color = "black", ci.lty = 2, ci.lwd = 1,
+  ci.shade = TRUE,
   plot.title = "STEPP: Subgroup Treatment Effect Pattern Plot",
   sub.title = NULL, xlabel = "Biomarker Percentile", ylabel = NULL,
   show.legend = TRUE, legend.loc = "topright",
@@ -78,6 +79,8 @@ This can be added to adjust for in the analysis for survival and continuous outc
 \item{estimate.lwd}{width of the estimate line. Default is 2.}
 
 \item{surv.conf.type}{confidence interval type. Default is "plain". see conf.type in survfit.}
+
+\item{ties}{Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.}
 
 \item{ci.color}{color of the CI lines. Default is "black".}
 

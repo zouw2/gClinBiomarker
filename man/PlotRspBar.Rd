@@ -56,8 +56,17 @@ the program will summarize the response outcome within each treatment arm.}
 in full population (e.g. ITT) vs in BEP. If this is TRUE, paramemeter bep should be specified. If this is FALSE,
 parameters bep, bep.name, itt.name, bep.indicator will be ignored}
 
+\item{bep}{name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.}
+
+\item{bep.name}{preferred display name of the biomarker evaluable population.
+If it is NULL, bep will be used.}
+
 \item{itt.name}{preferred display name of the full population (e.g. ITT).
 If it is NULL, "All" will be used.}
+
+\item{bep.indicator}{In the subpopulation column, which value is used
+to define the biomarker evaluable population.}
 
 \item{compare.var}{whether want to generate multiple groups of bars to compare the summary statistics
 in subgroups defined by var (e.g. categorical demographics or biomarker variable)

@@ -32,7 +32,7 @@ groups according to the grouping variable 'grp'.}
 (see ? bpplot of package \code{Hmisc}).}
 
 \item{horizontal}{(logical) TRUE = the boxes are drawn horizontally, FALSE = vertical boxplot. Note, this has no effect when box.type="bp", since
-   the underlying function \code{\link{bpplot}} of the \code{Hmisc} package cannot do it. Also note, that \code{horizontal=TRUE} automatically
+   the underlying function bpplot of the \code{Hmisc} package cannot do it. Also note, that \code{horizontal=TRUE} automatically
 changes the meaning of X- and Y-axis. All arguments referring to Y-axis will then implicitely mean the X-axis and vice versa.}
 
 \item{col}{(character) string(s) specifying colors to be used to color the bodies of the box plots. By default they are in the background color.}
@@ -114,7 +114,7 @@ i.e. func=function(x){x[x==0]<-min(x, na.rm=TRUE)/2} and setting 'transf=func'.}
 \item{Box}{(logical) TRUE = a box is plotted surrounding the plot, FALSE = no box.}
 }
 \description{
-This function produces boxplots as function \code{boxplot} and box-percentile plots as function \code{bpplot} (package \code{Hmisc}),
+This function produces boxplots as function \code{boxplot} and box-percentile plots as function bpplot (package Hmisc),
 offering a formula interface, data specification via a vector of variable names, as numeric matrix where all columns will be interpreted as
 variables or by specifying one or multiple numeric vectors (see examples below). It additionally/optionally
 adds vertical jitterplots to each boxplot, adds the number of observations, adds mean-values, and allows to add a trend-line connecting either

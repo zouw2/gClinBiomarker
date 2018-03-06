@@ -42,6 +42,7 @@
 #' @param pdf.param list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 #' @inheritParams SummaryVars
+#' @inheritParams PlotTabForestBiomarker
 #'
 #' @return a bar plot that summarizes response outcome
 #'
@@ -247,14 +248,14 @@ PlotRspBar <- function(data, outcome.var,
     nn.unit <- xmax/sum(nn)
     tmp <- 0
     for (kk in 1:n.levels) {
-      mtext(myoutcome.levels[kk], col=col[kk], side=label.axis, out=FALSE, at=tmp, adj=0, las=3)
+      mtext(myoutcome.levels[kk], col=col[kk], side=label.axis, outer=FALSE, at=tmp, adj=0, las=3)
       tmp <- tmp +  nn.unit*nn[kk]
       }
 
    # abline(h=bb[space]/2+bb[space-1]/2)
 
     if (!is.null(sub)) {
-        mtext(sub, side=1, out=FALSE, cex=0.8*cex, line=4, adj=0)
+        mtext(sub, side=1, outer=FALSE, cex=0.8*cex, line=4, adj=0)
     }
 
     PlotParam()

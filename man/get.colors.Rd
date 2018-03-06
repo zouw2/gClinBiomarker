@@ -24,7 +24,6 @@ colors as desired by simply clicking at the corresponding tiles.
      get.colors()
  }
  
- @export
 }
 \author{
 Andre Schuetzenmeister \email{andre.schuetzenmeister@roche.com}

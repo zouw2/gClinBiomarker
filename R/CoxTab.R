@@ -27,6 +27,9 @@
 #' @importFrom coin cmh_test pvalue
 #'
 #' @inheritParams SummaryVars
+#' @inheritParams PlotTabForestBiomarker
+#' @inheritParams PlotKM
+#' 
 #'
 #' @examples
 #' data(input)
