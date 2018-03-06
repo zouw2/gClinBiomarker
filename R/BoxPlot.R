@@ -34,14 +34,14 @@
 #'  					Note, if 'horizontal=TRUE' this axis-labelling will appear in the right margin and labels will be oriented perpendicular to the axis.
 #'                      Set 'Xaxis2=list(las=0)' to overwrite the default for usual parallel orientation.
 #' @param XaxisTab		(list) or NULL, if a (possibly empty) list AND 'form' is specified, 'Xaxis' will be set to NULL and a table will be used a X-axis label
-#' 						representing the combination of factor-levels for all factors appearing in 'form' (see examples and see \code{\link{addXlabTable}}).
+#' 						representing the combination of factor-levels for all factors appearing in 'form' (see example document and see \code{\link{addXlabTable}}).
 #'                      If 'horizontal=TRUE' the table will appear in the left margin as any other setting originally intended to apply to an X-axis element.
 #' 						Note, there has to be enough space in the bottom margin for adding the table (use "mai" or "mar" in \code{\link{par}}).
 #' 						Your may specify 'XaxisTab' as list with two sub-lists "Label" and "Text", which will then be evaluated for rownames of the table ("Label")
 #'                      and the text in the cells of the table ("Text") separately (see examples of function \code{\link{addXlabTable}} for details).
 #' @param Yaxis         (list) passed to function 'axis' which allows to fully specify the the appearence of the Y-axis (see ?axis).
 #' @param Ylabel        (list) passed to function 'mtext' which can be used to fully specify the Y-axis label.
-#' @param Xlabel        (list) passed to function 'mtext' which can be used to fully specify the X-axis label or even group labels (see examples).
+#' @param Xlabel        (list) passed to function 'mtext' which can be used to fully specify the X-axis label or even group labels (see example document).
 #' @param Title         (list) passed to function 'title'.
 #' @param Grid          (list) passed to function 'grid'. Set to NULL to omit (default). For adding a grid simply set 'Grid=TRUE' which applies default settings
 #'                      for the added grid or fully specify the grid to be added by specifying each argument (see ?addGrid for details).
@@ -82,111 +82,7 @@
 #' BoxPlot(input, KRAS.exprs~Arm, transf = log, horizontal=TRUE,
 #'        Xaxis=list(las=2, hadj=2), Xaxis2=list(las=2, hadj=-.25))
 #'
-#' ## now as box-percentile plot
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, box.type="bp")
-#'
-#' ## with custom main title
-#' BoxPlot(input, KRAS.exprs~Response, transf = log, box.type="bp", Title=list(main="Custom Main Title"))
-#'
-#' ## the same plot with trend line (connects either means or medians)
-#' BoxPlot(input, KRAS.exprs~Response, transf = log, trend="median")
-#'
-#' ## use an addition grouping variable to color points in the stripchart
-#' BoxPlot(input, KRAS.exprs~Response, transf = log, trend="median",
-#'        sc.col=c("red", "blue", "green")[input$Country] )
-#'
-#' ## use yet another grouping factor for plotting symbols in the stripchart
-#' BoxPlot(input, KRAS.exprs~Response, transf = log, trend="median",
-#'        sc.col=c("red", "blue", "green")[input$Country],
-#'        sc.pch=c(5,10)[input$Arm])
-#'
-#' legend("bottomleft", fill=c("red", "blue", "green", "white", "white"),
-#'       legend=c("Other", "USA", "W Europe", "CTRL", "TRT"),
-#'       pch=c(-1, -1, -1, 5, 10), border=NA)
-#'
-#' ## boxplot with trend lines (mean) and grid added to the plot
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean")
-#'
-#' ## changing plotting symbol for mean-values
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2)
-#'
-#' ## specifying the magnification of mean-value plotting symbols
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2,
-#'        mean.cex=2.5)
-#'
-#' ## specifying the color of mean-value plotting symbols
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2,
-#'        mean.cex=2.5, mean.col="blue")
-#'
-#' ## specifying the line width of mean-value plotting symbols
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, Grid=TRUE, trend="mean", mean.pch=2,
-#'        mean.cex=2.5, mean.col="blue", mean.lwd=4)
-#'
-#' ## now as box-percentile plot
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, box.type="bp", Grid=TRUE)
-#'
-#' ## change y-label and connect the means using specific color
-#' BoxPlot(input, KRAS.exprs~Arm, transf = log, trend="mean", trend.col="red",
-#'       Ylabel=list(text="Example Measurements"))
-#'
-#' ## multiple grouping factors can be specified via the formula interface
-#' BoxPlot(input, KRAS.exprs~Arm:Sex, transf = log)
-#'
-#' ## now 'Arm' is explicitly nested within 'Sex' which changes the ordering of
-#' ## combined grouping factors (which is identical to using formula 'KRAS.exprs~Arm:Sex').
-#' BoxPlot(input, KRAS.exprs~Arm %in% Sex, transf = log)
-#'
-#' ## more meaningful group-labels are best specified using custom factor-level names
-#' ## (increase width of the plot window)
-#' inp <- input
-#' inp$Sex <- factor(inp$Sex, levels=c("F", "M"), labels=c("Female", "Male"))
-#' BoxPlot(inp, KRAS.exprs~Arm %in% Sex, transf = log)
-#'
-#' ## alternatively one can use the 'Xaxis' argument, but the ordering of these labels is not checked
-#' ## which is not important for automatically generated group-labels as shown in the previous example
-#' BoxPlot(input, KRAS.exprs~Arm %in% Sex, transf = log,
-#'        Xaxis=list(labels=paste(rep(c("CTRL", "TRT"), 2),
-#'                                c(rep("Female", 2), rep("Male", 2)), sep=".")))
-#'
-#' ## one can use a table as Xaxis label representing the factor-level
-#' ## combination defining sub-classes
-#' BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(), mar=c(8,3,5,1), transf = log)
-#'
-#' ## using smaller bottom margin will result in smaller table height
-#' BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(font=2, col="darkblue", cex=1.25),
-#'        mar=c(5,3,5,1), transf = log)
-#'
-#' ## with the original factor levels and as horizontal plot
-#' BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(), mar=c(5,8,5,4), transf = log,
-#'        horizontal=TRUE, Ylabel=list(text="Y-axis label now appearing on X-axis"))
-#'
-#' ## one can use different font-settings for rownames and cells of the table
-#' BoxPlot(inp, KRAS.exprs~Arm:Sex, XaxisTab=list(Label=list(font=2, col="darkblue", cex=1.25),
-#'                                               Text=list(col="red"), mar=c(5,3,5,1)), transf = log)
-#'
-#' ## use more crossed factors
-#' BoxPlot(inp, KRAS.exprs~Arm:Sex:Country, transf=log, XaxisTab=list(), mar=c(5,3,5,1))
-#'
-#' ## some fency options
-#' BoxPlot(inp, KRAS.exprs~Arm %in% Sex, transf = log, Title=list(main="Kras.exprs per Arm by Sex",
-#'                                                               col.main="Green", cex.main=1.5), vline=c(2.5, 6.5), vl.lty=2, vl.col="gray", vl.lwd=2,
-#'        Xaxis=list(labels=NA, at=1:4, tick=TRUE), col=c(rep("blue", 2), rep("red", 2)),
-#'        Xaxis2=list(tick=FALSE), Yaxis=list(at=seq(0, 8, 1)), Grid=list(x=1:4, y=seq(0, 8, 1)),
-#'        Xlabel=list(text=paste(rep(c("Ctrl", "Trt"), 2), c(rep("Female", 2), rep("Male", 2))),
-#'                    at=1:4, las=2, adj=1, line=0.75, col=c(rep("blue", 2), rep("red", 2))),
-#'        mean.col=c(rep("cyan", 2), rep("orange", 2)), Box=FALSE, trend="mean", bmar=c(6, 4, 5, 2))
-#'
-#' ## horizontal fency plot
-#' BoxPlot(input, KRAS.exprs~Arm %in% Sex, transf = log, Title=list(main="Kras.exprs per Arm by Sex",
-#'                                                                 col.main="#84d52b", cex.main=1.5),
-#'        vline=c(2.5, 6.5), vl.lty=2, vl.col="gray", vl.lwd=2,
-#'        Xaxis2=list(tick=FALSE, las=2, hadj=-0.25), Yaxis=list(at=seq(0, 8, 1)), Grid=list(x=1:4, y=seq(0, 8, 1)),
-#'        mean.col=c(rep("cyan", 2), rep("orange", 2)), Box=FALSE, trend="mean",
-#'        mar=c(3, 7, 4, 4), horizontal=TRUE, sc.pch=c(0,15)[input$OS.event+1], sc.col="wheat4",
-#'        XaxisTab=list(Text=list(col=c(rep("cyan", 2), rep("orange", 2)))))
-#'
-#' legend(x="topright", pch=c(0, 15), legend=c("event", "no event"), box.lty=0, col="wheat4")
-#'
+
 #' @export
 
 BoxPlot <- function(..., obj, form=NULL, var=NULL, box.type="b",

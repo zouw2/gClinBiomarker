@@ -141,7 +141,7 @@ addXlabTable <- function(mat, merge=TRUE, bmargin=.025, Label=list(), Text=list(
     
     # add rownames
     tmp.Label <- list(x = l - .01 * (fuc[2]-fuc[1]),
-                      y = seq(u-rh/2, b+rh/2, by=ifelse(u < 0, -rh,rh)),
+                      y = seq(u-rh/2, b+rh/2, by=ifelse(u-rh/2 > b+rh/2, -rh,rh)),
                       labels=rownames(mat),
                       adj=c(1, .5))
     
