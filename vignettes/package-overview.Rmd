@@ -846,7 +846,7 @@ Baseline data from longitudinal data can be used for any of the plots described 
 
 ### Longitudinal Plots with `PlotLong`
 
-The `PlotLong` function is called with only a small set of arguments. The first is the data to plot and the second is an aesthetic mapping (using the function `aes()`) to map columns to visual outputs. In it's most simple form, you can plot the distribution of endpoint readings over the timecourse, for the entire patient population. By default, the `PlotLong` function plots a line with points at the timepoints for which data exists with a ribbon showing the mean ± standard error at that timestamp.
+The `PlotLong` function is called with only a small set of arguments. The first is the data to plot and the second is an aesthetic mapping (using the function `aes()`) to map columns to visual outputs. In it's most simple form, you can plot the distribution of endpoint readings over the timecourse, for the entire patient population. By default, the `PlotLong` function plots a line with points at the timepoints for which data exists with a ribbon showing the mean +/- standard error at that timestamp.
 
 ```{r}
 PlotLong(longbmkr, x=vm, y=ep)
@@ -854,7 +854,7 @@ PlotLong(longbmkr, x=vm, y=ep)
 
 #### Tukey Hinges and Whiskers
 
-However, we may be more interested in the population distribution progression where we'd want to plot the Tukey boxplot hinges and whiskers over time. From this plot, we can see that although there is a slow rise in population mean, the patient response also becomes more distributed. You can specify, using the `fun.data` argument, exactly what the ribbons represent by using any keyword that can be passed to `stat_summary_funs` including "mean_sd" (mean ± standard deviation), "mean_sd" (mean ± standard error of the mean), "median_iqr" (median ± interquartile range), "tukey" (tukey boxplot hinges and whiskers), "quartiles" and "deciles".
+However, we may be more interested in the population distribution progression where we'd want to plot the Tukey boxplot hinges and whiskers over time. From this plot, we can see that although there is a slow rise in population mean, the patient response also becomes more distributed. You can specify, using the `fun.data` argument, exactly what the ribbons represent by using any keyword that can be passed to `stat_summary_funs` including "mean_sd" (mean +/- standard deviation), "mean_sd" (mean +/- standard error of the mean), "median_iqr" (median +/- interquartile range), "tukey" (tukey boxplot hinges and whiskers), "quartiles" and "deciles".
 
 ```{r}
 PlotLong(longbmkr, x=vm, y=ep, fun.data = 'tukey',
@@ -911,7 +911,7 @@ longbmkr %>%
              xlab = 'Visitation Month',
              ylab = 'Endpoint',
              labs.title = 'Biomarker Timecourse',
-             labs.caption = '*ribbons represent mean value ± standard error of the mean.')
+             labs.caption = '*ribbons represent mean value +/- standard error of the mean.')
 ```
 
 #### Specifying a function for adjustment
@@ -936,7 +936,7 @@ longbmkr %>%
              xlab = 'Visitation Month',
              ylab = 'Endpoint',
              labs.title = 'Biomarker Timecourse',
-             labs.caption = '*ribbons represent mean value ± standard error of the mean.')
+             labs.caption = '*ribbons represent mean value +/- standard error of the mean.')
 ```
 
 

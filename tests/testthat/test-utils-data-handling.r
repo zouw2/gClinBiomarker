@@ -19,8 +19,8 @@ test_that('augment_predict produces dataframe of model fit terms', {
 })
 
 test_that('augment_predict produces grouped data frame when multiple models requested', {
-  expect_choice(
-    'grouped_df',
+  expect_true(
+    'grouped_df' %in%
     class(augment_predict(mtcars, model = lm, model.per = ~ am,
       model.formula = mpg ~ carb + am + hp + wt))
   )
