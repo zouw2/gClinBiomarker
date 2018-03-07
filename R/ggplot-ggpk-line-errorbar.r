@@ -48,18 +48,19 @@
 #'   collection of layers
 #'
 #' @examples
-#' library(tidyverse) # for dplyr, ggplot
-#' library(lubridate)
+#' library(dplyr)
+#' library(ggplot2)
 #'
-#' nasa %>% as_tibble %>%
-#'   mutate(date = ymd("0000/01/01") + months(month) + years(year)) %>%
-#'   mutate(hemisphere = ifelse(lat>0,"Northern", "Southern")) %>%
+#' nasa %>%
+#'   as.data.frame() %>%
+#'   mutate(date = as.Date(sprintf("%04d%02d01", year, month), "%Y%m%d")) %>%
+#'   mutate(hemisphere = ifelse(lat > 0,"Northern", "Southern")) %>%
 #'   mutate(temperature = temperature - 273) %>%
 #'
 #'   # plotting
 #'   ggplot() +
 #'     aes(x=date, y=temperature) +
-#'     ggpk_line_errorbar(fun.data = 'deciles') +
+#'     ggpk_line_errorbar(fun.data = 'quartiles') +
 #'     facet_grid(hemisphere ~ .) +
 #'     labs(title="Temperature by Hemisphere")
 #'
@@ -129,8 +130,10 @@ ggpk_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
     ## pack ## label
     # add labels of group counts
     if (isTRUE(show.counts) || show.counts == 'label') {
-      if (require(ggrepel, quietly = TRUE)) {
-        ggpack(ggrepel::geom_label_repel, id = c(id, 'label'),
+      tryCatch({
+        geom_label_repel <- getExportedValue('ggrepel', 'geom_label_repel')
+        ggpack(geom_label_repel,
+               id = c(id, 'label'),
                stat = 'summary',
                dots = dots,
                direction = "y",
@@ -138,14 +141,14 @@ ggpk_line_errorbar <- function(mapping = NULL, data = NULL, show.counts = FALSE,
                label.size = 0,
                fill = 'white',
                alpha = 0.85)
-
-      } else
+      }, error = function(e) {
         ggpack(ggplot2::geom_label, id = c(id, 'label'),
                stat = 'summary',
                dots = dots,
                label.size = 0,
                fill = 'white',
                alpha = 0.85)
+      })
 
     } else if (show.counts == 'table') {
       ggpack(geom_text_table, id = c(id, 'label'),

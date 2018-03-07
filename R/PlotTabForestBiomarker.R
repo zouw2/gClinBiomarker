@@ -59,7 +59,7 @@
 #' At the same time rsp.response and rsp.nonresponse will be ignored.
 #' @param rsp.response categories that should be considered as responder.
 #' @param rsp.nonresponse categories that should be considered as non responder.
-#' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
+#' @param tabforest Default is FALSE. If it is FALSE, forest plot will be generated using forestplot::forestplot() function.
 #' If it is TRUE, a table will be generated with forest plots incorpriated
 #' @param quantile.type an integer between 1 and 9 selecting one of the nine quantile algorithms. See \code{\link{quantile}}. Default is 2.
 #' @param alpha type I error rate. Default is 0.05.
@@ -75,11 +75,14 @@
 #' @param cex.note amount of magnification of the note. Default is 1.
 #' @param cols Color of the 'effect size' displayed in the forest plot.
 #' @param only.stat if it is TRUE, only summary statistics will be generated. No figure will be generated
-#' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "Forestplot.pdf".
+#' @param pdf.name name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "forestplot::forestplot.pdf".
 #' @param pdf.param a list of parameters that define pdf graphics device. See \code{\link{pdf}}. Default is \code{list(width=6, height=4.5)}.
 #' @param par.param a list of parameters that define graphcial parameters. See \code{\link{par}}. Default is \code{list(mar=c(4,4,3,2))}.
 #'
+#' @importFrom grid gpar
+#' @importFrom forestplot forestplot fpTxtGp fpColors
 #' @export
+#'
 #' @examples
 #' data(input)
 #' PlotTabForestBiomarker(data=input,
@@ -141,8 +144,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
 
     stopifnot(class(data) == "data.frame")
     percentile.footnote <- NULL
-  
- 
+
+
     outcome.class <- match.arg(outcome.class, c("survival", "binary","continuous"))
     if(outcome.class=="binary") {
         covariate <- strata <- NULL
@@ -591,7 +594,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 hz <- vector("list",1)
                 for(i in 1:length(hl)){
                     if(hl[i] < nrow(tabletext)){
-                        hz[[i]] <- gpar(lwd=2, col="#444444")
+                        hz[[i]] <- grid::gpar(lwd=2, col="#444444")
                         names(hz)[i] <- hl[i]+2
                     }
                 }
@@ -606,22 +609,22 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                     cols <- rep(cols, nrow(res))
                     cols[(length(bm.list)+1): length(cols)] <- "chocolate4"
                 }
-                forestplot(tabletext2,
+                forestplot::forestplot(tabletext2,
                 mean=c(NA,as.numeric(tabletext[-1,5])),
                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
                 xlab=xlab,
                 hrzl_lines=hz,align="l",
-                lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
+                lwd.xaxis=2, lwd.ci=2,col=forestplot::fpColors(box=cols, line=cols),
                 lwd.zero=3,
                 xlog=TRUE, clip=clip, xticks=xticks,
                 title=paste(main.text,"\n",sub.text),
                 #graphwidth=unit(100, 'mm'),
                 colgap=unit(cex.note*4,"mm"),
                 line.margin =unit(cex.note*2,"mm"),
-                txt_gp=fpTxtGp(label=gpar(cex=cex.note),
-                ticks=gpar(cex=cex.note),
-                xlab=gpar(cex = cex.note))
+                txt_gp=forestplot::fpTxtGp(label=grid::gpar(cex=cex.note),
+                ticks=grid::gpar(cex=cex.note),
+                xlab=grid::gpar(cex = cex.note))
                 )
 
             }
@@ -844,7 +847,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 hz <- vector("list",1)
                 for(i in 1:length(hl)){
                     if(hl[i] < nrow(tabletext)){
-                        hz[[i]] <- gpar(lwd=2, col="#444444")
+                        hz[[i]] <- grid::gpar(lwd=2, col="#444444")
                         names(hz)[i] <- hl[i]+2
                     }
                 }
@@ -859,22 +862,22 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                     cols <- rep(cols, nrow(res))
                     cols[(length(bm.list)+1): length(cols)] <- "chocolate4"
                 }
-                forestplot(tabletext2,
+                forestplot::forestplot(tabletext2,
                 mean=c(NA,as.numeric(tabletext[-1,5])),
                 lower=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][1]))),
                 upper=c(NA,as.numeric(sapply(tabletext[-1, 6], function(z)strsplit(z, " - ")[[1]][2]))),
                 xlab=xlab,
                 hrzl_lines=hz,align="l",
-                lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
+                lwd.xaxis=2, lwd.ci=2,col=forestplot::fpColors(box=cols, line=cols),
                 lwd.zero=3,
                 xlog=FALSE, clip=clip, xticks=xticks,
                 title=paste(main.text,"\n",sub.text),
                 #graphwidth=unit(100, 'mm'),
                 colgap=unit(cex.note*4,"mm"),
                 line.margin =unit(cex.note*2,"mm"),
-                txt_gp=fpTxtGp(label=gpar(cex=cex.note),
-                ticks=gpar(cex=cex.note),
-                xlab=gpar(cex = cex.note))
+                txt_gp=forestplot::fpTxtGp(label=grid::gpar(cex=cex.note),
+                ticks=grid::gpar(cex=cex.note),
+                xlab=grid::gpar(cex = cex.note))
                 )
 
             }
@@ -1071,7 +1074,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                 hz <- vector("list",1)
                 for(i in 1:length(hl)){
                     if(hl[i] < nrow(tabletext)){
-                        hz[[i]] <- gpar(lwd=2, col="#444444")
+                        hz[[i]] <- grid::gpar(lwd=2, col="#444444")
                         names(hz)[i] <- hl[i]+2
                     }
                 }
@@ -1086,22 +1089,22 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
                     cols <- rep(cols, nrow(res))
                     cols[(length(bm.list)+1): length(cols)] <- "chocolate4"
                 }
-                forestplot(tabletext2,
+                forestplot::forestplot(tabletext2,
                 mean=c(NA,as.numeric(tabletext[-1,4 ])),
                 lower=c(NA,as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][1]))),
                 upper=c(NA,as.numeric(sapply(tabletext[-1, 5], function(z)strsplit(z, " - ")[[1]][2]))),
                 xlab=xlab,
                 hrzl_lines=hz,align="l",
-                lwd.xaxis=2, lwd.ci=2,col=fpColors(box=cols, line=cols),
+                lwd.xaxis=2, lwd.ci=2,col=forestplot::fpColors(box=cols, line=cols),
                 lwd.zero=3,
                 xlog=FALSE, clip=clip, xticks=xticks,
                 title=paste(main.text,"\n",sub.text),
                 #graphwidth=unit(100, 'mm'),
                 colgap=unit(cex.note*4,"mm"),
                 line.margin =unit(cex.note*2,"mm"),
-                txt_gp=fpTxtGp(label=gpar(cex=cex.note),
-                ticks=gpar(cex=cex.note),
-                xlab=gpar(cex = cex.note))
+                txt_gp=forestplot::fpTxtGp(label=grid::gpar(cex=cex.note),
+                ticks=grid::gpar(cex=cex.note),
+                xlab=grid::gpar(cex = cex.note))
                 )
 
             }

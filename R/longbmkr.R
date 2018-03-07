@@ -1,11 +1,27 @@
-library(dplyr)
-
 rbimodal <- function (n, cpct, mu1, mu2, sig1, sig2) {
   y0 <- rnorm(n,mean=mu1, sd = sig1)
   y1 <- rnorm(n,mean=mu2, sd = sig2)
   flag <- rbinom(n,size=1,prob=cpct)
   y <- y0*(1 - flag) + y1*flag
 }
+
+#' Simulated longitudinal biomarker data
+#'
+#' Contains the following variables
+#'
+#' @format A data frame with 8,500 rows and 8 variables:
+#' \describe{
+#'   \item{pid}{Patient Identifier}
+#'   \item{trt}{Treatment Arm (1, 0)}
+#'   \item{sex}{Patient Sex (m, f)}
+#'   \item{age}{Patient Age}
+#'   \item{edu}{Patient years of education}
+#'   \item{bmkr}{Baseline biomarker reading}
+#'   \item{vm}{Patient visit time in months}
+#'   \item{ep}{Biomarker endpoint reading}
+#' }
+#'
+"longbmkr"
 
 longbmkr <-
   # build list of parameters

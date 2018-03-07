@@ -2,8 +2,12 @@ Package: gClinBiomarker
 Title: gClinBiomarker: an R package for clinical biomarker analyses
 Version: 0.99.0
 Date: 2017-9-5
-Authors@R: c(person("Ning Leng", role = "aut"), person("Alexey Pronin",  role = "aut") ,person("Jemma Fan", role="aut"),
-    person("Doug Kelkhoff",  role = "aut"), person("Christina Rabe",  role = "aut"),
+Authors@R: c(
+    person("Ning Leng", role = c("aut", "cre")), 
+    person("Alexey Pronin",  role = "aut"),
+    person("Jemma Fan", role="aut"),
+    person("Doug Kelkhoff",  role = "aut"), 
+    person("Christina Rabe",  role = "aut"),
     person("Kwame Okrah",  role = "aut"))
 Author: Ning Leng <leng.ning@gene.com>,
     Alexey Pronin <pronin.alexey@gene.com>,
@@ -29,7 +33,6 @@ VignetteBuilder: knitr
 Depends:
     R(>= 3.1.2),
     survival,
-    forestplot
 Imports:
     dplyr,
     ggplot2,
@@ -41,8 +44,8 @@ Imports:
     coin,
     graphics,
     knitr,
-    methods
+    methods,
+    forestplot
 Suggests:
-    knitr,
     rmarkdown,
     testthat

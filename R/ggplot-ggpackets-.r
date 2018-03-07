@@ -58,11 +58,13 @@ ggpack <- function(`_call` = NULL, ..., id = NULL, dots = NULL, null.empty = FAL
   if (null.empty && length(thru) == 0) return(ggpacket(NULL))
 
   callfname <- deparse(as.list(match.call())$'_call')
-  if (class(`_call`) == 'function' && grepl('geom_', callfname))
-    geom <- ggplot2:::find_subclass('Geom', gsub('^[^_]*_', '', callfname), parent.frame())
-  else if ('geom' %in% names(thru))
-    geom <- ggplot2:::find_subclass('Geom', thru['geom'], parent.frame())
-  else geom <- NULL
+  # call ggproto construction with stripped args to determine geom
+  # might cause issue if aesthetics are dependent on additional arguments
+  ggproto_tmp <- tryCatch({
+      do.call(`_call`, thru[names(thru) %in% c('geom', 'stat')])
+    }, error = function(e) NULL)
+  geom <- if ('ggproto' %in% class(ggproto_tmp)) ggproto_tmp$geom else NULL
+  stat <- if ('ggproto' %in% class(ggproto_tmp)) ggproto_tmp$stat else NULL
 
   # account for mismatched aesthetics when mapping being passed through
   # (code largely made to mirror ggplot2 layer.r's compute_aesthetics())
@@ -300,9 +302,9 @@ allowed_aesthetics <- function(geom) {
 #'
 #' @import ggplot2
 add_eqv_aes <- function(aes_names) {
-  base_eqv_idx <- unlist(ggplot2:::.base_to_ggplot) %in% aes_names |
-    names(ggplot2:::.base_to_ggplot)  %in% aes_names
-  base_eqv <- ggplot2:::.base_to_ggplot[base_eqv_idx]
+  base_eqv_idx <- unlist(safe_private_export('ggplot2', '.base_to_ggplot')) %in% aes_names |
+    names(safe_private_export('ggplot2', '.base_to_ggplot'))  %in% aes_names
+  base_eqv <- safe_private_export('ggplot2', '.base_to_ggplot')[base_eqv_idx]
   aes_names_new <- unique(c(aes_names, names(base_eqv), unlist(base_eqv, use.names = F)))
   # attempt to add new equivalent mappings if anything new added (e.g. (color => colour) => fg)
   if (!(all(aes_names_new %in% aes_names))) add_eqv_aes(aes_names_new)
@@ -321,7 +323,7 @@ add_eqv_aes <- function(aes_names) {
 #' @export
 filter_aesthetics <- function(geom, mapping) {
   allowed_aes <- allowed_aesthetics(geom)
-  mapping_aes_names <- names(ggplot2:::rename_aes(mapping))
+  mapping_aes_names <- names(safe_private_export('ggplot2', 'rename_aes')(mapping))
   disallowed_aes <- setdiff(mapping_aes_names, allowed_aes)
   do.call(remove_aesthetics, c(list(mapping), disallowed_aes))
 }
@@ -362,7 +364,7 @@ flatten_aesthetics_to_group <- function(mapping, ...) {
 #'
 #' @export
 split_aes_from_dots <- function(..., geom = NULL) {
-  if (is.null(geom)) aes_list <- ggplot2:::.all_aesthetics
+  if (is.null(geom)) aes_list <- safe_private_export('ggplot2', '.all_aesthetics')
   else aes_list <- allowed_aesthetics(geom)
   aes_args     <- structure(substitute(...()), class = 'uneval')
   not_aes_args <- aes_args[!names(aes_args) %in% aes_list]

@@ -117,7 +117,7 @@ PlotLong <- function(data, mapping = NULL, model = lm, model.per = NULL,
         dots = .dots, facets = facet.fun)
 
   # plot using geom_stat_ribbons, passing extra arguments to geom
-  data %>% ggplot2:::ggplot() + mapping +
+  data %>% ggplot2::ggplot() + mapping +
     do.call(ggcall.plot, c(.dots, list(id = 'plotlong'))) +
     ggcall.facets +
     do.call(ggpk_decorators, .dots)

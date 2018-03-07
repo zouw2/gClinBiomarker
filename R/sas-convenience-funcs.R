@@ -21,11 +21,9 @@
 #' @import dplyr
 #'
 #' @examples
-#' library(dplyr) # for %>% operator
-#' library(nlme)  # for gls
-#'
 #' # create model on which to calculate emmeans
-#' model <- gls(mpg ~ hp + carb + wt,
+#' # for sake of reusable example lm is used, but can accommodate all models
+#' model <- lm(mpg ~ hp + carb + wt,
 #'   data = mtcars, na.action = na.exclude)
 #'
 #' # call emmeans, specifying factors over which means should be calculated
@@ -130,6 +128,7 @@ sas.emmeans <- function(model.obj, specs, data = NULL, mode = 'kenward-roger',
 #' @param data A dataframe upon which means will be calculated
 #' @param potential_vars A character vector of potential variable names to
 #'   consider
+#' @param verbose include verbose output of numeric means calculations
 #'
 #' @return A named list with names as the numeric subset of the variable names
 #'   specified in potential_vars and values of the means
@@ -375,7 +374,7 @@ as.data.frame.emmGrid <- function(x, row.names, optional, ...) {
 #' @export
 #' @import emmeans
 update.emm_list <- function(object, ..., silent = FALSE) {
-  object$emmeans <- emmeans:::update.emmGrid(object$emmeans, ...)
+  object$emmeans <- safe_private_export('emmeans', 'update.emmGrid')(object$emmeans, ...)
   object
 }
 

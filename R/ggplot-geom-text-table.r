@@ -25,7 +25,7 @@ geom_text_table <- function(mapping = NULL, data = NULL, stat = "identity",
 #' A ggplot2 Geom object to add a table of text values to a plot
 #'
 #' @export
-GeomTextTable <- ggplot2:::ggproto("GeomTextTable", ggplot2:::Geom,
+GeomTextTable <- ggplot2::ggproto("GeomTextTable", ggplot2::Geom,
   required_aes = c("x", "y", "label"),
 
   setup_data = function(data, params) {
@@ -52,19 +52,19 @@ GeomTextTable <- ggplot2:::ggproto("GeomTextTable", ggplot2:::Geom,
     data$group[data$group == -1] <- 1
 
     data <- coord$transform(data, panel_params)
-    if (is.character(data$vjust)) data$vjust <- ggplot2:::compute_just(data$vjust, data$y)
-    if (is.character(data$hjust)) data$hjust <- ggplot2:::compute_just(data$hjust, data$x)
+    if (is.character(data$vjust)) data$vjust <- safe_private_export('ggplot2', 'compute_just')(data$vjust, data$y)
+    if (is.character(data$hjust)) data$hjust <- safe_private_export('ggplot2', 'compute_just')(data$hjust, data$x)
 
-    lineheight.npc <- grid:::convertHeight(unit(data$lineheight * 1.25 * data$size * .pt, "bigpts"), "npc", TRUE)
-    data$y <- grid:::convertHeight(unit(0.98, "npc") - lineheight.npc * unit((data$group - 1), "npc"), "npc", TRUE)
+    lineheight.npc <- grid::convertHeight(unit(data$lineheight * 1.25 * data$size * .pt, "bigpts"), "npc", TRUE)
+    data$y <- grid::convertHeight(unit(0.98, "npc") - lineheight.npc * unit((data$group - 1), "npc"), "npc", TRUE)
     data$vjust <- 1
 
-    grid:::textGrob(
+    grid::textGrob(
       data$label,
       data$x, data$y, default.units = "native",
       hjust = data$hjust, vjust = data$vjust,
       rot = data$angle,
-      gp = grid:::gpar(
+      gp = grid::gpar(
         col = alpha(data$colour, data$alpha),
         fontsize = data$size * .pt,
         fontfamily = data$family,
@@ -75,5 +75,5 @@ GeomTextTable <- ggplot2:::ggproto("GeomTextTable", ggplot2:::Geom,
     )
   },
 
-  draw_key = ggplot2:::draw_key_text
+  draw_key = ggplot2::draw_key_text
 )

@@ -1285,7 +1285,7 @@ In the context of biomarker analysis, the `PlotLong` function can be used to plo
 
 ## Biomarker Endpoint Progression
 
-### Mean ± SEM Timecourse
+### Mean +/- SEM Timecourse
 
 Here we plot the mean and standard error of the mean over time. We can see clearly that the mean biomarker endpoint increases throughout the study.
 
@@ -1293,7 +1293,7 @@ Here we plot the mean and standard error of the mean over time. We can see clear
 PlotLong(longbmkr, aes(x=vm, y=ep),
          xlab = 'Visitation Month',
          ylab = 'Biomarker Endpoint',
-         labs.title = 'Mean ± SEM')
+         labs.title = 'Mean +/- SEM')
 ```
 
 ### Tukey Hinges and Whiskers
