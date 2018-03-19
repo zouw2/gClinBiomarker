@@ -42,7 +42,11 @@ This vignette provides general guidelines of using gClinBiomarker package. Examp
 
 For advanced usage, more detailed examples can be found at:
 
-https://github.roche.com/lengn/gClinbiomarker_documents/blob/master/gClinbiomarker_example_use_case.pdf
+https://github.roche.com/Rpackages/gClinBiomarker/blob/master/inst/doc/example-use-cases.pdf
+
+pdf version of this document can be found at:
+
+https://github.roche.com/Rpackages/gClinBiomarker/blob/master/inst/doc/package-overview.pdf
 
 The Rmarkdown templates can be found at:
 

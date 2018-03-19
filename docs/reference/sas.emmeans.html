@@ -144,12 +144,8 @@ confidence level outputs</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>) <span class='co'># for %&gt;% operator</span>
-<span class='fu'>library</span>(<span class='no'>nlme</span>)  <span class='co'># for gls</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:gClinBiomarker’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    collapse</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    collapse</span></div><div class='input'>
+<span class='fu'>library</span>(<span class='no'>nlme</span>)  <span class='co'># for gls</span>
+
 <span class='co'># create model on which to calculate emmeans</span>
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/nlme/topics/gls'>gls</a></span>(<span class='no'>mpg</span> ~ <span class='no'>hp</span> + <span class='no'>carb</span> + <span class='no'>wt</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>mtcars</span>, <span class='kw'>na.action</span> <span class='kw'>=</span> <span class='no'>na.exclude</span>)
@@ -163,10 +159,7 @@ confidence level outputs</p></td>
 #&gt; <span class='message'> 3. grouping variables for emmeans converted to factor.</span>
 #&gt; <span class='message'>      (creating a new factor column where necessary)</span>
 #&gt; <span class='message'> 4. continuous means calculated using rows where response is not NA.</span>
-#&gt; <span class='message'> 5. categorical level weights from all rows of dataset</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘emmeans’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:devtools’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    test</span></div><div class='input'>
+#&gt; <span class='message'> 5. categorical level weights from all rows of dataset</span></div><div class='input'>
 <span class='co'># update the confidence level used</span>
 <span class='co'># NOTE: if you're examining confidence intervals, it's much faster to udpate</span>
 <span class='co'># rather than re-run the model and means</span>
