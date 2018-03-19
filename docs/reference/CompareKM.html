@@ -127,6 +127,21 @@ biomarker variables, treatment indicator, etc.). One patient per row.</p></td>
 if it is NULL, the comparison will be performed using all samples.</p></td>
     </tr>
     <tr>
+      <th>bep</th>
+      <td><p>name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.</p></td>
+    </tr>
+    <tr>
+      <th>bep.indicator</th>
+      <td><p>In the subpopulation column, which value is used
+to define the biomarker evaluable population.</p></td>
+    </tr>
+    <tr>
+      <th>bep.name</th>
+      <td><p>preferred display name of the biomarker evaluable population.
+If it is NULL, bep will be used.</p></td>
+    </tr>
+    <tr>
       <th>itt.name</th>
       <td><p>preferred display name of the full population (e.g. ITT).
 If it is NULL, "All" will be used.</p></td>
@@ -175,7 +190,7 @@ for example, par.param=list(mfrow=c(3,1), mar=c(4,4,3,2))</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>input</span>)
 <span class='no'>sample.data</span> <span class='kw'>&lt;-</span> <span class='no'>input</span>
-<span class='fu'>CompareKM</span>(<span class='kw'>data</span><span class='kw'>=</span><span class='no'>sample.data</span>, <span class='kw'>tte</span><span class='kw'>=</span><span class='st'>"OS"</span>,<span class='kw'>cens</span><span class='kw'>=</span><span class='st'>"OS.event"</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"OS ITT"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='error'>Error in survfitKM(X, newY, casewt, ...): attempt to select less than one element in integerOneIndex</span></div><div class='img'><img src='CompareKM-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>CompareKM</span>(<span class='kw'>data</span><span class='kw'>=</span><span class='no'>sample.data</span>, <span class='kw'>tte</span><span class='kw'>=</span><span class='st'>"OS"</span>,<span class='kw'>cens</span><span class='kw'>=</span><span class='st'>"OS.event"</span>, <span class='kw'>main</span><span class='kw'>=</span><span class='st'>"OS ITT"</span>, <span class='kw'>bep</span><span class='kw'>=</span><span class='st'>"BEP"</span>)</div><div class='img'><img src='CompareKM-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

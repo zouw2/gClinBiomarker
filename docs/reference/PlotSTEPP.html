@@ -105,7 +105,8 @@
   <span class='kw'>show.refline</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>refline.color</span> <span class='kw'>=</span> <span class='st'>"grey"</span>, <span class='kw'>show.refline.ac</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>refline.color.ac</span> <span class='kw'>=</span> <span class='st'>"lightblue"</span>, <span class='kw'>estimate.color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>estimate.lty</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>estimate.lwd</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>,
-  <span class='kw'>ci.color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>ci.lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ci.lwd</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>ci.shade</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"efron"</span>, <span class='kw'>ci.color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>ci.lty</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ci.lwd</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>ci.shade</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>plot.title</span> <span class='kw'>=</span> <span class='st'>"STEPP: Subgroup Treatment Effect Pattern Plot"</span>,
   <span class='kw'>sub.title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xlabel</span> <span class='kw'>=</span> <span class='st'>"Biomarker Percentile"</span>, <span class='kw'>ylabel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend.loc</span> <span class='kw'>=</span> <span class='st'>"topright"</span>,
@@ -225,6 +226,10 @@ This can be added to adjust for in the analysis for survival and continuous outc
     <tr>
       <th>surv.conf.type</th>
       <td><p>confidence interval type. Default is "plain". see conf.type in survfit.</p></td>
+    </tr>
+    <tr>
+      <th>ties</th>
+      <td><p>Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.</p></td>
     </tr>
     <tr>
       <th>ci.color</th>

@@ -103,9 +103,9 @@ Three classes of "outcome.var" variable can be analyzed using this function:
 
     <pre class="usage"><span class='fu'>SummaryTwoGroups</span>(<span class='no'>outcome.var</span>, <span class='kw'>subgroup.var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>treatment.var</span>,
   <span class='no'>placebo.code</span>, <span class='no'>active.code</span>, <span class='no'>outcome.class</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>covariate.var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>strat.factor.var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>return.fit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>fit.para</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>prop.test.use.continuity.correction</span> <span class='kw'>=</span>
-  <span class='no'>T</span>))</pre>
+  <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"efron"</span>, <span class='kw'>covariate.var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>strat.factor.var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>return.fit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>fit.para</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>prop.test.use.continuity.correction</span> <span class='kw'>=</span> <span class='no'>T</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -141,6 +141,10 @@ Three classes of "outcome.var" variable can be analyzed using this function:
     <tr>
       <th>surv.conf.type</th>
       <td><p>confidence interval type. See conf.type in survfit. Default is "plain"</p></td>
+    </tr>
+    <tr>
+      <th>ties</th>
+      <td><p>Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.</p></td>
     </tr>
     <tr>
       <th>covariate.var</th>

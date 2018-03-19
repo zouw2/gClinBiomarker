@@ -98,7 +98,7 @@
     
 
     <pre class="usage"><span class='fu'>LogRankTab</span>(<span class='no'>data</span>, <span class='no'>tte</span>, <span class='no'>cens</span>, <span class='no'>var</span>, <span class='kw'>time.unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>,
-  <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>fillname</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+  <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"efron"</span>, <span class='kw'>fillname</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -107,6 +107,14 @@
       <th>data</th>
       <td><p>Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
 biomarker variables, treatment indicator, etc.). One patient per row.</p></td>
+    </tr>
+    <tr>
+      <th>tte</th>
+      <td><p>column name that indicates the time to event variable</p></td>
+    </tr>
+    <tr>
+      <th>cens</th>
+      <td><p>column name that indicates the censoring variable associated to tte. 1 indicates event and 0 indicates censoring</p></td>
     </tr>
     <tr>
       <th>var</th>
@@ -121,6 +129,10 @@ It will be ignored if fit or form is not null.</p></td>
     <tr>
       <th>surv.conf.type</th>
       <td><p>confidence interval type. Default is "plain". see conf.type in survfit</p></td>
+    </tr>
+    <tr>
+      <th>ties</th>
+      <td><p>Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.</p></td>
     </tr>
     <tr>
       <th>fillname</th>

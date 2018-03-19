@@ -109,12 +109,12 @@ biomarker variable</p>
   <span class='kw'>tabforest</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quantile.type</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>cutoff.digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>placebo.code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>active.code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>rsp.cat</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>rsp.response</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"CR"</span>, <span class='st'>"PR"</span>), <span class='kw'>rsp.nonresponse</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"SD"</span>, <span class='st'>"PD"</span>, <span class='st'>"NON CR/PD"</span>,
-  <span class='st'>"NE"</span>, <span class='fl'>NA</span>), <span class='kw'>var.code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main.prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sub</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>clip</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xticks.digits</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>cex.headings</span> <span class='kw'>=</span> <span class='fl'>1.1</span>,
-  <span class='kw'>cex.note</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>only.stat</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pdf.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pdf.param</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>4.5</span>), <span class='kw'>par.param</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cex.sub</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>1</span>))</pre>
+  <span class='st'>"NE"</span>, <span class='fl'>NA</span>), <span class='kw'>var.code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>surv.conf.type</span> <span class='kw'>=</span> <span class='st'>"plain"</span>, <span class='kw'>ties</span> <span class='kw'>=</span> <span class='st'>"efron"</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>main.prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sub</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>clip</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xticks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>xticks.digits</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cex.headings</span> <span class='kw'>=</span> <span class='fl'>1.1</span>, <span class='kw'>cex.note</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>only.stat</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>pdf.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pdf.param</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>4.5</span>),
+  <span class='kw'>par.param</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cex.main</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cex.sub</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cex.axis</span> <span class='kw'>=</span> <span class='fl'>1</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -275,6 +275,10 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
     <tr>
       <th>surv.conf.type</th>
       <td><p>confidence interval type. Default is "plain". see conf.type in survfit</p></td>
+    </tr>
+    <tr>
+      <th>ties</th>
+      <td><p>Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.</p></td>
     </tr>
     <tr>
       <th>alpha</th>

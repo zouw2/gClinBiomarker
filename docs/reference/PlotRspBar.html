@@ -181,9 +181,24 @@ in full population (e.g. ITT) vs in BEP. If this is TRUE, paramemeter bep should
 parameters bep, bep.name, itt.name, bep.indicator will be ignored</p></td>
     </tr>
     <tr>
+      <th>bep</th>
+      <td><p>name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.</p></td>
+    </tr>
+    <tr>
+      <th>bep.name</th>
+      <td><p>preferred display name of the biomarker evaluable population.
+If it is NULL, bep will be used.</p></td>
+    </tr>
+    <tr>
       <th>itt.name</th>
       <td><p>preferred display name of the full population (e.g. ITT).
 If it is NULL, "All" will be used.</p></td>
+    </tr>
+    <tr>
+      <th>bep.indicator</th>
+      <td><p>In the subpopulation column, which value is used
+to define the biomarker evaluable population.</p></td>
     </tr>
     <tr>
       <th>compare.var</th>

@@ -111,6 +111,14 @@
 biomarker variables, treatment indicator, etc.). One patient per row.</p></td>
     </tr>
     <tr>
+      <th>tte</th>
+      <td><p>column name that indicates the time to event variable</p></td>
+    </tr>
+    <tr>
+      <th>cens</th>
+      <td><p>column name that indicates the censoring variable associated to tte. 1 indicates event and 0 indicates censoring</p></td>
+    </tr>
+    <tr>
       <th>var</th>
       <td><p>a vector that indicates variables of interest.
 Hazard ratio, CI and pvalue of these variables will be calculated. All elements in var should be also in input data's column names.
@@ -157,6 +165,16 @@ If additive = FALSE, User can only use 'var' to speficy variables of interest (c
     <tr>
       <th>digits</th>
       <td><p>digits for rounding</p></td>
+    </tr>
+    <tr>
+      <th>bep</th>
+      <td><p>name of the column which indicates biomarker evaluable population. If it is null, patients who have non NA records
+in biomarker variable will be used as BEP.</p></td>
+    </tr>
+    <tr>
+      <th>bep.indicator</th>
+      <td><p>In the subpopulation column, which value is used
+to define the biomarker evaluable population.</p></td>
     </tr>
     </table>
     

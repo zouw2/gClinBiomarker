@@ -68,7 +68,7 @@
       <h1>gClinBiomarker Package Overivew</h1>
                         <h4 class="author">Ning Leng, Alexey Pronin, Christina Rabe, Doug Kelkhoff, Kwame Okrah</h4>
             
-            <h4 class="date">2018-02-21</h4>
+            <h4 class="date">2018-03-19</h4>
           </div>
 
     
@@ -1611,13 +1611,13 @@ Rsp.out<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw"
 <h3 class="hasAnchor">
 <a href="#longitudinal-plots-with-plotlong" class="anchor"></a>Longitudinal Plots with <code>PlotLong</code>
 </h3>
-<p>The <code>PlotLong</code> function is called with only a small set of arguments. The first is the data to plot and the second is an aesthetic mapping (using the function <code>aes()</code>) to map columns to visual outputs. In it’s most simple form, you can plot the distribution of endpoint readings over the timecourse, for the entire patient population. By default, the <code>PlotLong</code> function plots a line with points at the timepoints for which data exists with a ribbon showing the mean ± standard error at that timestamp.</p>
+<p>The <code>PlotLong</code> function is called with only a small set of arguments. The first is the data to plot and the second is an aesthetic mapping (using the function <code>aes()</code>) to map columns to visual outputs. In it’s most simple form, you can plot the distribution of endpoint readings over the timecourse, for the entire patient population. By default, the <code>PlotLong</code> function plots a line with points at the timepoints for which data exists with a ribbon showing the mean +/- standard error at that timestamp.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotLong.html">PlotLong</a></span>(longbmkr, <span class="dt">x=</span>vm, <span class="dt">y=</span>ep)</code></pre></div>
 <p><img src="package-overview_files/figure-html/unnamed-chunk-48-1.png" width="672"></p>
 <div id="tukey-hinges-and-whiskers" class="section level4">
 <h4 class="hasAnchor">
 <a href="#tukey-hinges-and-whiskers" class="anchor"></a>Tukey Hinges and Whiskers</h4>
-<p>However, we may be more interested in the population distribution progression where we’d want to plot the Tukey boxplot hinges and whiskers over time. From this plot, we can see that although there is a slow rise in population mean, the patient response also becomes more distributed. You can specify, using the <code>fun.data</code> argument, exactly what the ribbons represent by using any keyword that can be passed to <code>stat_summary_funs</code> including “mean_sd” (mean ± standard deviation), “mean_sd” (mean ± standard error of the mean), “median_iqr” (median ± interquartile range), “tukey” (tukey boxplot hinges and whiskers), “quartiles” and “deciles”.</p>
+<p>However, we may be more interested in the population distribution progression where we’d want to plot the Tukey boxplot hinges and whiskers over time. From this plot, we can see that although there is a slow rise in population mean, the patient response also becomes more distributed. You can specify, using the <code>fun.data</code> argument, exactly what the ribbons represent by using any keyword that can be passed to <code>stat_summary_funs</code> including “mean_sd” (mean +/- standard deviation), “mean_sd” (mean +/- standard error of the mean), “median_iqr” (median +/- interquartile range), “tukey” (tukey boxplot hinges and whiskers), “quartiles” and “deciles”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/PlotLong.html">PlotLong</a></span>(longbmkr, <span class="dt">x=</span>vm, <span class="dt">y=</span>ep, <span class="dt">fun.data =</span> <span class="st">'tukey'</span>,
          <span class="dt">xlab =</span> <span class="st">'Visitation Month'</span>,
          <span class="dt">ylab =</span> <span class="st">'Biomarker Endpoint'</span>,
@@ -1673,7 +1673,7 @@ longbmkr %&gt;%
              <span class="dt">xlab =</span> <span class="st">'Visitation Month'</span>,
              <span class="dt">ylab =</span> <span class="st">'Endpoint'</span>,
              <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
-             <span class="dt">labs.caption =</span> <span class="st">'*ribbons represent mean value ± standard error of the mean.'</span>)</code></pre></div>
+             <span class="dt">labs.caption =</span> <span class="st">'*ribbons represent mean value +/- standard error of the mean.'</span>)</code></pre></div>
 <pre><code>## Warning: package 'bindrcpp' was built under R version 3.3.2</code></pre>
 <p><img src="package-overview_files/figure-html/unnamed-chunk-53-1.png" width="672"></p>
 </div>
@@ -1698,7 +1698,7 @@ longbmkr %&gt;%
              <span class="dt">xlab =</span> <span class="st">'Visitation Month'</span>,
              <span class="dt">ylab =</span> <span class="st">'Endpoint'</span>,
              <span class="dt">labs.title =</span> <span class="st">'Biomarker Timecourse'</span>,
-             <span class="dt">labs.caption =</span> <span class="st">'*ribbons represent mean value ± standard error of the mean.'</span>)</code></pre></div>
+             <span class="dt">labs.caption =</span> <span class="st">'*ribbons represent mean value +/- standard error of the mean.'</span>)</code></pre></div>
 <pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
 <pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
 <pre><code>## Warning: Deprecated: please use `purrr::possibly()` instead</code></pre>
