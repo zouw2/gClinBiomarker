@@ -907,7 +907,7 @@ BoxPlot(mtcars, mpg~cyl %in% gear, Title=list(main="Miles per Gallon by Number o
 PlotLong(longbmkr, aes(x=vm, y=ep),
          xlab = 'Visitation Month',
          ylab = 'Biomarker Endpoint',
-         labs.title = 'Mean ± SEM')
+         labs.title = 'Mean +/- SEM')
 
 ## ------------------------------------------------------------------------
 PlotLong(longbmkr, aes(x=vm, y=ep), fun.data = 'tukey',

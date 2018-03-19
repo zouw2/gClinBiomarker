@@ -464,7 +464,7 @@ longbmkr %>%
              xlab = 'Visitation Month',
              ylab = 'Endpoint',
              labs.title = 'Biomarker Timecourse',
-             labs.caption = '*ribbons represent mean value ± standard error of the mean.')
+             labs.caption = '*ribbons represent mean value +/- standard error of the mean.')
 
 ## ---- fig.height = 5-----------------------------------------------------
 cutoff = 1.5
@@ -484,5 +484,5 @@ longbmkr %>%
              xlab = 'Visitation Month',
              ylab = 'Endpoint',
              labs.title = 'Biomarker Timecourse',
-             labs.caption = '*ribbons represent mean value ± standard error of the mean.')
+             labs.caption = '*ribbons represent mean value +/- standard error of the mean.')
 
