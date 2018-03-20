@@ -6,6 +6,9 @@ output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: true
+  pdf_document:
+      toc: true
+      number_sections: true
 vignette: >
   %\VignetteIndexEntry{Package Overview}
   %\VignetteEngine{knitr::rmarkdown}
