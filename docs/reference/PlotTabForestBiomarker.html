@@ -231,7 +231,7 @@ to define the biomarker evaluable population.</p></td>
     </tr>
     <tr>
       <th>tabforest</th>
-      <td><p>Default is FALSE. If it is FALSE, forest plot will be generated using forestplot() function.
+      <td><p>Default is FALSE. If it is FALSE, forest plot will be generated using forestplot::forestplot() function.
 If it is TRUE, a table will be generated with forest plots incorpriated</p></td>
     </tr>
     <tr>
@@ -322,7 +322,7 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
     </tr>
     <tr>
       <th>pdf.name</th>
-      <td><p>name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "Forestplot.pdf".</p></td>
+      <td><p>name of output pdf file. If it's NULL, the plots will be displayed but not saved as pdf. Default is "forestplot::forestplot.pdf".</p></td>
     </tr>
     <tr>
       <th>pdf.param</th>
@@ -342,7 +342,7 @@ If the biomarker is categorical and this is NULL, biomarker subgroups will be or
                       <span class='kw'>outcome.var</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"PFS"</span>,<span class='st'>"PFS.event"</span>),
                       <span class='kw'>trt</span><span class='kw'>=</span><span class='st'>"Arm"</span>,
                       <span class='kw'>var</span><span class='kw'>=</span><span class='st'>"KRAS.mutant"</span>,
-                      <span class='kw'>var.class</span><span class='kw'>=</span><span class='st'>"categorical"</span>)</div><div class='output co'>#&gt; <span class='message'>Some NAs in var column, will define the non NA entries as BEP</span></div><div class='img'><img src='PlotTabForestBiomarker-5.png' alt='' width='700' height='432.632880098887' /></div><div class='output co'>#&gt;                                code.v                                         
+                      <span class='kw'>var.class</span><span class='kw'>=</span><span class='st'>"categorical"</span>)</div><div class='output co'>#&gt; <span class='message'>Some NAs in var column, will define the non NA entries as BEP</span></div><div class='img'><img src='PlotTabForestBiomarker-2.png' alt='' width='700' height='432.632880098887' /></div><div class='output co'>#&gt;                                code.v                                         
 #&gt;  [1,] "Subgroup"               "Group" "Event/N"   "MST"  "HR"   "CI"         
 #&gt;  [2,] "All"                    "CTRL"  "120 / 182" "3.25" ""     ""           
 #&gt;  [3,] ""                       "TRT"   "202 / 368" "5.82" "0.54" "0.43 - 0.67"

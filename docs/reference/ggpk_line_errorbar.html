@@ -182,20 +182,21 @@ and passed to the following calls:</p><ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>tidyverse</span>) <span class='co'># for dplyr, ggplot</span>
-<span class='fu'>library</span>(<span class='no'>lubridate</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 
-<span class='no'>nasa</span> <span class='kw'>%&gt;%</span> <span class='no'>as_tibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>mutate</span>(<span class='kw'>date</span> <span class='kw'>=</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/lubridate/topics/ymd'>ymd</a></span>(<span class='st'>"0000/01/01"</span>) + <span class='fu'>months</span>(<span class='no'>month</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/lubridate/topics/quick_periods'>years</a></span>(<span class='no'>year</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>mutate</span>(<span class='kw'>hemisphere</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='no'>lat</span><span class='kw'>&gt;</span><span class='fl'>0</span>,<span class='st'>"Northern"</span>, <span class='st'>"Southern"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>mutate</span>(<span class='kw'>temperature</span> <span class='kw'>=</span> <span class='no'>temperature</span> - <span class='fl'>273</span>) <span class='kw'>%&gt;%</span>
+<span class='no'>nasa</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>as.data.frame</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>date</span> <span class='kw'>=</span> <span class='fu'>as.Date</span>(<span class='fu'>sprintf</span>(<span class='st'>"%04d%02d01"</span>, <span class='no'>year</span>, <span class='no'>month</span>), <span class='st'>"%Y%m%d"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>hemisphere</span> <span class='kw'>=</span> <span class='fu'>ifelse</span>(<span class='no'>lat</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>,<span class='st'>"Northern"</span>, <span class='st'>"Southern"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>temperature</span> <span class='kw'>=</span> <span class='no'>temperature</span> - <span class='fl'>273</span>) <span class='kw'>%&gt;%</span>
 
   <span class='co'># plotting</span>
-  <span class='fu'>ggplot</span>() +
-    <span class='fu'>aes</span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>date</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>temperature</span>) +
-    <span class='fu'>ggpk_line_errorbar</span>(<span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>'deciles'</span>) +
-    <span class='fu'>facet_grid</span>(<span class='no'>hemisphere</span> ~ <span class='no'>.</span>) +
-    <span class='fu'>labs</span>(<span class='kw'>title</span><span class='kw'>=</span><span class='st'>"Temperature by Hemisphere"</span>)</div><div class='img'><img src='ggpk_line_errorbar-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>() +
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span><span class='kw'>=</span><span class='no'>date</span>, <span class='kw'>y</span><span class='kw'>=</span><span class='no'>temperature</span>) +
+    <span class='fu'>ggpk_line_errorbar</span>(<span class='kw'>fun.data</span> <span class='kw'>=</span> <span class='st'>'quartiles'</span>) +
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>facet_grid</a></span>(<span class='no'>hemisphere</span> ~ <span class='no'>.</span>) +
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>title</span><span class='kw'>=</span><span class='st'>"Temperature by Hemisphere"</span>)</div><div class='img'><img src='ggpk_line_errorbar-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
