@@ -1,7 +1,7 @@
 Package: gClinBiomarker
 Title: gClinBiomarker: an R package for clinical biomarker analyses
-Version: 0.99.0
-Date: 2017-9-5
+Version: 1.0.0
+Date: 2018-5-1
 Authors@R: c(
     person("Ning Leng", role = c("aut", "cre")), 
     person("Alexey Pronin",  role = "aut"),
