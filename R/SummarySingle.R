@@ -55,10 +55,10 @@
 #' sub-group defination (and leave subgroup as NULL).
 #' 
 #' @importFrom stats as.formula complete.cases fisher.test kruskal.test sd
-#' @importFrom coin cmh_test pvalue
 #' 
 #' @export
 
+# @importFrom coin cmh_test pvalue
 SummarySingle <- function (data, var, 
 			trt = NULL, trt.name = NULL, 
       subgroup = NULL, subgroup.name = NULL, subgroup.indicator=1, compare.subgroup=FALSE,itt.name="All",
@@ -258,10 +258,13 @@ SummarySingle <- function (data, var,
     if(var.class=="categorical")
       tt <- fisher.test(table(trt.mat[,c(var,subgroup[2])]))$p.value
     if(var.class=="ordered.factor"){
-      #require(coin)
+      tt <- NA # if coin package is not loaded, no testing
+	if(require(coin)){
       tmp.mat <- trt.mat
       tmp.mat[[subgroup[2]]] <- as.factor(tmp.mat[[subgroup[2]]])
-      tt <- pvalue(cmh_test(as.formula(paste0(var,' ~ ',subgroup[2])),data=tmp.mat))
+      tt <- coin:::pvalue(coin:::cmh_test(as.formula(paste0(var,' ~ ',subgroup[2])),data=tmp.mat))
+    }
+      if(!require(coin))message("coin package is not loaded - no testing on ordered factor")
     }
     p.res <- cbind(p.res, pvalue=c(round(tt,digits),rep("",nrow(p.res)-1)))
   }

@@ -1,6 +1,6 @@
 Package: gClinBiomarker
 Title: gClinBiomarker: an R package for clinical biomarker analyses
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Ning Leng", role = c("aut", "cre")), 
     person("Alexey Pronin",  role = "aut"),
@@ -40,14 +40,14 @@ Imports:
     utils,
     stats,
     emmeans,
-    coin,
     graphics,
     knitr,
     methods,
     forestplot
 Suggests:
     rmarkdown,
-    testthat
+    testthat,
+    coin
 URL:
     https://pages.github.roche.com/Rpackages/gClinBiomarker/
 BugReports:
