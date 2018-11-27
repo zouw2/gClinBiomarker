@@ -17,7 +17,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 if (!require(gClinBiomarker)) { 
-  install_github("RPackages/gClinBiomarker",  host="https://github.roche.com/api/v3")
+  devtools::install_github("RPackages/gClinBiomarker",  host="https://github.roche.com/api/v3")
   library(gClinBiomarker)
 }
 
@@ -929,21 +929,21 @@ longbmkr %>%
 cutoff = 1.5
 
 longbmkr %>%
-    filter(vm <= 24) %>%
-    mutate(bmkr = ifelse(bmkr > cutoff, 'Positive', 'Negative')) %>%
-    mutate(trt  = ifelse(trt == 0, 'CTRL', 'TRT')) %>%
-    
-    PlotLong(x=vm, y=ep, color=trt, fill=trt, linetype=bmkr,
-             model = lm,
-             model.formula = ep ~ sex + edu + age, 
-             fun.data = 'mean_se',
-             show.counts = 'table',
-             plot.style = 'errorbars',
-             errorbar.linetype = 1,
-             xlab = 'Visitation Month',
-             ylab = 'Endpoint',
-             labs.title = 'Biomarker Timecourse',
-             labs.caption = '*ribbons represent mean value +/- standard error of the mean.')
+  filter(vm <= 24) %>%
+  mutate(bmkr = ifelse(bmkr > cutoff, 'Positive', 'Negative')) %>%
+  mutate(trt  = ifelse(trt == 0, 'CTRL', 'TRT')) %>%
+  
+  PlotLong(x = vm, y = ep, color = trt, fill = trt, linetype = bmkr,
+    model = lm,
+    model.formula = ep ~ sex + edu + age, 
+    fun.data = 'mean_se',
+    show.counts = 'table',
+    plot.style = 'errorbars',
+    errorbar.linetype = 1,
+    xlab = 'Visitation Month',
+    ylab = 'Endpoint',
+    labs.title = 'Biomarker Timecourse',
+    labs.caption = '*ribbons represent mean value +/- standard error of the mean.')
 ```
 
 
