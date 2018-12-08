@@ -70,7 +70,6 @@ importFrom(dplyr,summarize_all)
 importFrom(dplyr,summarize_at)
 importFrom(dplyr,ungroup)
 importFrom(dplyr,vars)
-
 importFrom(forestplot,forestplot)
 importFrom(forestplot,fpColors)
 importFrom(forestplot,fpTxtGp)
