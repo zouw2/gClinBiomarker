@@ -39,6 +39,7 @@ Imports:
     haven,
     utils,
     stats,
+    emmeans,
     graphics,
     knitr,
     methods,
