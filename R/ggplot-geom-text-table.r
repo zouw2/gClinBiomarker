@@ -25,7 +25,7 @@ geom_text_table <- function(mapping = NULL, data = NULL, stat = "identity",
 #' A ggplot2 Geom object to add a table of text values to a plot
 #'
 #' @export
-GeomTextTable <- ggplot2::ggproto("GeomTextTable", ggplot2::Geom,
+GeomTextTable <- ggproto("GeomTextTable", ggplot2::Geom,
   required_aes = c("x", "y", "label"),
 
   setup_data = function(data, params) {
