@@ -31,14 +31,13 @@ In R, type:
 
 ``` r
 ## install.packages("devtools")
-library(devtools)
-install_github("zouw2/gClinBiomarker", host="https://github.roche.com/api/v3")
+devtools::install_github("zouw2/gClinBiomarker", host="https://github.roche.com/api/v3")
 ```
 
 Note that on bce (r.bas.roche.com), the default R is from an older version. To install, type
 
 ``` r
-install_github("zouw2/gClinBiomarker", host="github.roche.com/api/v3")
+devtools::install_github("zouw2/gClinBiomarker", host="github.roche.com/api/v3")
 ```
 
 ### Getting the Documentation
