@@ -125,29 +125,30 @@ PlotKM <- function(data, tte, cens,
         if(var.class=="numeric"){
             if(!is.null(percentile.cutoff)){
                 percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
+                toBeGrouped <- round(data[[var]], cutoff.digits) #added by wei
                 for(i in 2:length(percentile.cutoff)){
                     qt1 <- round(quantile(data[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
                     qt2 <- round(quantile(data[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
                     if(equal.in.high){
                         if(percentile.cutoff[i]!=1){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%)")
+                            data$bm.tmp[which(toBeGrouped>=qt1 & toBeGrouped < qt2)]<- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%)")
                             if(i==2)percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i-1]*100,"%: ",qt1,". ")
                             percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i]*100,"%: ",qt2,". ")
                         }
                         if(percentile.cutoff[i]==1){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
+                            data$bm.tmp[which(toBeGrouped>=qt1 & toBeGrouped<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
                             if(i==2)percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i-1]*100,"%: ",qt1,". ")
                             percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i]*100,"%: ",qt2,". ")
                         }
                     }
                     if(!equal.in.high){
                         if(percentile.cutoff[i]!=0){
-                            data$bm.tmp[which(data[[var]]>qt1 & data[[var]]<= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
+                            data$bm.tmp[which(toBeGrouped > qt1 & toBeGrouped <= qt2)] <- paste0(var.name,"(",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
                             if(i==2)percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i-1]*100,"%: ",qt1,". ")
                             percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i]*100,"%: ",qt2,". ")
                             }
                         if(percentile.cutoff[i]==0){
-                            data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
+                            data$bm.tmp[which(toBeGrouped>=qt1 & toBeGrouped<= qt2)] <- paste0(var.name,"[",percentile.cutoff[i-1]*100," - ",percentile.cutoff[i]*100,"%]")
                             if(i==2)percentile.footnote <- paste0(percentile.footnote,percentile.cutoff[i-1]*100,"%: ",qt1,". ")
                             percentile.footnote <- paste0(percentile.footnote, percentile.cutoff[i]*100,"%: ",qt2,". ")
                             }
@@ -160,8 +161,9 @@ PlotKM <- function(data, tte, cens,
                 for(i in 2:length(numerical.cutoff)){
                     qt1 <- numerical.cutoff[i-1]
                     qt2 <- numerical.cutoff[i]
-                    if(i==2)qt1 <- qt1 - 10^(-cutoff.digits)
-                    if(i==length(numerical.cutoff)) qt2 <- qt2 + 10^(-cutoff.digits)
+                    # commented out by wei
+            #        if(i==2)qt1 <- qt1 - 10^(-cutoff.digits)
+            #        if(i==length(numerical.cutoff)) qt2 <- qt2 + 10^(-cutoff.digits)
                     if(equal.in.high){
                         if(numerical.cutoff[i]!=max(data[[var]]))
                             data$bm.tmp[which(data[[var]]>=qt1 & data[[var]]< qt2)]  <- paste0(var.name,"[",numerical.cutoff[i-1]," - ",numerical.cutoff[i],")")
