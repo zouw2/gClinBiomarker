@@ -274,37 +274,47 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         }
         if(var.class=="numeric"){
             if(any(is.na(data.bep[[var]])))stop(paste("in BEP patients," ,var,"contains NA"))
-            toBeGrouped <- round(data.bep[[var]], cutoff.digits) #added by wei
+            data.bep[[var]] <- round(data.bep[[var]], cutoff.digits) #added by wei
+            
             if(!greater.by.less){
+
                 if(greater)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
-                    qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
-                    if(equal.in.high)bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped>=qt,T,F)
-                    if(!equal.in.high)bm.list[[paste0(var.name,"(>",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped>qt,T,F)
+                 #   qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
+                  qt <-  quantile(data.bep[[var]], i, type=quantile.type)    
+                if(equal.in.high)bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
+                if(!equal.in.high)bm.list[[paste0(var.name,"(>",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>qt,T,F)
                 }
+              
                 if(less)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
-                    qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
-                    if(equal.in.high)bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped<qt,T,F)
-                    if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped<=qt,T,F)
+ #                   qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
+                  qt <-  quantile(data.bep[[var]], i, type=quantile.type)
+                    if(equal.in.high)bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
+                    if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
                 }
+              
                 if(greater)if(!is.null(numerical.cutoff)) for(i in numerical.cutoff){
                     qt <- i
                     if(equal.in.high)bm.list[[paste0(var.name,"(>=",i,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
                     if(!equal.in.high)bm.list[[paste0(var.name,"(>",i,")")]] <- ifelse(data.bep[[var]]>qt,T,F)
                 }
+              
                 if(less)if(!is.null(numerical.cutoff)) for(i in numerical.cutoff){
                     qt <- i
                     if(equal.in.high)bm.list[[paste0(var.name,"(<",i,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
                     if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
-                }}
+                }
+              }
 
             if(greater.by.less){
                 if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){
-                    qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
-                    if(equal.in.high)bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped>=qt,T,F)
-                    if(!equal.in.high)bm.list[[paste0(var.name,"(>",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped>qt,T,F)
-                    if(equal.in.high)bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped<qt,T,F)
-                    if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i*100,"%, ",qt,")")]] <- ifelse(toBeGrouped<=qt,T,F)
+                    #qt <- round(quantile(data.bep[[var]], i, type=quantile.type),cutoff.digits)
+                  qt <-  quantile(data.bep[[var]], i, type=quantile.type)
+                    if(equal.in.high)bm.list[[paste0(var.name,"(>=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
+                    if(!equal.in.high)bm.list[[paste0(var.name,"(>",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]>qt,T,F)
+                    if(equal.in.high)bm.list[[paste0(var.name,"(<",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<qt,T,F)
+                    if(!equal.in.high)bm.list[[paste0(var.name,"(<=",i*100,"%, ",qt,")")]] <- ifelse(data.bep[[var]]<=qt,T,F)
                 }
+              
                 if(!is.null(numerical.cutoff)) for(i in numerical.cutoff){
                     qt <- i
                     if(equal.in.high)bm.list[[paste0(var.name,"(>=",i,")")]] <- ifelse(data.bep[[var]]>=qt,T,F)
@@ -317,28 +327,28 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             if(within.bin)if(!is.null(percentile.cutoff)){
                 percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
                 for(i in 2:length(percentile.cutoff)){
-                    qt1 <- round(quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type),cutoff.digits)
-                    qt2 <- round(quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type),cutoff.digits)
+                    qt1 <- quantile(data.bep[[var]], percentile.cutoff[i-1], type=quantile.type)
+                    qt2 <- quantile(data.bep[[var]], percentile.cutoff[i], type=quantile.type)
  #                   if(i==2)qt1 <- qt1 - 10^(-cutoff.digits)
  #                   if(i==length(percentile.cutoff)) qt2 <- qt2 + 10^(-cutoff.digits)
                     if(equal.in.high){
                         if(percentile.cutoff[i]!=1){
                             bm.list[[paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,")")]]  <-
-                            ifelse(toBeGrouped>=qt1 & toBeGrouped< qt2,T,F)
+                            ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]< qt2,T,F)
                         }
                         if(percentile.cutoff[i]==1){
                             bm.list[[paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")]] <-
-                            ifelse(toBeGrouped>=qt1 & toBeGrouped<= qt2,T,F)
+                            ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
                         }
                     }
                     if(!equal.in.high){
                         if(percentile.cutoff[i]!=0){
                             bm.list[[paste0(var.name,"(",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")]]  <-
-                            ifelse(toBeGrouped>qt1 & toBeGrouped<= qt2,T,F)
+                            ifelse(data.bep[[var]]>qt1 & data.bep[[var]]<= qt2,T,F)
                         }
                         if(percentile.cutoff[i]==0){
                             bm.list[[paste0(var.name,"[",percentile.cutoff[i-1]*100,"-",percentile.cutoff[i]*100,"%, ",qt1,"-",qt2,"]")]] <-
-                            ifelse(toBeGrouped>=qt1 & toBeGrouped<= qt2,T,F)
+                            ifelse(data.bep[[var]]>=qt1 & data.bep[[var]]<= qt2,T,F)
                         }
                     }
 
