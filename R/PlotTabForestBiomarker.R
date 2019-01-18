@@ -275,7 +275,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         if(var.class=="numeric"){
             if(any(is.na(data.bep[[var]])))stop(paste("in BEP patients," ,var,"contains NA"))
             data.bep[[var]] <- round(data.bep[[var]], cutoff.digits) #added by wei
-            
+            print(paste('rounding', var,'to', cutoff.digits, 'decimal places'))
             if(!greater.by.less){
 
                 if(greater)if(!is.null(percentile.cutoff)) for(i in percentile.cutoff){

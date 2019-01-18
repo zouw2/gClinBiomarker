@@ -126,6 +126,7 @@ PlotKM <- function(data, tte, cens,
             if(!is.null(percentile.cutoff)){
                 percentile.cutoff <- sort(unique(c(0,1,percentile.cutoff)))
                 data[[var]] <- round(data[[var]], cutoff.digits) #added by wei
+                print(paste('rounding', var,'to', cutoff.digits, 'decimal places'))
                 
                 for(i in 2:length(percentile.cutoff)){
                     qt1 <- quantile(data[[var]], percentile.cutoff[i-1], type=quantile.type)
