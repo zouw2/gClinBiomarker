@@ -400,7 +400,8 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         Strat.fac <- data[,strata]
     }
 
-
+    inter.p <- NULL
+    
     ################## survival #########################
     if(outcome.class=="survival"){
         res <- NULL
@@ -425,15 +426,16 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             ac <- Arms[2]
             # interaction p value: per arm? If originally cont., then use cont. in modeling
             # no stratification??
-            fit1 <- coxph(Surv(data.bep[,outcome.var[1]], data.bep[,outcome.var[2]]) ~ data.bep[,trt] * data.bep[,var] )
-            fit2 <- coxph(Surv(data.bep[,outcome.var[1]], data.bep[,outcome.var[2]]) ~ data.bep[,trt] + data.bep[,var])
-            L1 <- summary(fit1)[[5]][2]
-            n1 <- summary(fit1)[[9]][2]
-            L2 <- summary(fit2)[[5]][2]
-            n2 <- summary(fit2)[[9]][2]
-            stat <- -2*L2 + 2*L1
-            inter.p <- pchisq(stat, df=n1-n2, lower.tail=FALSE)
-            if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
+            if(var.class == "categorical" && max(c(length(percentile.cutoff), length(numerical.cutoff)))==1){
+              fit1 <- coxph(Surv(data.bep[,outcome.var[1]], data.bep[,outcome.var[2]]) ~ data.bep[,trt] * data.bep[,var] )
+              fit2 <- coxph(Surv(data.bep[,outcome.var[1]], data.bep[,outcome.var[2]]) ~ data.bep[,trt] + data.bep[,var])
+              L1 <- summary(fit1)[[5]][2]
+              n1 <- summary(fit1)[[9]][2]
+              L2 <- summary(fit2)[[5]][2]
+              n2 <- summary(fit2)[[9]][2]
+              stat <- -2*L2 + 2*L1
+              inter.p <- pchisq(stat, df=n1-n2, lower.tail=FALSE)
+            }
 
             if(across.and.within){
                 res.ori <- res
@@ -483,7 +485,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
 	    surv.conf.type=surv.conf.type, ties=ties,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
-            inter.p <- NULL
+        #    inter.p <- NULL
         }
 
         if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
@@ -684,15 +686,16 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             ac <- Arms[2]
             # interaction p value: per arm? If originally cont., then use cont. in modeling
             # no stratification??
-            fit1 <- glm(data[,outcome.var]~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
-            fit2 <- glm(data[,outcome.var]~as.character(Treatment)+Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
-            L1 <- summary(fit1)$deviance
-            n1 <- summary(fit1)[[7]]
-            L2 <- summary(fit2)$deviance
-            n2 <- summary(fit2)[[7]]
-            stat <- L2-L1
-            inter.p <- pchisq(stat, df=n2-n1, lower.tail=FALSE)
-            if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
+            if(var.class == "categorical" && max(c(length(percentile.cutoff), length(numerical.cutoff)))==1){
+              fit1 <- glm(data[,outcome.var]~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
+              fit2 <- glm(data[,outcome.var]~as.character(Treatment)+Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac), family=binomial)
+              L1 <- summary(fit1)$deviance
+              n1 <- summary(fit1)[[7]]
+              L2 <- summary(fit2)$deviance
+              n2 <- summary(fit2)[[7]]
+              stat <- L2-L1
+              inter.p <- pchisq(stat, df=n2-n1, lower.tail=FALSE)
+            }
 
             if(across.and.within){
                 res.ori <- res
@@ -739,7 +742,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             placebo.code="FALSE", active.code="TRUE", outcome.class="binary", alpha=alpha,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
-            inter.p <- NULL
+   #         inter.p <- NULL
         }
 
         if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
@@ -897,6 +900,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
         out <- tabletext
     }
 
+    ################## continuous #########################
     if(outcome.class=="continuous")  {
         res <- NULL
         if(nArms==2){
@@ -919,9 +923,11 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
 
             ac <- Arms[2]
             # no stratification??
+            if(var.class == "categorical" && max(c(length(percentile.cutoff), length(numerical.cutoff))) ==1){
             fit1 <- lm(data[,outcome.var]~as.character(Treatment)*Biomarker, subset=as.character(Treatment) %in% c(placebo.code, ac))
             inter.p <- coef(summary(fit1))[4,4]
-            if(max(c(length(percentile.cutoff), length(numerical.cutoff)))>1 ) inter.p<- NULL
+            }
+            
 
             if(across.and.within){
                 res.ori <- res
@@ -968,7 +974,7 @@ par.param=list(cex=1, cex.main=1, cex.sub=1, cex.axis=1)) {
             placebo.code="FALSE", active.code="TRUE", outcome.class="continuous", alpha=alpha,
             covariate.var=Covariate.bep,
             strat.factor.var=Strat.fac.bep)))
-            inter.p <- NULL
+ #           inter.p <- NULL
         }
 
         if(nArms==2 & !across.and.within)code.v <- rep(c(placebo.code, active.code),nrow(res))
