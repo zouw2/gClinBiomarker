@@ -274,7 +274,7 @@ SummarySingle <- function (data, var,
         message("coin package is not loaded - no testing on ordered factor")
       }
     }
-    p.res <- cbind(p.res, pvalue=c(round(tt,digits),rep("",nrow(p.res)-1)))
+    p.res <- cbind(p.res, pvalue=c(round,signif(tt,digits),rep("",nrow(p.res)-1)))
   }
     if (length(result)>1)colnames(p.res) <- paste0(colnames(p.res),"(",names(result)[i],")")
     result[[i]] <- p.res
