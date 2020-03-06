@@ -5,10 +5,11 @@
 \title{Log rank test p value and other summary statistics for subgroup analysis}
 \usage{
 LogRankTab(data, tte, cens, var, time.unit = "month",
-  surv.conf.type = "plain", ties = "efron", fillname = "")
+  surv.conf.type = "plain", ties = "efron", fillname = "",
+  digitMedian = 2, digitHR = 2, placebo.code = NULL, active.code = NULL)
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{tte}{column name that indicates the time to event variable}
@@ -26,6 +27,14 @@ It will be ignored if fit or form is not null.}
 \item{ties}{Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.}
 
 \item{fillname}{(character) variable specifying the content for the cell that located in row one and column one, the default value for fillname is NULL.}
+
+\item{digitMedian}{number of digits to report medians}
+
+\item{digitHR}{number of digits to report HR}
+
+\item{placebo.code}{name of the control arm of the treatment variable. If you want to specify placebo code using this parameter, both placebo.code and active.code need to be provided.}
+
+\item{active.code}{of the treatment/experimental arm of the treatment variable. If you want to specify active code using this parameter, both placebo.code and active.code need to be provided.}
 }
 \description{
 This function takes time to event outcome, and one categorical variable (parameter var). It generates log rank p value comparing different groups, and summary statistics

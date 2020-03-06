@@ -1,39 +1,41 @@
 #' Given 2 biomarkers, find the contigency table and efficacy in the insection/unique portion
 #'
-#' @param data input data; data frame only 
+#' @param data input data; data frame only
 #' @param bm1 variable name for biomarker 1
-#' @param bm1_pos_level the level of biomarker 1 which is considered positive
+#' @param bm1_pos_level the level of biomarker 1 which is considered positive. A character value will force bm1 into character.
 #' @param bm2 variable name for biomarker 2
 #' @param bm2_pos_level the level of biomarker 2 which is considered positive
 #' @param endpoint a vector of TTE endpoints
-#' @param trt.var variable to indicate treatment variable
-#' @param placebo.code 
-#' @param active.code 
+#' @param trt.var variable to indicate treatment variable; only 2 arms are allowed
+#' @param placebo.code a character value to indicate the reference arm
+#' @param active.code a character value to indicate the active arm.
 #' @param headerLevel control the heading info for Rmd outoupt, default is 2
 #' @param armColors color for each arm
-#' @param ... 
+#' @param ...
 #'
 #' @return the original data frame with addition derived biomarker status variables
 #' @export
 #'
 #' @examples ```{r function,results='asis',warning=F,message=F,fig.width=7,fig.height=7}
-#' bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B')
+#' b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B')
+#'
+#' b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm')
 #' ```
 
 
-bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL, 
+bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
                     bm2 = NULL , bm2_pos_level = NULL,
                     endpoint=NULL, trt.var = NULL,
                     placebo.code=NULL,active.code=NULL,
                     headerLevel = 2,
                     armColors = c('black','red'),
                     ...) {
-  
-  # originally from  https://github.roche.com/kime30/imp110_IA_10SEP2018/blob/master/code/bmComp2.R  
+
+  # originally from  https://github.roche.com/kime30/imp110_IA_10SEP2018/blob/master/code/bmComp2.R
   ## format event variable label
   for (e in endpoint){
       stopifnot(e %in% colnames(data))
-      
+
       event_var <-  paste(e,'EVENT', sep='.')
       if(event_var %in% colnames(data)){
       }else{
@@ -41,10 +43,10 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
         stopifnot(length(event_pos) == 1)
         print(paste('copying', colnames(data)[event_pos],'variable into', event_var))
         data[[event_var]] <- data[, event_pos]
-        
+
       }
   }
-  
+
   ## Function variable checks
   stopifnot(exprs = {
     class(data) == "data.frame"
@@ -79,7 +81,10 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
     placebo.code = 1
   }
   data[,trt.var] = factor(data[,trt.var],levels=tempCode[list(1:2,2:1)[[placebo.code]]])
-  
+
+  if( is.character(bm1_pos_level) ) data[[bm1]] <- as.character(data[[bm1]])
+  if( is.character(bm2_pos_level) ) data[[bm2]] <- as.character(data[[bm2]])
+
   # Convert original biomarkers for easy internal use, as well as massage out empty fields
   df = data %>% mutate(thisBM1 = ifelse(!!as.name(bm1)=='',NA,!!as.name(bm1)),
                        thisBM2 = ifelse(!!as.name(bm2)=='',NA,!!as.name(bm2)),
@@ -98,13 +103,13 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
                                      paste0(bm1,'+,',bm2,'-'),
                                      paste0(bm1,'-,',bm2,'+'),
                                      paste0(bm1,'-,',bm2,'-')) ) )
-  
-  # Secondary variable checks after filtering 
+
+  # Secondary variable checks after filtering
   stopifnot(exprs = {
     # Check if positive levels do not occupy all levels
     !all(df[,bm1] %in% bm1_pos_level)
     !all(df[,bm2] %in% bm2_pos_level)
-    
+
   } )
   # report BEP size
   print(paste0(nrow(df),'/',nrow(data),' subjects have complete records for ',bm1,' AND ',bm2))

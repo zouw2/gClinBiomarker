@@ -12,7 +12,7 @@ SummaryVars(data, var, var.name = NULL, trt = NULL, trt.name = NULL,
   na.action = "error")
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{var}{a vector of covariate names - the clinical covariate to test}

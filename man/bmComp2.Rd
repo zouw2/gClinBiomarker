@@ -14,7 +14,7 @@ bmComp2(data, bm1 = NULL, bm1_pos_level = NULL, bm2 = NULL,
 
 \item{bm1}{variable name for biomarker 1}
 
-\item{bm1_pos_level}{the level of biomarker 1 which is considered positive}
+\item{bm1_pos_level}{the level of biomarker 1 which is considered positive. A character value will force bm1 into character.}
 
 \item{bm2}{variable name for biomarker 2}
 
@@ -22,11 +22,11 @@ bmComp2(data, bm1 = NULL, bm1_pos_level = NULL, bm2 = NULL,
 
 \item{endpoint}{a vector of TTE endpoints}
 
-\item{trt.var}{variable to indicate treatment variable}
+\item{trt.var}{variable to indicate treatment variable; only 2 arms are allowed}
 
-\item{placebo.code}{}
+\item{placebo.code}{a character value to indicate the reference arm}
 
-\item{active.code}{}
+\item{active.code}{a character value to indicate the active arm.}
 
 \item{headerLevel}{control the heading info for Rmd outoupt, default is 2}
 
@@ -42,6 +42,8 @@ Given 2 biomarkers, find the contigency table and efficacy in the insection/uniq
 }
 \examples{
 ```{r function,results='asis',warning=F,message=F,fig.width=7,fig.height=7}
-bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50\%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B')
+b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50\%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B')
+
+b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm')
 ```
 }

@@ -10,7 +10,7 @@ CoxTab(data = NULL, tte = NULL, cens = NULL, var = NULL,
   bep.indicator = 1)
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{tte}{column name that indicates the time to event variable}

@@ -20,7 +20,7 @@ PlotKM(data, tte, cens, trt = NULL, var = NULL, var.class = NULL,
   var.levels = NULL, var.labels = NULL)
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{tte}{column name that indicates the time to event variable}
@@ -30,7 +30,7 @@ biomarker variables, treatment indicator, etc.). One patient per row.}
 \item{trt}{name of the treatment column. If trt is specified, the analysis will be performed within treatment arm.
 if it is NULL, the comparison will be performed using all samples.}
 
-\item{var}{name of the clinical covariate to test. name should be in the column names of data. entries with empty value (nchar()==0) will be imputed as NA}
+\item{var}{name of the clinical covariate to test. name should be in the column names of data. entries with empty value (nchar() == 0) will be imputed as NA}
 
 \item{var.class}{class of the variable. possible categories are "numeric", "categorical" and
 "ordered.factor".  "ordered.factor" can be used to categorical variable with

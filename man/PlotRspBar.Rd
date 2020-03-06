@@ -16,7 +16,7 @@ PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
   pdf.name = NULL, pdf.param = NULL, par.param = NULL)
 }
 \arguments{
-\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 
+\item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,
 biomarker variables, treatment indicator, etc.). One patient per row.}
 
 \item{outcome.var}{column name of the response variable (e.g. best overall response).
