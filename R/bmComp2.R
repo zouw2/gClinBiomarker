@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples ```{r function,results='asis',warning=F,message=F,fig.width=7,fig.height=7}
-#' b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B')
+#' b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B', active.code='A')
 #'
 #' b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm')
 #' ```
@@ -72,7 +72,16 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
   ## Assign factor levels to the Arms to correctly order display in tables and KM plots
   # As trt.var is checked to have only 2 levels, only one of these needs to be specified
   # Therefore, find the placebo code by any means, and reorder levels based on that
+
+  if(any(is.na(data[,trt.var]))) stop( paste('treatment variable', trt.var,'should not have any missing values'))
+
   tempCode = names(table(data[,trt.var]))
+
+  if(length(tempCode) != 2) stop ( paste( 'expecting 2 arms in the input data but detecting the following:', paste(tempCode, collapse=',') ))
+
+  if(!( is.null(active.code) | missing(active.code) )) stopifnot(active.code %in% tempCode)
+  if(!( is.null(placebo.code) | missing(placebo.code) )) stopifnot(placebo.code %in% tempCode)
+
   if ( any(tempCode == active.code)) {
     placebo.code = which(tempCode!=active.code)
   } else if (any(tempCode == placebo.code)) {
@@ -80,6 +89,7 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
   } else {
     placebo.code = 1
   }
+
   data[,trt.var] = factor(data[,trt.var],levels=tempCode[list(1:2,2:1)[[placebo.code]]])
 
   if( is.character(bm1_pos_level) ) data[[bm1]] <- as.character(data[[bm1]])
