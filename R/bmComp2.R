@@ -19,7 +19,7 @@
 #' @examples ```{r function,results='asis',warning=F,message=F,fig.width=7,fig.height=7}
 #' b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B', active.code='A')
 #'
-#' b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm')
+#' b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm', placebo.code = 'CTRL')
 #' ```
 
 
@@ -79,9 +79,33 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
 
   if(length(tempCode) != 2) stop ( paste( 'expecting 2 arms in the input data but detecting the following:', paste(tempCode, collapse=',') ))
 
-  if(!( is.null(active.code) | missing(active.code) )) stopifnot(active.code %in% tempCode)
-  if(!( is.null(placebo.code) | missing(placebo.code) )) stopifnot(placebo.code %in% tempCode)
+  codeMissing <- c(
+    active = is.null(active.code) || missing(active.code) || nchar(active.code) == 0,
+    placebo = is.null(placebo.code) || missing(placebo.code) || nchar(placebo.code) == 0 )
 
+  if( codeMissing['active'] ) {
+      if( sum(codeMissing) == 1 ) { # placebo code is not missing
+        active.code <- setdiff(tempCode, placebo.code)
+      }else{ # both missing
+        placebo.code = tempCode[1]; active.code = tempCode[2]
+      }
+  }else{
+    stopifnot(active.code %in% tempCode)
+  }
+
+  if( codeMissing['placebo'] ) {
+    if ( sum(codeMissing) == 1){ # active code is not missing
+      placebo.code <- setdiff(tempCode, active.code)
+    }else{ # both missing
+      placebo.code = tempCode[1]; active.code = tempCode[2]
+    }
+  }else {
+    stopifnot(placebo.code %in% tempCode)
+  }
+
+  data[,trt.var] = factor( as.character(data[,trt.var]),levels= c(placebo.code, active.code) )
+
+if (F){ # old code to determine factor levels
   if ( any(tempCode == active.code)) {
     placebo.code = which(tempCode!=active.code)
   } else if (any(tempCode == placebo.code)) {
@@ -91,6 +115,7 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
   }
 
   data[,trt.var] = factor(data[,trt.var],levels=tempCode[list(1:2,2:1)[[placebo.code]]])
+}
 
   if( is.character(bm1_pos_level) ) data[[bm1]] <- as.character(data[[bm1]])
   if( is.character(bm2_pos_level) ) data[[bm2]] <- as.character(data[[bm2]])
@@ -143,7 +168,7 @@ bmComp2 <- function(data, bm1 = NULL, bm1_pos_level = NULL,
       } else {
         #par(mfrow=c(1,2))
         print(kable(LogRankTab( data = temp, tte = thisEndpoint, cens = paste0(thisEndpoint,'.EVENT'),
-                                var=trt.var),caption=paste0(thisEndpoint,' in ',comparison)))
+                                var=trt.var, placebo.code=placebo.code, active.code = active.code),caption=paste0(thisEndpoint,' in ',comparison)))
         cat('\n')
         print(PlotKM(temp,tte=thisEndpoint,cens=paste0(thisEndpoint,'.EVENT'),trt=trt.var,
                      #main=paste0(endNames[i],' for T22c3_3grp ',t22c3levels[j]),
