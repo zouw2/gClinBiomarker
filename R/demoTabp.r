@@ -171,3 +171,281 @@ demoTab <- function (obj, var, var.name = NULL, trt = NULL, trt.names = NULL,
   resall
 
 }
+
+summary_as <- function (obj, var, var.name = NULL, trt = NULL, trt.names = NULL,
+                        pop = NULL, pop.names = "", transf = NULL,
+                        control = list(Class = c(N.total = TRUE,
+                                                 N.level = TRUE, perc = TRUE, na = FALSE), Numeric = c(Mean = TRUE,
+                                                                                                       SEM = FALSE, SD = TRUE, Median = TRUE, Min = FALSE, Max = FALSE,
+                                                                                                       MinMax = TRUE, N = TRUE, Qrt1 = FALSE, Qrt3 = FALSE,
+                                                                                                       iqr = FALSE, na = FALSE)), Unique = 2, digits = 2, keep.order = FALSE,
+                        format = NULL, na.action = "error")
+{
+  na.action <- match.arg(na.action, c("na.omit", "error"))
+  if (!is.null(trt)) {
+    if (any(is.na(obj[, trt]))) {
+      if (na.action == "na.omit") {
+        obj <- obj[complete.cases(obj[, trt]), ]
+        warning("There were observations without 'trt' information! These were omitted (na.action=\"na.omit\")!")
+      }
+      else stop("There were observations without 'trt' information!")
+    }
+  }
+  if (!is.null(pop)) {
+    if (length(pop) == 1 && pop %in% colnames(obj)) {
+      if (any(is.na(obj[, pop]))) {
+        if (na.action == "na.omit") {
+          obj <- obj[complete.cases(obj[, pop]), ]
+          warning("There were observations without 'pop' information! These were omitted (na.action=\"na.omit\")!")
+        }
+        else stop("There were observations without 'pop' information!")
+      }
+    }
+  }
+  format.value <- function(val, format) {
+    if (is.null(format))
+      return(round(val, digits))
+    else return(format_num(val, cnum = format["cnum"], dd = format["dd"]))
+  }
+  if (!is.null(transf)) {
+    stopifnot(is.function(transf))
+    obj[, var] <- sapply(obj[, var], transf)
+  }
+  stopifnot(class(obj) == "data.frame")
+  stopifnot(var %in% colnames(obj))
+  var.name <- ifelse(is.null(var.name), var, var.name)
+  if (!is.null(pop)) {
+    if (is.character(pop) && pop %in% colnames(obj)) {
+      if (length(pop) == 1) {
+        cn <- colnames(obj)
+        pop.l <- sort(na.omit(unique(as.character(obj[,
+                                                      pop]))))
+        for (i in 1:length(pop.l)) {
+          tmp <- rep(NA, nrow(obj))
+          tmp[which(obj[, pop] == pop.l[i])] <- 1
+          obj <- cbind(obj, tmp)
+        }
+        colnames(obj) <- c(cn, paste(pop, pop.l, sep = "."))
+        pop <- paste(pop, pop.l, sep = ".")
+      }
+    }
+    else stop("'pop' cannot be found in 'colnames(obj)'!")
+  }
+  default = list(Class = c(N.total = FALSE, N.level = TRUE,
+                           perc = TRUE, na = FALSE), Numeric = c(Mean = TRUE, SD = TRUE,
+                                                                 Median = TRUE, Min = FALSE, Max = FALSE, SEM = TRUE,
+                                                                 MinMax = TRUE, N = TRUE, Qrt1 = FALSE, Qrt3 = FALSE,
+                                                                 iqr = FALSE, na = FALSE))
+  for (i in names(control)) {
+    for (j in names(control[[i]])) default[[i]][j] <- control[[i]][j]
+  }
+  control <- default
+  if (class(obj[, var]) %in% c("numeric", "integer")) {
+    if (length(unique(na.omit(obj[, var]))) <= Unique)
+      obj[, var] <- as.factor(obj[, var])
+  }
+  if (is.null(trt)) {
+    obj$trt <- rep(1, nrow(obj))
+    trt.lev <- unique(obj$trt)
+  }
+  else {
+    if (keep.order)
+      obj$trt <- factor(obj[, trt], levels = unique(obj[,
+                                                        trt]))
+    else obj$trt <- factor(obj[, trt])
+    trt.lev <- levels(obj$trt)
+  }
+  if (is.null(pop)) {
+    obj$pop <- rep(1, nrow(obj))
+    pop.names <- ""
+    pop <- "pop"
+  }
+  else {
+    if (length(pop) != length(pop.names))
+      pop.names <- pop
+  }
+  res <- matrix(ncol = sum(1, length(trt.lev) * length(pop)),
+                nrow = 0)
+  if (class(obj[, var]) == "factor")
+    Lev <- levels(obj[, var])
+  result <- vector("list", length(trt.lev))
+  if (is.null(trt.names))
+    names(result) <- trt.lev
+  else {
+    if (all(trt.lev %in% names(trt.names)))
+      names(result) <- trt.names[trt.lev]
+    else {
+      names(result) <- trt.lev
+      warning("'trt.names' could not be used because treatment-levels could not all be found in 'names(trt.names)'!")
+    }
+  }
+  res.ind <- 1
+  for (i in 1:length(trt.lev)) {
+    trt.mat <- obj[which(obj$trt == trt.lev[i]), ]
+    for (j in 1:length(pop.names)) {
+      pop.mat <- trt.mat[which(!is.na(trt.mat[, pop[j]])),
+                         ]
+      Nna <- length(which(is.na(pop.mat[, var])))
+      Na <- nrow(pop.mat) - Nna
+      if (class(pop.mat[, var]) %in% c("factor", "character")) {
+        res.pop <- data.frame(1)
+        if (control$Class["N.total"])
+          res.pop$Total <- Na
+        if (control$Class["na"])
+          res.pop$"NA's" <- Nna
+        if (control$Class["N.level"]) {
+          for (k in Lev) {
+            res.pop[, k] <- length(which(pop.mat[, var] ==
+                                           k))
+            if (control$Class["perc"])
+              res.pop[, k] <- paste(res.pop[, k], " ",
+                                    "(", 100 * round(res.pop[, k]/Na, digits +
+                                                       2), "%)", sep = "")
+          }
+        }
+        res.pop <- t(res.pop[, -1])
+      }
+      else {
+        smry <- summary(pop.mat[, var], digits = 16)
+        res.pop <- data.frame(1)
+        if (control$Numeric["N"])
+          res.pop$N <- Na
+        if (control$Numeric["Mean"])
+          res.pop$Mean <- format.value(ifelse(is.nan(smry["Mean"]),
+                                              NA, smry["Mean"]), format)
+        if (control$Numeric["SEM"])
+          res.pop$SEM <- format.value(sd(pop.mat[, var],
+                                         na.rm = TRUE)/sqrt(length(which(!is.na(pop.mat[,
+                                                                                        var])))), format)
+        if (control$Numeric["SD"])
+          res.pop$SD <- format.value(sd(pop.mat[, var],
+                                        na.rm = TRUE), format)
+        if (control$Numeric["Median"])
+          res.pop$Median <- format.value(smry["Median"],
+                                         format)
+        if (control$Numeric["Min"])
+          res.pop$Min <- format.value(smry["Min."], format)
+        if (control$Numeric["Max"])
+          res.pop$Max <- format.value(smry["Max."], format)
+        if (control$Numeric["MinMax"]) {
+          if (any(is.na(smry[c("Min.", "Max.")])))
+            res.pop$"Min-Max" <- NA
+          else res.pop$"Min-Max" <- paste(format.value(smry["Min."],
+                                                       format), format.value(smry["Max."], format),
+                                          sep = "...")
+        }
+        if (control$Numeric["Qrt1"])
+          res.pop$"1st Qrtl." <- format.value(smry["1st Qu."],
+                                              format)
+        if (control$Numeric["Qrt3"])
+          res.pop$"3rd Qrtl." <- format.value(smry["3rd Qu."],
+                                              format)
+        if (control$Numeric["iqr"])
+          res.pop$IQR <- format.value(smry["3rd Qu."] -
+                                        smry["1st Qu."], format)
+        if (control$Numeric["na"])
+          res.pop$"NA's" <- Nna
+
+        res.pop <- t(res.pop[, -1])
+      }
+      if (j == 1)
+        p.res <- res.pop
+      else p.res <- cbind(p.res, res.pop)
+    }
+    colnames(p.res) <- pop.names
+    result[[i]] <- p.res
+  }
+
+
+  class(result) <- "ASummary"
+  attr(result, "var.name") <- var.name
+  result
+}
+
+
+round.signif <- function(x, p)
+{
+  ifelse(abs(x)>=1, round(x, p), signif(x, p))
+}
+
+print.ASummary <- function (x, print = TRUE, Order = NULL, latex = FALSE, bold = NULL,
+                            hspace = NULL, na.print = "", ...)
+{
+  obj <- x
+  stopifnot(class(obj) == "ASummary")
+  if (!is.null(Order)) {
+    stopifnot(all(sort(Order) == (1:length(obj))))
+    atts <- attributes(obj)
+    tmp <- names(obj)
+    obj <- obj[Order]
+    atts$names <- atts$names[Order]
+    class(obj) <- "ASummary"
+    attributes(obj) <- atts
+  }
+  bold.default <- c(var = TRUE, col = TRUE, stat = TRUE)
+  if (!is.null(bold)) {
+    bold.default[names(bold)] <- bold
+    bold <- bold.default
+  }
+  mat <- matrix("", nrow = 2 + nrow(obj[[1]]), ncol = length(obj) *
+                  ncol(obj[[1]]))
+  rownames(mat) <- c("", attr(obj, "var.name"), rownames(obj[[1]]))
+  if (!print && latex && !is.null(bold)) {
+    if (bold["var"])
+      rownames(mat)[2] <- paste("\\textbf{", rownames(mat)[2],
+                                "}", sep = "")
+    if (!is.null(hspace))
+      mat[2, ] <- rep(paste("\\hspace{", hspace, "}", sep = ""),
+                      length(obj) * ncol(obj[[1]]))
+  }
+  mat[1, 1:ncol(mat)] <- rep(colnames(obj[[1]]), length(obj))
+  cn <- rep("", ncol(mat))
+  obj.names <- names(obj)
+  cn[seq(1, ncol(mat) - ncol(obj[[1]]) + 1, ncol(obj[[1]]))] <- names(obj)
+  if (!is.null(bold) && bold["col"])
+    cn <- paste("\\textbf{", cn, "}", sep = "")
+  colnames(mat) <- cn
+  for (i in 1:length(obj)) {
+    tmp.val <- obj[[i]]
+    tmp.val <- sub("\\.\\.\\. ", "\\.\\.\\.", tmp.val)
+    tmp.val <- sub("\\.\\.\\. ", "\\.\\.\\.", tmp.val)
+    mat[3:nrow(mat), (1 + (i - 1) * ncol(obj[[1]])):(i *
+                                                       ncol(obj[[1]]))] <- tmp.val
+  }
+  rep.perc <- function(x) {
+    tmp <- unlist(strsplit(x, ""))
+    if ("%" %in% tmp) {
+      tmp[which(tmp == "%")] <- "\\%"
+      x <- paste(tmp, collapse = "")
+    }
+    return(x)
+  }
+  if (!print && latex)
+    mat <- apply(mat, 1:2, rep.perc)
+  ul <- c(mat[3:nrow(mat), ])
+  max.len <- max(sapply(ul, nchar))
+  fun <- function(x, max.len) {
+    extra <- max.len - nchar(x) - 1
+    if (extra > 0)
+      x <- gsub("^", paste(rep(" ", 1 + extra), collapse = ""),
+                x)
+    return(x)
+  }
+  for (i in 3:nrow(mat)) {
+    for (j in 1:ncol(mat)) {
+      mat[i, j] <- fun(mat[i, j], max.len)
+    }
+  }
+  if (!print && latex && !is.null(bold)) {
+    if (bold["stat"])
+      mat <- cbind(c(rownames(mat)[1:2], paste("\\textbf{",
+                                               rownames(mat)[-c(1:2)], "}", sep = "")), mat)
+    else mat <- cbind(rownames(mat), mat)
+    rownames(mat) <- NULL
+  }
+  colnames(mat)[which(colnames(mat) == "")] <- " "
+  if (print)
+    print(noquote(mat), na.print = na.print)
+  invisible(mat)
+}
+
