@@ -1,13 +1,24 @@
 
 # a more general purpose function
 # varClass and varLevel are used to create ordered factors to trigger correct cmh analysis
+#' Title
+#'
+#' @param ds  input dataset
+#' @param var the baseline variables to compare. do not include treatment variable here. #' @param var.name Optional, the variable text to display in the output. variable names supplied to \code{var.name} cannot overlap with its values (eg. a variable 'IC1' cannot contain values like 'IC1') in the output; in this case, use \code{var.name} to display a different text.
+#' @param trt the variable name for the column head, trt variable must be included in varLevel unless trt is a factor variable already
+#' @param varClass Optional, a named vector to specify the class for each var. eg varClass=c('age'='numeric','sex'='character', 'IC'='factor'). All variables that are specified as a factor will be converted into a factor before calling demoTab, and will be converted into an ordered factor before making pvalues. If \code{varClass} is not specified, the function will guess: if original numeric or integer -> numeric; if original character/factor and varLevels not specified -> char; if \code{varLevel} specified -> factor
+#'
+#' @param varLevel a named vector to specify the factor levels.
+#' @param outF a file path/name to save the results
+#' @param ... additional parameters to \code{fisher.test} or \code{cmh_test}
+#'
+#' @return
+#' @export
+#'
+#' @examples demoTabp(ds = input, var=c('KRAS.mutant','KRAS.exprs'),  trt='Country', varClass=c( ), varLevel=list(  ),simulate.p.value = T)
+#'
 demoTabp <- function(ds, var, var.name=NULL, trt, varClass, varLevel, outF=NA, ...){
-# ds: input dataset
-# var: the baseline variables to compare. do not include treatment variable here. variable names cannot overlap with its values( eg. a variable 'IC1' cannot contain values like 'IC1'. In this case, the variable can be renamed by providing var.name values
-# var.name: the variable label for demoTab
-# trt: the variable name for the column head, trt variable must be included in varLevel unless trt is a factor variable already
-# varClass: a named vector to specify the class for each var. eg varClass=c('age'='numeric','sex'='character', 'IC'='factor'). All variables that are specified as a factor will be converted into a factor before calling demoTab, and will be converted into an ordered factor before making pvalues.
-# varLevel: a named vector to specify the factor levels.
+
     stopifnot(is.data.frame(ds))
     if(missing(var.name) | is.null(var.name)) var.name <- var
     stopifnot(!any(duplicated(var.name)))
