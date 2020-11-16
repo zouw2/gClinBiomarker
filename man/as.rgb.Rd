@@ -24,7 +24,7 @@ opaque. If an RGB-code is provided and alpha != 1, the RGB-code of the transpare
 will be returned.
 }
 \examples{
-# convert character string representing a color to RGB-code using alpha-channel of .25 (75\\\% transparent)
+# convert character string representing a color to RGB-code using alpha-channel of .25 (75\\% transparent)
      as.rgb("red", alpha=.25)
 
 # same thing now using the RGB-code of red (alpha=1, i.e. as.rgb("red"))

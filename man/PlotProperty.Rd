@@ -4,15 +4,34 @@
 \alias{PlotProperty}
 \title{Plot Distribution}
 \usage{
-PlotProperty(data, biomarker.var, biomarker.class = NULL, var = NULL,
-  var.class = NULL, log2 = FALSE, col = rgb(0, 0, 1, alpha = 0.3),
-  add.num = 0, text.font = 3, main = "Distribution of", xlab = "",
-  add.lab = "", border = NULL, add.cor = FALSE, cor.method = "spearman",
-  lowess.line = FALSE, lowess.line.col = "deepskyblue",
-  show.biomarker.uni = TRUE, show.clinical.uni = FALSE,
-  show.association = TRUE, f = 0.3, las = 1, pdf.name = NULL,
-  pdf.param = list(width = 6, height = 4.5), par.param = list(mar = c(4, 4,
-  3, 2)), ...)
+PlotProperty(
+  data,
+  biomarker.var,
+  biomarker.class = NULL,
+  var = NULL,
+  var.class = NULL,
+  log2 = FALSE,
+  col = rgb(0, 0, 1, alpha = 0.3),
+  add.num = 0,
+  text.font = 3,
+  main = "Distribution of",
+  xlab = "",
+  add.lab = "",
+  border = NULL,
+  add.cor = FALSE,
+  cor.method = "spearman",
+  lowess.line = FALSE,
+  lowess.line.col = "deepskyblue",
+  show.biomarker.uni = TRUE,
+  show.clinical.uni = FALSE,
+  show.association = TRUE,
+  f = 0.3,
+  las = 1,
+  pdf.name = NULL,
+  pdf.param = list(width = 6, height = 4.5),
+  par.param = list(mar = c(4, 4, 3, 2)),
+  ...
+)
 }
 \arguments{
 \item{data}{input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,

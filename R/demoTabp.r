@@ -374,11 +374,6 @@ summary_as <- function (obj, var, var.name = NULL, trt = NULL, trt.names = NULL,
 }
 
 
-round.signif <- function(x, p)
-{
-  ifelse(abs(x)>=1, round(x, p), signif(x, p))
-}
-
 print.ASummary <- function (x, print = TRUE, Order = NULL, latex = FALSE, bold = NULL,
                             hspace = NULL, na.print = "", ...)
 {

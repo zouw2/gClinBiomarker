@@ -3,7 +3,9 @@
 \name{input}
 \alias{input}
 \title{Data example}
-\format{A data frame with 550 rows and 18 variables.}
+\format{
+A data frame with 550 rows and 18 variables.
+}
 \usage{
 data(input)
 input

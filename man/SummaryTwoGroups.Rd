@@ -4,11 +4,21 @@
 \alias{SummaryTwoGroups}
 \title{Summary statistics of two-group comparison}
 \usage{
-SummaryTwoGroups(outcome.var, subgroup.var = NULL, treatment.var,
-  placebo.code, active.code, outcome.class, alpha = 0.05,
-  surv.conf.type = "plain", ties = "efron", covariate.var = NULL,
-  strat.factor.var = NULL, return.fit = FALSE,
-  fit.para = list(prop.test.use.continuity.correction = T))
+SummaryTwoGroups(
+  outcome.var,
+  subgroup.var = NULL,
+  treatment.var,
+  placebo.code,
+  active.code,
+  outcome.class,
+  alpha = 0.05,
+  surv.conf.type = "plain",
+  ties = "efron",
+  covariate.var = NULL,
+  strat.factor.var = NULL,
+  return.fit = FALSE,
+  fit.para = list(prop.test.use.continuity.correction = T)
+)
 }
 \arguments{
 \item{outcome.var}{a vector specifying the outcome variable. For 'binary' outcome.var, it should be a vector of 1 or 0. In case of a 'survival' variable, this will be a matrix of two columns: 1) time to event 2) censorship.}

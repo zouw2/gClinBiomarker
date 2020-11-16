@@ -4,10 +4,20 @@
 \alias{bmComp2}
 \title{Given 2 biomarkers, find the contigency table and efficacy in the insection/unique portion}
 \usage{
-bmComp2(data, bm1 = NULL, bm1_pos_level = NULL, bm2 = NULL,
-  bm2_pos_level = NULL, endpoint = NULL, trt.var = NULL,
-  placebo.code = NULL, active.code = NULL, headerLevel = 2,
-  armColors = c("black", "red"), ...)
+bmComp2(
+  data,
+  bm1 = NULL,
+  bm1_pos_level = NULL,
+  bm2 = NULL,
+  bm2_pos_level = NULL,
+  endpoint = NULL,
+  trt.var = NULL,
+  placebo.code = NULL,
+  active.code = NULL,
+  headerLevel = 2,
+  armColors = c("black", "red"),
+  ...
+)
 }
 \arguments{
 \item{data}{input data; data frame only}
@@ -20,7 +30,7 @@ bmComp2(data, bm1 = NULL, bm1_pos_level = NULL, bm2 = NULL,
 
 \item{bm2_pos_level}{the level of biomarker 2 which is considered positive}
 
-\item{endpoint}{a vector of TTE endpoints}
+\item{endpoint}{a vector of TTE endpoints. If 'OS' is provided, the program also expects a censor indicate variable 'OS.EVENT' in data where 1 indicates an event and 0 for censored time.}
 
 \item{trt.var}{variable to indicate treatment variable; only 2 arms are allowed}
 
@@ -42,8 +52,8 @@ Given 2 biomarkers, find the contigency table and efficacy in the insection/uniq
 }
 \examples{
 ```{r function,results='asis',warning=F,message=F,fig.width=7,fig.height=7}
-b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50\%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B')
+b1 <- bmComp2(vad,'TC3IC3','TC3 or IC3','BEP263C3','>=50\%',c('PFSINV','OS'),trt.var='ARMCD1', placebo.code = 'B', active.code='A')
 
-b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm')
+b2 <-  bmComp2(sample.data, 'KRAS.mutant', 'Mutant', 'CD8.ihc','1', 'OS', trt.var='Arm', placebo.code = 'CTRL')
 ```
 }

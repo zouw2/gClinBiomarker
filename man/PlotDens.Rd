@@ -4,11 +4,19 @@
 \alias{PlotDens}
 \title{Plot Density}
 \usage{
-PlotDens(data, var, log2 = FALSE, col = "blue", text.font = 3,
-  main = paste("Distribution of", var), add.num = 0, xlab = paste(var,
-  ifelse(log2 == TRUE, "(log2 scale)", "")), pdf.name = NULL,
-  pdf.param = list(width = 6, height = 4.5), par.param = list(mar = c(4, 4,
-  3, 2)))
+PlotDens(
+  data,
+  var,
+  log2 = FALSE,
+  col = "blue",
+  text.font = 3,
+  main = paste("Distribution of", var),
+  add.num = 0,
+  xlab = paste(var, ifelse(log2 == TRUE, "(log2 scale)", "")),
+  pdf.name = NULL,
+  pdf.param = list(width = 6, height = 4.5),
+  par.param = list(mar = c(4, 4, 3, 2))
+)
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables, 

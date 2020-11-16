@@ -4,10 +4,24 @@
 \alias{BPplot}
 \title{Enhanced Box-Percentile Plots.}
 \usage{
-BPplot(obj, form = NULL, var = NULL, main = "Box-Percentile Plot",
-  add = FALSE, col = NULL, labels = NULL, ylab = NULL,
-  ylab.line = 2.5, ylab.font = 1L, swag = 0.9, line.col = "black",
-  line.lwd = 1L, line.lty = 1L, add.xlab = TRUE, ...)
+BPplot(
+  obj,
+  form = NULL,
+  var = NULL,
+  main = "Box-Percentile Plot",
+  add = FALSE,
+  col = NULL,
+  labels = NULL,
+  ylab = NULL,
+  ylab.line = 2.5,
+  ylab.font = 1L,
+  swag = 0.9,
+  line.col = "black",
+  line.lwd = 1L,
+  line.lty = 1L,
+  add.xlab = TRUE,
+  ...
+)
 }
 \arguments{
 \item{obj}{(data.frame, matrix) corresponding to the dataset to be used}

@@ -4,11 +4,24 @@
 \alias{SummarySingle}
 \title{Summary a single covariate, test across treatment and/or population}
 \usage{
-SummarySingle(data, var, trt = NULL, trt.name = NULL, subgroup = NULL,
-  subgroup.name = NULL, subgroup.indicator = 1, compare.subgroup = FALSE,
-  itt.name = "All", var.class = NULL, ordered.factor.levels = NULL,
-  cont.show = c("N", "Mean", "Median", "Min-Max", "NA's"), digits = 2,
-  trt.order = NULL, test.subgroup = FALSE, na.action = "error")
+SummarySingle(
+  data,
+  var,
+  trt = NULL,
+  trt.name = NULL,
+  subgroup = NULL,
+  subgroup.name = NULL,
+  subgroup.indicator = 1,
+  compare.subgroup = FALSE,
+  itt.name = "All",
+  var.class = NULL,
+  ordered.factor.levels = NULL,
+  cont.show = c("N", "Mean", "Median", "Min-Max", "NA's"),
+  digits = 2,
+  trt.order = NULL,
+  test.subgroup = FALSE,
+  na.action = "error"
+)
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,

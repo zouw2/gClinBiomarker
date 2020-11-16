@@ -4,16 +4,37 @@
 \alias{PlotRspBar}
 \title{Generate bar plot to summarize response outcome by subgroups}
 \usage{
-PlotRspBar(data, outcome.var, binary = FALSE, rsp.response = c("CR", "PR"),
-  rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"), rsp.levels = c("CR",
-  "PR", "SD", "NON CR/PD", "PD", "NE"), rsp.name = "Rsp", col = NULL,
-  plot.count = FALSE, digits = 1, trt = NULL, trt.name = NULL,
-  show.combine.trt = TRUE, compare.bep.itt = FALSE, bep = NULL,
-  bep.name = NULL, itt.name = "Full", bep.indicator = 1,
-  compare.var = FALSE, var = NULL, var.name = NULL,
-  show.combine.var = TRUE, horiz = FALSE,
-  main = "Association of response rate", sub = NULL, cex = 1,
-  pdf.name = NULL, pdf.param = NULL, par.param = NULL)
+PlotRspBar(
+  data,
+  outcome.var,
+  binary = FALSE,
+  rsp.response = c("CR", "PR"),
+  rsp.nonresponse = c("SD", "PD", "NON CR/PD", "NE"),
+  rsp.levels = c("CR", "PR", "SD", "NON CR/PD", "PD", "NE"),
+  rsp.name = "Rsp",
+  col = NULL,
+  plot.count = FALSE,
+  digits = 1,
+  trt = NULL,
+  trt.name = NULL,
+  show.combine.trt = TRUE,
+  compare.bep.itt = FALSE,
+  bep = NULL,
+  bep.name = NULL,
+  itt.name = "Full",
+  bep.indicator = 1,
+  compare.var = FALSE,
+  var = NULL,
+  var.name = NULL,
+  show.combine.var = TRUE,
+  horiz = FALSE,
+  main = "Association of response rate",
+  sub = NULL,
+  cex = 1,
+  pdf.name = NULL,
+  pdf.param = NULL,
+  par.param = NULL
+)
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,

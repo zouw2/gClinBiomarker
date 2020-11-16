@@ -4,9 +4,15 @@
 \alias{addTableToMargin}
 \title{Create Tabular Environment from Matrix and Add it to Margin.}
 \usage{
-addTableToMargin(mat, margin = c("bottom", "left", "top", "right"),
-  merge = TRUE, propMargin = 0.025, Label = list(), Text = list(),
-  reorder = FALSE)
+addTableToMargin(
+  mat,
+  margin = c("bottom", "left", "top", "right"),
+  merge = TRUE,
+  propMargin = 0.025,
+  Label = list(),
+  Text = list(),
+  reorder = FALSE
+)
 }
 \arguments{
 \item{mat}{(matrix) representing the table which will be added to margin;

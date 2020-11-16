@@ -4,9 +4,20 @@
 \alias{LogRankTab}
 \title{Log rank test p value and other summary statistics for subgroup analysis}
 \usage{
-LogRankTab(data, tte, cens, var, time.unit = "month",
-  surv.conf.type = "plain", ties = "efron", fillname = "",
-  digitMedian = 2, digitHR = 2, placebo.code = NULL, active.code = NULL)
+LogRankTab(
+  data,
+  tte,
+  cens,
+  var,
+  time.unit = "month",
+  surv.conf.type = "plain",
+  ties = "efron",
+  fillname = "",
+  digitMedian = 2,
+  digitHR = 2,
+  placebo.code = NULL,
+  active.code = NULL
+)
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,

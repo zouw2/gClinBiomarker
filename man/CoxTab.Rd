@@ -4,10 +4,21 @@
 \alias{CoxTab}
 \title{Summary outputs from cox proportional model}
 \usage{
-CoxTab(data = NULL, tte = NULL, cens = NULL, var = NULL,
-  var.class = NULL, ordered.factor.levels.list = NULL, strata = NULL,
-  form = NULL, fit = NULL, additive = TRUE, digits = 2, bep = NULL,
-  bep.indicator = 1)
+CoxTab(
+  data = NULL,
+  tte = NULL,
+  cens = NULL,
+  var = NULL,
+  var.class = NULL,
+  ordered.factor.levels.list = NULL,
+  strata = NULL,
+  form = NULL,
+  fit = NULL,
+  additive = TRUE,
+  digits = 2,
+  bep = NULL,
+  bep.indicator = 1
+)
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,

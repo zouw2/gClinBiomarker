@@ -5,8 +5,16 @@
 \title{Wrapper for fitting model and adjusting to predicted values and passing newly
 fitted model to ggplot geom_stat_ribbon}
 \usage{
-PlotLong(data, mapping = NULL, model = lm, model.per = NULL,
-  model.formula = NULL, facet.fun = NULL, plot.style = "ribbons", ...)
+PlotLong(
+  data,
+  mapping = NULL,
+  model = lm,
+  model.per = NULL,
+  model.formula = NULL,
+  facet.fun = NULL,
+  plot.style = "ribbons",
+  ...
+)
 }
 \arguments{
 \item{data}{data to use for model fitting and plotting}

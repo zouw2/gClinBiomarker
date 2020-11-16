@@ -4,8 +4,7 @@
 \alias{addXlabTable}
 \title{Create Tabular Environment from Matrix and Add it to Bottom Margin.}
 \usage{
-addXlabTable(mat, merge = TRUE, bmargin = 0.025, Label = list(),
-  Text = list())
+addXlabTable(mat, merge = TRUE, bmargin = 0.025, Label = list(), Text = list())
 }
 \arguments{
 \item{mat}{(matrix) representing the table which will be added to lower margin;

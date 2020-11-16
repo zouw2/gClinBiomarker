@@ -3,7 +3,8 @@
 \name{input.specs}
 \alias{input.specs}
 \title{Data specs example}
-\format{A data frame with 18 rows and 2 variables:
+\format{
+A data frame with 18 rows and 2 variables:
 \describe{
      \item{\code{Variable}}{Variable names.}
      \item{\code{Type}}{Describes how the column types must be specified:\cr\cr
@@ -13,7 +14,8 @@
                  \code{time:} specifying time to event (e.g. PFS, OS);\cr
                  \code{event:} specifying if time is real or censored (1=actual, 0=censored).\cr
                  }
-}}
+}
+}
 \usage{
 data(input.specs)
 input.specs

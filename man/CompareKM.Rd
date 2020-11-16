@@ -4,13 +4,30 @@
 \alias{CompareKM}
 \title{Compare KM curve of full population vs. BEP}
 \usage{
-CompareKM(data, tte, cens, trt = NULL, bep, bep.indicator = 1,
-  bep.name = "Biomarker Evaluable", itt.name = "All",
-  col.itt = "palegreen4", col.bep = "lightpink2", col.ci = "lightcyan",
-  shaded.ci = TRUE, xlim = NULL, xat = NULL, ylab = paste(tte,
-  "Survival Probability"), xlab = "Time", main = "",
-  surv.conf.type = "plain", pdf.name = NULL, pdf.param = list(height = 5),
-  par.param = list(mar = c(4, 4, 3, 2)), ...)
+CompareKM(
+  data,
+  tte,
+  cens,
+  trt = NULL,
+  bep,
+  bep.indicator = 1,
+  bep.name = "Biomarker Evaluable",
+  itt.name = "All",
+  col.itt = "palegreen4",
+  col.bep = "lightpink2",
+  col.ci = "lightcyan",
+  shaded.ci = TRUE,
+  xlim = NULL,
+  xat = NULL,
+  ylab = paste(tte, "Survival Probability"),
+  xlab = "Time",
+  main = "",
+  surv.conf.type = "plain",
+  pdf.name = NULL,
+  pdf.param = list(height = 5),
+  par.param = list(mar = c(4, 4, 3, 2)),
+  ...
+)
 }
 \arguments{
 \item{data}{Input data frame. Rows are patients and columns are variables (e.g. demographics variables, time to event variables,

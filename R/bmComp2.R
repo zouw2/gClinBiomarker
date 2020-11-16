@@ -5,7 +5,7 @@
 #' @param bm1_pos_level the level of biomarker 1 which is considered positive. A character value will force bm1 into character.
 #' @param bm2 variable name for biomarker 2
 #' @param bm2_pos_level the level of biomarker 2 which is considered positive
-#' @param endpoint a vector of TTE endpoints
+#' @param endpoint a vector of TTE endpoints. If 'OS' is provided, the program also expects a censor indicate variable 'OS.EVENT' in data where 1 indicates an event and 0 for censored time.
 #' @param trt.var variable to indicate treatment variable; only 2 arms are allowed
 #' @param placebo.code a character value to indicate the reference arm
 #' @param active.code a character value to indicate the active arm.
