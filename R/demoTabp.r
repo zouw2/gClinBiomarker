@@ -1,12 +1,10 @@
 
-# a more general purpose function
-# varClass and varLevel are used to create ordered factors to trigger correct cmh analysis
-#' Title
+#' Title generate demographic tables
 #'
 #' @param ds  input dataset
 #' @param var the baseline variables to compare. do not include treatment variable here. #' @param var.name Optional, the variable text to display in the output. variable names supplied to \code{var.name} cannot overlap with its values (eg. a variable 'IC1' cannot contain values like 'IC1') in the output; in this case, use \code{var.name} to display a different text.
 #' @param trt the variable name for the column head, trt variable must be included in varLevel unless trt is a factor variable already
-#' @param varClass Optional, a named vector to specify the class for each var. eg varClass=c('age'='numeric','sex'='character', 'IC'='factor'). All variables that are specified as a factor will be converted into a factor before calling demoTab, and will be converted into an ordered factor before making pvalues. If \code{varClass} is not specified, the function will guess: if original numeric or integer -> numeric; if original character/factor and varLevels not specified -> char; if \code{varLevel} specified -> factor
+#' @param varClass Optional, a named vector to specify the class for each var. eg varClass=c('age'='numeric','sex'='character', 'IC'='factor'). All variables that are specified as a factor will be converted into a factor before calling demoTab, and will be converted into an ordered factor to trigger correct cmh analysis. If \code{varClass} is not specified, the function will guess: if original numeric or integer -> numeric; if original character/factor and varLevels not specified -> char; if \code{varLevel} specified -> factor
 #'
 #' @param varLevel a named vector to specify the factor levels.
 #' @param outF a file path/name to save the results
