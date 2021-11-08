@@ -11,7 +11,7 @@
 #' @param active.code a character value to indicate the active arm.
 #' @param headerLevel control the heading info for Rmd outoupt, default is 2
 #' @param armColors color for each arm
-#' @param ...
+#' @param ... additional parameters fed to \code{PlotKM}
 #'
 #' @return the original data frame with addition derived biomarker status variables
 #' @export
@@ -173,7 +173,7 @@ if (F){ # old code to determine factor levels
         print(PlotKM(temp,tte=thisEndpoint,cens=paste0(thisEndpoint,'.EVENT'),trt=trt.var,
                      #main=paste0(endNames[i],' for T22c3_3grp ',t22c3levels[j]),
                      col=armColors,return.data = F,
-                     main=paste0(thisEndpoint,' in ',comparison)) )
+                     main=paste0(thisEndpoint,' in ',comparison), ...) )
         #par.param=list(mar=c(6,5,3,2)),cex.nrisk=.6))
         cat('\\newpage')
       }
