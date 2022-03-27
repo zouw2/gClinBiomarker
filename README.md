@@ -8,37 +8,7 @@ Overview
 --------
 
 gClinBiomarker is an R package that contains functions to perform baseline and longitutinal biomarker analyses. This version is wei's private version that fixes bugs and introduces features of critical needs.
-
-Source code: <https://github.roche.com/zouw2/gClinBiomarker>
-
-
-Documentations could be found under the "article" tab of the project page. Two documents are provided: - A user vignette demonstrates how gClinBiomarker package may help in your biomarker analysis - An exapmle use case document which contains more detailed use cases
-
-pdf version of these two documents can be found [here](https://github.roche.com/Rpackages/gClinBiomarker/tree/master/inst/doc).
-
-![](https://media.github.roche.com/user/48/files/92962930-4e04-11e8-9064-94754ebf0ab5)
-
-gClinBiomarker also provide a set of Rmarkdown templates that allow you to generate biomarker analysis report by "one click". The R markdown templates can be found at [here](https://github.roche.com/lengn/gClinbiomarker_documents/tree/master/Markdown_templates), along with some slide decks.
-
-Getting Started
----------------
-
-### Installation
-
-To install this package from R, use `install_github()` function from the **devtools** package
-
-In R, type:
-
-``` r
-## install.packages("devtools")
-devtools::install_github("zouw2/gClinBiomarker", host="https://github.roche.com/api/v3")
-```
-
-Note that on bce (r.bas.roche.com), the default R is from an older version. To install, type
-
-``` r
-devtools::install_github("zouw2/gClinBiomarker", host="github.roche.com/api/v3")
-```
+ 
 
 ### Getting the Documentation
 
