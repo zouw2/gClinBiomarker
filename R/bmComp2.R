@@ -122,9 +122,10 @@ if (F){ # old code to determine factor levels
 
 # ==== wei replace magrittr functions
   df <- data
-  df$thisBM1 = with(df, ifelse(is.na(bm1) | nchar(gsub(' ','',as.character(bm1))) == 0 , NA,bm1))
+  df$thisBM1 =  ifelse(is.na(df[[bm1]]) | nchar(gsub(' ','',as.character(df[[bm1]]))) == 0 , NA, df[[bm1]])
 
-  df$thisBM2 = with(df, ifelse(is.na(bm2) | nchar(gsub(' ','',as.character(bm2))) == 0 , NA,bm2))
+  df$thisBM2 =  ifelse(is.na(df[[bm2]]) | nchar(gsub(' ','',as.character(df[[bm2]]))) == 0 , NA, df[[bm2]])
+
   df$thisBEP = with(df, ifelse( is.na(thisBM1) | is.na(thisBM2),0,1) )
   df <- subset(df, thisBEP == 1)
   df$binBM1 = with(df,
