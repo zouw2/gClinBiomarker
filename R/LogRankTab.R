@@ -10,7 +10,7 @@
 #' @param ties Default is "efron". To match internal sas results, use "exact". See parameter "ties" in coxph.
 #' @param surv.conf.type confidence interval type. Default is "plain". see conf.type in survfit
 #' @param digitMedian number of digits to report medians
-#' @param digitHR number of digits to report HR 
+#' @param digitHR number of digits to report HR
 #' @param placebo.code name of the control arm of the treatment variable. If you want to specify placebo code using this parameter, both placebo.code and active.code need to be provided.
 #' @param active.code of the treatment/experimental arm of the treatment variable. If you want to specify active code using this parameter, both placebo.code and active.code need to be provided.
 #' @note This function takes time to event outcome, and one categorical variable (parameter var).
@@ -21,17 +21,17 @@
 #' data(input)
 #' LogRankTab(data=input,tte="PFS", cens="PFS.event",var="Arm")
 #' @export
-#' 
+#'
 LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="plain",ties="efron", fillname="",  digitMedian=2, digitHR=2, placebo.code=NULL, active.code=NULL){
   stopifnot(class(data)=="data.frame")
-  
+
   if(length(var)!=1) stop("only one element should be specified in parameter var!")
   stopifnot(all(c(tte, cens, var)%in%colnames(data)))
   group <- var
   nArms <- length(unique(data[,group]))
-  
+
   if(class(data[,group])%in%c("numeric","integer")) stop(paste("var column cannot be in class numeric or integer"))
-  
+
   if (nArms > 1){
     Arms <- unique( data[,group] )
     if (!is.null(placebo.code)) { # reference arm specified
@@ -55,19 +55,19 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="
   tabN <- table(data[,cens], data[,group])[2:1,,drop=FALSE]
   csum <- colSums(tabN)
   tabp <- round(prop.table(tabN, margin=2)*100,1)
-  
+
   tab1 <- tabN
   for(i in 1:ncol(tabN)) {
     tab1[,i] <- paste(tabN[,i], " (", tabp[,i] , "%)", sep="")
   }
-  
 
-  
-  
+
+
+
   ## Median&Co
   fit <- summary(survfit(as.formula(paste("Surv(",tte,",",cens,") ~ ", group)), data=data, conf.type=surv.conf.type))
-  if(class(fit$tab) == 'numeric') return(matrix(fit$tab, nrow=1, dimnames=list(c(), names(fit$tab))))
-  
+  if('numeric' %in% class(fit$tab)) return(matrix(fit$tab, nrow=1, dimnames=list(c(), names(fit$tab))))
+
   if(nArms==1) {
     med <- as.character(round(fit$tab["median"],digitMedian))
     medci <- paste("(",round(fit$tab["0.95LCL"],digitMedian),";", round(fit$tab["0.95UCL"],digitMedian),")", sep="")
@@ -77,11 +77,11 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="
     medci <- paste("(",round(fit$tab[,"0.95LCL"],digitMedian),";", round(fit$tab[,"0.95UCL"],digitMedian),")", sep="")
   }
   med[is.na(med)] <- "NA"
-  
+
   ## quartiles by group
   lev <- levels(as.factor(data[,group]))
   nlev <- length(lev)
-  
+
   quart <- NULL
   rg <- NULL
   for(i in 1:nlev){
@@ -91,7 +91,7 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="
     quart <- cbind(quart, paste(round(tt1$time[ind25],digitMedian),round(tt1$time[ind75],digitMedian), sep=";"))
     rg <- cbind(rg, paste(round(min(tt1$time),digitMedian), round(max(tt1$time),digitMedian), sep=" to "))
   }
-  
+
   ##logrank and HR to first level of factor
   pval <- c(" ")
   hr <- c(" ")
@@ -105,17 +105,17 @@ LogRankTab <- function(data, tte, cens, var, time.unit="month", surv.conf.type="
       hr <- cbind(hr,round(cox$coefficients[,"exp(coef)"],digitHR))
       hrci <- cbind(hrci, paste("(",round(cox$conf.int[,"lower .95"],digitHR),";", round(cox$conf.int[,"upper .95"],digitHR), ")",sep=""))
     }
-  
-  
+
+
   taball <- rbind(tab1,rep("",nlev), med, medci, quart,rg, pval, hr, hrci)
-  
+
   extracol <- c("Patients with event", "Patients without event",
                 paste("Time to event (",time.unit,")",sep=""),
                 "     Median (KM)", "     95% CI Median",
                 "     25% and 75%-ile", "     Range (inc. cens.)",
                 "     p-value (Log-Rank Test)",
                 "Hazard Ratio", " 95% CI")
-  
+
   taball <- cbind(extracol, taball)
   taball <- rbind(c(fillname,lev),c("", paste("N=", csum, sep="")), taball)
   rownames(taball) <- colnames(taball) <- NULL
