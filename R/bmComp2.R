@@ -1,9 +1,9 @@
 #' Given 2 biomarkers, find the contigency table and efficacy in the insection/unique portion
 #'
 #' @param data input data; data frame only
-#' @param bm1 variable name for biomarker 1
+#' @param bm1 variable name for biomarker 1. NA or empty or whitespace values are considered missing.
 #' @param bm1_pos_level the level of biomarker 1 which is considered positive. A character value will force bm1 into character.
-#' @param bm2 variable name for biomarker 2
+#' @param bm2 variable name for biomarker 2. NA or empty or whitespace values are considered missing. Observations with missing values for either bm1 or bm2 will be excluded from analysis.
 #' @param bm2_pos_level the level of biomarker 2 which is considered positive
 #' @param endpoint a vector of TTE endpoints. If 'OS' is provided, the program also expects a censor indicate variable 'OS.EVENT' in data where 1 indicates an event and 0 for censored time.
 #' @param trt.var variable to indicate treatment variable; only 2 arms are allowed
@@ -120,6 +120,28 @@ if (F){ # old code to determine factor levels
   if( is.character(bm1_pos_level) ) data[[bm1]] <- as.character(data[[bm1]])
   if( is.character(bm2_pos_level) ) data[[bm2]] <- as.character(data[[bm2]])
 
+# ==== wei replace magrittr functions
+  df <- data
+  df$thisBM1 = with(df, ifelse(is.na(bm1) | nchar(gsub(' ','',as.character(bm1))) == 0 , NA,bm1))
+
+  df$thisBM2 = with(df, ifelse(is.na(bm2) | nchar(gsub(' ','',as.character(bm2))) == 0 , NA,bm2))
+  df$thisBEP = with(df, ifelse( is.na(thisBM1) | is.na(thisBM2),0,1) )
+  df <- subset(df, thisBEP == 1)
+  df$binBM1 = with(df,
+        factor(ifelse(thisBM1 %in% bm1_pos_level,paste0(bm1,'+'),paste0(bm1,'-')),
+          levels=c(paste0(bm1,'+'),paste0(bm1,'-'))) )
+
+  df$binBM2 = with(df,
+        factor(ifelse(thisBM2 %in% bm2_pos_level,paste0(bm2,'+'),paste0(bm2,'-')),
+          levels=c(paste0(bm2,'+'),paste0(bm2,'-'))) )
+
+  df$combos = with(df, factor(paste0(binBM1,',',binBM2),
+                     levels=c( paste0(bm1,'+,',bm2,'+'),
+                               paste0(bm1,'+,',bm2,'-'),
+                               paste0(bm1,'-,',bm2,'+'),
+                               paste0(bm1,'-,',bm2,'-')) ))
+
+if(F){
   # Convert original biomarkers for easy internal use, as well as massage out empty fields
   df = data %>% mutate(thisBM1 = ifelse(!!as.name(bm1)=='',NA,!!as.name(bm1)),
                        thisBM2 = ifelse(!!as.name(bm2)=='',NA,!!as.name(bm2)),
@@ -138,7 +160,7 @@ if (F){ # old code to determine factor levels
                                      paste0(bm1,'+,',bm2,'-'),
                                      paste0(bm1,'-,',bm2,'+'),
                                      paste0(bm1,'-,',bm2,'-')) ) )
-
+}
   # Secondary variable checks after filtering
   stopifnot(exprs = {
     # Check if positive levels do not occupy all levels
@@ -162,7 +184,8 @@ if (F){ # old code to determine factor levels
     # Logrank and KM plots for each subpopulation in the above table
     for (comparison in levels(df$combos)) {
       cat(paste0(cat(rep('#',headerLevel+1),sep=''),' ',comparison,'\n\n'))
-      temp = df %>% filter(combos == comparison)
+#      temp = df %>% filter(combos == comparison)
+      temp <- subset( df,  combos %in% comparison)
       if (nrow(temp)== 0) {
         print('There are no subjects in this category')
       } else {
